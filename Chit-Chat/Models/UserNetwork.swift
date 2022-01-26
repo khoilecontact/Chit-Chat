@@ -1,0 +1,18 @@
+//
+//  UserNetwork.swift
+//  Chit-Chat
+//
+//  Created by Phát Nguyễn on 26/01/2022.
+//
+
+import Foundation
+
+struct UserNetwork {
+    let id: String
+    let firstName: String
+    let lastName: String
+    let bio: String
+    let email: String
+    let dob: Date
+    let isMale: Bool
+}
