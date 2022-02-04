@@ -33,6 +33,9 @@
 		DA718D4F27A0F6E70020B0C9 /* UserNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */; };
 		DA718D5127A0F6F20020B0C9 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D5027A0F6F20020B0C9 /* Messages.swift */; };
 		DA718D5327A127670020B0C9 /* Model_Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D5227A127670020B0C9 /* Model_Test.swift */; };
+		DA9AD85927AC136E00221E16 /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD85827AC136E00221E16 /* FriendsViewController.swift */; };
+		DA9AD85B27AC187200221E16 /* FriendsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD85A27AC187200221E16 /* FriendsModel.swift */; };
+		DA9AD85E27ACD96F00221E16 /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +91,9 @@
 		DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNetwork.swift; sourceTree = "<group>"; };
 		DA718D5027A0F6F20020B0C9 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		DA718D5227A127670020B0C9 /* Model_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Test.swift; sourceTree = "<group>"; };
+		DA9AD85827AC136E00221E16 /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
+		DA9AD85A27AC187200221E16 /* FriendsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsModel.swift; sourceTree = "<group>"; };
+		DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
 		FFA53E9545E7381D535EF4AF /* Pods_Chit_Chat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chit_Chat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -180,6 +186,7 @@
 				DA718D4C27A0F6CA0020B0C9 /* Conversation.swift */,
 				DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */,
 				DA718D5027A0F6F20020B0C9 /* Messages.swift */,
+				DA9AD85A27AC187200221E16 /* FriendsModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -187,6 +194,7 @@
 		22CCFE3A279FF4F7009F7C8A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				DA9AD85C27ACD92A00221E16 /* UIViews */,
 				22714E70277D5D510004F942 /* Assets.xcassets */,
 				22CCFE3D279FF51E009F7C8A /* Storyboards */,
 			);
@@ -198,6 +206,7 @@
 			children = (
 				22F1999027A0E5F000CAE0D5 /* Authentications */,
 				22714E68277D5D4F0004F942 /* MainViewController.swift */,
+				DA9AD85827AC136E00221E16 /* FriendsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -255,6 +264,14 @@
 				5A425F73A41B35F53C7F971F /* Pods_Chit_ChatTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DA9AD85C27ACD92A00221E16 /* UIViews */ = {
+			isa = PBXGroup;
+			children = (
+				DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */,
+			);
+			path = UIViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -501,7 +518,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				22F1999627A0E67A00CAE0D5 /* LoginViewController.swift in Sources */,
+				DA9AD85E27ACD96F00221E16 /* FriendsCell.swift in Sources */,
+				DA9AD85B27AC187200221E16 /* FriendsModel.swift in Sources */,
 				DA718D5127A0F6F20020B0C9 /* Messages.swift in Sources */,
+				DA9AD85927AC136E00221E16 /* FriendsViewController.swift in Sources */,
 				22CCFE40279FF573009F7C8A /* Extensions.swift in Sources */,
 				22714E69277D5D4F0004F942 /* MainViewController.swift in Sources */,
 				22714E6F277D5D4F0004F942 /* Chit_Chat.xcdatamodeld in Sources */,
