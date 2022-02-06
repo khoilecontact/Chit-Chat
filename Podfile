@@ -21,6 +21,7 @@ pod 'GoogleSignIn'
 
 pod 'MessageKit'
 pod 'JGProgressHUD'
+pod 'SDWebImage'
     
 
   target 'Chit-ChatTests' do
