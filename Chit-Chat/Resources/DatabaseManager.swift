@@ -352,18 +352,20 @@ extension DatabaseManager {
     }
     
     /// Fetch and return all conversations for the user which has the email
-    public func getAllConversations(for email: String, completion: @escaping (Result<[Conversation], Error>) -> Void) {
+    public func getAllConversations(for email: String, completion: @escaping (Result<[MessagesCollection], Error>) -> Void) {
         database.child("\(email)/conversations").observe(.value, with: { snapshot in
             guard let value = snapshot.value as? [[String: Any]] else {
                 completion(.failure(DatabaseError.failedToFetch))
                 return
             }
             
-            let conversations: [Conversation] = value.compactMap({ dictionary in
+            let conversations: [MessagesCollection] = value.compactMap({ dictionary in
                 guard let conversationId = dictionary["id"] as? String,
                       let name = dictionary["name"] as? String,
                       let otherUserEmail = dictionary["other_user_email"] as? String,
                       let latestMessage = dictionary["latest_message"] as? [String: Any],
+                      // Not so sure
+                      let type = dictionary["type"] as? String,
                       let date = latestMessage["date"] as? Date,
                       let message = latestMessage["message"] as? String,
                       let isRead = latestMessage["is_read"] as? Bool else {
@@ -372,7 +374,8 @@ extension DatabaseManager {
                 
                 let latestMessageObject = LatestMessage(date: date, text: message, isRead: isRead)
                 
-                return Conversation(id: conversationId, name: name, otherUserEmail: otherUserEmail, latestMessage: latestMessageObject)
+//                return Conversation(id: conversationId, name: name, content: <#String#>, sender_email: otherUserEmail, latestMessage: latestMessageObject, type: type, isRead: isRead, date: date)
+                return nil
                       
             })
             

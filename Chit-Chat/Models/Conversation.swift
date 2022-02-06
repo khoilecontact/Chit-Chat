@@ -8,10 +8,10 @@
 import Foundation
 
 struct Conversations {
-    let messages: [Conversation]
+    let messages: [MessageOfConversation]
 }
 
-struct Conversation {
+struct MessageOfConversation {
     let id: String
     let type: String    // messages type
     let content: String

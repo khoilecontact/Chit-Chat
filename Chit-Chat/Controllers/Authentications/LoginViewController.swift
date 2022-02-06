@@ -274,85 +274,85 @@ extension LoginViewController: LoginButtonDelegate {
     }
     
     func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
-//        // Unwraph token from Facebook
-//        guard let token = result?.token?.tokenString else {
-//            print("User failed to log in with Facebook")
-//            return
-//        }
-//
-//        let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields": "email, first_name, last_name, picture.type(large)"], tokenString: token, version: nil, httpMethod: .get)
-//
-//        facebookRequest.start(completion: { connection, result, error in
-//            guard let result = result as? [String: Any ], error == nil else {
-//                print("Failed to make Facebook Graph request")
-//                return
-//            }
-//
-//            //Debug
-//            //            print(result)
-//            //            return
-//            //
-//            guard let email = result["email"] as? String,
-//                  let firstName = result["first_name"] as? String, let lastName = result["last_name"] as? String, let picture = result["picture"] as? [String: Any], let data = picture["data"] as? [String: Any], let pictureUrl = data["url"] as? String
-//            else {
-//                print("Failed to get email and name from Facebook")
-//                return
-//            }
-//
-//            UserDefaults.standard.set(email, forKey: "email")
-//            UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
-//
-//            DatabaseManager.shared.userExists(with: email, completion: { exists in
-//                let chatUser = ChatAppUser(firstName: firstName, lastName: lastName, emailAddress: email)
-//                if !exists {
-//                    DatabaseManager.shared.insertUser(with: chatUser, completion: { [weak self] success in
-//                        if success {
-//                            //upload image
-//                            guard let url = URL(string: pictureUrl) else {
-//                                return
-//                            }
-//
-//                            URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
-//
-//                                guard data != nil else { return }
-//                                guard error == nil else { return }
-//
-//                                guard let image = self?.imageView.image, let data = image.pngData() else {
-//                                    return
-//                                }
-//
-//                                let fileName = chatUser.profilePictureFileName
-//                                storageManager.shared.uploadFrofilePicture(with: data, fileName: fileName, completion: { result in
-//                                    switch result {
-//                                    case .success(let downloadUrl):
-//                                        UserDefaults.standard.setValue(downloadUrl, forKey: "profile_picture_url")
-//                                        print(downloadUrl)
-//                                    case .failure(let error):
-//                                        print("Storage manager error: \(error)")
-//                                    }
-//                                })
-//
-//                            }).resume()
-//
-//                        }
-//                    })
-//                }
-//            })
-//
-//            //Create user in Firebase database - not in Authentication cuz it's already created in there
-//            let credential = FacebookAuthProvider.credential(withAccessToken: token)
-//
-//            //Log in Firebase using Facebook
-//            FirebaseAuth.Auth.auth().signIn(with: credential, completion: { [weak self] authResult, error in
-//                guard authResult != nil, error == nil else {
-//                    print("Facebook log in fail, MFA maybe needed")
-//                    return
-//                }
-//
-//                print("Sucessfully log in")
-//                self?.navigationController?.dismiss(animated: true, completion: nil)
-//            })
-//        })
+        // Unwraph token from Facebook
+        guard let token = result?.token?.tokenString else {
+            print("User failed to log in with Facebook")
+            return
+        }
+
+        let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields": "email, first_name, last_name, picture.type(large)"], tokenString: token, version: nil, httpMethod: .get)
+
+        facebookRequest.start(completion: { connection, result, error in
+            guard let result = result as? [String: Any ], error == nil else {
+                print("Failed to make Facebook Graph request")
+                return
+            }
+
+            //Debug
+            //            print(result)
+            //            return
+            //
+            guard let email = result["email"] as? String,
+                  let firstName = result["first_name"] as? String, let lastName = result["last_name"] as? String, let picture = result["picture"] as? [String: Any], let data = picture["data"] as? [String: Any], let pictureUrl = data["url"] as? String
+            else {
+                print("Failed to get email and name from Facebook")
+                return
+            }
+
+            UserDefaults.standard.set(email, forKey: "email")
+            UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
+
+            DatabaseManager.shared.userExists(with: email, completion: { exists in
+                let chatUser = ChatAppUser(firstName: firstName, lastName: lastName, emailAddress: email)
+                if !exists {
+                    DatabaseManager.shared.insertUser(with: chatUser, completion: { [weak self] success in
+                        if success {
+                            //upload image
+                            guard let url = URL(string: pictureUrl) else {
+                                return
+                            }
+
+                            URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
+
+                                guard data != nil else { return }
+                                guard error == nil else { return }
+
+                                guard let image = self?.imageView.image, let data = image.pngData() else {
+                                    return
+                                }
+
+                                let fileName = chatUser.profilePictureFileName
+                                StorageManager.shared.uploadFrofilePicture(with: data, fileName: fileName, completion: { result in
+                                    switch result {
+                                    case .success(let downloadUrl):
+                                        UserDefaults.standard.setValue(downloadUrl, forKey: "profile_picture_url")
+                                        print(downloadUrl)
+                                    case .failure(let error):
+                                        print("Storage manager error: \(error)")
+                                    }
+                                })
+
+                            }).resume()
+
+                        }
+                    })
+                }
+            })
+
+            //Create user in Firebase database - not in Authentication cuz it's already created in there
+            let credential = FacebookAuthProvider.credential(withAccessToken: token)
+
+            //Log in Firebase using Facebook
+            FirebaseAuth.Auth.auth().signIn(with: credential, completion: { [weak self] authResult, error in
+                guard authResult != nil, error == nil else {
+                    print("Facebook log in fail, MFA maybe needed")
+                    return
+                }
+
+                print("Sucessfully log in")
+                self?.navigationController?.dismiss(animated: true, completion: nil)
+            })
+        })
 
     }
     
