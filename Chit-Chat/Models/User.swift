@@ -29,5 +29,6 @@ struct User {
     let password: String
     let dob: Date
     let isMale: Bool
+    let friendList: [UserNode]
     let conversations: [MessagesCollection]
 }

@@ -16,7 +16,7 @@ class FriendsCell: UITableViewCell {
     private let userImageView: UIImageView = {
         let imgView = UIImageView()
         imgView.contentMode = .scaleAspectFill
-        imgView.layer.cornerRadius = 35
+        imgView.layer.cornerRadius = 40
         imgView.layer.masksToBounds = true
         return imgView
     }()
@@ -33,7 +33,7 @@ class FriendsCell: UITableViewCell {
         return label
     }()
     
-    override init(style: FriendsCell.CellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(userImageView)
         contentView.addSubview(userNameLabel)
@@ -47,23 +47,30 @@ class FriendsCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        userImageView.frame = CGRect(x: 10, y: 10,
-                                     width: 70, height: 70)
-        userNameLabel.frame = CGRect(x: userImageView.right + 10,
-                                     y: 20,
+        userImageView.frame = CGRect(x: 10,
+                                     y: 10,
+                                     width: 80,
+                                     height: 80)
+        
+        userNameLabel.frame = CGRect(x: userImageView.right + 20,
+                                     y: 10,
                                      width: contentView.width - 20 - userImageView.width,
-                                     height: 50)
-        userEmailLabel.frame = CGRect(x: userImageView.right + 10,
-                                      y: userNameLabel.bottom,
-                                      width: contentView.width - 20 - userImageView.width,
-                                      height: contentView.height - 10 - userNameLabel.height)
+                                     height: (contentView.height - 20)/2)
+        
+        userEmailLabel.frame = CGRect(x: userImageView.right + 20,
+                                        y: userNameLabel.bottom + 10,
+                                     width: contentView.width - 20 - userImageView.width,
+                                     height: (contentView.height - 20)/2)
     }
     
     // MARK: - Closure call data
-    public func configure(with model: FriendsResult) {
-        userNameLabel.text = model.name
+    public func configure(with model: User) {
+        userNameLabel.text = "\(model.firstName) \(model.lastName)"
+        userEmailLabel.text = model.email
+        let url = URL(string: "https://github.com/khoilecontact.png?size=400")
+        userImageView.sd_setImage(with: url, completed: nil)
         
-        let path = "images/\(model.email)_profile_picture.png"
+        //        let path = "images/\(model.email)_profile_picture.png"
         // call to Storage manager to take img
     }
     
