@@ -14,12 +14,14 @@ import JGProgressHUD
 
 class LoginViewController: UIViewController {
     var alertMessage = ""
+    var webView = WKWebView()
     
     private let spinner = JGProgressHUD(style: .dark)
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.clipsToBounds = true
+        scrollView.contentSize = CGSize(width: 320, height: 800)
         return scrollView
     }()
     
@@ -30,21 +32,27 @@ class LoginViewController: UIViewController {
         return imageView
     }()
     
+    private let appNameField: UILabel = {
+        let appNameField = UILabel()
+        appNameField.text = "Chit Chat"
+        appNameField.textColor = UIColor.black
+        appNameField.font = UIFont.boldSystemFont(ofSize: 32.0)
+        appNameField.textAlignment = .center
+        return appNameField
+    }()
+    
     private let emailField: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         // Continue to next field
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 12
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.backgroundColor = .white
+        field.layer.borderWidth = 0
         field.placeholder = "Email..."
         
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
-        
-        field.backgroundColor = .secondarySystemBackground
         
         return field
     }()
@@ -54,15 +62,13 @@ class LoginViewController: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .done
-        field.layer.cornerRadius = 12
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.backgroundColor = .systemBackground
+        field.layer.borderWidth = 0
         field.placeholder = "Password..."
         
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         
-        field.backgroundColor = .secondarySystemBackground
         field.isSecureTextEntry = true
         
         return field
@@ -70,14 +76,33 @@ class LoginViewController: UIViewController {
     
     private let loginButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Log in", for: .normal)
+        button.setTitle("Sign In", for: .normal)
         button.backgroundColor = .systemGreen
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         
         return button
+    }()
+    
+    private let forgotPasswordLabel: UILabel = {
+        let forgotPasswordLabel = UILabel()
+        forgotPasswordLabel.text = "Forgot password?"
+        forgotPasswordLabel.textColor = UIColor.black
+        forgotPasswordLabel.font = .systemFont(ofSize: 15)
+        forgotPasswordLabel.textAlignment = .right
+        return forgotPasswordLabel
+    }()
+    
+    private let forgotPasswordButton: UIButton = {
+        let forgotPasswordButton = UIButton()
+        forgotPasswordButton.setTitle("Reset password", for: .normal)
+        forgotPasswordButton.backgroundColor = .systemBackground
+        forgotPasswordButton.layer.borderWidth = 0
+        forgotPasswordButton.titleLabel?.font = .systemFont(ofSize: 15)
+        forgotPasswordButton.setTitleColor(.blue, for: .normal)
+        return forgotPasswordButton
     }()
     
     private let FBloginButton: FBLoginButton = {
@@ -87,6 +112,35 @@ class LoginViewController: UIViewController {
     }()
     
     private let googleSignInButton = GIDSignInButton()
+    
+    private let githubSignInButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("  Log in with GitHub", for: .normal)
+        button.backgroundColor = UIColor.gray
+        button.layer.borderWidth = 0
+        button.titleLabel?.font = .systemFont(ofSize: 15)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.textAlignment = .left
+        
+        var image = UIImage(named: "GitHubLogo")
+        image = resizeImage(image: image!, targetSize: CGSize(width: 30, height: 30))
+        button.setImage(image, for: .normal)
+        button.imageView?.contentMode = .left
+        
+        return button
+    }()
+    
+    private let registerButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Sign Up", for: .normal)
+        button.backgroundColor = .init(red: CGFloat(108) / 255.0, green: CGFloat(164) / 255.0, blue: CGFloat(212) / 255.0, alpha: 1.0)
+        button.setTitleColor(.black, for: .normal)
+        button.layer.cornerRadius = 12
+        button.layer.masksToBounds = true
+        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+        
+        return button
+    }()
     
     private var loginObserver: NSObjectProtocol?
     
@@ -100,10 +154,77 @@ class LoginViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .done, target: self, action: #selector(didTapRegister))
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .done, target: self, action: #selector(didTapRegister))
         
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         googleSignInButton.addTarget(self, action: #selector(googleSignInButtonTapped), for: .touchUpInside)
+        githubSignInButton.addTarget(self, action: #selector(didTapGitHub), for: .touchUpInside)
+        registerButton.addTarget(self, action: #selector(didTapRegister), for: .touchUpInside)
+        
+        emailField.delegate = self
+        passwordField.delegate = self
+        
+        FBloginButton.delegate = self
+        
+        // Add subview
+        view.addSubview(scrollView)
+        scrollView.addSubview(imageView)
+        scrollView.addSubview(appNameField)
+        scrollView.addSubview(emailField)
+        scrollView.addSubview(passwordField)
+        scrollView.addSubview(loginButton)
+        scrollView.addSubview(forgotPasswordLabel)
+        scrollView.addSubview(forgotPasswordButton)
+        scrollView.addSubview(FBloginButton)
+        scrollView.addSubview(googleSignInButton)
+        scrollView.addSubview(githubSignInButton)
+        scrollView.addSubview(registerButton)
+    }
+    
+    deinit {
+        if let observer = loginObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollView.frame = view.bounds
+        
+        let size = scrollView.width / 3
+        imageView.frame = CGRect(x: size, y: 20, width: size, height: size)
+        imageView.backgroundColor = .systemBackground
+        
+        appNameField.frame = CGRect(x: 30, y: imageView.bottom + 10, width: scrollView.width - 60, height: 52)
+        
+        emailField.frame = CGRect(x: 30, y: appNameField.bottom + 20, width: scrollView.width - 60, height: 52)
+        
+        passwordField.frame = CGRect(x: 30, y: emailField.bottom + 30 , width: scrollView.width - 60, height: 52)
+        
+        loginButton.frame = CGRect(x: scrollView.width / 3.5, y: passwordField.bottom + 30 , width: scrollView.width - 220, height: 52)
+        
+        forgotPasswordLabel.frame = CGRect(x: 50, y: loginButton.bottom + 15 , width: 140, height: 20)
+        
+        forgotPasswordButton.frame = CGRect(x: forgotPasswordLabel.right + 3, y: loginButton.bottom + 15, width: 110, height: 20)
+        
+        FBloginButton.frame = CGRect(x: 30, y: forgotPasswordLabel.bottom + 20 , width: scrollView.width - 60, height: 52)
+        
+        googleSignInButton.frame = CGRect(x: 30, y: FBloginButton.bottom + 30 , width: scrollView.width - 60, height: 52)
+        
+        githubSignInButton.frame = CGRect(x: 30, y: googleSignInButton.bottom + 30 , width: scrollView.width - 60, height: 52)
+        
+        registerButton.frame = CGRect(x: scrollView.width / 4, y: githubSignInButton.bottom + 30, width: scrollView.width - 175, height: 52)
+        
+        // Add underline to textfields
+        let bottomLine1 = CALayer()
+        bottomLine1.backgroundColor = UIColor.black.cgColor
+        bottomLine1.frame = CGRect(x: 5, y: emailField.frame.height - 2, width: emailField.frame.width - 1, height: 1)
+        emailField.layer.addSublayer(bottomLine1)
+
+        let bottomLine2 = CALayer()
+        bottomLine2.backgroundColor = UIColor.black.cgColor
+        bottomLine2.frame = CGRect(x: 5, y: passwordField.frame.height - 2, width: passwordField.frame.width - 1, height: 1)
+        passwordField.layer.addSublayer(bottomLine2)
         
     }
     
@@ -230,10 +351,59 @@ class LoginViewController: UIViewController {
         }
     }
     
+    @objc func didTapGitHub() {
+        // Create github Auth ViewController
+        let githubVC = UIViewController()
+        // Generate random identifier for the authorization
+        let uuid = UUID().uuidString
+        // Create WebView
+        let webView = WKWebView()
+        webView.navigationDelegate = self
+        githubVC.view.addSubview(webView)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            webView.topAnchor.constraint(equalTo: githubVC.view.topAnchor),
+            webView.leadingAnchor.constraint(equalTo: githubVC.view.leadingAnchor),
+            webView.bottomAnchor.constraint(equalTo: githubVC.view.bottomAnchor),
+            webView.trailingAnchor.constraint(equalTo: githubVC.view.trailingAnchor)
+        ])
+
+        let authURLFull = "https://github.com/login/oauth/authorize?client_id=" + GithubConstants.CLIENT_ID + "&scope=" + GithubConstants.SCOPE + "&redirect_uri=" + GithubConstants.REDIRECT_URI + "&state=" + uuid
+
+        let urlRequest = URLRequest(url: URL(string: authURLFull)!)
+        webView.load(urlRequest)
+
+        // Create Navigation Controller
+        let navController = UINavigationController(rootViewController: githubVC)
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(self.cancelAction))
+        githubVC.navigationItem.leftBarButtonItem = cancelButton
+        let refreshButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshAction))
+        githubVC.navigationItem.rightBarButtonItem = refreshButton
+        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navController.navigationBar.titleTextAttributes = textAttributes
+        githubVC.navigationItem.title = "github.com"
+        navController.navigationBar.isTranslucent = false
+        navController.navigationBar.tintColor = UIColor.white
+        navController.navigationBar.barTintColor = UIColor.black
+        navController.navigationBar.backgroundColor = UIColor.black
+        navController.modalPresentationStyle = UIModalPresentationStyle.automatic
+        navController.modalTransitionStyle = .coverVertical
+
+        self.present(navController, animated: true, completion: nil)
+    }
+    
     @objc func didTapRegister() {
         let vc = RegisterViewController()
         vc.title = "Create Account"
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func cancelAction() {
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    @objc func refreshAction() {
+        self.webView.reload()
     }
     
     func validate() -> Bool {
@@ -266,6 +436,18 @@ class LoginViewController: UIViewController {
         present(alert, animated: true)
     }
 
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == emailField {
+            passwordField.becomeFirstResponder()
+        } else if textField == passwordField {
+            loginButtonTapped()
+        }
+        
+        return true
+    }
 }
 
 extension LoginViewController: LoginButtonDelegate {
@@ -359,3 +541,84 @@ extension LoginViewController: LoginButtonDelegate {
     
 }
 
+
+// GitHub Login
+extension LoginViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        self.RequestForCallbackURL(request: navigationAction.request)
+        decisionHandler(.allow)
+    }
+
+    func RequestForCallbackURL(request: URLRequest) {
+        // Get the authorization code string after the '?code=' and before '&state='
+        let requestURLString = (request.url?.absoluteString)! as String
+        print(requestURLString)
+        if requestURLString.hasPrefix(GithubConstants.REDIRECT_URI) {
+            if requestURLString.contains("code=") {
+                if let range = requestURLString.range(of: "=") {
+                    let githubCode = requestURLString[range.upperBound...]
+                    if let range = githubCode.range(of: "&state=") {
+                        let githubCodeFinal = githubCode[..<range.lowerBound]
+                        githubRequestForAccessToken(authCode: String(githubCodeFinal))
+
+                        // Close GitHub Auth ViewController after getting Authorization Code
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                }
+            }
+        }
+    }
+
+    func githubRequestForAccessToken(authCode: String) {
+        let grantType = "authorization_code"
+
+        // Set the POST parameters.
+        let postParams = "grant_type=" + grantType + "&code=" + authCode + "&client_id=" + GithubConstants.CLIENT_ID + "&client_secret=" + GithubConstants.CLIENT_SECRET
+        let postData = postParams.data(using: String.Encoding.utf8)
+        let request = NSMutableURLRequest(url: URL(string: GithubConstants.TOKENURL)!)
+        request.httpMethod = "POST"
+        request.httpBody = postData
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, _) -> Void in
+            let statusCode = (response as! HTTPURLResponse).statusCode
+            if statusCode == 200 {
+                let results = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [AnyHashable: Any]
+                let accessToken = results?["access_token"] as! String
+                // Get user's id, display name, email, profile pic url
+                self.fetchGitHubUserProfile(accessToken: accessToken)
+            }
+        }
+        task.resume()
+    }
+    
+    func fetchGitHubUserProfile(accessToken: String) {
+            let tokenURLFull = "https://api.github.com/user"
+            let verify: NSURL = NSURL(string: tokenURLFull)!
+            let request: NSMutableURLRequest = NSMutableURLRequest(url: verify as URL)
+            request.addValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
+            let task = URLSession.shared.dataTask(with: request as URLRequest) { data, _, error in
+                if error == nil {
+                    let result = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [AnyHashable: Any]
+                    // AccessToken
+                    print("GitHub Access Token: \(accessToken)")
+                    // GitHub Handle
+                    let githubId: Int! = (result?["id"] as! Int)
+                    print("GitHub Id: \(githubId ?? 0)")
+                    // GitHub Display Name
+                    let githubDisplayName: String! = (result?["login"] as! String)
+                    print("GitHub Display Name: \(githubDisplayName ?? "")")
+                    // GitHub Email
+                    let githubEmail: String! = (result?["email"] as! String)
+                    print("GitHub Email: \(githubEmail ?? "")")
+                    // GitHub Profile Avatar URL
+                    let githubAvatarURL: String! = (result?["avatar_url"] as! String)
+                    print("github Profile Avatar URL: \(githubAvatarURL ?? "")")
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "detailseg", sender: self)
+                    }
+                }
+            }
+            task.resume()
+        }
+}

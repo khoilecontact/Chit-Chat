@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		222411E327B2129100C5E416 /* GithubConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411E227B2129100C5E416 /* GithubConstants.swift */; };
 		22714E65277D5D4F0004F942 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E64277D5D4F0004F942 /* AppDelegate.swift */; };
 		22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E66277D5D4F0004F942 /* SceneDelegate.swift */; };
 		22714E69277D5D4F0004F942 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E68277D5D4F0004F942 /* ChatViewController.swift */; };
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		222411E227B2129100C5E416 /* GithubConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubConstants.swift; sourceTree = "<group>"; };
 		22714E61277D5D4F0004F942 /* Chit-Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chit-Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22714E64277D5D4F0004F942 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22714E66277D5D4F0004F942 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -92,7 +94,6 @@
 		DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNetwork.swift; sourceTree = "<group>"; };
 		DA718D5027A0F6F20020B0C9 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		DA718D5227A127670020B0C9 /* Model_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Test.swift; sourceTree = "<group>"; };
-		DA9AD85827AC136E00221E16 /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		DA9AD85A27AC187200221E16 /* FriendsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsModel.swift; sourceTree = "<group>"; };
 		DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
 		FFA53E9545E7381D535EF4AF /* Pods_Chit_Chat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chit_Chat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +127,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		222411E127B2126700C5E416 /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				222411E227B2129100C5E416 /* GithubConstants.swift */,
+			);
+			path = Others;
+			sourceTree = "<group>";
+		};
 		22714E58277D5D4F0004F942 = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +192,7 @@
 		22CCFE38279FF4B3009F7C8A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				222411E127B2126700C5E416 /* Others */,
 				22CCFE45279FF59C009F7C8A /* User.swift */,
 				DA718D4C27A0F6CA0020B0C9 /* Conversation.swift */,
 				DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */,
@@ -519,12 +529,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				222411E327B2129100C5E416 /* GithubConstants.swift in Sources */,
 				22DFEB5027AC127100ABAD9E /* ConversationViewController.swift in Sources */,
 				22F1999627A0E67A00CAE0D5 /* LoginViewController.swift in Sources */,
-				DA9AD85E27ACD96F00221E16 /* FriendsCell.swift in Sources */,
-				DA9AD85B27AC187200221E16 /* FriendsModel.swift in Sources */,
 				DA718D5127A0F6F20020B0C9 /* Messages.swift in Sources */,
-				DA9AD85927AC136E00221E16 /* FriendsViewController.swift in Sources */,
 				22CCFE40279FF573009F7C8A /* Extensions.swift in Sources */,
 				22714E69277D5D4F0004F942 /* ChatViewController.swift in Sources */,
 				22714E6F277D5D4F0004F942 /* Chit_Chat.xcdatamodeld in Sources */,
