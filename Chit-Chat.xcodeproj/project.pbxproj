@@ -36,6 +36,8 @@
 		DA718D4F27A0F6E70020B0C9 /* UserNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */; };
 		DA718D5127A0F6F20020B0C9 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D5027A0F6F20020B0C9 /* Messages.swift */; };
 		DA718D5327A127670020B0C9 /* Model_Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D5227A127670020B0C9 /* Model_Test.swift */; };
+		DA8C20F627B258A400C1F35F /* FriendsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD85A27AC187200221E16 /* FriendsModel.swift */; };
+		DA8C20F827B258EE00C1F35F /* NewFriendsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */; };
 		DAE31CF027B227980035E65B /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE31CEF27B227980035E65B /* FriendsViewController.swift */; };
 		DAE31CF127B22AD40035E65B /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */; };
 /* End PBXBuildFile section */
@@ -96,6 +98,7 @@
 		DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNetwork.swift; sourceTree = "<group>"; };
 		DA718D5027A0F6F20020B0C9 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		DA718D5227A127670020B0C9 /* Model_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Test.swift; sourceTree = "<group>"; };
+		DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFriendsViewCell.swift; sourceTree = "<group>"; };
 		DA9AD85A27AC187200221E16 /* FriendsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsModel.swift; sourceTree = "<group>"; };
 		DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
 		DAE31CEF27B227980035E65B /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
@@ -278,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */,
+				DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */,
 			);
 			path = TableCell;
 			sourceTree = "<group>";
@@ -534,6 +538,8 @@
 				22714E69277D5D4F0004F942 /* ChatViewController.swift in Sources */,
 				22714E6F277D5D4F0004F942 /* Chit_Chat.xcdatamodeld in Sources */,
 				DAE31CF127B22AD40035E65B /* FriendsCell.swift in Sources */,
+				DA8C20F827B258EE00C1F35F /* NewFriendsViewCell.swift in Sources */,
+				DA8C20F627B258A400C1F35F /* FriendsModel.swift in Sources */,
 				22CCFE42279FF582009F7C8A /* StorageManager.swift in Sources */,
 				22CCFE46279FF59C009F7C8A /* User.swift in Sources */,
 				DA718D4F27A0F6E70020B0C9 /* UserNetwork.swift in Sources */,
