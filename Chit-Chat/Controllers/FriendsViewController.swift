@@ -35,6 +35,25 @@ class FriendsViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         // fake data
+        fakeData()
+        
+        navigationBar()
+        setupSearchBar()
+        setupTableView()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
+    }
+    
+    func navigationBar() {
+        navigationController?.navigationBar.topItem?.titleView = searchBar
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(findNewFriend))
+    }
+    
+    func fakeData() {
+        // fake data
         let latestMessage = LatestMessage(date: Date(), text: "Hello World", isRead: false)
         
         let conversations = MessagesCollection(id: "fir5tM3ss4g35", name: "Doctor", otherUserEmail: "yds@gm.yds.edu.vn", latestMessage: latestMessage)
@@ -69,20 +88,6 @@ class FriendsViewController: UIViewController {
                             conversations: [conversations]))
         
         // --- ---
-        
-        navigationBar()
-        setupSearchBar()
-        setupTableView()
-    }
-    
-    override func viewDidLayoutSubviews() {
-            super.viewDidLayoutSubviews()
-            tableView.frame = view.bounds
-        }
-    
-    func navigationBar() {
-        navigationController?.navigationBar.topItem?.titleView = searchBar
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(findNewFriend))
     }
     
     func setupSearchBar() {
@@ -101,7 +106,9 @@ class FriendsViewController: UIViewController {
     }
     
     @objc func findNewFriend() {
-        
+        let vc = FindNewFriendsViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        present(navVC, animated: true)
     }
 }
 
@@ -116,7 +123,7 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete
+        return .none
    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -130,27 +137,6 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let model = friends[indexPath.row]
         openConversation(model)
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // begin delete
-//            let conversationId = conversations[indexPath.row].id
-            
-            tableView.beginUpdates()
-            /// Not put 2 line below in closure bc it will crash by startListenConversations will call 2 times.
-//            conversations.remove(at: indexPath.row)
-//            tableView.deleteRows(at: [indexPath], with: .left)
-//
-//            DatabaseManager.shared.deleteConversation(conversationId: conversationId, completion: { success in
-//
-//                if !success {
-//                    print("Failed to delete")
-//                }
-//            })
-            
-            tableView.endUpdates()
-        }
     }
 }
 
