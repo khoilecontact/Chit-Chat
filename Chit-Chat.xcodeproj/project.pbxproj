@@ -33,6 +33,7 @@
 		8D82C810661AD985A4461FB9 /* Pods_Chit_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA53E9545E7381D535EF4AF /* Pods_Chit_Chat.framework */; };
 		B3449D7E0B600DA6EC715B77 /* Pods_Chit_Chat_Chit_ChatUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBC31E93979BE04766A3846F /* Pods_Chit_Chat_Chit_ChatUITests.framework */; };
 		DA25C3C727B252190004FE2B /* FindNewFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA25C3C627B252190004FE2B /* FindNewFriendsViewController.swift */; };
+		DA3B4AD627B3B25C0093E2B3 /* Friends_Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3B4AD527B3B25C0093E2B3 /* Friends_Test.swift */; };
 		DA718D4D27A0F6CA0020B0C9 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D4C27A0F6CA0020B0C9 /* Conversation.swift */; };
 		DA718D4F27A0F6E70020B0C9 /* UserNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */; };
 		DA718D5127A0F6F20020B0C9 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D5027A0F6F20020B0C9 /* Messages.swift */; };
@@ -96,6 +97,7 @@
 		BBC31E93979BE04766A3846F /* Pods_Chit_Chat_Chit_ChatUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chit_Chat_Chit_ChatUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C56AF88553BD6B57C26D5537 /* Pods-Chit-Chat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chit-Chat.debug.xcconfig"; path = "Target Support Files/Pods-Chit-Chat/Pods-Chit-Chat.debug.xcconfig"; sourceTree = "<group>"; };
 		DA25C3C627B252190004FE2B /* FindNewFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNewFriendsViewController.swift; sourceTree = "<group>"; };
+		DA3B4AD527B3B25C0093E2B3 /* Friends_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friends_Test.swift; sourceTree = "<group>"; };
 		DA718D4C27A0F6CA0020B0C9 /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNetwork.swift; sourceTree = "<group>"; };
 		DA718D5027A0F6F20020B0C9 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 			children = (
 				22714E7E277D5D510004F942 /* Chit_ChatTests.swift */,
 				DA718D5227A127670020B0C9 /* Model_Test.swift */,
+				DA3B4AD527B3B25C0093E2B3 /* Friends_Test.swift */,
 			);
 			path = "Chit-ChatTests";
 			sourceTree = "<group>";
@@ -568,6 +571,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22714E7F277D5D510004F942 /* Chit_ChatTests.swift in Sources */,
+				DA3B4AD627B3B25C0093E2B3 /* Friends_Test.swift in Sources */,
 				DA718D5327A127670020B0C9 /* Model_Test.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
