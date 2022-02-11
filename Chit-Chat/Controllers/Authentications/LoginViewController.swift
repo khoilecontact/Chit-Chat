@@ -83,6 +83,13 @@ class LoginViewController: UIViewController {
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         
+        // Add shadow
+        button.layer.shadowColor = UIColor.gray.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.masksToBounds = false
+        button.layer.shadowOpacity = 1
+        button.layer.shadowRadius = 1
+        
         return button
     }()
     
@@ -121,6 +128,8 @@ class LoginViewController: UIViewController {
                 config.image = resizeImage(image: UIImage(named: "GoogleIcon")!, targetSize: CGSize(width: 30, height: 30))
                 config.imagePadding = 60
                 config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 30)
+                config.baseBackgroundColor = UIColor.white
+                config.baseForegroundColor = UIColor.black
                 
                 let button = UIButton(configuration: config, primaryAction: nil)
                 button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
@@ -130,10 +139,16 @@ class LoginViewController: UIViewController {
                 button.setTitleColor(UIColor.black, for: .normal)
                 button.layer.borderWidth = 1
                 button.layer.borderColor = UIColor.black.cgColor
-                button.backgroundColor = UIColor.white
                 
                 // action
                 button.addTarget(self, action: #selector(googleSignInButtonTapped), for: .touchUpInside)
+                
+                // Add shadow
+                button.layer.shadowColor = UIColor.gray.cgColor
+                button.layer.shadowOffset = CGSize(width: 0, height: 3)
+                button.layer.masksToBounds = false
+                button.layer.shadowOpacity = 1
+                button.layer.shadowRadius = 1
                 
                 return button
             } else {
@@ -165,23 +180,40 @@ class LoginViewController: UIViewController {
             button.layer.cornerRadius = 12
             button.layer.masksToBounds = true
             button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+            button.titleLabel?.textAlignment = .center
+            
+            // Add shadow
+            button.layer.shadowColor = UIColor.gray.cgColor
+            button.layer.shadowOffset = CGSize(width: 0, height: 3)
+            button.layer.masksToBounds = false
+            button.layer.shadowOpacity = 1
+            button.layer.shadowRadius = 1
+            
             return button
         }()
     
     private let githubSignInButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("  Log in with GitHub", for: .normal)
-        button.backgroundColor = UIColor.gray
+        var config = UIButton.Configuration.filled()
+        config.title = "Log in with GitHub"
+        config.image = resizeImage(image: UIImage(named: "GitHubLogo")!, targetSize: CGSize(width: 30, height: 30))
+        config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 30)
+        config.imagePadding = 60
+        config.baseBackgroundColor = UIColor.gray
+        config.baseForegroundColor = UIColor.white
+        
+        let button = UIButton(configuration: config, primaryAction: nil)
         button.layer.borderWidth = 0
         button.titleLabel?.font = .systemFont(ofSize: 15)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.textAlignment = .left
         
-        var image = UIImage(named: "GitHubLogo")
-        image = resizeImage(image: image!, targetSize: CGSize(width: 30, height: 30))
-        button.setImage(image, for: .normal)
         button.imageView?.contentMode = .left
         button.layer.cornerRadius = 12
+        
+        // Add shadow
+        button.layer.shadowColor = UIColor.gray.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.masksToBounds = false
+        button.layer.shadowOpacity = 1
+        button.layer.shadowRadius = 1
         
         return button
     }()
@@ -194,6 +226,13 @@ class LoginViewController: UIViewController {
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+        
+        // Add shadow
+        button.layer.shadowColor = UIColor.gray.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.masksToBounds = false
+        button.layer.shadowOpacity = 1
+        button.layer.shadowRadius = 1
         
         return button
     }()
