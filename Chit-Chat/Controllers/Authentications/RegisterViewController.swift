@@ -32,6 +32,15 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         return imageView
     }()
     
+    let imageLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Choose your avartar"
+        label.textColor = .black
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 15)
+        return label
+    }()
+    
     let firstNameField: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
@@ -194,6 +203,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         // Add subview
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)
+        scrollView.addSubview(imageLabel)
         scrollView.addSubview(firstNameField)
         scrollView.addSubview(lastNameField)
         scrollView.addSubview(emailField)
@@ -221,9 +231,11 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         imageView.frame = CGRect(x: size, y: 20, width: size, height: size)
         imageView.layer.cornerRadius = imageView.width / 2.0
         
-        firstNameField.frame = CGRect(x: 20, y: imageView.bottom + 25, width: scrollView.width - 235, height: 52)
+        imageLabel.frame = CGRect(x: 20, y: imageView.bottom + 5, width: scrollView.width - 50, height: 25)
         
-        lastNameField.frame = CGRect(x: firstNameField.right + 15, y: imageView.bottom + 25, width: scrollView.width - 230, height: 52)
+        firstNameField.frame = CGRect(x: 20, y: imageLabel.bottom + 25, width: scrollView.width - 235, height: 52)
+        
+        lastNameField.frame = CGRect(x: firstNameField.right + 15, y: imageLabel.bottom + 25, width: scrollView.width - 230, height: 52)
         
         emailField.frame = CGRect(x: 20, y: firstNameField.bottom + 20, width: scrollView.width - 60, height: 52)
         
