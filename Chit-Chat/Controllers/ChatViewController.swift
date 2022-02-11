@@ -129,6 +129,19 @@ class ChatViewController: UIViewController {
     func openConversation(_ model: MessagesCollection) {
         // open chat space
     }
+    
+    func openOtherFunctions() {
+        let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        // actions
+        ac.addAction(UIAlertAction(title: "Mute notifications", style: .default, handler: nil))
+        ac.addAction(UIAlertAction(title: "Something's wrong", style: .default, handler: nil))
+        // cancel ac
+        ac.addAction(UIAlertAction(title: "Block", style: .destructive, handler: nil))
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(ac, animated: true)
+    }
 }
 
 extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
@@ -175,8 +188,9 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         // 242 78 30
         deleteAction.backgroundColor = UIColor(red: 242/255, green: 78/255, blue: 30/255, alpha: 1)
         
-        let othersAction = UIContextualAction(style: .destructive, title: "Others") { action, view, handler in
-            
+        let othersAction = UIContextualAction(style: .destructive, title: "Others") { [weak self] action, view, handler in
+            guard let strongSelf = self else { return }
+            strongSelf.openOtherFunctions()
         }
         // RGB: (6, 156, 86)
         othersAction.backgroundColor = UIColor(red: 6/255, green: 156/255, blue: 86/255, alpha: 1)
