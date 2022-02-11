@@ -12,6 +12,7 @@ import JGProgressHUD
 class RegisterViewController: UIViewController, UINavigationControllerDelegate {
     var showingAlert = false
     var alertMessage = ""
+    var genderArr = ["Male", "Female"]
     
     private let spinner = JGProgressHUD(style: .dark)
     
@@ -38,7 +39,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         // Continue to next field
         field.returnKeyType = .continue
         field.layer.cornerRadius = 12
-        field.layer.borderWidth = 1
+        field.layer.borderWidth = 0
         field.layer.borderColor = UIColor.black.cgColor
         field.placeholder = "First Name..."
         
@@ -57,7 +58,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         // Continue to next field
         field.returnKeyType = .continue
         field.layer.cornerRadius = 12
-        field.layer.borderWidth = 1
+        field.layer.borderWidth = 0
         field.layer.borderColor = UIColor.black.cgColor
         field.placeholder = "Last Name..."
         
@@ -76,7 +77,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         // Continue to next field
         field.returnKeyType = .continue
         field.layer.cornerRadius = 12
-        field.layer.borderWidth = 1
+        field.layer.borderWidth = 0
         field.layer.borderColor = UIColor.black.cgColor
         field.placeholder = "Email..."
         
@@ -94,7 +95,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         field.autocorrectionType = .no
         field.returnKeyType = .done
         field.layer.cornerRadius = 12
-        field.layer.borderWidth = 1
+        field.layer.borderWidth = 0
         field.layer.borderColor = UIColor.black.cgColor
         field.placeholder = "Password... (>= 6 letters)"
         
@@ -113,7 +114,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         field.autocorrectionType = .no
         field.returnKeyType = .done
         field.layer.cornerRadius = 12
-        field.layer.borderWidth = 1
+        field.layer.borderWidth = 0
         field.layer.borderColor = UIColor.black.cgColor
         field.placeholder = "Re-Password..."
         
@@ -126,12 +127,31 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         return field
     }()
     
+    let dobLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Day of birth:"
+        label.textColor = .black
+        return label
+    }()
+    
     let dobField: UIDatePicker = {
         let picker = UIDatePicker()
         picker.locale = .autoupdatingCurrent
         picker.date = .now
         picker.datePickerMode = .date
         
+        return picker
+    }()
+    
+    let genderLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Gender:"
+        label.textColor = .black
+        return label
+    }()
+    
+    let genderPicker: UIPickerView = {
+        let picker = UIPickerView()
         return picker
     }()
     
@@ -162,12 +182,14 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         
         view.backgroundColor = .systemBackground
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign up", style: .done, target: self, action: #selector(registerButtonTapped))
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign up", style: .done, target: self, action: #selector(registerButtonTapped))
         
         registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
         
         emailField.delegate = self
         passwordField.delegate = self
+        
+        genderPicker.delegate = self
         
         // Add subview
         view.addSubview(scrollView)
@@ -177,7 +199,10 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         scrollView.addSubview(emailField)
         scrollView.addSubview(passwordField)
         scrollView.addSubview(rePasswordField)
+        scrollView.addSubview(dobLabel)
         scrollView.addSubview(dobField)
+        scrollView.addSubview(genderLabel)
+        scrollView.addSubview(genderPicker)
         scrollView.addSubview(registerButton)
         
         imageView.isUserInteractionEnabled =  true
@@ -206,9 +231,52 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         
         rePasswordField.frame = CGRect(x: 20, y: passwordField.bottom + 20 , width: scrollView.width - 60, height: 52)
         
-        dobField.frame = CGRect(x: 20, y: rePasswordField.bottom + 20 , width: scrollView.width - 60, height: 52)
+        dobLabel.frame = CGRect(x: 25, y: rePasswordField.bottom + 20 , width: 150, height: 52)
         
-        registerButton.frame = CGRect(x: scrollView.width / 4, y: dobField.bottom + 30 , width: scrollView.width - 175, height: 52)
+        dobField.frame = CGRect(x: dobLabel.right + 20, y: rePasswordField.bottom + 20 , width: scrollView.width - 230, height: 52)
+        
+        genderLabel.frame = CGRect(x: 25, y: dobLabel.bottom + 25 , width: 150, height: 52)
+        
+        genderPicker.frame = CGRect(x: genderLabel.right + 20, y: dobLabel.bottom + 10 , width: scrollView.width - 220, height: 100)
+        
+        registerButton.frame = CGRect(x: scrollView.width / 4, y: genderPicker.bottom + 30 , width: scrollView.width - 175, height: 52)
+        
+        // Add underlines
+        let firstNameFieldBottomLine = CALayer()
+        firstNameFieldBottomLine.backgroundColor = UIColor.black.cgColor
+        firstNameFieldBottomLine.frame = CGRect(x: 5, y: firstNameField.frame.height - 2, width: firstNameField.frame.width - 1, height: 1)
+        firstNameField.layer.addSublayer(firstNameFieldBottomLine)
+        
+        let lastNameFieldBottomLine = CALayer()
+        lastNameFieldBottomLine.backgroundColor = UIColor.black.cgColor
+        lastNameFieldBottomLine.frame = CGRect(x: 5, y: lastNameField.frame.height - 2, width: lastNameField.frame.width - 1, height: 1)
+        lastNameField.layer.addSublayer(lastNameFieldBottomLine)
+        
+        let emailFieldBottomLine = CALayer()
+        emailFieldBottomLine.backgroundColor = UIColor.black.cgColor
+        emailFieldBottomLine.frame = CGRect(x: 5, y: emailField.frame.height - 2, width: emailField.frame.width - 1, height: 1)
+        emailField.layer.addSublayer(emailFieldBottomLine)
+        
+        let passwordFieldBottomLine = CALayer()
+        passwordFieldBottomLine.backgroundColor = UIColor.black.cgColor
+        passwordFieldBottomLine.frame = CGRect(x: 5, y: passwordField.frame.height - 2, width: passwordField.frame.width - 1, height: 1)
+        passwordField.layer.addSublayer(passwordFieldBottomLine)
+        
+        let rePasswordFieldBottomLine = CALayer()
+        rePasswordFieldBottomLine.backgroundColor = UIColor.black.cgColor
+        rePasswordFieldBottomLine.frame = CGRect(x: 5, y: rePasswordField.frame.height - 2, width: rePasswordField.frame.width - 1, height: 1)
+        rePasswordField.layer.addSublayer(rePasswordFieldBottomLine)
+        
+        let dobBottomLine = CALayer()
+        dobBottomLine.backgroundColor = UIColor.black.cgColor
+        dobBottomLine.frame = CGRect(x: 0, y: dobLabel.frame.height - 4, width: dobLabel.frame.width - 1, height: 1)
+        dobLabel.layer.addSublayer(dobBottomLine)
+        
+        let genderLabelBottomLine = CALayer()
+        genderLabelBottomLine.backgroundColor = UIColor.black.cgColor
+        genderLabelBottomLine.frame = CGRect(x: 0, y: genderLabel.frame.height - 4, width: genderLabel.frame.width - 1, height: 1)
+        genderLabel.layer.addSublayer(genderLabelBottomLine)
+        
     }
     
     @objc func didTapChangeProfilePicture() {
@@ -415,4 +483,20 @@ extension RegisterViewController: UIImagePickerControllerDelegate {
     
 }
 
+
+extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+            return 1
+        }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return genderArr.count
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return genderArr[row]
+    }
+    
+    
+}
 
