@@ -42,6 +42,7 @@
 		DA8C20F827B258EE00C1F35F /* NewFriendsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */; };
 		DAE31CF027B227980035E65B /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE31CEF27B227980035E65B /* FriendsViewController.swift */; };
 		DAE31CF127B22AD40035E65B /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */; };
+		DAE95C5127B6493700B19445 /* ChatsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE95C5027B6493700B19445 /* ChatsViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +107,7 @@
 		DA9AD85A27AC187200221E16 /* FriendsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsModel.swift; sourceTree = "<group>"; };
 		DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
 		DAE31CEF27B227980035E65B /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
+		DAE95C5027B6493700B19445 /* ChatsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsViewCell.swift; sourceTree = "<group>"; };
 		FFA53E9545E7381D535EF4AF /* Pods_Chit_Chat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chit_Chat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -296,6 +298,7 @@
 			children = (
 				DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */,
 				DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */,
+				DAE95C5027B6493700B19445 /* ChatsViewCell.swift */,
 			);
 			path = TableCell;
 			sourceTree = "<group>";
@@ -550,6 +553,7 @@
 				22F1999627A0E67A00CAE0D5 /* LoginViewController.swift in Sources */,
 				DA718D5127A0F6F20020B0C9 /* Messages.swift in Sources */,
 				22CCFE40279FF573009F7C8A /* Extensions.swift in Sources */,
+				DAE95C5127B6493700B19445 /* ChatsViewCell.swift in Sources */,
 				22714E69277D5D4F0004F942 /* ChatViewController.swift in Sources */,
 				22714E6F277D5D4F0004F942 /* Chit_Chat.xcdatamodeld in Sources */,
 				DAE31CF127B22AD40035E65B /* FriendsCell.swift in Sources */,
