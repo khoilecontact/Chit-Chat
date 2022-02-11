@@ -105,13 +105,68 @@ class LoginViewController: UIViewController {
         return forgotPasswordButton
     }()
     
-    private let FBloginButton: FBLoginButton = {
-        let button = FBLoginButton()
-        button.permissions = ["email", "public_profile"]
-        return button
-    }()
+//    private let FBloginButton: FBLoginButton = {
+//        let button = FBLoginButton()
+//        button.permissions = ["email", "public_profile"]
+//        button.layer.cornerRadius = 12
+//        return button
+//    }()
+//
+//    private let googleSignInButton = GIDSignInButton()
     
-    private let googleSignInButton = GIDSignInButton()
+    private let googleSignInButton: UIButton = {
+            if #available(iOS 15.0, *) {
+                var config = UIButton.Configuration.filled()
+                config.title = "Continue with Google"
+                config.image = resizeImage(image: UIImage(named: "GoogleIcon")!, targetSize: CGSize(width: 30, height: 30))
+                config.imagePadding = 60
+                config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 30)
+                
+                let button = UIButton(configuration: config, primaryAction: nil)
+                button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+                button.layer.cornerRadius = 12
+                button.layer.masksToBounds = true
+                
+                button.setTitleColor(UIColor.black, for: .normal)
+                button.layer.borderWidth = 1
+                button.layer.borderColor = UIColor.black.cgColor
+                button.backgroundColor = UIColor.white
+                
+                // action
+                button.addTarget(self, action: #selector(googleSignInButtonTapped), for: .touchUpInside)
+                
+                return button
+            } else {
+                let button = UIButton()
+                // action
+                button.addTarget(self, action: #selector(googleSignInButtonTapped), for: .touchUpInside)
+                //
+                
+                button.setTitle("Continue with Google", for: .normal)
+                button.setTitleColor(.black, for: .normal)
+                button.backgroundColor = .white
+                button.tintColor = .white
+                button.layer.cornerRadius = 12
+                button.layer.masksToBounds = true
+                // Google icon
+                let icon = resizeImage(image: UIImage(named: "GoogleIcon")!, targetSize: CGSize(width: 30, height: 30))
+                button.setImage(icon, for: .normal)
+                button.imageView?.contentMode = .scaleAspectFit
+                button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
+                //
+                button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+                return button
+            }
+        }()
+        
+        private let FBloginButton: FBLoginButton = {
+            let button = FBLoginButton()
+            button.permissions = ["email", "public_profile"]
+            button.layer.cornerRadius = 12
+            button.layer.masksToBounds = true
+            button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+            return button
+        }()
     
     private let githubSignInButton: UIButton = {
         let button = UIButton()
@@ -126,6 +181,7 @@ class LoginViewController: UIViewController {
         image = resizeImage(image: image!, targetSize: CGSize(width: 30, height: 30))
         button.setImage(image, for: .normal)
         button.imageView?.contentMode = .left
+        button.layer.cornerRadius = 12
         
         return button
     }()
@@ -209,9 +265,9 @@ class LoginViewController: UIViewController {
         
         FBloginButton.frame = CGRect(x: 30, y: forgotPasswordLabel.bottom + 20 , width: scrollView.width - 60, height: 52)
         
-        googleSignInButton.frame = CGRect(x: 30, y: FBloginButton.bottom + 30 , width: scrollView.width - 60, height: 52)
+        googleSignInButton.frame = CGRect(x: 30, y: FBloginButton.bottom + 20 , width: scrollView.width - 60, height: 52)
         
-        githubSignInButton.frame = CGRect(x: 30, y: googleSignInButton.bottom + 30 , width: scrollView.width - 60, height: 52)
+        githubSignInButton.frame = CGRect(x: 30, y: googleSignInButton.bottom + 20 , width: scrollView.width - 60, height: 52)
         
         registerButton.frame = CGRect(x: scrollView.width / 4, y: githubSignInButton.bottom + 30, width: scrollView.width - 175, height: 52)
         
