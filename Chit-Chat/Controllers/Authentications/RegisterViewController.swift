@@ -13,6 +13,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
     var showingAlert = false
     var alertMessage = ""
     var genderArr = ["Male", "Female"]
+    var selectedGender = "Male"
     
     private let spinner = JGProgressHUD(style: .dark)
     
@@ -311,6 +312,19 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
             return
         }
         
+        let dob = dobField.toString(dateFormat: "dd-MM-YYYY")
+        
+        var isMale = true
+        switch selectedGender {
+        case "Female":
+            isMale = false
+            break
+            
+        default:
+            isMale = true
+            break
+        }
+        
         spinner.show(in: view)
 
         DatabaseManager.shared.userExists(with: email, completion: { [weak self] exists in
@@ -334,6 +348,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                 UserDefaults.standard.setValue(email, forKey: "email")
                 UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "name")
                 
+                let userId = UUID().uuidString
                 guard authResult != nil, error == nil else {
                     print("Error creating User: \(String(describing: error))")
                     return
@@ -343,9 +358,9 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                     return
                 }
                 
-                let chatUser = ChatAppUser(firstName: firstName, lastName: lastName, emailAddress: email)
+                let user = User(id: userId, firstName: firstName, lastName: lastName, email: email, password: password, dob: dob, isMale: isMale)
                 
-                DatabaseManager.shared.insertUser(with: chatUser, completion: {success in
+                DatabaseManager.shared.insertUser(with: user, completion: {success in
                     if success {
                         //upload image
                         guard let image = self?.imageView.image, let data = image.pngData() else {
@@ -355,7 +370,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                         UserDefaults.standard.setValue(email, forKey: "email")
                         UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
                         
-                        let fileName = chatUser.profilePictureFileName
+                        let fileName = user.profilePictureFileName
                         StorageManager.shared.uploadFrofilePicture(with: data, fileName: fileName, completion: { result in
                             switch result {
                                 case .success(let downloadUrl):
@@ -507,6 +522,10 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return genderArr[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedGender = genderArr[row] as String
     }
     
     

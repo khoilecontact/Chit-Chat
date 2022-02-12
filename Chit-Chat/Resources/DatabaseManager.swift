@@ -75,10 +75,19 @@ extension DatabaseManager {
      */
     
     ///insert new user to database
-    public func insertUser(with user: ChatAppUser, completion: @escaping (Bool) -> Void) {
-        database.child(user.safeEmail).setValue([
+    public func insertUser(with user: User, completion: @escaping (Bool) -> Void) {
+        let UsersListRef = Database.database().reference().child("Users")
+        
+        UsersListRef.child(user.safeEmail).setValue([
+            "id" : user.id,
             "first_name": user.firstName,
-            "last_name": user.lastName
+            "last_name": user.lastName,
+            "bio" : user.bio,
+            "email" : user.email,
+            "password" : user.password,
+            "dob" : user.dob,
+            "is_male" : user.isMale,
+            
         ], withCompletionBlock: { [weak self] error, datareference in
             guard error ==  nil else {
                 print("Failed to write to database")
@@ -86,13 +95,18 @@ extension DatabaseManager {
                 return
             }
             
-            self?.database.child("users").observeSingleEvent(of: .value, with: { snapshot in
-                if var usersCollection = snapshot.value as? [[String: String]] {
+            self?.database.child("Users_list").observeSingleEvent(of: .value, with: { snapshot in
+                if var usersCollection = snapshot.value as? [[String: Any]] {
                     //append to user dictionary
-                    let newElement = [
+                    let newElement: [String: Any] = [
+                        "id" : user.id,
                         "name": user.firstName + " " + user.lastName,
-                        "email": user.safeEmail
+                        "email": user.safeEmail,
+                        "bio" : user.bio,
+                        "dob" : user.dob,
+                        "is_male" : user.isMale,
                     ]
+                    
                     usersCollection.append(newElement)
                     
                     self?.database.child("users").setValue(usersCollection, withCompletionBlock: { error, _ in
@@ -105,13 +119,17 @@ extension DatabaseManager {
                     
                 } else {
                     //create an array
-                    let newCollection: [[String: String]] = [
+                    let newCollection: [[String: Any]] = [
                         [
+                            "id" : user.id,
                             "name": user.firstName + " " + user.lastName,
-                            "email": user.safeEmail
+                            "email": user.safeEmail,
+                            "bio" : user.bio,
+                            "dob" : user.dob,
+                            "is_male" : user.isMale,
                         ]
                     ]
-                    self?.database.child("users").setValue(newCollection, withCompletionBlock: { error, _ in
+                    self?.database.child("Users_list").setValue(newCollection, withCompletionBlock: { error, _ in
                         guard error == nil else {
                             completion(false)
                             return
@@ -725,19 +743,19 @@ extension DatabaseManager {
     }
 }
 
-struct ChatAppUser {
-    let firstName: String
-    let lastName: String
-    let emailAddress: String
-    
-    var safeEmail: String {
-        var safeEmail = emailAddress.replacingOccurrences(of: ".", with: ",")
-        safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
-        return safeEmail
-    }
-    
-    var profilePictureFileName: String {
-        return "\(safeEmail)_profile_picture.png"
-    }
-}
-
+//struct ChatAppUser {
+//    let firstName: String
+//    let lastName: String
+//    let emailAddress: String
+//    
+//    var safeEmail: String {
+//        var safeEmail = emailAddress.replacingOccurrences(of: ".", with: ",")
+//        safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
+//        return safeEmail
+//    }
+//    
+//    var profilePictureFileName: String {
+//        return "\(safeEmail)_profile_picture.png"
+//    }
+//}
+//

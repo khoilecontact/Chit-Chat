@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		222411E327B2129100C5E416 /* GithubConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411E227B2129100C5E416 /* GithubConstants.swift */; };
+		222411E727B7AB6900C5E416 /* ExternalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411E627B7AB6900C5E416 /* ExternalFunctions.swift */; };
 		22714E65277D5D4F0004F942 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E64277D5D4F0004F942 /* AppDelegate.swift */; };
 		22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E66277D5D4F0004F942 /* SceneDelegate.swift */; };
 		22714E69277D5D4F0004F942 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E68277D5D4F0004F942 /* ChatViewController.swift */; };
@@ -64,6 +65,7 @@
 
 /* Begin PBXFileReference section */
 		222411E227B2129100C5E416 /* GithubConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubConstants.swift; sourceTree = "<group>"; };
+		222411E627B7AB6900C5E416 /* ExternalFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalFunctions.swift; sourceTree = "<group>"; };
 		22714E61277D5D4F0004F942 /* Chit-Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chit-Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22714E64277D5D4F0004F942 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22714E66277D5D4F0004F942 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				22714E64277D5D4F0004F942 /* AppDelegate.swift */,
 				22CCFE41279FF582009F7C8A /* StorageManager.swift */,
 				22CCFE43279FF58C009F7C8A /* DatabaseManager.swift */,
+				222411E627B7AB6900C5E416 /* ExternalFunctions.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -548,6 +551,7 @@
 			files = (
 				222411E327B2129100C5E416 /* GithubConstants.swift in Sources */,
 				DA25C3C727B252190004FE2B /* FindNewFriendsViewController.swift in Sources */,
+				222411E727B7AB6900C5E416 /* ExternalFunctions.swift in Sources */,
 				22DFEB5027AC127100ABAD9E /* ConversationViewController.swift in Sources */,
 				DAE31CF027B227980035E65B /* FriendsViewController.swift in Sources */,
 				22F1999627A0E67A00CAE0D5 /* LoginViewController.swift in Sources */,

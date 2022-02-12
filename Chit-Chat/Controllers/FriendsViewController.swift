@@ -54,38 +54,38 @@ class FriendsViewController: UIViewController {
     
     func fakeData() {
         // fake data
-        let latestMessage = LatestMessage(date: Date(), text: "Hello World", isRead: false)
-        
-        let conversations = MessagesCollection(id: "fir5tM3ss4g35", name: "Doctor", otherUserEmail: "yds@gm.yds.edu.vn", latestMessage: latestMessage)
-        
-        let node = UserNode(id: "hash123",
-                            firstName: "Khoi",
-                            lastName: "Le",
-                            bio: "This is my bio",
-                            email: "uit@gm.uit.edu.vn",
-                            dob: Date(),
-                            isMale: true)
-        
-        friends.append(User(id: "hash123",
-                            firstName: "Khoi",
-                            lastName: "Le",
-                            bio: "This is bio",
-                            email: "uit@gm.uit.edu.vn",
-                            password: "SwiftyHash",
-                            dob: Date(),
-                            isMale: true,
-                            friendList: [node],
-                            conversations: [conversations]))
-        friends.append(User(id: "hash124",
-                            firstName: "Phat",
-                            lastName: "Nguyen",
-                            bio: "This is bio",
-                            email: "sub-uit@gm.uit.edu.vn",
-                            password: "SwiftyHash",
-                            dob: Date(),
-                            isMale: true,
-                            friendList: [node],
-                            conversations: [conversations]))
+//        let latestMessage = LatestMessage(date: Date(), text: "Hello World", isRead: false)
+//        
+//        let conversations = MessagesCollection(id: "fir5tM3ss4g35", name: "Doctor", otherUserEmail: "yds@gm.yds.edu.vn", latestMessage: latestMessage)
+//        
+//        let node = UserNode(id: "hash123",
+//                            firstName: "Khoi",
+//                            lastName: "Le",
+//                            bio: "This is my bio",
+//                            email: "uit@gm.uit.edu.vn",
+//                            dob: Date(),
+//                            isMale: true)
+//        
+//        friends.append(User(id: "hash123",
+//                            firstName: "Khoi",
+//                            lastName: "Le",
+//                            bio: "This is bio",
+//                            email: "uit@gm.uit.edu.vn",
+//                            password: "SwiftyHash",
+//                            dob: Date(),
+//                            isMale: true,
+//                            friendList: [node],
+//                            conversations: [conversations]))
+//        friends.append(User(id: "hash124",
+//                            firstName: "Phat",
+//                            lastName: "Nguyen",
+//                            bio: "This is bio",
+//                            email: "sub-uit@gm.uit.edu.vn",
+//                            password: "SwiftyHash",
+//                            dob: Date(),
+//                            isMale: true,
+//                            friendList: [node],
+//                            conversations: [conversations]))
         
         // --- ---
     }
