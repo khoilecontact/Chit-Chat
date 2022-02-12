@@ -76,8 +76,8 @@ extension DatabaseManager {
     
     ///insert new user to database
     public func insertUser(with user: User, completion: @escaping (Bool) -> Void) {
-        let UsersListRef = Database.database().reference().child("Users")
-        
+        let UsersListRef = database.child("Users")
+        print(user.safeEmail)
         UsersListRef.child(user.safeEmail).setValue([
             "id" : user.id,
             "first_name": user.firstName,
@@ -86,15 +86,16 @@ extension DatabaseManager {
             "email" : user.email,
             "password" : user.password,
             "dob" : user.dob,
-            "is_male" : user.isMale,
-            
+            "is_male" : user.isMale
         ], withCompletionBlock: { [weak self] error, datareference in
+            print("Entering add to database")
             guard error ==  nil else {
                 print("Failed to write to database")
+                print(error ?? "")
                 completion(false)
                 return
             }
-            
+
             self?.database.child("Users_list").observeSingleEvent(of: .value, with: { snapshot in
                 if var usersCollection = snapshot.value as? [[String: Any]] {
                     //append to user dictionary

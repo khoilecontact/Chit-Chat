@@ -312,7 +312,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
             return
         }
         
-        let dob = dobField.toString(dateFormat: "dd-MM-YYYY")
+        let dob = dobField.date.toString(dateFormat: "dd-MM-YYYY")
         
         var isMale = true
         switch selectedGender {
@@ -380,7 +380,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                                 print("Storage manager error: \(error)")
                             }
                         })
-                    }
+                    } 
                 })
                 
                 self?.navigationController?.dismiss(animated: true, completion: nil)
