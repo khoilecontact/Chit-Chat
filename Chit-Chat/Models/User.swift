@@ -26,17 +26,17 @@ struct User {
     let lastName: String
     let bio: String
     let email: String
-    let password: String
     let dob: String
     let isMale: Bool
     let friendList: [UserNode]
+    let blackList: [UserNode]
     let conversations: [MessagesCollection]
     
     var safeEmail: String
     
     var profilePictureFileName: String
     
-    init(id: String, firstName: String, lastName: String, email: String, password: String, dob: String, isMale: Bool) {
+    init(id: String, firstName: String, lastName: String, email: String, dob: String, isMale: Bool) {
         var safeEmailGenerate = email.replacingOccurrences(of: ".", with: ",")
         safeEmailGenerate = safeEmailGenerate.replacingOccurrences(of: "@", with: "-")
 
@@ -45,10 +45,11 @@ struct User {
         self.lastName = lastName
         self.bio = ""
         self.email = email
-        self.password = password
         self.dob = dob
         self.isMale = isMale
+        
         self.friendList = []
+        self.blackList = []
         self.conversations = []
         self.safeEmail = safeEmailGenerate
         self.profilePictureFileName = { () -> String in

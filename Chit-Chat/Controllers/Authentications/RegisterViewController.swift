@@ -358,7 +358,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                     return
                 }
                 
-                let user = User(id: userId, firstName: firstName, lastName: lastName, email: email, password: password, dob: dob, isMale: isMale)
+                let user = User(id: userId, firstName: firstName, lastName: lastName, email: email, dob: dob, isMale: isMale)
                 
                 DatabaseManager.shared.insertUser(with: user, completion: {success in
                     if success {

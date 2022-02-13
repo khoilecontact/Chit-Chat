@@ -85,7 +85,6 @@ extension DatabaseManager {
             "last_name": user.lastName,
             "bio" : user.bio,
             "email" : user.email,
-            "password" : user.password,
             "dob" : user.dob,
             "is_male" : user.isMale
         ], withCompletionBlock: { [weak self] error, datareference in
@@ -95,8 +94,6 @@ extension DatabaseManager {
                 completion(false)
                 return
             }
-            
-            print("Chay qua roi")
 
             self?.database.child("Users_list").observeSingleEvent(of: .value, with: { snapshot in
                 if var usersCollection = snapshot.value as? [[String: Any]] {
