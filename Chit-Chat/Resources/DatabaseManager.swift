@@ -18,7 +18,7 @@ final class DatabaseManager {
     //force to use this init
     private init() {}
     
-    private let database = Database.database().reference()
+    private let database = Database.database(url: "https://chit-chat-fc877-default-rtdb.asia-southeast1.firebasedatabase.app").reference()
     
     static func safeEmail(emailAddress: String) -> String {
         var safeEmail = emailAddress.replacingOccurrences(of: ".", with: ",")
@@ -95,6 +95,8 @@ extension DatabaseManager {
                 completion(false)
                 return
             }
+            
+            print("Chay qua roi")
 
             self?.database.child("Users_list").observeSingleEvent(of: .value, with: { snapshot in
                 if var usersCollection = snapshot.value as? [[String: Any]] {
