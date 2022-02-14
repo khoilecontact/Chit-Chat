@@ -336,19 +336,47 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
             }
         })
 
-        
+        var showingEmailAlertFailed = false
         // Firebase Register
         if !showingAlert {
             FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { [weak self] authResult, error in
+                
+                // Verify user's email
+                if Auth.auth().currentUser != nil && Auth.auth().currentUser?.isEmailVerified == false {
+                    Auth.auth().currentUser?.sendEmailVerification(completion: { error in
+                        if error != nil {
+                            showingEmailAlertFailed = true
+                        }
+                    })
+                }
+                
+                if showingEmailAlertFailed {
+                    print("Could not send verification email")
+                    let alert = UIAlertController(title: "Failed to send verification email", message: "Please try again", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                    self?.present(alert, animated: true)
+                    
+                    let user = Auth.auth().currentUser
+                    
+                    user?.delete(completion: { error in
+                        guard error != nil else {
+                            print("Error in deleting user")
+                            return
+                        }
+                    })
+                    
+                    return
+                } else {
+                    let alert = UIAlertController(title: "Verification email sent", message: "Please check your email", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                    self?.present(alert, animated: true)
+                }
                 
                 DispatchQueue.main.async {
                     self?.spinner.dismiss()
                 }
                 
-                UserDefaults.standard.setValue(email, forKey: "email")
-                UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "name")
-                
-                let userId = UUID().uuidString
+                guard let userId = Auth.auth().currentUser?.uid as? String else { return }
                 guard authResult != nil, error == nil else {
                     print("Error creating User: \(String(describing: error))")
                     return
@@ -360,15 +388,12 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                 
                 let user = User(id: userId, firstName: firstName, lastName: lastName, email: email, dob: dob, isMale: isMale)
                 
-                DatabaseManager.shared.insertUser(with: user, completion: {success in
+                DatabaseManager.shared.insertUnverifiedUser(with: user, completion: {success in
                     if success {
                         //upload image
                         guard let image = self?.imageView.image, let data = image.pngData() else {
                             return
                         }
-                        
-                        UserDefaults.standard.setValue(email, forKey: "email")
-                        UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
                         
                         let fileName = user.profilePictureFileName
                         StorageManager.shared.uploadFrofilePicture(with: data, fileName: fileName, completion: { result in
@@ -380,10 +405,10 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                                 print("Storage manager error: \(error)")
                             }
                         })
-                    } 
+                    }
                 })
                 
-                self?.navigationController?.dismiss(animated: true, completion: nil)
+                self?.navigationController?.popViewController(animated: true)
             })
         }
     }

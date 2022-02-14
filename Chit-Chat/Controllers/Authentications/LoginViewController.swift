@@ -354,7 +354,31 @@ class LoginViewController: UIViewController {
             let user = result.user
             print("Logged in user: \(user)")
             
-            guard let email = self?.emailField.text else { return }
+            guard let email = self?.emailField.text else {
+                return
+            }
+            
+            // If email has not been verified
+            if user.isEmailVerified == false {
+                let alert = UIAlertController(title: "Email hasn't been verificated", message: "Please verify your email", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                self?.present(alert, animated: true)
+                return
+            } else {
+                DatabaseManager.shared.userExists(with: email, completion: { exist in
+                    if !exist {
+                        DatabaseManager.shared.updateVerifiedUser(with: email, completion: { success in
+                            if !success {
+                                let alert = UIAlertController(title: "There has been an error", message: "Please verify your email", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                                self?.present(alert, animated: true)
+                                return
+                            }
+                        })
+                    }
+                })
+                
+            }
             
             let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
             DatabaseManager.shared.getDataFor(path: safeEmail, completion: { result in
@@ -477,11 +501,8 @@ class LoginViewController: UIViewController {
                     print("Did sign in with Google: \(String(describing: user))")
                     // IdP data available in authResult.additionalUserInfo.profile.
                     
-                    guard let uid = user.uid as? String,
-                          let email = user.email as? String,
-                          let name = user.displayName as? String else {
-                              return
-                          }
+                    let uid = user.uid
+                    guard let email = user.email, let name = user.displayName else { return }
                     
                     UserDefaults.standard.set(email, forKey: "email")
                     UserDefaults.standard.set("\(name)", forKey: "name")
@@ -527,7 +548,7 @@ class LoginViewController: UIViewController {
                     })
                     
                     
-                    guard let oauthCredential = authResult!.credential as? OAuthCredential else { return }
+                    guard (authResult!.credential as? OAuthCredential) != nil else { return }
                     // GitHub OAuth access token can also be retrieved by:
                     // oauthCredential.accessToken
                     // GitHub OAuth ID token can be retrieved by calling:
@@ -666,7 +687,7 @@ extension LoginViewController: LoginButtonDelegate {
                                 guard error == nil else { return }
                                 
                                 DispatchQueue.main.async {
-                                    guard let image = self?.imageView.image, let data = image.pngData() else {
+                                    guard let image = self?.imageView.image, let _ = image.pngData() else {
                                         return
                                     }
                                 }

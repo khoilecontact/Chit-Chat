@@ -122,7 +122,7 @@ extension DatabaseManager {
                         [
                             "id" : user.id,
                             "name": user.firstName + " " + user.lastName,
-                            "email": user.safeEmail,
+                            "email": user.email,
                             "bio" : user.bio,
                             "dob" : user.dob,
                             "is_male" : user.isMale,
@@ -141,11 +141,125 @@ extension DatabaseManager {
             completion(true)
         })
     }
+    
+    /// Insert unverified user
+    public func insertUnverifiedUser(with user: User, completion: @escaping (Bool) -> Void) {
+        let UsersListRef = database.child("Unverified_users")
+        
+        UsersListRef.child(user.safeEmail).setValue([
+            "id" : user.id,
+            "first_name": user.firstName,
+            "last_name": user.lastName,
+            "bio" : user.bio,
+            "email" : user.email,
+            "dob" : user.dob,
+            "is_male" : user.isMale
+        ], withCompletionBlock: { error, datareference in
+            guard error ==  nil else {
+                print("Failed to write to database")
+                print(error ?? "")
+                completion(false)
+                return
+            }
+            
+            completion(true)
+        })
+    }
+    
+    func updateVerifiedUser(with email: String, completion: @escaping (Bool) -> Void) {
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+        database.child("Unverified_users").child(safeEmail).observeSingleEvent(of: .value, with: { snapshot in
+            guard let data = snapshot.value as? [String: Any] else {
+                completion(false)
+                return
+            }
+            
+            guard let id = data["id"] as? String,
+                  let firstName = data["first_name"] as? String,
+                  let lastName = data["last_name"] as? String,
+                  let dob = data["dob"] as? String,
+                  let isMale = data["is_male"] as? Bool else {
+                      completion(false)
+                      return
+                  }
+            
+            let UsersListRef = self.database.child("Users")
+            
+            UsersListRef.child(safeEmail).setValue([
+                "id" : id,
+                "first_name": firstName,
+                "last_name": lastName,
+                "bio" : "",
+                "email" : email,
+                "dob" : dob,
+                "is_male" : isMale
+            ], withCompletionBlock: { [weak self] error, datareference in
+                guard error ==  nil else {
+                    print("Failed to write to database")
+                    print(error ?? "")
+                    completion(false)
+                    return
+                }
+
+                self?.database.child("Users_list").observeSingleEvent(of: .value, with: { [weak self] snapshot in
+                    if var usersCollection = snapshot.value as? [[String: Any]] {
+                        //append to user dictionary
+                        let newElement: [String: Any] = [
+                            "id" : id,
+                            "name": firstName + " " + lastName,
+                            "email": email,
+                            "bio" : "",
+                            "dob" : dob,
+                            "is_male" : isMale,
+                        ]
+                        
+                        usersCollection.append(newElement)
+                        
+                        self?.database.child("Users_list").setValue(usersCollection, withCompletionBlock: { error, _ in
+                            guard error == nil else {
+                                completion(false)
+                                return
+                            }
+                            
+                            // Verified, delete from unverified users
+                            self?.database.child("Unverified_users").child(safeEmail).removeValue()
+                            
+                            completion(true)
+                        })
+                        
+                    } else {
+                        //create an array
+                        let newCollection: [[String: Any]] = [
+                            [
+                                "id" : id,
+                                "name": firstName + " " + lastName,
+                                "email": email,
+                                "bio" : "",
+                                "dob" : dob,
+                                "is_male" : isMale,
+                            ]
+                        ]
+                        self?.database.child("Users_list").setValue(newCollection, withCompletionBlock: { error, _ in
+                            guard error == nil else {
+                                completion(false)
+                                return
+                            }
+                            
+                            // Verified, delete from unverified users
+                            self?.database.child("Unverified_users").child(safeEmail).removeValue()
+                            
+                            completion(true)
+                        })
+                    }
+                })
+            })
+        })
+    }
 }
 
 extension DatabaseManager {
     public func getDataFor(path: String, completion: @escaping (Result<Any, Error>) -> Void) {
-        database.child("\(path)").observeSingleEvent(of: .value, with: { snapshot in
+        database.child("Users").child("\(path)").observeSingleEvent(of: .value, with: { snapshot in
             guard let value = snapshot.value else {
                 completion(.failure(DatabaseError.failedToFetch))
                 return
