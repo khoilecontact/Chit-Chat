@@ -34,7 +34,7 @@ extension DatabaseManager {
     ///- completion: Async closure to return with result
     public func userExists(with email: String, completion: @escaping ((Bool) -> Void)) {
         let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
-        database.child(safeEmail).observeSingleEvent(of: .value, with: {snapshot in
+        database.child("Users").child(safeEmail).observeSingleEvent(of: .value, with: {snapshot in
             if snapshot.exists() {
                 completion(true)
             } else {
@@ -77,7 +77,6 @@ extension DatabaseManager {
     ///insert new user to database
     public func insertUser(with user: User, completion: @escaping (Bool) -> Void) {
         let UsersListRef = database.child("Users")
-        print(user.safeEmail)
         
         UsersListRef.child(user.safeEmail).setValue([
             "id" : user.id,

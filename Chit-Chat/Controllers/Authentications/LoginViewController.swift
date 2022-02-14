@@ -15,7 +15,9 @@ import JGProgressHUD
 class LoginViewController: UIViewController {
     var alertMessage = ""
     var webView = WKWebView()
-    
+    // Github OAuth
+    var provider = OAuthProvider(providerID: "github.com")
+
     private let spinner = JGProgressHUD(style: .dark)
     
     private let scrollView: UIScrollView = {
@@ -428,6 +430,12 @@ class LoginViewController: UIViewController {
 
                         }
                     })
+                } else {
+                    print("User existed")
+                    let alert = UIAlertController(title: "User existed", message: "Email of user existed! Please try another account", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                    self.present(alert, animated: true)
+                    return
                 }
             })
 
@@ -447,44 +455,91 @@ class LoginViewController: UIViewController {
     }
     
     @objc func didTapGitHub() {
-        // Create github Auth ViewController
-        let githubVC = UIViewController()
-        // Generate random identifier for the authorization
-        let uuid = UUID().uuidString
-        // Create WebView
-        let webView = WKWebView()
-        webView.navigationDelegate = self
-        githubVC.view.addSubview(webView)
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            webView.topAnchor.constraint(equalTo: githubVC.view.topAnchor),
-            webView.leadingAnchor.constraint(equalTo: githubVC.view.leadingAnchor),
-            webView.bottomAnchor.constraint(equalTo: githubVC.view.bottomAnchor),
-            webView.trailingAnchor.constraint(equalTo: githubVC.view.trailingAnchor)
-        ])
+        provider.customParameters = [
+              "allow_signup": "false"
+            ]
+        provider.scopes = ["user:email"]
 
-        let authURLFull = "https://github.com/login/oauth/authorize?client_id=" + GithubConstants.CLIENT_ID + "&scope=" + GithubConstants.SCOPE + "&redirect_uri=" + GithubConstants.REDIRECT_URI + "&state=" + uuid
-
-        let urlRequest = URLRequest(url: URL(string: authURLFull)!)
-        webView.load(urlRequest)
-
-        // Create Navigation Controller
-        let navController = UINavigationController(rootViewController: githubVC)
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(self.cancelAction))
-        githubVC.navigationItem.leftBarButtonItem = cancelButton
-        let refreshButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshAction))
-        githubVC.navigationItem.rightBarButtonItem = refreshButton
-        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navController.navigationBar.titleTextAttributes = textAttributes
-        githubVC.navigationItem.title = "github.com"
-        navController.navigationBar.isTranslucent = false
-        navController.navigationBar.tintColor = UIColor.white
-        navController.navigationBar.barTintColor = UIColor.black
-        navController.navigationBar.backgroundColor = UIColor.black
-        navController.modalPresentationStyle = UIModalPresentationStyle.automatic
-        navController.modalTransitionStyle = .coverVertical
-
-        self.present(navController, animated: true, completion: nil)
+        provider.getCredentialWith(nil) { credential, error in
+              if error != nil {
+                // Handle error.
+              }
+            if credential != nil {
+                FirebaseAuth.Auth.auth().signIn(with: credential!) { authResult, error in
+                    if error != nil, authResult != nil {
+                        return
+                    }
+                    
+                    guard let user = authResult?.user else {
+                        return
+                    }
+                    // User is signed in.
+                    print("Did sign in with Google: \(String(describing: user))")
+                    // IdP data available in authResult.additionalUserInfo.profile.
+                    
+                    guard let uid = user.uid as? String,
+                          let email = user.email as? String,
+                          let name = user.displayName as? String else {
+                              return
+                          }
+                    
+                    UserDefaults.standard.set(email, forKey: "email")
+                    UserDefaults.standard.set("\(name)", forKey: "name")
+                    
+                    DatabaseManager.shared.userExists(with: email, completion: { exist in
+                        if !exist {
+                            let chatUser = User(id: uid, firstName: name, lastName: "", email: email, dob: "", isMale: true)
+                            // Insert user to DB
+                            DatabaseManager.shared.insertUser(with: chatUser, completion: { success in
+                                if success {
+                                    //upload image
+                                    if ((user.photoURL) != nil) {
+                                        guard let url = user.photoURL else {
+                                            return
+                                        }
+                                        
+                                        URLSession.shared.dataTask(with: url, completionHandler: { data, _, _ in
+                                            let fileName = chatUser.profilePictureFileName
+                                            
+                                            guard let data = data else { return }
+                                            
+                                            StorageManager.shared.uploadFrofilePicture(with: data, fileName: fileName, completion: { result in
+                                                switch result {
+                                                case .success(let downloadUrl):
+                                                    UserDefaults.standard.setValue(downloadUrl, forKey: "profile_picture_url")
+                                                    print(downloadUrl)
+                                                case .failure(let error):
+                                                    print("Storage manager error: \(error)")
+                                                }
+                                            })
+                                        }).resume()
+                                    }
+                                    
+                                }
+                            })
+                        } else {
+                            print("User existed")
+                            let alert = UIAlertController(title: "User existed", message: "Email of user existed! Please try another account", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                            self.present(alert, animated: true)
+                            return
+                        }
+                    })
+                    
+                    
+                    guard let oauthCredential = authResult!.credential as? OAuthCredential else { return }
+                    // GitHub OAuth access token can also be retrieved by:
+                    // oauthCredential.accessToken
+                    // GitHub OAuth ID token can be retrieved by calling:
+                    // oauthCredential.idToken
+                    
+                    print("Successfully log in with Github")
+                    NotificationCenter.default.post(name: .didLogInNotification, object: nil)
+                }
+            }
+        }
+        
+        
     }
     
     @objc func didTapRegister() {
@@ -564,38 +619,39 @@ extension LoginViewController: LoginButtonDelegate {
                 print("Failed to make Facebook Graph request")
                 return
             }
-
-            //Debug
-            //            print(result)
-            //            return
-            //
+//
+//            //Debug
+//            print(result)
+//                        return
+            
+            // Waiting for FB authorization of birthday and gender field
             guard let email = result["email"] as? String, let id = result["id"] as? String,
                   let firstName = result["first_name"] as? String, let lastName = result["last_name"] as? String, let picture = result["picture"] as? [String: Any],
-                  let data = picture["data"] as? [String: Any], let pictureUrl = data["url"] as? String, let dob = result["birthday"] as? String,
-                  let gender = result["gender"] as? String
+                  let data = picture["data"] as? [String: Any], let pictureUrl = data["url"] as? String
+//                  ,let dob = result["birthday"] as? String,
+//                  let gender = result["gender"] as? String
             else {
-                print("Failed to get email and name from Facebook")
+                print("Failed to get info from Facebook")
                 return
             }
             
-            var isMale = true
-            
-            switch gender {
-            case "female":
-                isMale = false
-                break
-                
-            default:
-                isMale = true
-                break
-            }
+//            var isMale = true
+//
+//            switch gender {
+//            case "female":
+//                isMale = false
+//                break
+//
+//            default:
+//                isMale = true
+//                break
+//            }
 
             UserDefaults.standard.set(email, forKey: "email")
             UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
 
             DatabaseManager.shared.userExists(with: email, completion: { exists in
-                
-                let chatUser = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: dob, isMale: isMale)
+                let chatUser = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: "", isMale: true)
                 if !exists {
                     DatabaseManager.shared.insertUser(with: chatUser, completion: { [weak self] success in
                         if success {
@@ -608,13 +664,15 @@ extension LoginViewController: LoginButtonDelegate {
 
                                 guard data != nil else { return }
                                 guard error == nil else { return }
-
-                                guard let image = self?.imageView.image, let data = image.pngData() else {
-                                    return
+                                
+                                DispatchQueue.main.async {
+                                    guard let image = self?.imageView.image, let data = image.pngData() else {
+                                        return
+                                    }
                                 }
 
                                 let fileName = chatUser.profilePictureFileName
-                                StorageManager.shared.uploadFrofilePicture(with: data, fileName: fileName, completion: { result in
+                                StorageManager.shared.uploadFrofilePicture(with: data!, fileName: fileName, completion: { result in
                                     switch result {
                                     case .success(let downloadUrl):
                                         UserDefaults.standard.setValue(downloadUrl, forKey: "profile_picture_url")
@@ -628,6 +686,11 @@ extension LoginViewController: LoginButtonDelegate {
 
                         }
                     })
+                } else {
+                    let alert = UIAlertController(title: "User existed", message: "Email of user existed! Please try another account", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                    self.present(alert, animated: true)
+                    return
                 }
             })
 
@@ -638,6 +701,7 @@ extension LoginViewController: LoginButtonDelegate {
             FirebaseAuth.Auth.auth().signIn(with: credential, completion: { [weak self] authResult, error in
                 guard authResult != nil, error == nil else {
                     print("Facebook log in fail, MFA maybe needed")
+                    print(error ?? "Not error")
                     return
                 }
 
@@ -649,86 +713,4 @@ extension LoginViewController: LoginButtonDelegate {
     }
     
     
-}
-
-
-// GitHub Login
-extension LoginViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        self.RequestForCallbackURL(request: navigationAction.request)
-        decisionHandler(.allow)
-    }
-
-    func RequestForCallbackURL(request: URLRequest) {
-        // Get the authorization code string after the '?code=' and before '&state='
-        let requestURLString = (request.url?.absoluteString)! as String
-        print(requestURLString)
-        if requestURLString.hasPrefix(GithubConstants.REDIRECT_URI) {
-            if requestURLString.contains("code=") {
-                if let range = requestURLString.range(of: "=") {
-                    let githubCode = requestURLString[range.upperBound...]
-                    if let range = githubCode.range(of: "&state=") {
-                        let githubCodeFinal = githubCode[..<range.lowerBound]
-                        githubRequestForAccessToken(authCode: String(githubCodeFinal))
-
-                        // Close GitHub Auth ViewController after getting Authorization Code
-                        self.dismiss(animated: true, completion: nil)
-                    }
-                }
-            }
-        }
-    }
-
-    func githubRequestForAccessToken(authCode: String) {
-        let grantType = "authorization_code"
-
-        // Set the POST parameters.
-        let postParams = "grant_type=" + grantType + "&code=" + authCode + "&client_id=" + GithubConstants.CLIENT_ID + "&client_secret=" + GithubConstants.CLIENT_SECRET
-        let postData = postParams.data(using: String.Encoding.utf8)
-        let request = NSMutableURLRequest(url: URL(string: GithubConstants.TOKENURL)!)
-        request.httpMethod = "POST"
-        request.httpBody = postData
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        let session = URLSession(configuration: URLSessionConfiguration.default)
-        let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, _) -> Void in
-            let statusCode = (response as! HTTPURLResponse).statusCode
-            if statusCode == 200 {
-                let results = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [AnyHashable: Any]
-                let accessToken = results?["access_token"] as! String
-                // Get user's id, display name, email, profile pic url
-                self.fetchGitHubUserProfile(accessToken: accessToken)
-            }
-        }
-        task.resume()
-    }
-    
-    func fetchGitHubUserProfile(accessToken: String) {
-            let tokenURLFull = "https://api.github.com/user"
-            let verify: NSURL = NSURL(string: tokenURLFull)!
-            let request: NSMutableURLRequest = NSMutableURLRequest(url: verify as URL)
-            request.addValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
-            let task = URLSession.shared.dataTask(with: request as URLRequest) { data, _, error in
-                if error == nil {
-                    let result = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [AnyHashable: Any]
-                    // AccessToken
-                    print("GitHub Access Token: \(accessToken)")
-                    // GitHub Handle
-                    let githubId: Int! = (result?["id"] as! Int)
-                    print("GitHub Id: \(githubId ?? 0)")
-                    // GitHub Display Name
-                    let githubDisplayName: String! = (result?["login"] as! String)
-                    print("GitHub Display Name: \(githubDisplayName ?? "")")
-                    // GitHub Email
-                    let githubEmail: String! = (result?["email"] as! String)
-                    print("GitHub Email: \(githubEmail ?? "")")
-                    // GitHub Profile Avatar URL
-                    let githubAvatarURL: String! = (result?["avatar_url"] as! String)
-                    print("github Profile Avatar URL: \(githubAvatarURL ?? "")")
-                    DispatchQueue.main.async {
-                        self.performSegue(withIdentifier: "detailseg", sender: self)
-                    }
-                }
-            }
-            task.resume()
-        }
 }
