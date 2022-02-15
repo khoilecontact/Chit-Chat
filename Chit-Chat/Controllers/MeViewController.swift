@@ -25,6 +25,8 @@ class MeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        logOutButton.addTarget(self, action: #selector(logOutButtonTapped), for: .touchUpInside)
+        
         // Get data of user
         getUserInfo(completion: { [weak self] user in
             if user != nil {
@@ -99,17 +101,70 @@ class MeViewController: UIViewController {
         nameLabel.textColor = .black
         nameLabel.textAlignment = .center
         
-//        bioLabel.text = user.bio
-//        bioLabel.textColor = UIColor.black
-//        bioLabel.textAlignment = .center
+        bioLabel.text = (user.bio == "") ? "This is your bio" : user.bio
+        bioLabel.textColor = UIColor.black
+        bioLabel.textAlignment = .center
         bioLabel.layer.borderWidth = 1
-//        bioLabel.layer.borderColor = UIColor.black.cgColor
-//        bioLabel.layer.cornerRadius = 12
-//        bioLabel.layer.backgroundColor = UIColor.systemBackground.cgColor
+        bioLabel.layer.borderColor = UIColor.black.cgColor
+        bioLabel.layer.cornerRadius = 12
+        bioLabel.layer.backgroundColor = UIColor.systemBackground.cgColor
         
+        var config = UIButton.Configuration.filled()
+        config.imagePadding = 20
+        config.baseBackgroundColor = .init(red: CGFloat(108) / 255.0, green: CGFloat(164) / 255.0, blue: CGFloat(212) / 255.0, alpha: 1.0)
+        config.baseForegroundColor = .black
+        
+        personalInfoButton.configuration = config
+        personalInfoButton.setTitleColor(.black, for: .normal)
+        personalInfoButton.setTitle("Personal Information", for: .normal)
+        personalInfoButton.setImage(UIImage(systemName: "person.crop.square"), for: .normal)
+        personalInfoButton.layer.cornerRadius = 12
+        personalInfoButton.layer.borderWidth = 1
+        personalInfoButton.layer.masksToBounds = false
+        personalInfoButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        personalInfoButton.layer.shadowOpacity = 0.3
+        personalInfoButton.layer.shadowRadius = 1
+        
+        friendListButton.configuration = config
+        friendListButton.setTitleColor(.black, for: .normal)
+        friendListButton.setTitle("Friend List", for: .normal)
+        friendListButton.setImage(UIImage(systemName: "person.2.fill"), for: .normal)
+        friendListButton.layer.cornerRadius = 12
+        friendListButton.layer.borderWidth = 1
+        friendListButton.layer.masksToBounds = false
+        friendListButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        friendListButton.layer.shadowOpacity = 0.3
+        friendListButton.layer.shadowRadius = 1
+        
+        darkModeButton.configuration = config
+        darkModeButton.setTitleColor(.black, for: .normal)
+        darkModeButton.setTitle("Friend List", for: .normal)
+        darkModeButton.setImage(UIImage(systemName: "moon.fill"), for: .normal)
+        darkModeButton.layer.cornerRadius = 12
+        darkModeButton.layer.borderWidth = 1
+        darkModeButton.layer.masksToBounds = false
+        darkModeButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        darkModeButton.layer.shadowOpacity = 0.3
+        darkModeButton.layer.shadowRadius = 1
+        
+        var logOutConfig = UIButton.Configuration.filled()
+        logOutConfig.imagePadding = 20
+        logOutConfig.baseBackgroundColor = .init(red: CGFloat(255) / 255.0, green: CGFloat(113) / 255.0, blue: CGFloat(104) / 255.0, alpha: 1.0)
+        logOutConfig.baseForegroundColor = .white
+        
+        logOutButton.configuration = logOutConfig
+        logOutButton.setTitleColor(UIColor.white, for: .normal)
+        logOutButton.setTitle("Log Out", for: .normal)
+        logOutButton.setImage(UIImage(systemName: "rectangle.portrait.and.arrow.right")?.sd_rotatedImage(withAngle: .pi, fitSize: false)?.withTintColor(.white), for: .normal)
+        logOutButton.layer.cornerRadius = 12
+        logOutButton.layer.borderWidth = 1
+        logOutButton.layer.masksToBounds = false
+        logOutButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+        logOutButton.layer.shadowOpacity = 0.3
+        logOutButton.layer.shadowRadius = 1
     }
     
-    private func createProfileModel() {
+    @objc func logOutButtonTapped() {
 
             let actionAlert = UIAlertController(title: "Do you wanna logout?", message: "Choose Log Out to Logout", preferredStyle: .alert)
             
@@ -120,6 +175,25 @@ class MeViewController: UIViewController {
                 
                 UserDefaults.standard.setValue(nil, forKey: "email")
                 UserDefaults.standard.setValue(nil, forKey: "name")
+                
+                // Log out Facebook
+                FBSDKLoginKit.LoginManager().logOut()
+                
+                //Log out Google
+                GIDSignIn.sharedInstance.signOut()
+                
+                do {
+                    try FirebaseAuth.Auth.auth().signOut()
+                    
+                    let vc = LoginViewController()
+                    // Create a navigation controller
+                    let nav = UINavigationController(rootViewController: vc)
+                    nav.modalPresentationStyle = .fullScreen
+
+                    self?.present(nav, animated: true)
+                } catch {
+                    print("Error in signing out")
+                }
                 
             }))
             
