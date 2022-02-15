@@ -453,7 +453,7 @@ class LoginViewController: UIViewController {
 
                         }
                     })
-                } 
+                }
             })
 
             let credential = GoogleAuthProvider.credential(withIDToken: idToken,
@@ -531,12 +531,6 @@ class LoginViewController: UIViewController {
                                     
                                 }
                             })
-                        } else {
-                            print("User existed")
-                            let alert = UIAlertController(title: "User existed", message: "Email of user existed! Please try another account", preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
-                            self.present(alert, animated: true)
-                            return
                         }
                     })
                     
