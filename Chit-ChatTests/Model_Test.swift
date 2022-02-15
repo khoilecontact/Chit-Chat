@@ -37,16 +37,22 @@ class Model_Test: XCTestCase {
                             dob: Date(),
                             isMale: true)
         
-        let instance = User(id: "hash123",
-                            firstName: "Khoi",
+        /**
+         "id" : user.id,
+         "first_name": user.firstName,
+         "last_name": user.lastName,
+         "bio" : user.bio,
+         "email" : user.email,
+         "password" : user.password,
+         "dob" : user.dob,
+         "is_male" : user.isMale
+         */
+        
+        let instance = User(id: "hash123", firstName: "Khoi",
                             lastName: "Le",
-                            bio: "This is bio",
                             email: "uit@gm.uit.edu.vn",
-                            password: "SwiftyHash",
-                            dob: Date(),
-                            isMale: true,
-                            friendList: [node],
-                            conversations: [conversations])
+                            dob: Date().toString(dateFormat: "dd-MM-YYYY"),
+                            isMale: true)
         
         XCTAssertNotNil(instance, "Sorry, user model test case failed.")
         
