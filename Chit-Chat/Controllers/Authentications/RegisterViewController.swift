@@ -382,10 +382,6 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                     return
                 }
                 
-                guard let firstName = self?.firstNameField.text, let lastName = self?.lastNameField.text else {
-                    return
-                }
-                
                 let user = User(id: userId, firstName: firstName, lastName: lastName, email: email, dob: dob, isMale: isMale)
                 
                 DatabaseManager.shared.insertUnverifiedUser(with: user, completion: {success in
