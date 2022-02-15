@@ -14,7 +14,7 @@ final class FindNewFriendsViewController: UIViewController {
     
     public var completion: ((FriendsResult) -> Void)?
     
-    private var users = [[String: String]]()
+    private var users = [[String: Any]]()
     private var hasFetched = false
     
     private var results = [FriendsResult]()
@@ -45,10 +45,12 @@ final class FindNewFriendsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubview(noResultsLabel)
+        navBar()
+        
+        subLayouts()
         
         setupTableView()
-        navBar()
+        
         setupSearchBar()
     }
     
@@ -57,8 +59,12 @@ final class FindNewFriendsViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(dismissSelf))
     }
     
-    func setupTableView() {
+    func subLayouts() {
+        view.addSubview(noResultsLabel)
         view.addSubview(tableView)
+    }
+    
+    func setupTableView() {
         // delegate
         tableView.delegate = self
         tableView.dataSource = self
@@ -196,11 +202,11 @@ extension FindNewFriendsViewController: UISearchBarDelegate {
         spinner.dismiss()
         
         var results: [FriendsResult] = users.filter({
-            guard let email = $0["email"], email != safeEmail else {
+            guard let email = $0["email"], email as! String != safeEmail else {
                 return false
             }
             
-            guard let name = $0["name"]?.lowercased() as? String else {
+            guard let name = ($0["name"] as? String)?.lowercased() else {
                 return false
             }
             
@@ -210,7 +216,7 @@ extension FindNewFriendsViewController: UISearchBarDelegate {
                 return nil
             }
             
-            return FriendsResult(name: name, email: email)
+            return FriendsResult(name: name as! String, email: email as! String)
         })
         
         self.results = results

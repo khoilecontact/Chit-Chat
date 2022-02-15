@@ -44,10 +44,10 @@ extension DatabaseManager {
 
     }
     
-    ///Get all users from database
-    public func getAllUsers(completion: @escaping (Result<[[String: String]], Error>) -> Void) {
-        database.child("users").observeSingleEvent(of: .value, with: { snapshot in
-            guard let value = snapshot.value as? [[String: String]] else {
+    // MARK: - Get all users from database
+    public func getAllUsers(completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
+        database.child("Users_list").observeSingleEvent(of: .value, with: { snapshot in
+            guard let value = snapshot.value as? [[String: Any]] else {
                 completion(.failure(DatabaseError.failedToFetch))
                 return
             }
