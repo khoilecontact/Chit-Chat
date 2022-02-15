@@ -17,6 +17,6 @@ struct UserNode {
     let lastName: String
     let bio: String
     let email: String
-    let dob: Date
+    let dob: String
     let isMale: Bool
 }

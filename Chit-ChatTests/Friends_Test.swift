@@ -31,6 +31,7 @@ class Friends_Test: XCTestCase {
         var instance: [[String: Any]]?
         
         DatabaseManager.shared.getAllUsers(completion: { [weak self] result in
+            
             switch result {
             case .success(let userCollection):
                 instance = userCollection
@@ -44,6 +45,7 @@ class Friends_Test: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
         
         XCTAssertNotNil(instance, "Database return have error")
+        instance = nil
     }
 
 }
