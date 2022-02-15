@@ -8,7 +8,7 @@
 import Foundation
 
 struct LatestMessage {
-    let date: Date
+    let date: String
     let text: String
     let isRead: Bool
 }

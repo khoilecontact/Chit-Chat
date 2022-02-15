@@ -39,7 +39,7 @@
 		DA718D4F27A0F6E70020B0C9 /* UserNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */; };
 		DA718D5127A0F6F20020B0C9 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D5027A0F6F20020B0C9 /* Messages.swift */; };
 		DA718D5327A127670020B0C9 /* Model_Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D5227A127670020B0C9 /* Model_Test.swift */; };
-		DA85AF6D27BA585D0005215B /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA85AF6C27BA585D0005215B /* MessagesViewController.swift */; };
+		DA85AF6D27BA585D0005215B /* MessageChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA85AF6C27BA585D0005215B /* MessageChatViewController.swift */; };
 		DA85AF6F27BA5B430005215B /* MeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA85AF6E27BA5B430005215B /* MeViewController.swift */; };
 		DA8C20F627B258A400C1F35F /* FriendsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD85A27AC187200221E16 /* FriendsModel.swift */; };
 		DA8C20F827B258EE00C1F35F /* NewFriendsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */; };
@@ -107,7 +107,7 @@
 		DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNetwork.swift; sourceTree = "<group>"; };
 		DA718D5027A0F6F20020B0C9 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		DA718D5227A127670020B0C9 /* Model_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Test.swift; sourceTree = "<group>"; };
-		DA85AF6C27BA585D0005215B /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		DA85AF6C27BA585D0005215B /* MessageChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChatViewController.swift; sourceTree = "<group>"; };
 		DA85AF6E27BA5B430005215B /* MeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeViewController.swift; sourceTree = "<group>"; };
 		DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFriendsViewCell.swift; sourceTree = "<group>"; };
 		DA9AD85A27AC187200221E16 /* FriendsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsModel.swift; sourceTree = "<group>"; };
@@ -240,7 +240,7 @@
 				22DFEB4F27AC127100ABAD9E /* ConversationViewController.swift */,
 				DAE31CEF27B227980035E65B /* FriendsViewController.swift */,
 				DA25C3C627B252190004FE2B /* FindNewFriendsViewController.swift */,
-				DA85AF6C27BA585D0005215B /* MessagesViewController.swift */,
+				DA85AF6C27BA585D0005215B /* MessageChatViewController.swift */,
 				DA85AF6E27BA5B430005215B /* MeViewController.swift */,
 			);
 			path = Controllers;
@@ -586,7 +586,7 @@
 				22DFEB4C27AC101100ABAD9E /* RegisterViewController.swift in Sources */,
 				DA718D4D27A0F6CA0020B0C9 /* Conversation.swift in Sources */,
 				22CCFE44279FF58C009F7C8A /* DatabaseManager.swift in Sources */,
-				DA85AF6D27BA585D0005215B /* MessagesViewController.swift in Sources */,
+				DA85AF6D27BA585D0005215B /* MessageChatViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

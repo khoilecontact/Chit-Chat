@@ -34,6 +34,7 @@ class ChatViewController: UIViewController {
     
     private let tableView: UITableView = {
         let table = UITableView()
+        table.isHidden = true
         // register
         table.register(ChatsViewCell.self, forCellReuseIdentifier: ChatsViewCell.identifier)
         return table
@@ -46,8 +47,6 @@ class ChatViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navBar()
         
-        // fakeData
-        fakeData()
         
         // subviews
         subViews()
@@ -57,6 +56,8 @@ class ChatViewController: UIViewController {
         configTableView()
         
         // start
+        screenConversations(false)
+        startListeningForConversations()
         createLoginObserver()
     }
     
@@ -69,9 +70,9 @@ class ChatViewController: UIViewController {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
         noConversationLabel.frame = CGRect(x: 10,
-                                                   y: (view.height-100)/2,
-                                                   width: view.width-20,
-                                                   height: 100)
+                                           y: (view.height-100)/2,
+                                           width: view.width-20,
+                                           height: 100)
     }
     
     private func validateAuth() {
@@ -83,7 +84,39 @@ class ChatViewController: UIViewController {
             
             present(nav, animated: true)
         }
-
+        
+    }
+    
+    private func startListeningForConversations() {
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
+        
+        if let observer = loginObserver {
+            // Listen for login => after login has been listen, remove observer
+            NotificationCenter.default.removeObserver(observer)
+        }
+        
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+        
+        DatabaseManager.shared.getAllConversations(for: safeEmail) { [weak self] result in
+            guard let strongSelf = self else { return }
+            
+            switch result {
+            case .success(let messagesCollection):
+                guard !messagesCollection.isEmpty else {
+                    strongSelf.screenConversations(false)
+                    return
+                }
+                strongSelf.screenConversations(true)
+                strongSelf.conversations = messagesCollection
+                
+                DispatchQueue.main.async {
+                    strongSelf.tableView.reloadData()
+                }
+            case .failure(let error):
+                strongSelf.screenConversations(false)
+                print("Failed to get conversations: \(error)")
+            }
+        }
     }
     
     func subViews() {
@@ -93,7 +126,7 @@ class ChatViewController: UIViewController {
     
     // MARK: - FAKE DATA
     func fakeData() {
-        let latestMessage = LatestMessage(date: Date(), text: "Hello World", isRead: false)
+        let latestMessage = LatestMessage(date: "20/12/2009", text: "Hello World", isRead: false)
         
         conversations.append(MessagesCollection(id: "fir5tM3ss4g35", name: "Doctor", otherUserEmail: "yds@gm.yds.edu.vn", latestMessage: latestMessage))
         conversations.append(MessagesCollection(id: "s3c0ndM3ss4g35", name: "IT", otherUserEmail: "uit@gm.uit.edu.vn", latestMessage: latestMessage))
@@ -122,12 +155,16 @@ class ChatViewController: UIViewController {
             
             guard let strongSelf = self else { return }
             
-            // strongSelf.startListenConversations
+            strongSelf.startListeningForConversations()
         })
     }
     
     func openConversation(_ model: MessagesCollection) {
         // open chat space
+        let vc = MessageChatViewController(with: model.otherUserEmail, id: model.id)
+        vc.title = model.name
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func openOtherFunctions() {
@@ -141,6 +178,17 @@ class ChatViewController: UIViewController {
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         present(ac, animated: true)
+    }
+    
+    private func screenConversations(_ notEmpty: Bool) {
+            if notEmpty {
+                tableView.isHidden = false
+                noConversationLabel.isHidden = true
+            }
+            else {
+                noConversationLabel.isHidden = false
+                tableView.isHidden = true
+            }
     }
 }
 

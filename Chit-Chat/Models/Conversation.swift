@@ -15,7 +15,7 @@ struct MessageOfConversation {
     let id: String
     let type: String    // messages type
     let content: String
-    let date: Date = Date()
+    let date: String
     let sender_email: String
     let name: String
     let is_read: Bool = false
