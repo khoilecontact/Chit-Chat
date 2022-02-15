@@ -28,7 +28,7 @@ class Friends_Test: XCTestCase {
     
     func testApiFetchNewFriends() throws {
         let expectation = expectation(description: "friends")
-        var instance: [User]?
+        var instance: [[String: Any]]?
         
         DatabaseManager.shared.getAllUsers(completion: { [weak self] result in
             switch result {
