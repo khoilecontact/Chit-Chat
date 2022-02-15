@@ -41,8 +41,6 @@
 		DA718D5327A127670020B0C9 /* Model_Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D5227A127670020B0C9 /* Model_Test.swift */; };
 		DA85AF6D27BA585D0005215B /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA85AF6C27BA585D0005215B /* MessagesViewController.swift */; };
 		DA85AF6F27BA5B430005215B /* MeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA85AF6E27BA5B430005215B /* MeViewController.swift */; };
-		DA85AF7227BA5C180005215B /* MeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA85AF7127BA5C180005215B /* MeViewModel.swift */; };
-		DA85AF7427BA5EE00005215B /* MeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA85AF7327BA5EE00005215B /* MeViewCell.swift */; };
 		DA8C20F627B258A400C1F35F /* FriendsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD85A27AC187200221E16 /* FriendsModel.swift */; };
 		DA8C20F827B258EE00C1F35F /* NewFriendsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */; };
 		DAE31CF027B227980035E65B /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE31CEF27B227980035E65B /* FriendsViewController.swift */; };
@@ -111,8 +109,6 @@
 		DA718D5227A127670020B0C9 /* Model_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Test.swift; sourceTree = "<group>"; };
 		DA85AF6C27BA585D0005215B /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		DA85AF6E27BA5B430005215B /* MeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeViewController.swift; sourceTree = "<group>"; };
-		DA85AF7127BA5C180005215B /* MeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeViewModel.swift; sourceTree = "<group>"; };
-		DA85AF7327BA5EE00005215B /* MeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeViewCell.swift; sourceTree = "<group>"; };
 		DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFriendsViewCell.swift; sourceTree = "<group>"; };
 		DA9AD85A27AC187200221E16 /* FriendsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsModel.swift; sourceTree = "<group>"; };
 		DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
@@ -310,7 +306,6 @@
 		DA85AF7027BA5BF00005215B /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				DA85AF7127BA5C180005215B /* MeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -321,7 +316,6 @@
 				DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */,
 				DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */,
 				DAE95C5027B6493700B19445 /* ChatsViewCell.swift */,
-				DA85AF7327BA5EE00005215B /* MeViewCell.swift */,
 			);
 			path = TableCell;
 			sourceTree = "<group>";
@@ -571,7 +565,6 @@
 			files = (
 				222411E327B2129100C5E416 /* GithubConstants.swift in Sources */,
 				DA25C3C727B252190004FE2B /* FindNewFriendsViewController.swift in Sources */,
-				DA85AF7427BA5EE00005215B /* MeViewCell.swift in Sources */,
 				222411E727B7AB6900C5E416 /* ExternalFunctions.swift in Sources */,
 				22DFEB5027AC127100ABAD9E /* ConversationViewController.swift in Sources */,
 				DAE31CF027B227980035E65B /* FriendsViewController.swift in Sources */,
@@ -580,7 +573,6 @@
 				22CCFE40279FF573009F7C8A /* Extensions.swift in Sources */,
 				DAE95C5127B6493700B19445 /* ChatsViewCell.swift in Sources */,
 				22714E69277D5D4F0004F942 /* ChatViewController.swift in Sources */,
-				DA85AF7227BA5C180005215B /* MeViewModel.swift in Sources */,
 				22714E6F277D5D4F0004F942 /* Chit_Chat.xcdatamodeld in Sources */,
 				DAE31CF127B22AD40035E65B /* FriendsCell.swift in Sources */,
 				DA8C20F827B258EE00C1F35F /* NewFriendsViewCell.swift in Sources */,

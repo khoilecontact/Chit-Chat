@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 import JGProgressHUD
 
 class RegisterViewController: UIViewController, UINavigationControllerDelegate {
@@ -356,6 +357,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                     alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
                     self?.present(alert, animated: true)
                     
+                    // Remove user from Firebase Authentication
                     let user = Auth.auth().currentUser
                     
                     user?.delete(completion: { error in
@@ -364,6 +366,11 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                             return
                         }
                     })
+                    
+                    // Remove user from Database
+                    Database.database(url: "https://chit-chat-fc877-default-rtdb.asia-southeast1.firebasedatabase.app").reference()
+                        .child("Unverified_users")
+                        .child(DatabaseManager.safeEmail(emailAddress: email)).removeValue()
                     
                     return
                 } else {

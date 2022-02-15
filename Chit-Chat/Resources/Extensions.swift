@@ -44,6 +44,8 @@ extension Date
     {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
+        //Fix this so real device can run without error
+        dateFormatter.locale = Locale(identifier: "en_US")
         return dateFormatter.string(from: self)
     }
 
