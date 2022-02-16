@@ -376,7 +376,6 @@ class LoginViewController: UIViewController {
                         })
                     }
                 })
-                
             }
             
             let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
