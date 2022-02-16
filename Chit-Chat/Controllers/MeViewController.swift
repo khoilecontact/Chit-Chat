@@ -25,13 +25,6 @@ class MeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let vc = MessageChatViewController(with: "hello", id: "123123")
-        // Create a navigation controller
-        let nav = UINavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .fullScreen
-
-        self.present(nav, animated: true)
-        
         logOutButton.addTarget(self, action: #selector(logOutButtonTapped), for: .touchUpInside)
         
         // Get data of user
