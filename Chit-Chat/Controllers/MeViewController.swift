@@ -117,6 +117,8 @@ class MeViewController: UIViewController {
         personalInfoButton.configuration = config
         personalInfoButton.setTitleColor(.black, for: .normal)
         personalInfoButton.setTitle("Personal Information", for: .normal)
+        let image = UIImage(systemName: "person.crop.square")
+        
         personalInfoButton.setImage(UIImage(systemName: "person.crop.square"), for: .normal)
         personalInfoButton.layer.cornerRadius = 12
         personalInfoButton.layer.borderWidth = 1
@@ -138,7 +140,7 @@ class MeViewController: UIViewController {
         
         darkModeButton.configuration = config
         darkModeButton.setTitleColor(.black, for: .normal)
-        darkModeButton.setTitle("Friend List", for: .normal)
+        darkModeButton.setTitle("Dark Mode", for: .normal)
         darkModeButton.setImage(UIImage(systemName: "moon.fill"), for: .normal)
         darkModeButton.layer.cornerRadius = 12
         darkModeButton.layer.borderWidth = 1
