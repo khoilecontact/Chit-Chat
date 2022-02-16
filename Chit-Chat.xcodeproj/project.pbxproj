@@ -46,6 +46,8 @@
 		DAE31CF027B227980035E65B /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE31CEF27B227980035E65B /* FriendsViewController.swift */; };
 		DAE31CF127B22AD40035E65B /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */; };
 		DAE95C5127B6493700B19445 /* ChatsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE95C5027B6493700B19445 /* ChatsViewCell.swift */; };
+		DAEE3D5D27BC0A6F00334E06 /* LocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEE3D5C27BC0A6F00334E06 /* LocationPickerViewController.swift */; };
+		DAEE3D5F27BC0AC900334E06 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEE3D5E27BC0AC900334E06 /* PhotoViewerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +116,8 @@
 		DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
 		DAE31CEF27B227980035E65B /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		DAE95C5027B6493700B19445 /* ChatsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsViewCell.swift; sourceTree = "<group>"; };
+		DAEE3D5C27BC0A6F00334E06 /* LocationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerViewController.swift; sourceTree = "<group>"; };
+		DAEE3D5E27BC0AC900334E06 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
 		FFA53E9545E7381D535EF4AF /* Pods_Chit_Chat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chit_Chat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -235,6 +239,7 @@
 		22CCFE3B279FF4FF009F7C8A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				DAEE3D5B27BC0A2D00334E06 /* Helpers */,
 				22F1999027A0E5F000CAE0D5 /* Authentications */,
 				22714E68277D5D4F0004F942 /* ChatViewController.swift */,
 				22DFEB4F27AC127100ABAD9E /* ConversationViewController.swift */,
@@ -318,6 +323,15 @@
 				DAE95C5027B6493700B19445 /* ChatsViewCell.swift */,
 			);
 			path = TableCell;
+			sourceTree = "<group>";
+		};
+		DAEE3D5B27BC0A2D00334E06 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				DAEE3D5C27BC0A6F00334E06 /* LocationPickerViewController.swift */,
+				DAEE3D5E27BC0AC900334E06 /* PhotoViewerViewController.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -576,11 +590,13 @@
 				22714E6F277D5D4F0004F942 /* Chit_Chat.xcdatamodeld in Sources */,
 				DAE31CF127B22AD40035E65B /* FriendsCell.swift in Sources */,
 				DA8C20F827B258EE00C1F35F /* NewFriendsViewCell.swift in Sources */,
+				DAEE3D5D27BC0A6F00334E06 /* LocationPickerViewController.swift in Sources */,
 				DA8C20F627B258A400C1F35F /* FriendsModel.swift in Sources */,
 				22CCFE42279FF582009F7C8A /* StorageManager.swift in Sources */,
 				22CCFE46279FF59C009F7C8A /* User.swift in Sources */,
 				DA718D4F27A0F6E70020B0C9 /* UserNetwork.swift in Sources */,
 				22714E65277D5D4F0004F942 /* AppDelegate.swift in Sources */,
+				DAEE3D5F27BC0AC900334E06 /* PhotoViewerViewController.swift in Sources */,
 				DA85AF6F27BA5B430005215B /* MeViewController.swift in Sources */,
 				22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */,
 				22DFEB4C27AC101100ABAD9E /* RegisterViewController.swift in Sources */,
