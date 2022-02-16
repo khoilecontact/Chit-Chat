@@ -106,12 +106,9 @@ class MessageChatViewController: MessagesViewController {
     
     func navBar() {
         
-        // navigationController?.navigationBar.backItem?.title = ""
-        // navigationController?.navigationBar.backItem?.titleView?.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
+        // configurate back button here
         
-        navigationItem.backButtonTitle = nil
-        navigationItem.setHidesBackButton(true, animated: false)
-        
+        // ---
         
         addRightBarButtonItems()
     }
@@ -194,8 +191,6 @@ class MessageChatViewController: MessagesViewController {
     private func configureInputBarItems() {
         messageInputBar.setRightStackViewWidthConstant(to: 36, animated: false)
         
-        // messageInputBar.sendButton.imageView?.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
-        
         messageInputBar.sendButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 2, bottom: 0, right: 2)
         
         messageInputBar.sendButton.setSize(CGSize(width: 80, height: 40), animated: false)
@@ -203,8 +198,6 @@ class MessageChatViewController: MessagesViewController {
         messageInputBar.sendButton.image = resizeImage(image: (UIImage(systemName: "paperplane.fill")?.withTintColor(.black, renderingMode: .alwaysOriginal))!, targetSize: CGSize(width: 24, height: 24))
         
         messageInputBar.sendButton.title = nil
-        
-        // messageInputBar.sendButton.imageView?.layer.cornerRadius = 16
         
         messageInputBar.middleContentViewPadding.right = -38
         
