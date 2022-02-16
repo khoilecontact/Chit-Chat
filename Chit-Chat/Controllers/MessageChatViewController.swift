@@ -89,7 +89,6 @@ class MessageChatViewController: MessagesViewController {
         // MARK: - Setup Messages
         fakeData()
         
-        
         // MARK: - Message Delegate
         messageDelegate()
         configureMessageInputBar()
@@ -107,7 +106,10 @@ class MessageChatViewController: MessagesViewController {
     func navBar() {
         
         // configurate back button here
-        
+        let backItem = UIBarButtonItem()
+        backItem.title = "Something Else"
+        backItem.tintColor = .red
+        navigationItem.leftBarButtonItem = backItem
         // ---
         
         addRightBarButtonItems()
