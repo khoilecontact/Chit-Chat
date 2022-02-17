@@ -43,6 +43,20 @@ class MessageChatViewController: MessagesViewController {
         
     }
     
+    private var otherUserAvatar: UIImageView = {
+        let img = UIImageView()
+        img.contentMode = .scaleAspectFit
+        //        img.layer.borderWidth = 2.5
+        //        let gradient = UIImage.gradientImage(bounds: img.bounds, colors: [.systemBlue, .systemRed])
+        //        let gradientColor = UIColor(patternImage: gradient)
+        //        // img.layer.borderColor = UIColor.systemBlue.cgColor
+        //        img.layer.borderColor = gradientColor.cgColor
+        img.layer.masksToBounds = true
+        img.layer.cornerRadius = 15
+        img.clipsToBounds = true
+        return img
+    }()
+    
     private func listenForMessagees(id: String, shouldScrollToBottom: Bool) {
         DatabaseManager.shared.getAllMessagesForConversation(with: id, completion: { [weak self] result in
             guard let strongSelf = self else {return}
@@ -83,7 +97,7 @@ class MessageChatViewController: MessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = .systemBackground
         navBar()
         
         // MARK: - Setup Messages
@@ -103,16 +117,25 @@ class MessageChatViewController: MessagesViewController {
         }
     }
     
+    override func viewDidLayoutSubviews() {
+        configurateAvatarUserOnNavBar()
+        super.viewDidLayoutSubviews()
+    }
+    
     func navBar() {
         
-        // configurate back button here
-        let backItem = UIBarButtonItem()
-        backItem.title = "Something Else"
-        backItem.tintColor = .red
-        navigationItem.leftBarButtonItem = backItem
-        // ---
-        
+        addLeftBarButtonItems()
         addRightBarButtonItems()
+    }
+    
+    func addLeftBarButtonItems() {
+        
+        let backItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")?.withTintColor(UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(backBtnTapped))
+        
+        // let otherBtn = UIBarButtonItem(image: otherUserAvatar.image, style: .plain, target: nil, action: nil)
+        let otherBtn = UIBarButtonItem(customView: otherUserAvatar)
+        
+        navigationItem.leftBarButtonItems = [backItem, otherBtn]
     }
     
     func addRightBarButtonItems()
@@ -137,6 +160,15 @@ class MessageChatViewController: MessagesViewController {
         
         let rightBarButton = UIBarButtonItem(customView: stackview)
         navigationItem.rightBarButtonItem = rightBarButton
+    }
+    
+    func configurateAvatarUserOnNavBar() {
+        otherUserAvatar.frame = CGRect(origin: .zero, size: CGSize(width: 30, height: 30))
+        
+        let gradient = UIImage.gradientImage(bounds: otherUserAvatar.bounds, colors: [.systemBlue, .systemRed])
+        let gradientColor = UIColor(patternImage: gradient)
+        otherUserAvatar.layer.borderWidth = 2.5
+        otherUserAvatar.layer.borderColor = gradientColor.cgColor
     }
     
     func messageDelegate() {
@@ -403,6 +435,10 @@ class MessageChatViewController: MessagesViewController {
         
     }
     
+    @objc func backBtnTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
 }
 
 extension MessageChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -617,7 +653,7 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
         let sender = message.sender
         if sender.senderId == selfSender?.senderId {
             // our message that we've sent
-            return .link
+            return .systemGreen
         }
         
         // anything else
@@ -664,6 +700,8 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
             // other user
             if let otherUserImageURL = otherUserPhotoURL {
                 avatarView.sd_setImage(with: otherUserImageURL, completed: nil)
+                // otherUserAvatar.sd_setImage(with: otherUserImageURL, placeholderImage: resizeImage(image: UIImage(systemName: "person.crop.circle")!, targetSize: CGSize(width: 30, height: 30)))
+                otherUserAvatar.sd_setImage(with: otherUserImageURL, placeholderImage: nil, context: [.imageTransformer: SDImageResizingTransformer(size: CGSize(width: 30, height: 30), scaleMode: .fill)])
             }
             else {
                 // ${safeOtherEmail}_profile_picture.png
@@ -682,6 +720,8 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
                         strongSelf.otherUserPhotoURL = url
                         DispatchQueue.main.async {
                             avatarView.sd_setImage(with: url, completed: nil)
+                            // strongSelf.otherUserAvatar.sd_setImage(with: url, placeholderImage: resizeImage(image: UIImage(systemName: "person.crop.circle")!, targetSize: CGSize(width: 30, height: 30)))
+                            strongSelf.otherUserAvatar.sd_setImage(with: url, placeholderImage: nil, context: [.imageTransformer: SDImageResizingTransformer(size: CGSize(width: 30, height: 30), scaleMode: .fill)])
                         }
                     case .failure(let error):
                         print("Failed to fetch avatar with error: \(error)")
