@@ -109,15 +109,6 @@ class MeViewController: UIViewController {
         bioLabel.layer.cornerRadius = 12
         bioLabel.layer.backgroundColor = UIColor.systemBackground.cgColor
         
-        var config = UIButton.Configuration.filled()
-        config.imagePadding = 20
-        config.baseBackgroundColor = .init(red: CGFloat(108) / 255.0, green: CGFloat(164) / 255.0, blue: CGFloat(212) / 255.0, alpha: 1.0)
-        config.baseForegroundColor = .black
-        
-        personalInfoButton.configuration = config
-        personalInfoButton.setTitleColor(.black, for: .normal)
-        personalInfoButton.setTitle("Personal Information", for: .normal)
-        personalInfoButton.setImage(UIImage(systemName: "person.crop.circle"), for: .normal)
         personalInfoButton.layer.cornerRadius = 12
         personalInfoButton.layer.borderWidth = 1
         personalInfoButton.layer.masksToBounds = false
@@ -125,10 +116,6 @@ class MeViewController: UIViewController {
         personalInfoButton.layer.shadowOpacity = 0.3
         personalInfoButton.layer.shadowRadius = 1
         
-        friendListButton.configuration = config
-        friendListButton.setTitleColor(.black, for: .normal)
-        friendListButton.setTitle("Friend List", for: .normal)
-        friendListButton.setImage(UIImage(systemName: "person.2.circle"), for: .normal)
         friendListButton.layer.cornerRadius = 12
         friendListButton.layer.borderWidth = 1
         friendListButton.layer.masksToBounds = false
@@ -136,10 +123,6 @@ class MeViewController: UIViewController {
         friendListButton.layer.shadowOpacity = 0.3
         friendListButton.layer.shadowRadius = 1
         
-        darkModeButton.configuration = config
-        darkModeButton.setTitleColor(.black, for: .normal)
-        darkModeButton.setTitle("Dark Mode", for: .normal)
-        darkModeButton.setImage(UIImage(systemName: "moon.circle"), for: .normal)
         darkModeButton.layer.cornerRadius = 12
         darkModeButton.layer.borderWidth = 1
         darkModeButton.layer.masksToBounds = false
@@ -147,20 +130,8 @@ class MeViewController: UIViewController {
         darkModeButton.layer.shadowOpacity = 0.3
         darkModeButton.layer.shadowRadius = 1
         
-        var logOutConfig = UIButton.Configuration.filled()
-        logOutConfig.imagePadding = 15
-        logOutConfig.baseBackgroundColor = .init(red: CGFloat(255) / 255.0, green: CGFloat(113) / 255.0, blue: CGFloat(104) / 255.0, alpha: 1.0)
-        logOutConfig.baseForegroundColor = .white
-        
-        logOutButton.configuration = logOutConfig
-        logOutButton.setTitleColor(UIColor.white, for: .normal)
-        logOutButton.setTitle("Log Out", for: .normal)
-        // ???
-        logOutButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: 15)
-        logOutButton.setImage(UIImage(systemName: "rectangle.portrait.and.arrow.right")?.sd_rotatedImage(withAngle: .pi, fitSize: false)?.withTintColor(.white), for: .normal)
         logOutButton.layer.cornerRadius = 12
         logOutButton.layer.borderWidth = 1
-        logOutButton.clipsToBounds = true
         logOutButton.layer.masksToBounds = false
         logOutButton.layer.shadowOffset = CGSize(width: 5, height: 5)
         logOutButton.layer.shadowOpacity = 0.3
@@ -172,9 +143,6 @@ class MeViewController: UIViewController {
             let actionAlert = UIAlertController(title: "Do you wanna logout?", message: "Choose Log Out to Logout", preferredStyle: .alert)
             
             actionAlert.addAction(UIAlertAction(title: "LogOut", style: .destructive, handler: { [weak self] _ in
-                guard let strongSelf = self else {
-                    return
-                }
                 
                 UserDefaults.standard.setValue(nil, forKey: "email")
                 UserDefaults.standard.setValue(nil, forKey: "name")
