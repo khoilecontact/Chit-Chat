@@ -117,9 +117,7 @@ class MeViewController: UIViewController {
         personalInfoButton.configuration = config
         personalInfoButton.setTitleColor(.black, for: .normal)
         personalInfoButton.setTitle("Personal Information", for: .normal)
-        let image = UIImage(systemName: "person.crop.square")
-        
-        personalInfoButton.setImage(UIImage(systemName: "person.crop.square"), for: .normal)
+        personalInfoButton.setImage(UIImage(systemName: "person.crop.circle"), for: .normal)
         personalInfoButton.layer.cornerRadius = 12
         personalInfoButton.layer.borderWidth = 1
         personalInfoButton.layer.masksToBounds = false
@@ -130,7 +128,7 @@ class MeViewController: UIViewController {
         friendListButton.configuration = config
         friendListButton.setTitleColor(.black, for: .normal)
         friendListButton.setTitle("Friend List", for: .normal)
-        friendListButton.setImage(UIImage(systemName: "person.2.fill"), for: .normal)
+        friendListButton.setImage(UIImage(systemName: "person.2.circle"), for: .normal)
         friendListButton.layer.cornerRadius = 12
         friendListButton.layer.borderWidth = 1
         friendListButton.layer.masksToBounds = false
@@ -141,7 +139,7 @@ class MeViewController: UIViewController {
         darkModeButton.configuration = config
         darkModeButton.setTitleColor(.black, for: .normal)
         darkModeButton.setTitle("Dark Mode", for: .normal)
-        darkModeButton.setImage(UIImage(systemName: "moon.fill"), for: .normal)
+        darkModeButton.setImage(UIImage(systemName: "moon.circle"), for: .normal)
         darkModeButton.layer.cornerRadius = 12
         darkModeButton.layer.borderWidth = 1
         darkModeButton.layer.masksToBounds = false
@@ -150,16 +148,19 @@ class MeViewController: UIViewController {
         darkModeButton.layer.shadowRadius = 1
         
         var logOutConfig = UIButton.Configuration.filled()
-        logOutConfig.imagePadding = 20
+        logOutConfig.imagePadding = 15
         logOutConfig.baseBackgroundColor = .init(red: CGFloat(255) / 255.0, green: CGFloat(113) / 255.0, blue: CGFloat(104) / 255.0, alpha: 1.0)
         logOutConfig.baseForegroundColor = .white
         
         logOutButton.configuration = logOutConfig
         logOutButton.setTitleColor(UIColor.white, for: .normal)
         logOutButton.setTitle("Log Out", for: .normal)
+        // ???
+        logOutButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: 15)
         logOutButton.setImage(UIImage(systemName: "rectangle.portrait.and.arrow.right")?.sd_rotatedImage(withAngle: .pi, fitSize: false)?.withTintColor(.white), for: .normal)
         logOutButton.layer.cornerRadius = 12
         logOutButton.layer.borderWidth = 1
+        logOutButton.clipsToBounds = true
         logOutButton.layer.masksToBounds = false
         logOutButton.layer.shadowOffset = CGSize(width: 5, height: 5)
         logOutButton.layer.shadowOpacity = 0.3
