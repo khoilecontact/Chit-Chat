@@ -22,23 +22,6 @@ class MeViewController: UIViewController {
     
     var user: User?! = nil
     
-    private static var tint: UIColor = {
-        if #available(iOS 13, *) {
-                return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
-                    if UITraitCollection.userInterfaceStyle == .dark {
-                        /// Return the color for Dark Mode
-                        return UIColor.white
-                    } else {
-                        /// Return the color for Light Mode
-                        return UIColor.black
-                    }
-                }
-            } else {
-                /// Return a fallback color for iOS 12 and lower.
-                return UIColor.black
-            }
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,6 +37,18 @@ class MeViewController: UIViewController {
             }
         })
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // Get data of user
+        getUserInfo(completion: { [weak self] user in
+            if user != nil {
+                self?.user = user
+                
+                // Initilize data for layout
+                self?.initLayout()
+            }
+        })
     }
     
     // Handle dark mode appearance
@@ -108,8 +103,8 @@ class MeViewController: UIViewController {
             switch result {
             case .failure(let error):
                 print("Failed to download image URL: \(error)")
-                self?.imageView.image = UIImage(systemName: "person.circle")?.withTintColor(MeViewController.tint)
-                print(MeViewController.tint)
+                self?.imageView.image = UIImage(systemName: "person.circle")?.withTintColor(Appearance.tint)
+                
                 break
             
             case .success(let url):
@@ -117,19 +112,20 @@ class MeViewController: UIViewController {
             }
         })
         
+        imageView.image?.withTintColor(Appearance.tint)
         imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
         
         nameLabel.text = user.firstName + " " + user.lastName
-        nameLabel.textColor = MeViewController.tint
+        nameLabel.textColor = Appearance.tint
         nameLabel.textAlignment = .center
         
         bioLabel.text = (user.bio == "") ? "This is your bio" : user.bio
-        bioLabel.textColor = MeViewController.tint
+        bioLabel.textColor = Appearance.tint
         bioLabel.textAlignment = .center
         bioLabel.layer.borderWidth = 1
-        bioLabel.layer.borderColor = MeViewController.tint.cgColor
+        bioLabel.layer.borderColor = Appearance.tint.cgColor
         bioLabel.layer.cornerRadius = 12
         bioLabel.layer.backgroundColor = UIColor.systemBackground.cgColor
         
