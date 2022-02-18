@@ -11,7 +11,7 @@ import JGProgressHUD
 
 class FriendsViewController: UIViewController {
     
-    private var friends = [User]()
+    private var friends = [UserNode]()
     
     private let tabNumber: Bool = false
     
@@ -34,12 +34,14 @@ class FriendsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        // fake data
-        fakeData()
+        // fakeData()
         
         navigationBar()
         setupSearchBar()
         setupTableView()
+        
+        // start
+        fetchFriendList()
     }
     
     override func viewDidLayoutSubviews() {
@@ -54,40 +56,35 @@ class FriendsViewController: UIViewController {
     
     func fakeData() {
         // fake data
-//        let latestMessage = LatestMessage(date: Date(), text: "Hello World", isRead: false)
-//        
-//        let conversations = MessagesCollection(id: "fir5tM3ss4g35", name: "Doctor", otherUserEmail: "yds@gm.yds.edu.vn", latestMessage: latestMessage)
-//        
-//        let node = UserNode(id: "hash123",
-//                            firstName: "Khoi",
-//                            lastName: "Le",
-//                            bio: "This is my bio",
-//                            email: "uit@gm.uit.edu.vn",
-//                            dob: Date(),
-//                            isMale: true)
-//        
-//        friends.append(User(id: "hash123",
-//                            firstName: "Khoi",
-//                            lastName: "Le",
-//                            bio: "This is bio",
-//                            email: "uit@gm.uit.edu.vn",
-//                            password: "SwiftyHash",
-//                            dob: Date(),
-//                            isMale: true,
-//                            friendList: [node],
-//                            conversations: [conversations]))
-//        friends.append(User(id: "hash124",
-//                            firstName: "Phat",
-//                            lastName: "Nguyen",
-//                            bio: "This is bio",
-//                            email: "sub-uit@gm.uit.edu.vn",
-//                            password: "SwiftyHash",
-//                            dob: Date(),
-//                            isMale: true,
-//                            friendList: [node],
-//                            conversations: [conversations]))
+        let node = UserNode(id: "hash123",
+                            firstName: "Khoi",
+                            lastName: "Le",
+                            bio: "This is my bio",
+                            email: "uit@gm.uit.edu.vn",
+                            dob: "",
+                            isMale: true)
+        
+        friends.append(node)
         
         // --- ---
+    }
+    
+    func fetchFriendList() {
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
+        
+        DatabaseManager.shared.getAllFriendsOfUser(with: email) { [weak self] result in
+            guard let strongSelf = self else { return }
+            
+            switch result {
+            case .success(let friendsData):
+                strongSelf.parseToFriends(with: friendsData)
+                DispatchQueue.main.async {
+                    strongSelf.tableView.reloadData()
+                }
+            case .failure(let error):
+                print("Failed to load user's friends: \(error)")
+            }
+        }
     }
     
     func setupSearchBar() {
@@ -101,8 +98,32 @@ class FriendsViewController: UIViewController {
         tableView.dataSource = self
     }
     
-    func openConversation(_ model: User) {
-        
+    func openProfilePage(_ model: UserNode) {
+
+    }
+    
+    func parseToFriends(with listMap: [[String: Any]]) {
+        friends = listMap.compactMap{
+            guard let id = $0["id"] as? String,
+            let email = $0["email"] as? String,
+            let lastName = $0["last_name"] as? String,
+            let firstName = $0["first_name"] as? String,
+            let bio = $0["bio"] as? String?,
+            let dob = $0["dob"] as? String?,
+            let isMale = $0["is_male"] as? Bool
+            else {
+                print("excepted type")
+                return nil
+            }
+            
+            return UserNode(id: id,
+                            firstName: firstName,
+                            lastName: lastName,
+                            bio: bio ?? "",
+                            email: email,
+                            dob: dob ?? "",
+                            isMale: isMale)
+        }
     }
     
     @objc func findNewFriend() {
@@ -136,7 +157,42 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let model = friends[indexPath.row]
-        openConversation(model)
+        openProfilePage(model)
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let openConversationAction = UIContextualAction(style: .destructive, title: "Chat with") { action, view, handler in
+            // code
+        }
+        // RGB: 6, 214, 159
+        openConversationAction.backgroundColor = UIColor(red: 6/255, green: 214/255, blue: 159/255, alpha: 1)
+        
+        let configuration = UISwipeActionsConfiguration(actions: [openConversationAction])
+        configuration.performsFirstActionWithFullSwipe = true
+        return configuration
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        // actions
+        let unfriendAction = UIContextualAction(style: .destructive, title: "Unfriend") { action, view, handler in
+            
+        }
+        // RGB: (211, 33, 44)
+        // 242 78 30
+        unfriendAction.backgroundColor = UIColor(red: 242/255, green: 78/255, blue: 30/255, alpha: 1)
+        
+        let othersAction = UIContextualAction(style: .destructive, title: "Others") { action, view, handler in
+            
+        }
+        // RGB: (6, 156, 86)
+        othersAction.backgroundColor = .systemCyan
+        
+        
+        let configuration = UISwipeActionsConfiguration(actions: [unfriendAction, othersAction])
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
     }
 }
 

@@ -241,7 +241,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
             strongSelf.openOtherFunctions()
         }
         // RGB: (6, 156, 86)
-        othersAction.backgroundColor = UIColor(red: 6/255, green: 156/255, blue: 86/255, alpha: 1)
+        othersAction.backgroundColor = UIColor(red: 6/255, green: 214/255, blue: 159/255, alpha: 1)
         
         
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction, othersAction])
