@@ -18,23 +18,6 @@ class LoginViewController: UIViewController {
     // Github OAuth
     var provider = OAuthProvider(providerID: "github.com")
     
-    public static var tint: UIColor = {
-        if #available(iOS 13, *) {
-                return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
-                    if UITraitCollection.userInterfaceStyle == .dark {
-                        /// Return the color for Dark Mode
-                        return UIColor.white
-                    } else {
-                        /// Return the color for Light Mode
-                        return UIColor.black
-                    }
-                }
-            } else {
-                /// Return a fallback color for iOS 12 and lower.
-                return UIColor.black
-            }
-    }()
-    
     private let spinner = JGProgressHUD(style: .dark)
     
     private let scrollView: UIScrollView = {
@@ -54,7 +37,7 @@ class LoginViewController: UIViewController {
     private let appNameField: UILabel = {
         let appNameField = UILabel()
         appNameField.text = "Chit Chat"
-        appNameField.textColor = tint
+        appNameField.textColor = Appearance.tint
         appNameField.font = UIFont.boldSystemFont(ofSize: 32.0)
         appNameField.textAlignment = .center
         return appNameField
@@ -69,7 +52,7 @@ class LoginViewController: UIViewController {
         field.backgroundColor = UIColor.systemBackground
         field.layer.borderWidth = 0
         field.placeholder = "Email..."
-        field.textColor = tint
+        field.textColor = Appearance.tint
         
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
@@ -85,7 +68,7 @@ class LoginViewController: UIViewController {
         field.backgroundColor = .systemBackground
         field.layer.borderWidth = 0
         field.placeholder = "Password..."
-        field.textColor = tint
+        field.textColor = Appearance.tint
         
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
@@ -117,7 +100,7 @@ class LoginViewController: UIViewController {
     private let forgotPasswordLabel: UILabel = {
         let forgotPasswordLabel = UILabel()
         forgotPasswordLabel.text = "Forgot password?"
-        forgotPasswordLabel.textColor = tint
+        forgotPasswordLabel.textColor = Appearance.tint
         forgotPasswordLabel.font = .systemFont(ofSize: 15)
         forgotPasswordLabel.textAlignment = .right
         
