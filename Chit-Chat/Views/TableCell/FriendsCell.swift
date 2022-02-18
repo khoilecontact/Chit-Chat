@@ -64,7 +64,7 @@ class FriendsCell: UITableViewCell {
     }
     
     // MARK: - Closure call data
-    public func configure(with model: User) {
+    public func configure(with model: UserNode) {
         userNameLabel.text = "\(model.firstName) \(model.lastName)"
         userEmailLabel.text = model.email
         let url = URL(string: "https://github.com/khoilecontact.png?size=400")
