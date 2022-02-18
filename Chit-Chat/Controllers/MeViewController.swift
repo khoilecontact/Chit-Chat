@@ -22,6 +22,23 @@ class MeViewController: UIViewController {
     
     var user: User?! = nil
     
+    private static var tint: UIColor = {
+        if #available(iOS 13, *) {
+                return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
+                    if UITraitCollection.userInterfaceStyle == .dark {
+                        /// Return the color for Dark Mode
+                        return UIColor.white
+                    } else {
+                        /// Return the color for Light Mode
+                        return UIColor.black
+                    }
+                }
+            } else {
+                /// Return a fallback color for iOS 12 and lower.
+                return UIColor.black
+            }
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,6 +54,13 @@ class MeViewController: UIViewController {
             }
         })
         
+    }
+    
+    // Handle dark mode appearance
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        initLayout()
     }
     
     /// Get user's data from Firebase Database
@@ -84,7 +108,8 @@ class MeViewController: UIViewController {
             switch result {
             case .failure(let error):
                 print("Failed to download image URL: \(error)")
-                self?.imageView.image = UIImage(systemName: "person.circle")
+                self?.imageView.image = UIImage(systemName: "person.circle")?.withTintColor(MeViewController.tint)
+                print(MeViewController.tint)
                 break
             
             case .success(let url):
@@ -92,20 +117,19 @@ class MeViewController: UIViewController {
             }
         })
         
-        imageView.tintColor = UIColor.black
         imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
         
         nameLabel.text = user.firstName + " " + user.lastName
-        nameLabel.textColor = .black
+        nameLabel.textColor = MeViewController.tint
         nameLabel.textAlignment = .center
         
         bioLabel.text = (user.bio == "") ? "This is your bio" : user.bio
-        bioLabel.textColor = UIColor.black
+        bioLabel.textColor = MeViewController.tint
         bioLabel.textAlignment = .center
         bioLabel.layer.borderWidth = 1
-        bioLabel.layer.borderColor = UIColor.black.cgColor
+        bioLabel.layer.borderColor = MeViewController.tint.cgColor
         bioLabel.layer.cornerRadius = 12
         bioLabel.layer.backgroundColor = UIColor.systemBackground.cgColor
         

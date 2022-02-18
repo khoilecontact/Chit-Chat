@@ -27,7 +27,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person.circle")
-        imageView.tintColor = UIColor.black
+        imageView.tintColor = LoginViewController.tint
         imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
@@ -37,7 +37,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
     let imageLabel: UILabel = {
         let label = UILabel()
         label.text = "Choose your avartar"
-        label.textColor = .black
+        label.textColor = LoginViewController.tint
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 15)
         return label
@@ -141,7 +141,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
     let dobLabel: UILabel = {
         let label = UILabel()
         label.text = "Day of birth:"
-        label.textColor = .black
+        label.textColor = LoginViewController.tint
         return label
     }()
     
@@ -157,7 +157,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
     let genderLabel: UILabel = {
         let label = UILabel()
         label.text = "Gender:"
-        label.textColor = .black
+        label.textColor = LoginViewController.tint
         return label
     }()
     

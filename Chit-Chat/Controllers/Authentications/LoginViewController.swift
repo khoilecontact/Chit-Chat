@@ -17,7 +17,24 @@ class LoginViewController: UIViewController {
     var webView = WKWebView()
     // Github OAuth
     var provider = OAuthProvider(providerID: "github.com")
-
+    
+    public static var tint: UIColor = {
+        if #available(iOS 13, *) {
+                return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
+                    if UITraitCollection.userInterfaceStyle == .dark {
+                        /// Return the color for Dark Mode
+                        return UIColor.white
+                    } else {
+                        /// Return the color for Light Mode
+                        return UIColor.black
+                    }
+                }
+            } else {
+                /// Return a fallback color for iOS 12 and lower.
+                return UIColor.black
+            }
+    }()
+    
     private let spinner = JGProgressHUD(style: .dark)
     
     private let scrollView: UIScrollView = {
@@ -37,7 +54,7 @@ class LoginViewController: UIViewController {
     private let appNameField: UILabel = {
         let appNameField = UILabel()
         appNameField.text = "Chit Chat"
-        appNameField.textColor = UIColor.black
+        appNameField.textColor = tint
         appNameField.font = UIFont.boldSystemFont(ofSize: 32.0)
         appNameField.textAlignment = .center
         return appNameField
@@ -49,9 +66,10 @@ class LoginViewController: UIViewController {
         field.autocorrectionType = .no
         // Continue to next field
         field.returnKeyType = .continue
-        field.backgroundColor = .white
+        field.backgroundColor = UIColor.systemBackground
         field.layer.borderWidth = 0
         field.placeholder = "Email..."
+        field.textColor = tint
         
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
@@ -67,6 +85,7 @@ class LoginViewController: UIViewController {
         field.backgroundColor = .systemBackground
         field.layer.borderWidth = 0
         field.placeholder = "Password..."
+        field.textColor = tint
         
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
@@ -98,9 +117,10 @@ class LoginViewController: UIViewController {
     private let forgotPasswordLabel: UILabel = {
         let forgotPasswordLabel = UILabel()
         forgotPasswordLabel.text = "Forgot password?"
-        forgotPasswordLabel.textColor = UIColor.black
+        forgotPasswordLabel.textColor = tint
         forgotPasswordLabel.font = .systemFont(ofSize: 15)
         forgotPasswordLabel.textAlignment = .right
+        
         return forgotPasswordLabel
     }()
     
@@ -135,7 +155,7 @@ class LoginViewController: UIViewController {
                 
                 let button = UIButton(configuration: config, primaryAction: nil)
                 button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
-                button.layer.cornerRadius = 12
+                button.layer.cornerRadius = 5
                 button.layer.masksToBounds = true
                 
                 button.setTitleColor(UIColor.black, for: .normal)
@@ -163,7 +183,7 @@ class LoginViewController: UIViewController {
                 button.setTitleColor(.black, for: .normal)
                 button.backgroundColor = .white
                 button.tintColor = .white
-                button.layer.cornerRadius = 12
+                button.layer.cornerRadius = 5
                 button.layer.masksToBounds = true
                 // Google icon
                 let icon = resizeImage(image: UIImage(named: "GoogleIcon")!, targetSize: CGSize(width: 30, height: 30))
