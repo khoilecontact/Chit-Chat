@@ -98,6 +98,16 @@ class FriendsViewController: UIViewController {
         tableView.dataSource = self
     }
     
+    func openConversation(_ model: UserNode) {
+        // open chat space
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: model.email)
+        
+        let vc = MessageChatViewController(with: safeEmail, id: model.id)
+        vc.title = "\(model.firstName) \(model.lastName)"
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     func openProfilePage(_ model: UserNode) {
 
     }
@@ -162,8 +172,11 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let openConversationAction = UIContextualAction(style: .destructive, title: "Chat with") { action, view, handler in
+        let openConversationAction = UIContextualAction(style: .destructive, title: "Chat with") { [weak self] action, view, handler in
             // code
+            guard let strongSelf = self else { return }
+            
+            strongSelf.openConversation(strongSelf.friends[indexPath.row])
         }
         // RGB: 6, 214, 159
         openConversationAction.backgroundColor = UIColor(red: 6/255, green: 214/255, blue: 159/255, alpha: 1)

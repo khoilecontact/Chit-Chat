@@ -67,10 +67,22 @@ final class ChatsViewCell: UITableViewCell {
         userNameLabel.text = model.name
         userMessageLabel.text = model.latestMessage.text
         
-        let url = URL(string: "https://github.com/khoilecontact.png?size=400")
-        userImageView.sd_setImage(with: url, completed: nil)
+        //        let url = URL(string: "https://github.com/khoilecontact.png?size=400")
+        //        userImageView.sd_setImage(with: url, completed: nil)
         
-        //        let path = "images/\(model.email)_profile_picture.png"
+        let path = "images/\(model.otherUserEmail)_profile_picture.png"
         // call to Storage manager to take img
+        StorageManager.shared.downloadUrl(for: path) { [weak self] result in
+            guard let strongSelf = self else { return }
+            
+            switch result {
+            case .success(let url):
+                DispatchQueue.main.async {
+                    strongSelf.userImageView.sd_setImage(with: url, completed: nil)
+                }
+            case .failure(let error):
+                print("Failed to get image url: \(error)")
+            }
+        }
     }
 }

@@ -202,7 +202,7 @@ extension FindNewFriendsViewController: UISearchBarDelegate {
         spinner.dismiss()
         
         var results: [FriendsResult] = users.filter({
-            guard let email = $0["email"], email as! String != safeEmail else {
+            guard let email = ($0["email"] as? String)?.lowercased(), email != safeEmail else {
                 return false
             }
             
@@ -210,7 +210,7 @@ extension FindNewFriendsViewController: UISearchBarDelegate {
                 return false
             }
             
-            return name.hasPrefix(term.lowercased())
+            return name.hasPrefix(term.lowercased()) || email.hasPrefix(term.lowercased())
         }).compactMap({
             guard let email = $0["email"], let name = $0["name"] else {
                 return nil
