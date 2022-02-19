@@ -1,23 +1,23 @@
 //
-//  FindNewFriendsViewController.swift
+//  FriendRequestViewController.swift
 //  Chit-Chat
 //
-//  Created by Phát Nguyễn on 08/02/2022.
+//  Created by Phát Nguyễn on 19/02/2022.
 //
 
 import UIKit
 import JGProgressHUD
 
-final class FindNewFriendsViewController: UIViewController {
-    
+class FriendRequestViewController: UIViewController {
+
     private let spinner = JGProgressHUD(style: .dark)
     
-    public var completion: ((FriendsResult) -> Void)?
+    public var completion: ((UserNode) -> Void)?
     
     private var users = [[String: Any]]()
     private var hasFetched = false
     
-    private var results = [FriendsResult]()
+    private var results = [UserNode]()
     
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -27,8 +27,8 @@ final class FindNewFriendsViewController: UIViewController {
     
     private let tableView: UITableView = {
         let table = UITableView()
-        table.isHidden = true
-        table.register(NewFriendsViewCell.self, forCellReuseIdentifier: NewFriendsViewCell.identifier)
+        table.isHidden = false
+        table.register(FriendRequestViewCell.self, forCellReuseIdentifier: FriendRequestViewCell.identifier)
         return table
     }()
     
@@ -44,7 +44,7 @@ final class FindNewFriendsViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Find New Friends"
+        label.text = "Friend Request"
         label.font = .systemFont(ofSize: 23, weight: .bold)
         label.textAlignment = .center
         return label
@@ -58,8 +58,23 @@ final class FindNewFriendsViewController: UIViewController {
         subLayouts()
         
         setupTableView()
-        
         setupSearchBar()
+        
+        fetchFriendRequest()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        titleLabel.frame = CGRect(x: view.left, y: searchBar.bottom, width: view.width, height: 50)
+        tableView.frame = CGRect(x: view.left, y: titleLabel.bottom, width: view.width, height: view.height-50)
+        noResultsLabel.frame = CGRect(x: view.width/4,
+                                      y: (view.height-200)/2,
+                                      width: view.width/2,
+                                      height: 200)
     }
     
     func navBar() {
@@ -84,29 +99,63 @@ final class FindNewFriendsViewController: UIViewController {
         // searchBar.becomeFirstResponder()
     }
     
+    func fetchFriendRequest() {
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
+        
+        DatabaseManager.shared.getAllFriendRequestOfUser(with: email) { [weak self] result in
+            guard let strongSelf = self else { return }
+            
+            switch result {
+            case .success(let requestData):
+                strongSelf.hasFetched = true
+                strongSelf.users = requestData
+                strongSelf.parseToFriendsRequest(with: requestData)
+                DispatchQueue.main.async {
+                    strongSelf.tableView.reloadData()
+                }
+            case .failure(let error):
+                print("Failed to load friend request data: \(error)")
+            }
+        }
+    }
+    
+    func parseToFriendsRequest(with listMap: [[String: Any]]) {
+        results = listMap.compactMap{
+            guard let id = $0["id"] as? String,
+            let email = $0["email"] as? String,
+            let lastName = $0["last_name"] as? String,
+            let firstName = $0["first_name"] as? String,
+            let bio = $0["bio"] as? String?,
+            let dob = $0["dob"] as? String?,
+            let isMale = $0["is_male"] as? Bool
+            else {
+                print("excepted type")
+                return nil
+            }
+            
+            return UserNode(id: id,
+                            firstName: firstName,
+                            lastName: lastName,
+                            bio: bio ?? "",
+                            email: email,
+                            dob: dob ?? "",
+                            isMale: isMale)
+        }
+    }
+    
     @objc private func dismissSelf() {
         dismiss(animated: true, completion: nil)
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        titleLabel.frame = CGRect(x: view.left, y: searchBar.bottom, width: view.width, height: 50)
-        tableView.frame = CGRect(x: view.left, y: titleLabel.bottom, width: view.width, height: view.height-50)
-        noResultsLabel.frame = CGRect(x: view.width/4,
-                                      y: (view.height-200)/2,
-                                      width: view.width/2,
-                                      height: 200)
-    }
 }
 
-extension FindNewFriendsViewController: UITableViewDataSource, UITableViewDelegate {
+extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return results.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = results[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: NewFriendsViewCell.identifier, for: indexPath) as! NewFriendsViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: FriendRequestViewCell.identifier, for: indexPath) as! FriendRequestViewCell
         cell.configure(with: model)
         return cell
     }
@@ -152,7 +201,7 @@ extension FindNewFriendsViewController: UITableViewDataSource, UITableViewDelega
         }
         deleteAction.backgroundColor = .red
         
-        let addAction = UIContextualAction(style: .destructive, title: "Add") { action, view, handler in
+        let addAction = UIContextualAction(style: .destructive, title: "Accept") { action, view, handler in
             
         }
         addAction.backgroundColor = .systemGreen
@@ -164,7 +213,7 @@ extension FindNewFriendsViewController: UITableViewDataSource, UITableViewDelega
 }
 
 
-extension FindNewFriendsViewController: UISearchBarDelegate {
+extension FriendRequestViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text, !text.replacingOccurrences(of: " ", with: "").isEmpty else {
@@ -184,8 +233,9 @@ extension FindNewFriendsViewController: UISearchBarDelegate {
             // filter
             filterUsers(with: query)
         } else {
+            guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
             // fetch then filter
-            DatabaseManager.shared.getAllUsers(completion: { [weak self] result in
+            DatabaseManager.shared.getAllFriendRequestOfUser(with: email, completion: { [weak self] result in
                 guard let strongSelf = self else {return}
                 
                 switch result {
@@ -211,22 +261,36 @@ extension FindNewFriendsViewController: UISearchBarDelegate {
         
         spinner.dismiss()
         
-        var results: [FriendsResult] = users.filter({
+        let results: [UserNode] = self.users.filter({
             guard let email = ($0["email"] as? String)?.lowercased(), email != currentUserEmail else {
                 return false
             }
             
-            guard let name = ($0["name"] as? String)?.lowercased() else {
+            guard let name = "\(($0["first_name"] as? String)!.lowercased()) \(($0["last_name"] as? String)!.lowercased())" as? String else {
                 return false
             }
             
             return name.hasPrefix(term.lowercased()) || email.hasPrefix(term.lowercased())
         }).compactMap({
-            guard let email = $0["email"], let name = $0["name"] else {
+            guard let id = $0["id"] as? String,
+                  let email = $0["email"] as? String,
+                  let lastName = $0["last_name"] as? String,
+                  let firstName = $0["first_name"] as? String,
+                  let bio = $0["bio"] as? String?,
+                  let dob = $0["dob"] as? String?,
+                  let isMale = $0["is_male"] as? Bool
+            else {
+                print("excepted type")
                 return nil
             }
             
-            return FriendsResult(name: name as! String, email: email as! String)
+            return UserNode(id: id,
+                            firstName: firstName,
+                            lastName: lastName,
+                            bio: bio ?? "",
+                            email: email,
+                            dob: dob ?? "",
+                            isMale: isMale)
         })
         
         self.results = results

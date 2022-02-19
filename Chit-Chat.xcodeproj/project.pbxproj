@@ -34,6 +34,8 @@
 		4269E28FFD5D53D40020E18D /* Pods_Chit_ChatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A425F73A41B35F53C7F971F /* Pods_Chit_ChatTests.framework */; };
 		8D82C810661AD985A4461FB9 /* Pods_Chit_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA53E9545E7381D535EF4AF /* Pods_Chit_Chat.framework */; };
 		B3449D7E0B600DA6EC715B77 /* Pods_Chit_Chat_Chit_ChatUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBC31E93979BE04766A3846F /* Pods_Chit_Chat_Chit_ChatUITests.framework */; };
+		DA0D67B427C0C7C20016C4AC /* FriendRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0D67B327C0C7C20016C4AC /* FriendRequestViewController.swift */; };
+		DA0D67B627C0C7DF0016C4AC /* FriendRequestViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0D67B527C0C7DF0016C4AC /* FriendRequestViewCell.swift */; };
 		DA25C3C727B252190004FE2B /* FindNewFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA25C3C627B252190004FE2B /* FindNewFriendsViewController.swift */; };
 		DA3B4AD627B3B25C0093E2B3 /* Friends_Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3B4AD527B3B25C0093E2B3 /* Friends_Test.swift */; };
 		DA718D4D27A0F6CA0020B0C9 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D4C27A0F6CA0020B0C9 /* Conversation.swift */; };
@@ -105,6 +107,8 @@
 		9D949E2250857BF1D00464AA /* Pods-Chit-Chat-Chit-ChatUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chit-Chat-Chit-ChatUITests.release.xcconfig"; path = "Target Support Files/Pods-Chit-Chat-Chit-ChatUITests/Pods-Chit-Chat-Chit-ChatUITests.release.xcconfig"; sourceTree = "<group>"; };
 		BBC31E93979BE04766A3846F /* Pods_Chit_Chat_Chit_ChatUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chit_Chat_Chit_ChatUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C56AF88553BD6B57C26D5537 /* Pods-Chit-Chat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chit-Chat.debug.xcconfig"; path = "Target Support Files/Pods-Chit-Chat/Pods-Chit-Chat.debug.xcconfig"; sourceTree = "<group>"; };
+		DA0D67B327C0C7C20016C4AC /* FriendRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestViewController.swift; sourceTree = "<group>"; };
+		DA0D67B527C0C7DF0016C4AC /* FriendRequestViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestViewCell.swift; sourceTree = "<group>"; };
 		DA25C3C627B252190004FE2B /* FindNewFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNewFriendsViewController.swift; sourceTree = "<group>"; };
 		DA3B4AD527B3B25C0093E2B3 /* Friends_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friends_Test.swift; sourceTree = "<group>"; };
 		DA718D4C27A0F6CA0020B0C9 /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
@@ -249,6 +253,7 @@
 				DA25C3C627B252190004FE2B /* FindNewFriendsViewController.swift */,
 				DA85AF6C27BA585D0005215B /* MessageChatViewController.swift */,
 				DA85AF6E27BA5B430005215B /* MeViewController.swift */,
+				DA0D67B327C0C7C20016C4AC /* FriendRequestViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -324,6 +329,7 @@
 				DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */,
 				DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */,
 				DAE95C5027B6493700B19445 /* ChatsViewCell.swift */,
+				DA0D67B527C0C7DF0016C4AC /* FriendRequestViewCell.swift */,
 			);
 			path = TableCell;
 			sourceTree = "<group>";
@@ -584,6 +590,7 @@
 				222411E927BF991400C5E416 /* Appearance.swift in Sources */,
 				DA25C3C727B252190004FE2B /* FindNewFriendsViewController.swift in Sources */,
 				222411E727B7AB6900C5E416 /* ExternalFunctions.swift in Sources */,
+				DA0D67B427C0C7C20016C4AC /* FriendRequestViewController.swift in Sources */,
 				22DFEB5027AC127100ABAD9E /* ConversationViewController.swift in Sources */,
 				DAE31CF027B227980035E65B /* FriendsViewController.swift in Sources */,
 				22F1999627A0E67A00CAE0D5 /* LoginViewController.swift in Sources */,
@@ -604,6 +611,7 @@
 				DA85AF6F27BA5B430005215B /* MeViewController.swift in Sources */,
 				22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */,
 				22DFEB4C27AC101100ABAD9E /* RegisterViewController.swift in Sources */,
+				DA0D67B627C0C7DF0016C4AC /* FriendRequestViewCell.swift in Sources */,
 				DA718D4D27A0F6CA0020B0C9 /* Conversation.swift in Sources */,
 				22CCFE44279FF58C009F7C8A /* DatabaseManager.swift in Sources */,
 				DA85AF6D27BA585D0005215B /* MessageChatViewController.swift in Sources */,

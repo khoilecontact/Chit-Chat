@@ -51,7 +51,10 @@ class FriendsViewController: UIViewController {
     
     func navigationBar() {
         navigationController?.navigationBar.topItem?.titleView = searchBar
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(findNewFriend))
+        
+        let findNewFriends = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(findNewFriend))
+        let friendRequest = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle.badge.plus"), style: .plain, target: self, action: #selector(friendRequest))
+        navigationItem.rightBarButtonItems = [findNewFriends, friendRequest]
     }
     
     func fakeData() {
@@ -141,6 +144,13 @@ class FriendsViewController: UIViewController {
         let navVC = UINavigationController(rootViewController: vc)
         present(navVC, animated: true)
     }
+    
+    @objc func friendRequest() {
+        let vc = FriendRequestViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        present(navVC, animated: true)
+    }
+
 }
 
 // MARK: - Config TableView

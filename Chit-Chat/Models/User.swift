@@ -28,6 +28,7 @@ struct User {
     let email: String
     let dob: String
     let isMale: Bool
+    let friendRequestList: [UserNode]
     let friendList: [UserNode]
     let blackList: [UserNode]
     let conversations: [MessagesCollection]
@@ -48,6 +49,7 @@ struct User {
         self.dob = dob
         self.isMale = isMale
         
+        self.friendRequestList = []
         self.friendList = []
         self.blackList = []
         self.conversations = []
