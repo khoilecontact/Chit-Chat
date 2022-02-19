@@ -70,6 +70,19 @@ extension DatabaseManager {
         })
     }
     
+    public func getAllFriendRequestOfUser(with unSafeEmail: String, completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: unSafeEmail)
+        
+        database.child("Users/\(safeEmail)/friend_request_list").observeSingleEvent(of: .value, with: { snapshot in
+            guard let value = snapshot.value as? [[String: Any]] else {
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            
+            completion(.success(value))
+        })
+    }
+    
     public enum DatabaseError: Error {
         case failedToFetch
         case failedToFind
@@ -605,7 +618,7 @@ extension DatabaseManager {
         
         let currentEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
         
-        database.child("\(conversation)/messages").observeSingleEvent(of: .value, with: { [weak self] snapshot in
+        database.child("Conversations/\(conversation)/messages").observeSingleEvent(of: .value, with: { [weak self] snapshot in
             guard var currentMessages = snapshot.value as? [[String: Any]] else {
                 completion(false)
                 return
@@ -667,13 +680,13 @@ extension DatabaseManager {
             
             currentMessages.append(newMessageEntry)
             
-            self?.database.child("\(conversation)/messages").setValue(currentMessages, withCompletionBlock: { error, _ in
+            self?.database.child("Conversations/\(conversation)/messages").setValue(currentMessages, withCompletionBlock: { error, _ in
                 guard error == nil else {
                     completion(false)
                     return
                 }
                 
-                self?.database.child("\(currentEmail)/conversations").observeSingleEvent(of: .value, with: { snapshot in
+                self?.database.child("Users/\(currentEmail)/conversations").observeSingleEvent(of: .value, with: { snapshot in
                     var databaseEntryConversations = [[String: Any]]()
                     let updateValue: [String: Any] = [
                         "date": dateString,
@@ -724,14 +737,14 @@ extension DatabaseManager {
                     }
                     
                                         
-                    self?.database.child("\(currentEmail)/conversations").setValue(databaseEntryConversations, withCompletionBlock: { error, _ in
+                    self?.database.child("Users/\(currentEmail)/conversations").setValue(databaseEntryConversations, withCompletionBlock: { error, _ in
                         guard error == nil else {
                             completion(false)
                             return
                         }
                         
                         //Update latest message for recipient user
-                        self?.database.child("\(otherUserEmail)/conversations").observeSingleEvent(of: .value, with: { snapshot in
+                        self?.database.child("Users/\(otherUserEmail)/conversations").observeSingleEvent(of: .value, with: { snapshot in
                             var databaseEntryConversations = [[String: Any]]()
                             let updateValue: [String: Any] = [
                                 "date": dateString,
@@ -789,7 +802,7 @@ extension DatabaseManager {
                             }
                            
                             
-                            self?.database.child("\(otherUserEmail)/conversations").setValue(databaseEntryConversations, withCompletionBlock: { error, _ in
+                            self?.database.child("Users/\(otherUserEmail)/conversations").setValue(databaseEntryConversations, withCompletionBlock: { error, _ in
                                 guard error == nil else {
                                     completion(false)
                                     return

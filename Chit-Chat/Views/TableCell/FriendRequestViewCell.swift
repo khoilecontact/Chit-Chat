@@ -1,22 +1,24 @@
 //
-//  ChatsViewCell.swift
+//  FriendRequestViewCell.swift
 //  Chit-Chat
 //
-//  Created by Phát Nguyễn on 11/02/2022.
+//  Created by Phát Nguyễn on 19/02/2022.
 //
 
 import Foundation
 import UIKit
+import SDWebImage
 
-final class ChatsViewCell: UITableViewCell {
-    static var identifier = "ChatsCell"
+class FriendRequestViewCell: UITableViewCell {
+    
+    static let identifier = "FriendRequestViewCell"
     
     private let userImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 40
-        imageView.layer.masksToBounds = true
-        return imageView
+        let imgView = UIImageView()
+        imgView.contentMode = .scaleAspectFill
+        imgView.layer.cornerRadius = 40
+        imgView.layer.masksToBounds = true
+        return imgView
     }()
     
     private let userNameLabel: UILabel = {
@@ -25,10 +27,9 @@ final class ChatsViewCell: UITableViewCell {
         return label
     }()
     
-    private let userMessageLabel: UILabel = {
+    private let userEmailLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 19, weight: .regular)
-        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: 18, weight: .regular)
         return label
     }()
     
@@ -36,7 +37,7 @@ final class ChatsViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(userImageView)
         contentView.addSubview(userNameLabel)
-        contentView.addSubview(userMessageLabel)
+        contentView.addSubview(userEmailLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -56,21 +57,21 @@ final class ChatsViewCell: UITableViewCell {
                                      width: contentView.width - 20 - userImageView.width,
                                      height: (contentView.height - 20)/2)
         
-        userMessageLabel.frame = CGRect(x: userImageView.right + 20,
+        userEmailLabel.frame = CGRect(x: userImageView.right + 20,
                                         y: userNameLabel.bottom + 10,
-                                        width: contentView.width - 20 - userImageView.width,
-                                        height: (contentView.height - 20)/2)
+                                     width: contentView.width - 20 - userImageView.width,
+                                     height: (contentView.height - 20)/2)
     }
     
-    // MARK: - Configure Conversations
-    public func configure(with model: MessagesCollection) {
-        userNameLabel.text = model.name
-        userMessageLabel.text = model.latestMessage.text
+    // MARK: - Closure call data
+    public func configure(with model: UserNode) {
+        userNameLabel.text = "\(model.firstName) \(model.lastName)"
+        userEmailLabel.text = model.email
         
-        //        let url = URL(string: "https://github.com/khoilecontact.png?size=400")
-        //        userImageView.sd_setImage(with: url, completed: nil)
+        // call to Storage manager to take img
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: model.email)
         
-        let path = "images/\(model.otherUserEmail)_profile_picture.png"
+        let path = "images/\(safeEmail)_profile_picture.png"
         // call to Storage manager to take img
         StorageManager.shared.downloadUrl(for: path) { [weak self] result in
             guard let strongSelf = self else { return }
@@ -85,4 +86,6 @@ final class ChatsViewCell: UITableViewCell {
             }
         }
     }
+    
 }
+
