@@ -25,6 +25,7 @@ class MeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        personalInfoButton.addTarget(self, action: #selector(personalInfoTapped), for: .touchUpInside)
         logOutButton.addTarget(self, action: #selector(logOutButtonTapped), for: .touchUpInside)
         
         // Get data of user
@@ -70,12 +71,15 @@ class MeViewController: UIViewController {
                         let firstName = userData["first_name"] as? String,
                       let lastName = userData["last_name"] as? String,
                       let id = userData["id"] as? String,
-                      let isMale = userData["is_male"] as? Bool else {
+                      let isMale = userData["is_male"] as? Bool
+//                      ,let province = userData["province"] as? String,
+//                        let district = userData["district"] as? String
+                else {
                           completion(nil)
                           return
                       }
                 
-                let userResult = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: "", isMale: isMale)
+                let userResult = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: "", isMale: isMale, province: "", district: "")
                 completion(userResult)
                 
                 break
@@ -156,6 +160,11 @@ class MeViewController: UIViewController {
         logOutButton.layer.shadowOffset = CGSize(width: 5, height: 5)
         logOutButton.layer.shadowOpacity = 0.3
         logOutButton.layer.shadowRadius = 1
+    }
+    
+    @objc func personalInfoTapped() {
+        let vc = PersonalInformationViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func logOutButtonTapped() {

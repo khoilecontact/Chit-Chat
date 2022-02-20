@@ -169,7 +169,7 @@
         <scene sceneID="sGf-cI-7Jq">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3AN-qv-2pa" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Me" id="jGM-OT-ahD"/>
+                    <tabBarItem key="tabBarItem" title="Me" image="person.fill" catalog="system" id="jGM-OT-ahD"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="73m-Mc-pgt">
@@ -190,6 +190,7 @@
         <image name="moon.circle" catalog="system" width="128" height="121"/>
         <image name="person.2.circle" catalog="system" width="128" height="121"/>
         <image name="person.crop.circle" catalog="system" width="128" height="121"/>
+        <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="rectangle.portrait.and.arrow.right" catalog="system" width="128" height="108"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

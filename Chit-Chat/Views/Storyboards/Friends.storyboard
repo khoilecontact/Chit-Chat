@@ -28,7 +28,7 @@
         <scene sceneID="Zyi-42-UmQ">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0oc-yf-7UA" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Friends" id="iZK-g3-jIc"/>
+                    <tabBarItem key="tabBarItem" title="Friends" image="person.2.fill" catalog="system" id="iZK-g3-jIc"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="hpa-qp-Aw3">
@@ -46,6 +46,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="person.2.fill" catalog="system" width="128" height="80"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

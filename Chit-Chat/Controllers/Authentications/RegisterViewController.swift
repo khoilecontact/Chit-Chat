@@ -21,6 +21,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.clipsToBounds = true
+        scrollView.contentSize = CGSize(width: 320, height: 900)
         return scrollView
     }()
     
@@ -166,6 +167,30 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         return picker
     }()
     
+    let provinceLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Province/City:"
+        label.textColor = Appearance.tint
+        return label
+    }()
+    
+    let provincePicker: UIPickerView = {
+        let picker = UIPickerView()
+        return picker
+    }()
+    
+    let districtLabel: UILabel = {
+        let label = UILabel()
+        label.text = "District:"
+        label.textColor = Appearance.tint
+        return label
+    }()
+    
+    let districtPicker: UIPickerView = {
+        let picker = UIPickerView()
+        return picker
+    }()
+    
     let registerButton: UIButton = {
         let button = UIButton()
         button.setTitle("Sign up", for: .normal)
@@ -201,6 +226,11 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         passwordField.delegate = self
         
         genderPicker.delegate = self
+        genderPicker.dataSource = self
+        provincePicker.delegate = self
+        provincePicker.dataSource = self
+        districtPicker.delegate = self
+        districtPicker.dataSource = self
         
         // Add subview
         view.addSubview(scrollView)
@@ -216,6 +246,10 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         scrollView.addSubview(genderLabel)
         scrollView.addSubview(genderPicker)
         scrollView.addSubview(registerButton)
+        scrollView.addSubview(provinceLabel)
+        scrollView.addSubview(provincePicker)
+        scrollView.addSubview(districtLabel)
+        scrollView.addSubview(districtPicker)
         
         imageView.isUserInteractionEnabled =  true
         
@@ -253,7 +287,15 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         
         genderPicker.frame = CGRect(x: genderLabel.right + 20, y: dobLabel.bottom + 10 , width: scrollView.width - 220, height: 100)
         
-        registerButton.frame = CGRect(x: scrollView.width / 4, y: genderPicker.bottom + 30 , width: scrollView.width - 175, height: 52)
+        provinceLabel.frame = CGRect(x: 25, y: genderLabel.bottom + 25 , width: 250, height: 52)
+        
+        provincePicker.frame = CGRect(x: genderLabel.right + 20, y: genderLabel.bottom + 10 , width: scrollView.width - 220, height: 100)
+        
+        districtLabel.frame = CGRect(x: 25, y: provinceLabel.bottom + 25 , width: 150, height: 52)
+        
+        districtPicker.frame = CGRect(x: genderLabel.right + 20, y: provinceLabel.bottom + 10 , width: scrollView.width - 220, height: 100)
+        
+        registerButton.frame = CGRect(x: scrollView.width / 4, y: districtLabel.bottom + 30 , width: scrollView.width - 175, height: 52)
         
         // Add underlines
         let firstNameFieldBottomLine = CALayer()
@@ -291,6 +333,16 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         genderLabelBottomLine.frame = CGRect(x: 0, y: genderLabel.frame.height - 4, width: genderLabel.frame.width - 1, height: 1)
         genderLabel.layer.addSublayer(genderLabelBottomLine)
         
+        let provinceLabelBottomLine = CALayer()
+        provinceLabelBottomLine.backgroundColor = UIColor.black.cgColor
+        provinceLabelBottomLine.frame = CGRect(x: 0, y: genderLabel.frame.height - 4, width: genderLabel.frame.width - 1, height: 1)
+        provinceLabel.layer.addSublayer(provinceLabelBottomLine)
+
+        let districtLabelBottomLine = CALayer()
+        districtLabelBottomLine.backgroundColor = UIColor.black.cgColor
+        districtLabelBottomLine.frame = CGRect(x: 0, y: genderLabel.frame.height - 4, width: genderLabel.frame.width - 1, height: 1)
+        districtLabel.layer.addSublayer(districtLabelBottomLine)
+
     }
     
     @objc func didTapChangeProfilePicture() {
@@ -389,7 +441,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                     return
                 }
                 
-                let user = User(id: userId, firstName: firstName, lastName: lastName, email: email, dob: dob, isMale: isMale)
+                let user = User(id: userId, firstName: firstName, lastName: lastName, email: email, dob: dob, isMale: isMale, province: "", district: "")
                 
                 DatabaseManager.shared.insertUnverifiedUser(with: user, completion: {success in
                     if success {
@@ -545,15 +597,52 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return genderArr.count
+        // If it is the gender picker
+        if pickerView == genderPicker {
+            return genderArr.count
+        }
+        // If it s the provice picker
+        else if pickerView == provincePicker {
+            return 100
+        }
+        // If it s the district picker
+        else if pickerView == districtPicker {
+            return 100
+        }
+        
+        return 0
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return genderArr[row]
+        // If it is the gender picker
+        if pickerView == genderPicker {
+            return genderArr[row]
+        }
+        // If it s the provice picker
+        else if pickerView == provincePicker {
+            return "province"
+        }
+        // If it s the district picker
+        else if pickerView == districtPicker {
+            return "district"
+        }
+        
+        return "Failed to load"
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedGender = genderArr[row] as String
+        // If it is the gender picker
+        if pickerView == genderPicker {
+            selectedGender = genderArr[row] as String
+        }
+        // If it s the provice picker
+        else if pickerView == provincePicker {
+            
+        }
+        // If it s the district picker
+        else if pickerView == districtPicker {
+            
+        }
     }
     
     

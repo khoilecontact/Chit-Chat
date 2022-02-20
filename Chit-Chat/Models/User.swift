@@ -28,6 +28,8 @@ struct User {
     let email: String
     let dob: String
     let isMale: Bool
+    let province: String
+    let district: String
     let friendRequestList: [UserNode]
     let friendList: [UserNode]
     let blackList: [UserNode]
@@ -37,7 +39,7 @@ struct User {
     
     var profilePictureFileName: String
     
-    init(id: String, firstName: String, lastName: String, email: String, dob: String, isMale: Bool) {
+    init(id: String, firstName: String, lastName: String, email: String, dob: String, isMale: Bool, province: String, district: String) {
         var safeEmailGenerate = email.replacingOccurrences(of: ".", with: ",")
         safeEmailGenerate = safeEmailGenerate.replacingOccurrences(of: "@", with: "-")
 
@@ -48,6 +50,8 @@ struct User {
         self.email = email
         self.dob = dob
         self.isMale = isMale
+        self.province = province
+        self.district = district
         
         self.friendRequestList = []
         self.friendList = []

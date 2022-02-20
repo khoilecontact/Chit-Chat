@@ -28,7 +28,7 @@
         <scene sceneID="hhY-he-6im">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bQ8-fk-PkX" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Chat" id="99H-SN-gas"/>
+                    <tabBarItem key="tabBarItem" title="Chat" image="message.fill" catalog="system" selectedImage="message" id="99H-SN-gas"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ibi-nd-eMb">
@@ -46,6 +46,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="message" catalog="system" width="128" height="113"/>
+        <image name="message.fill" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

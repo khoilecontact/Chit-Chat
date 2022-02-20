@@ -426,7 +426,7 @@ class LoginViewController: UIViewController {
 
             DatabaseManager.shared.userExists(with: email, completion: { exists in
                 if !exists {
-                    let chatUser = User(id: userId, firstName: firstName, lastName: lastName, email: email, dob: "", isMale: true)
+                    let chatUser = User(id: userId, firstName: firstName, lastName: lastName, email: email, dob: "", isMale: true, province: "", district: "")
                     // Insert user to DB
                     DatabaseManager.shared.insertUser(with: chatUser, completion: { success in
                         if success {
@@ -504,7 +504,7 @@ class LoginViewController: UIViewController {
                     
                     DatabaseManager.shared.userExists(with: email, completion: { exist in
                         if !exist {
-                            let chatUser = User(id: uid, firstName: name, lastName: "", email: email, dob: "", isMale: true)
+                            let chatUser = User(id: uid, firstName: name, lastName: "", email: email, dob: "", isMale: true, province: "", district: "")
                             // Insert user to DB
                             DatabaseManager.shared.insertUser(with: chatUser, completion: { success in
                                 if success {
@@ -661,7 +661,7 @@ extension LoginViewController: LoginButtonDelegate {
             UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
 
             DatabaseManager.shared.userExists(with: email, completion: { exists in
-                let chatUser = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: "", isMale: true)
+                let chatUser = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: "", isMale: true, province: "", district: "")
                 if !exists {
                     DatabaseManager.shared.insertUser(with: chatUser, completion: { [weak self] success in
                         if success {
