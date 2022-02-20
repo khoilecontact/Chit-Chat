@@ -40,6 +40,7 @@
 		DA0D67B427C0C7C20016C4AC /* FriendRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0D67B327C0C7C20016C4AC /* FriendRequestViewController.swift */; };
 		DA0D67B627C0C7DF0016C4AC /* FriendRequestViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0D67B527C0C7DF0016C4AC /* FriendRequestViewCell.swift */; };
 		DA25C3C727B252190004FE2B /* FindNewFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA25C3C627B252190004FE2B /* FindNewFriendsViewController.swift */; };
+		DA28940527C2734F00011900 /* ProvincesVN.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA28940427C2734F00011900 /* ProvincesVN.swift */; };
 		DA3B4AD627B3B25C0093E2B3 /* Friends_Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3B4AD527B3B25C0093E2B3 /* Friends_Test.swift */; };
 		DA718D4D27A0F6CA0020B0C9 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D4C27A0F6CA0020B0C9 /* Conversation.swift */; };
 		DA718D4F27A0F6E70020B0C9 /* UserNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */; };
@@ -116,6 +117,7 @@
 		DA0D67B327C0C7C20016C4AC /* FriendRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestViewController.swift; sourceTree = "<group>"; };
 		DA0D67B527C0C7DF0016C4AC /* FriendRequestViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestViewCell.swift; sourceTree = "<group>"; };
 		DA25C3C627B252190004FE2B /* FindNewFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNewFriendsViewController.swift; sourceTree = "<group>"; };
+		DA28940427C2734F00011900 /* ProvincesVN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvincesVN.swift; sourceTree = "<group>"; };
 		DA3B4AD527B3B25C0093E2B3 /* Friends_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friends_Test.swift; sourceTree = "<group>"; };
 		DA718D4C27A0F6CA0020B0C9 /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNetwork.swift; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 		22CCFE3C279FF50B009F7C8A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DA28940327C2728100011900 /* API */,
 				22CCFE3F279FF573009F7C8A /* Extensions.swift */,
 				22714E66277D5D4F0004F942 /* SceneDelegate.swift */,
 				22714E64277D5D4F0004F942 /* AppDelegate.swift */,
@@ -339,6 +342,14 @@
 				5A425F73A41B35F53C7F971F /* Pods_Chit_ChatTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DA28940327C2728100011900 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				DA28940427C2734F00011900 /* ProvincesVN.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 		DA85AF7027BA5BF00005215B /* ViewModels */ = {
@@ -630,6 +641,7 @@
 				DA8C20F827B258EE00C1F35F /* NewFriendsViewCell.swift in Sources */,
 				DAEE3D5D27BC0A6F00334E06 /* LocationPickerViewController.swift in Sources */,
 				DA8C20F627B258A400C1F35F /* FriendsModel.swift in Sources */,
+				DA28940527C2734F00011900 /* ProvincesVN.swift in Sources */,
 				22CCFE42279FF582009F7C8A /* StorageManager.swift in Sources */,
 				22CCFE46279FF59C009F7C8A /* User.swift in Sources */,
 				DA718D4F27A0F6E70020B0C9 /* UserNetwork.swift in Sources */,
