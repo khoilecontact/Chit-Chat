@@ -11,10 +11,21 @@ import FirebaseDatabase
 import JGProgressHUD
 
 class RegisterViewController: UIViewController, UINavigationControllerDelegate {
+    public static var shared = RegisterViewController()
     var showingAlert = false
     var alertMessage = ""
     var genderArr = ["Male", "Female"]
     var selectedGender = "Male"
+    public static var selectedProvince: String = city[0] {
+        didSet {
+            DispatchQueue.main.async {
+                RegisterViewController.shared.provinceButton.setTitle(selectedProvince, for: .normal)
+                print(selectedProvince)
+            }
+        }
+    }
+    var selectedProvinceIndex = 0
+    var selectedDistrict = ""
     
     private let spinner = JGProgressHUD(style: .dark)
     
@@ -174,9 +185,18 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         return label
     }()
     
-    let provincePicker: UIPickerView = {
-        let picker = UIPickerView()
-        return picker
+    let provinceButton: UIButton = {
+        let button = UIButton()
+        button.setTitle(selectedProvince, for: .normal)
+        button.setTitleColor(Appearance.tint, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15, weight: .regular)
+
+        button.layer.cornerRadius = 12
+        button.layer.borderWidth = 1
+        button.layer.borderColor = Appearance.tint.cgColor
+        button.backgroundColor = .systemBackground
+        
+        return button
     }()
     
     let districtLabel: UILabel = {
@@ -220,6 +240,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign up", style: .done, target: self, action: #selector(registerButtonTapped))
         
+        provinceButton.addTarget(self, action: #selector(provinceTapped), for: .touchUpInside)
         registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
         
         emailField.delegate = self
@@ -227,8 +248,6 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         
         genderPicker.delegate = self
         genderPicker.dataSource = self
-        provincePicker.delegate = self
-        provincePicker.dataSource = self
         districtPicker.delegate = self
         districtPicker.dataSource = self
         
@@ -247,7 +266,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         scrollView.addSubview(genderPicker)
         scrollView.addSubview(registerButton)
         scrollView.addSubview(provinceLabel)
-        scrollView.addSubview(provincePicker)
+        scrollView.addSubview(provinceButton)
         scrollView.addSubview(districtLabel)
         scrollView.addSubview(districtPicker)
         
@@ -289,7 +308,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         
         provinceLabel.frame = CGRect(x: 25, y: genderLabel.bottom + 25 , width: 250, height: 52)
         
-        provincePicker.frame = CGRect(x: genderLabel.right + 20, y: genderLabel.bottom + 10 , width: scrollView.width - 220, height: 100)
+        provinceButton.frame = CGRect(x: genderLabel.right + 20, y: genderLabel.bottom + 30, width: scrollView.width - 220, height: 35)
         
         districtLabel.frame = CGRect(x: 25, y: provinceLabel.bottom + 25 , width: 150, height: 52)
         
@@ -347,6 +366,22 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
     
     @objc func didTapChangeProfilePicture() {
         presentPhotoActionSheet()
+    }
+    
+    @objc func provinceTapped() {
+        let vc = PopUpProvinceViewController()
+        vc.modalPresentationStyle = .popover
+        
+        vc.preferredContentSize = CGSize(width: 320, height: 210)
+        
+        let ppc = vc.popoverPresentationController
+        ppc?.permittedArrowDirections = .any
+        ppc?.delegate = self
+        ppc?.sourceView = provinceButton
+        
+        //ppc?.barButtonItem = navigationItem.rightBarButtonItem
+        
+        self.present(vc, animated: true, completion: nil)
     }
     
     @objc func registerButtonTapped() {
@@ -585,7 +620,6 @@ extension RegisterViewController: UIImagePickerControllerDelegate {
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
-        
     }
     
 }
@@ -602,12 +636,12 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
             return genderArr.count
         }
         // If it s the provice picker
-        else if pickerView == provincePicker {
-            return 100
+        else if pickerView == provinceButton {
+            return city.count
         }
         // If it s the district picker
         else if pickerView == districtPicker {
-            return 100
+            return districts[selectedProvinceIndex + 1].count
         }
         
         return 0
@@ -619,12 +653,12 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
             return genderArr[row]
         }
         // If it s the provice picker
-        else if pickerView == provincePicker {
-            return "province"
+        else if pickerView == provinceButton {
+            return city[row]
         }
         // If it s the district picker
         else if pickerView == districtPicker {
-            return "district"
+            return districts[selectedProvinceIndex + 1][row]
         }
         
         return "Failed to load"
@@ -636,15 +670,19 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
             selectedGender = genderArr[row] as String
         }
         // If it s the provice picker
-        else if pickerView == provincePicker {
-            
+        else if pickerView == provinceButton {
         }
         // If it s the district picker
         else if pickerView == districtPicker {
-            
+            selectedDistrict = districts[selectedProvinceIndex + 1][row] as String
         }
     }
     
     
 }
 
+extension RegisterViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+           return .none
+       }
+}

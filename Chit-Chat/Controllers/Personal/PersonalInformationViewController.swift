@@ -191,6 +191,8 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         
         view.backgroundColor = .systemBackground
         
+        changePasswordButton.addTarget(self, action: #selector(didTapChangePassword), for: .touchUpInside)
+        
         // UIPickerViews delegate
         genderPicker.delegate = self
         genderPicker.dataSource = self
@@ -261,6 +263,11 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
     
     @objc func didTapChangeProfilePicture() {
         presentPhotoActionSheet()
+    }
+    
+    @objc func didTapChangePassword() {
+        let vc = ChangePasswordViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
