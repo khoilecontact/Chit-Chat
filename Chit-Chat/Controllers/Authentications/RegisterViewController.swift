@@ -16,14 +16,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
     var alertMessage = ""
     var genderArr = ["Male", "Female"]
     var selectedGender = "Male"
-    public static var selectedProvince: String = city[0] {
-        didSet {
-            DispatchQueue.main.async {
-                RegisterViewController.shared.provinceButton.setTitle(selectedProvince, for: .normal)
-                print(selectedProvince)
-            }
-        }
-    }
+    var selectedProvince: String = city[0]
     var selectedProvinceIndex = 0
     var selectedDistrict = ""
     
@@ -187,7 +180,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
     
     let provinceButton: UIButton = {
         let button = UIButton()
-        button.setTitle(selectedProvince, for: .normal)
+        button.setTitle("none", for: .normal)
         button.setTitleColor(Appearance.tint, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15, weight: .regular)
 
@@ -230,6 +223,9 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         return button
     }()
     
+    // Pop up
+    let provincePickerView = UIPickerView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 10,height: UIScreen.main.bounds.height / 2))
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -246,6 +242,8 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         emailField.delegate = self
         passwordField.delegate = self
         
+        provincePickerView.dataSource = self
+        provincePickerView.delegate = self
         genderPicker.delegate = self
         genderPicker.dataSource = self
         districtPicker.delegate = self
@@ -369,19 +367,31 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     @objc func provinceTapped() {
-        let vc = PopUpProvinceViewController()
-        vc.modalPresentationStyle = .popover
+        let vc = UIViewController()
+        let screenWidth = UIScreen.main.bounds.width - 10
+        let screenHeight = UIScreen.main.bounds.height / 2
+        vc.preferredContentSize = CGSize(width: screenWidth, height: screenHeight)
         
-        vc.preferredContentSize = CGSize(width: 320, height: 210)
         
-        let ppc = vc.popoverPresentationController
-        ppc?.permittedArrowDirections = .any
-        ppc?.delegate = self
-        ppc?.sourceView = provinceButton
+        provincePickerView.selectRow(selectedProvinceIndex, inComponent: 0, animated: false)
+        vc.view.addSubview(provincePickerView)
+        provincePickerView.centerXAnchor.constraint(equalTo: vc.view.centerXAnchor).isActive = true
+        provincePickerView.centerYAnchor.constraint(equalTo: vc.view.centerYAnchor).isActive = true
+        let alert = UIAlertController(title: "Select Province/City", message: "",
+            preferredStyle: .actionSheet)
+                                                                    
+        alert.popoverPresentationController?.sourceView = provincePickerView
+        alert.popoverPresentationController?.sourceRect = provincePickerView.bounds
+        alert.setValue(vc, forKey: "contentViewController")
         
-        //ppc?.barButtonItem = navigationItem.rightBarButtonItem
+        alert.addAction(UIAlertAction(title: "Select", style: .default, handler: {
+            (UIAlertAction) in
+            self.selectedProvinceIndex = self.provincePickerView.selectedRow(inComponent: 0)
+            self.selectedProvince = city[self.selectedProvinceIndex]
+            self.provinceButton.setTitle(self.selectedProvince, for: .normal)
+        }))
         
-        self.present(vc, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     @objc func registerButtonTapped() {
@@ -636,12 +646,12 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
             return genderArr.count
         }
         // If it s the provice picker
-        else if pickerView == provinceButton {
-            return city.count
-        }
-        // If it s the district picker
         else if pickerView == districtPicker {
             return districts[selectedProvinceIndex + 1].count
+        }
+        // If it s the district picker
+        else if pickerView == provincePickerView {
+            return city.count
         }
         
         return 0
@@ -652,16 +662,16 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         if pickerView == genderPicker {
             return genderArr[row]
         }
-        // If it s the provice picker
-        else if pickerView == provinceButton {
-            return city[row]
-        }
         // If it s the district picker
         else if pickerView == districtPicker {
             return districts[selectedProvinceIndex + 1][row]
         }
+        // If it s the provice picker
+        else if pickerView == provincePickerView {
+            return city[row]
+        }
         
-        return "Failed to load"
+        return "none"
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -669,13 +679,14 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         if pickerView == genderPicker {
             selectedGender = genderArr[row] as String
         }
-        // If it s the provice picker
-        else if pickerView == provinceButton {
-        }
         // If it s the district picker
         else if pickerView == districtPicker {
             selectedDistrict = districts[selectedProvinceIndex + 1][row] as String
         }
+        // If it s the provice picker
+        else if pickerView == provincePickerView{
+        }
+        
     }
     
     
