@@ -370,7 +370,7 @@ extension DatabaseManager {
             }
             
             let messageDate = firstMessage.sentDate
-            let dateString = ConversationViewController.dateFormatter.string(from: messageDate)
+            let dateString = messageDate.toString(dateFormat: "dd/MM/YY")
             let conversationId =  firstMessage.messageId
             
             let newConversationData: [String: Any] = [
@@ -476,7 +476,7 @@ extension DatabaseManager {
         }
         
         let messageDate = firstMessage.sentDate
-        let dateString = ConversationViewController.dateFormatter.string(from: messageDate)
+        let dateString = messageDate.toString(dateFormat: "dd/MM/YY")
         
         guard let myEmail = UserDefaults.standard.value(forKey: "email") else {
             return
@@ -562,7 +562,7 @@ extension DatabaseManager {
                       let senderEmail = dictionary["sender_email"] as? String,
                       let dateString = dictionary["date"] as? String,
                       let type = dictionary["type"] as? String,
-                      let date = ConversationViewController.dateFormatter.date(from: dateString)
+                      let date = dateFormatter.date(from: dateString)
                       else {
                     print("A value is wrong")
                     return nil
@@ -659,7 +659,7 @@ extension DatabaseManager {
             }
             
             let messageDate = newMessage.sentDate
-            let dateString = ConversationViewController.dateFormatter.string(from: messageDate)
+            let dateString = messageDate.toString(dateFormat: "dd/MM/YY")
             //let conversationId =  newMessage.messageId
             
             guard let myEmail = UserDefaults.standard.value(forKey: "email") else {
