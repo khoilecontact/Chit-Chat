@@ -906,7 +906,7 @@ extension DatabaseManager {
         })
     }
     
-    public func sendFriendRequest(with otherUserEmail: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+    public func sendFriendRequest(with otherUser: UserNode, completion: @escaping (Result<Bool, Error>) -> Void) {
         guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else {
             completion(.failure(DatabaseError.failedToFind))
             return
@@ -928,7 +928,8 @@ extension DatabaseManager {
                   let dob = value["dob"] as? String?,
                   let bio = value["bio"] as? String?,
                   let id = value["id"] as? String,
-                  let isMale = value["is_male"] as? Bool
+                  let isMale = value["is_male"] as? Bool,
+                  var sentFriendRequest = value["sent_friend_request"] as? [[String: Any]]
             else {
                 return
             }
@@ -943,7 +944,26 @@ extension DatabaseManager {
                 "is_male": isMale
             ]
             
-            let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUserEmail)
+            let myFriendRequest: [String: Any] = [
+                "email": otherUser.email,
+                "fist_name": otherUser.firstName,
+                "last_name": otherUser.lastName,
+                "dob": otherUser.dob,
+                "bio": otherUser.bio,
+                "id": otherUser.id,
+                "is_male": otherUser.isMale
+            ]
+            
+            sentFriendRequest.append(myFriendRequest)
+            
+            strongSelf.database.child("Users/\(safeEmail)/sent_friend_request").setValue(sentFriendRequest) { error, _ in
+                guard error == nil else {
+                    completion(.failure(DatabaseError.failedToFetch))
+                    return
+                }
+            }
+            
+            let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
             strongSelf.database.child("Users/\(otherSafeEmail)/friend_request_list").observe(.value) { snapshot in
                 if var currentRequestList = snapshot.value as? [[String: Any]] {
                     
@@ -956,12 +976,76 @@ extension DatabaseManager {
                         }
                         
                         completion(.success(true))
+                        return
                     }
                 }
                 
                 completion(.failure(DatabaseError.failedToFetch))
+                return
             }
         })
+    }
+    
+    func acceptedFriendRequest(with otherUser: UserNode, completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            completion(.failure(DatabaseError.failedToFind))
+            return
+        }
+        
+        /// move from my frequest_list -> my friend_list && move from other's sentRequest_list -> other's friend_list
+        
+        let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
+        let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
+        
+        database.child("Users/\(mySafeEmail)").observe(.value) { [weak self] snapshot in
+            guard let strongSelf = self else { return }
+            
+            guard let value = snapshot.value as? [String: Any] else {
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            
+            guard let email = value["email"] as? String,
+                  let firstName = value["first_name"] as? String,
+                  let lastName = value["last_name"] as? String,
+                  let dob = value["dob"] as? String?,
+                  let bio = value["bio"] as? String?,
+                  let id = value["id"] as? String,
+                  let isMale = value["is_male"] as? Bool,
+                  var friendList = value["friend_list"] as? [[String: Any]],
+                  var friendRequestList = value["friend_request_list"] as? [[String: Any]]
+            else {
+                print("Failed to fetch current user profile")
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            
+            // find and move rhe user handling to friend table
+            
+            strongSelf.database.child("Users/\(otherSafeEmail)").observe(.value) { snapshot in
+                // request sender
+                guard let otherValue = snapshot.value as? [String: Any] else {
+                    print("Failed to fetch sender profile")
+                    completion(.failure(DatabaseError.failedToFetch))
+                    return
+                }
+                
+                guard let otherfriendList = otherValue["friend_list"] as? [[String: Any]],
+                      let otherSentFriendRequestList = otherValue["sent_friend_request"] as? [[String: Any]]
+                else {
+                    print("Invalid data type")
+                    completion(.failure(DatabaseError.failedToFetch))
+                    return
+                }
+                
+                // find and move the user handling from sentRequest to friend table
+                
+            }
+        }
+    }
+    
+    func deniedFriendRequest() {
         
     }
+    
 }

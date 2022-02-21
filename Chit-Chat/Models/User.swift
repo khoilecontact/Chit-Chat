@@ -31,6 +31,7 @@ struct User {
     let province: String
     let district: String
     let friendRequestList: [UserNode]
+    let sentfriendRequestList: [UserNode]
     let friendList: [UserNode]
     let blackList: [UserNode]
     let conversations: [MessagesCollection]
@@ -54,6 +55,7 @@ struct User {
         self.district = district
         
         self.friendRequestList = []
+        self.sentfriendRequestList = []
         self.friendList = []
         self.blackList = []
         self.conversations = []
