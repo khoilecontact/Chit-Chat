@@ -986,7 +986,7 @@ extension DatabaseManager {
         })
     }
     
-    func acceptedFriendRequest(with otherUser: UserNode, completion: @escaping (Result<Bool, Error>) -> Void) {
+    func acceptFriendRequest(with otherUser: UserNode, completion: @escaping (Result<Bool, Error>) -> Void) {
         guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else {
             completion(.failure(DatabaseError.failedToFind))
             return
@@ -1021,7 +1021,30 @@ extension DatabaseManager {
             }
             
             // find and move rhe user handling to friend table
+            let request: [[String: Any]] = friendRequestList.filter({
+                guard let email = $0["email"] as? String else { return false }
+                
+                return email.hasPrefix(otherUser.email)
+            })
             
+            friendRequestList.removeAll(where: { request[0] as NSDictionary == $0 as NSDictionary })
+            friendList.append(request[0])
+            
+            strongSelf.database.child("Users/\(mySafeEmail)/friend_request_list").setValue(friendRequestList, withCompletionBlock: { error, _ in
+                guard error == nil else {
+                    completion(.failure(DatabaseError.failedToFetch))
+                    return
+                }
+                
+                strongSelf.database.child("Users/\(mySafeEmail)/friend_list").setValue(friendList) { error, _ in
+                    guard error == nil else {
+                        completion(.failure(DatabaseError.failedToFetch))
+                        return
+                    }
+                }
+            })
+            
+            // request sender
             strongSelf.database.child("Users/\(otherSafeEmail)").observe(.value) { snapshot in
                 // request sender
                 guard let otherValue = snapshot.value as? [String: Any] else {
@@ -1030,8 +1053,8 @@ extension DatabaseManager {
                     return
                 }
                 
-                guard let otherfriendList = otherValue["friend_list"] as? [[String: Any]],
-                      let otherSentFriendRequestList = otherValue["sent_friend_request"] as? [[String: Any]]
+                guard var otherfriendList = otherValue["friend_list"] as? [[String: Any]],
+                      var otherSentFriendRequestList = otherValue["sent_friend_request"] as? [[String: Any]]
                 else {
                     print("Invalid data type")
                     completion(.failure(DatabaseError.failedToFetch))
@@ -1039,13 +1062,120 @@ extension DatabaseManager {
                 }
                 
                 // find and move the user handling from sentRequest to friend table
+                let otherRequest: [[String: Any]] = otherSentFriendRequestList.filter({
+                    guard let email = $0["email"] as? String else { return false }
+                    
+                    return email.hasPrefix(myEmail)
+                })
+                
+                otherSentFriendRequestList.removeAll(where: { request[0] as NSDictionary == $0 as NSDictionary })
+                otherfriendList.append(request[0])
+                
+                strongSelf.database.child("Users/\(otherSafeEmail)/sent_friend_request").setValue(otherSentFriendRequestList, withCompletionBlock: { error, _ in
+                    guard error == nil else {
+                        completion(.failure(DatabaseError.failedToFetch))
+                        return
+                    }
+                    
+                    strongSelf.database.child("Users/\(otherSafeEmail)/friend_list").setValue(otherfriendList) { error, _ in
+                        guard error == nil else {
+                            completion(.failure(DatabaseError.failedToFetch))
+                            return
+                        }
+                    }
+                })
+
+                
                 
             }
         }
     }
     
-    func deniedFriendRequest() {
+    func deniesFriendRequest(with otherUser: UserNode, completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            completion(.failure(DatabaseError.failedToFind))
+            return
+        }
         
+        /// move from my frequest_list -> my friend_list && move from other's sentRequest_list -> other's friend_list
+        
+        let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
+        let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
+        
+        database.child("Users/\(mySafeEmail)").observe(.value) { [weak self] snapshot in
+            guard let strongSelf = self else { return }
+            
+            guard let value = snapshot.value as? [String: Any] else {
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            
+            guard let email = value["email"] as? String,
+                  let firstName = value["first_name"] as? String,
+                  let lastName = value["last_name"] as? String,
+                  let dob = value["dob"] as? String?,
+                  let bio = value["bio"] as? String?,
+                  let id = value["id"] as? String,
+                  let isMale = value["is_male"] as? Bool,
+                  var friendRequestList = value["friend_request_list"] as? [[String: Any]]
+            else {
+                print("Failed to fetch current user profile")
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            
+            // find and move rhe user handling to friend table
+            let request: [[String: Any]] = friendRequestList.filter({
+                guard let email = $0["email"] as? String else { return false }
+                
+                return email.hasPrefix(otherUser.email)
+            })
+            
+            friendRequestList.removeAll(where: { request[0] as NSDictionary == $0 as NSDictionary })
+            
+            strongSelf.database.child("Users/\(mySafeEmail)/friend_request_list").setValue(friendRequestList, withCompletionBlock: { error, _ in
+                guard error == nil else {
+                    completion(.failure(DatabaseError.failedToFetch))
+                    return
+                }
+            })
+            
+            // request sender
+            strongSelf.database.child("Users/\(otherSafeEmail)").observe(.value) { snapshot in
+                // request sender
+                guard let otherValue = snapshot.value as? [String: Any] else {
+                    print("Failed to fetch sender profile")
+                    completion(.failure(DatabaseError.failedToFetch))
+                    return
+                }
+                
+                guard var otherSentFriendRequestList = otherValue["sent_friend_request"] as? [[String: Any]]
+                else {
+                    print("Invalid data type")
+                    completion(.failure(DatabaseError.failedToFetch))
+                    return
+                }
+                
+                // find and move the user handling from sentRequest to friend table
+                let otherRequest: [[String: Any]] = otherSentFriendRequestList.filter({
+                    guard let email = $0["email"] as? String else { return false }
+                    
+                    return email.hasPrefix(myEmail)
+                })
+                
+                otherSentFriendRequestList.removeAll(where: { request[0] as NSDictionary == $0 as NSDictionary })
+                
+                strongSelf.database.child("Users/\(otherSafeEmail)/sent_friend_request").setValue(otherSentFriendRequestList, withCompletionBlock: { error, _ in
+                    guard error == nil else {
+                        completion(.failure(DatabaseError.failedToFetch))
+                        return
+                    }
+                })
+                
+                
+                
+            }
+        }
     }
     
 }

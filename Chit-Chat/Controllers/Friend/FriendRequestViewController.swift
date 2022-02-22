@@ -143,6 +143,69 @@ class FriendRequestViewController: UIViewController {
         }
     }
     
+    func acceptRequest(with user: UserNode) {
+        DatabaseManager.shared.acceptFriendRequest(with: user) { [weak self] result in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            switch result {
+            case .success(let finished):
+                if finished {
+                    // remove from variable
+                    strongSelf.users.removeAll(where: {
+                        guard let email = $0["email"] as? String else { return false }
+                        
+                        return email == user.email
+                    })
+                    
+                    DispatchQueue.main.async {
+                        strongSelf.tableView.reloadData()
+                    }
+                }
+                else {
+                    print("Failed to finish accept request")
+                    break
+                }
+                
+            case .failure(let error):
+                print("Failed to accept request: \(error)")
+            }
+        }
+    }
+    
+    func deniesRequest(with user: UserNode) {
+        DatabaseManager.shared.deniesFriendRequest(with: user) { [weak self] result in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            switch result {
+            case .success(let finished):
+                if finished {
+                    strongSelf.users.removeAll(where: {
+                        guard let email = $0["email"] as? String else { return false }
+                        
+                        return email == user.email
+                    })
+                    
+                    DispatchQueue.main.async {
+                        strongSelf.tableView.reloadData()
+                    }
+                    // remove from variable
+                    strongSelf.tableView.reloadData()
+                }
+                else {
+                    print("Failed to finish denies request")
+                    break
+                }
+                
+            case .failure(let error):
+                print("Failed to denies request: \(error)")
+            }
+        }
+    }
+    
     @objc private func dismissSelf() {
         dismiss(animated: true, completion: nil)
     }
