@@ -85,7 +85,9 @@ extension DatabaseManager {
             "bio" : user.bio,
             "email" : user.email,
             "dob" : user.dob,
-            "is_male" : user.isMale
+            "is_male" : user.isMale,
+            "province" : user.province,
+            "district" : user.district,
         ], withCompletionBlock: { [weak self] error, datareference in
             guard error ==  nil else {
                 print("Failed to write to database")
@@ -104,6 +106,8 @@ extension DatabaseManager {
                         "bio" : user.bio,
                         "dob" : user.dob,
                         "is_male" : user.isMale,
+                        "province" : user.province,
+                        "district" : user.district,
                     ]
                     
                     usersCollection.append(newElement)
@@ -126,6 +130,8 @@ extension DatabaseManager {
                             "bio" : user.bio,
                             "dob" : user.dob,
                             "is_male" : user.isMale,
+                            "province" : user.province,
+                            "district" : user.district,
                         ]
                     ]
                     self?.database.child("Users_list").setValue(newCollection, withCompletionBlock: { error, _ in
@@ -153,7 +159,9 @@ extension DatabaseManager {
             "bio" : user.bio,
             "email" : user.email,
             "dob" : user.dob,
-            "is_male" : user.isMale
+            "is_male" : user.isMale,
+            "province" : user.province,
+            "district" : user.district,
         ], withCompletionBlock: { error, datareference in
             guard error ==  nil else {
                 print("Failed to write to database")
@@ -178,7 +186,10 @@ extension DatabaseManager {
                   let firstName = data["first_name"] as? String,
                   let lastName = data["last_name"] as? String,
                   let dob = data["dob"] as? String,
-                  let isMale = data["is_male"] as? Bool else {
+                  let isMale = data["is_male"] as? Bool,
+                  let province = data["province"] as? String,
+                  let district = data["district"] as? String
+            else {
                       completion(false)
                       return
                   }
@@ -192,7 +203,9 @@ extension DatabaseManager {
                 "bio" : "",
                 "email" : email,
                 "dob" : dob,
-                "is_male" : isMale
+                "is_male" : isMale,
+                "province" : province,
+                "district" : district,
             ], withCompletionBlock: { [weak self] error, datareference in
                 guard error ==  nil else {
                     print("Failed to write to database")
@@ -206,11 +219,14 @@ extension DatabaseManager {
                         //append to user dictionary
                         let newElement: [String: Any] = [
                             "id" : id,
-                            "name": firstName + " " + lastName,
+                            "first_name": firstName,
+                            "last_name" : lastName,
                             "email": email,
                             "bio" : "",
                             "dob" : dob,
                             "is_male" : isMale,
+                            "province" : province,
+                            "district" : district,
                         ]
                         
                         usersCollection.append(newElement)
@@ -232,11 +248,14 @@ extension DatabaseManager {
                         let newCollection: [[String: Any]] = [
                             [
                                 "id" : id,
-                                "name": firstName + " " + lastName,
+                                "first_name": firstName,
+                                "last_name" : lastName,
                                 "email": email,
                                 "bio" : "",
                                 "dob" : dob,
                                 "is_male" : isMale,
+                                "province" : province,
+                                "district" : district,
                             ]
                         ]
                         self?.database.child("Users_list").setValue(newCollection, withCompletionBlock: { error, _ in

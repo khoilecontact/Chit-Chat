@@ -15,6 +15,10 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
     var alertMessage = ""
     var genderArr = ["Male", "Female"]
     var selectedGender = "Male"
+    var selectedProvince = ""
+    var selectedProvinceIndex = 0
+    var selectedDistrict = ""
+    var currentUser = User(id: "", firstName: "", lastName: "", email: "", dob: "", isMale: true, province: "", district: "")
     
     private let spinner = JGProgressHUD(style: .dark)
     
@@ -128,9 +132,18 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         return label
     }()
     
-    let provincePicker: UIPickerView = {
-        let picker = UIPickerView()
-        return picker
+    let provinceButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("none", for: .normal)
+        button.setTitleColor(Appearance.tint, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15, weight: .regular)
+
+        button.layer.cornerRadius = 12
+        button.layer.borderWidth = 1
+        button.layer.borderColor = Appearance.tint.cgColor
+        button.backgroundColor = .systemBackground
+        
+        return button
     }()
     
     let districtLabel: UILabel = {
@@ -140,9 +153,17 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         return label
     }()
     
-    let districtPicker: UIPickerView = {
-        let picker = UIPickerView()
-        return picker
+    let districtButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("none", for: .normal)
+        button.setTitleColor(Appearance.tint, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15, weight: .regular)
+
+        button.layer.cornerRadius = 12
+        button.layer.borderWidth = 1
+        button.layer.borderColor = Appearance.tint.cgColor
+        button.backgroundColor = .systemBackground
+        return button
     }()
     
     let changePasswordButton: UIButton = {
@@ -184,6 +205,12 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         return button
     }()
     
+    // Pop up
+    let provincePickerView = UIPickerView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 10,height: UIScreen.main.bounds.height / 2))
+    
+    let districtPicker = UIPickerView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 10,height: UIScreen.main.bounds.height / 2))
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -191,13 +218,16 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         
         view.backgroundColor = .systemBackground
         
+        provinceButton.addTarget(self, action: #selector(provinceTapped), for: .touchUpInside)
+        districtButton.addTarget(self, action: #selector(districtTapped), for: .touchUpInside)
         changePasswordButton.addTarget(self, action: #selector(didTapChangePassword), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
         
         // UIPickerViews delegate
         genderPicker.delegate = self
         genderPicker.dataSource = self
-        provincePicker.delegate = self
-        provincePicker.dataSource = self
+        provincePickerView.delegate = self
+        provincePickerView.dataSource = self
         districtPicker.delegate = self
         districtPicker.dataSource = self
         
@@ -212,9 +242,9 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         scrollView.addSubview(genderLabel)
         scrollView.addSubview(genderPicker)
         scrollView.addSubview(provinceLabel)
-        scrollView.addSubview(provincePicker)
+        scrollView.addSubview(provinceButton)
         scrollView.addSubview(districtLabel)
-        scrollView.addSubview(districtPicker)
+        scrollView.addSubview(districtButton)
         scrollView.addSubview(changePasswordButton)
         scrollView.addSubview(saveButton)
         
@@ -250,24 +280,165 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         
         provinceLabel.frame = CGRect(x: 25, y: genderLabel.bottom + 25 , width: 250, height: 52)
         
-        provincePicker.frame = CGRect(x: genderLabel.right + 20, y: genderLabel.bottom + 10 , width: scrollView.width - 220, height: 100)
+        provinceButton.frame = CGRect(x: genderLabel.right + 20, y: genderLabel.bottom + 30 , width: scrollView.width - 220, height: 35)
         
         districtLabel.frame = CGRect(x: 25, y: provinceLabel.bottom + 25 , width: 150, height: 52)
         
-        districtPicker.frame = CGRect(x: genderLabel.right + 20, y: provinceLabel.bottom + 10 , width: scrollView.width - 220, height: 100)
+        districtButton.frame = CGRect(x: genderLabel.right + 20, y: provinceLabel.bottom + 30 , width: scrollView.width - 220, height: 35)
         
         changePasswordButton.frame = CGRect(x: 20, y: districtLabel.bottom + 40, width: scrollView.width - 120, height: 40)
         
         saveButton.frame = CGRect(x: 30, y: changePasswordButton.bottom + 30, width: scrollView.width - 60, height: 52)
     }
     
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+        
+        DatabaseManager.shared.getDataFor(path: safeEmail, completion: { [weak self] result in
+            switch result {
+            case .success(let data):
+                guard let userData = data as? [String: Any],
+                        let firstName = userData["first_name"] as? String,
+                      let lastName = userData["last_name"] as? String,
+                      let bio = userData["bio"] as? String,
+                      let id = userData["id"] as? String,
+                      let isMale = userData["is_male"] as? Bool,
+                      let province = userData["province"] as? String,
+                        let district = userData["district"] as? String
+                else {
+                          return
+                      }
+                
+                self?.currentUser = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: "", isMale: isMale, province: "", district: "")
+                self?.firstNameField.text = firstName
+                self?.lastNameField.text = lastName
+                self?.bioField.text = bio
+                
+                let provinceIndex = city.firstIndex(of: province)
+                self?.provincePickerView.selectRow(provinceIndex ?? 0, inComponent: 0, animated: false)
+                self?.provinceButton.setTitle(province, for: .normal)
+                
+                let districtIndex = districts[provinceIndex ?? 0].firstIndex(of: district)
+                self?.districtPicker.selectRow(districtIndex ?? 0, inComponent: 0, animated: false)
+                self?.districtButton.setTitle(district, for: .normal)
+                self?.districtPicker.reloadAllComponents()
+                
+                break
+            case .failure(let error):
+                print("Error in getting user info: \(error)")
+                break
+            }
+        })
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     @objc func didTapChangeProfilePicture() {
         presentPhotoActionSheet()
+    }
+    
+    @objc func provinceTapped() {
+        let vc = UIViewController()
+        let screenWidth = UIScreen.main.bounds.width - 10
+        let screenHeight = UIScreen.main.bounds.height / 2
+        vc.preferredContentSize = CGSize(width: screenWidth, height: screenHeight)
+        
+        
+        provincePickerView.selectRow(selectedProvinceIndex, inComponent: 0, animated: false)
+        vc.view.addSubview(provincePickerView)
+        provincePickerView.centerXAnchor.constraint(equalTo: vc.view.centerXAnchor).isActive = true
+        provincePickerView.centerYAnchor.constraint(equalTo: vc.view.centerYAnchor).isActive = true
+        let alert = UIAlertController(title: "Select Province/City", message: "",
+            preferredStyle: .actionSheet)
+                                                                    
+        alert.popoverPresentationController?.sourceView = provincePickerView
+        alert.popoverPresentationController?.sourceRect = provincePickerView.bounds
+        alert.setValue(vc, forKey: "contentViewController")
+        
+        alert.addAction(UIAlertAction(title: "Select", style: .default, handler: {
+            (UIAlertAction) in
+            self.selectedProvinceIndex = self.provincePickerView.selectedRow(inComponent: 0)
+            self.selectedProvince = city[self.selectedProvinceIndex]
+            self.provinceButton.setTitle(self.selectedProvince, for: .normal)
+            
+            DispatchQueue.main.async {
+                self.districtPicker.reloadAllComponents()
+            }
+            
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func districtTapped() {
+        let vc = UIViewController()
+        let screenWidth = UIScreen.main.bounds.width - 10
+        let screenHeight = UIScreen.main.bounds.height / 2
+        vc.preferredContentSize = CGSize(width: screenWidth, height: screenHeight)
+        
+        
+        districtPicker.selectRow(0, inComponent: 0, animated: false)
+        vc.view.addSubview(districtPicker)
+        districtPicker.centerXAnchor.constraint(equalTo: vc.view.centerXAnchor).isActive = true
+        districtPicker.centerYAnchor.constraint(equalTo: vc.view.centerYAnchor).isActive = true
+        let alert = UIAlertController(title: "Select Province/City", message: "",
+            preferredStyle: .actionSheet)
+                                                                    
+        alert.popoverPresentationController?.sourceView = districtPicker
+        alert.popoverPresentationController?.sourceRect = districtPicker.bounds
+        alert.setValue(vc, forKey: "contentViewController")
+        
+        alert.addAction(UIAlertAction(title: "Select", style: .default, handler: {
+            (UIAlertAction) in
+            self.selectedDistrict = districts[self.selectedProvinceIndex][self.districtPicker.selectedRow(inComponent: 0)]
+            self.districtButton.setTitle(self.selectedDistrict, for: .normal)
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     @objc func didTapChangePassword() {
         let vc = ChangePasswordViewController()
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func didTapSave() {
+        firstNameField.resignFirstResponder()
+        lastNameField.resignFirstResponder()
+        bioField.resignFirstResponder()
+        
+        let isValid = validate()
+        
+        if !isValid {
+            alertUserLoginError()
+        }
+    }
+    
+    func validate() -> Bool {
+        guard let firstName = firstNameField.text, !firstName.isEmpty else {
+            showingAlert = true
+            alertMessage = "Please enter your Firstname"
+            return false
+        }
+        
+        guard let lastName = lastNameField.text, !lastName.isEmpty else {
+            showingAlert = true
+            alertMessage = "Please enter your Lastname"
+            return false
+        }
+        
+        return true
+    }
+    
+    func alertUserLoginError() {
+        let alert = UIAlertController(title: "Opps!", message: alertMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel))
+        present(alert, animated: true)
     }
 }
 
@@ -326,12 +497,12 @@ extension PersonalInformationViewController: UIPickerViewDelegate, UIPickerViewD
             return genderArr.count
         }
         // If it s the provice picker
-        else if pickerView == provincePicker {
-            return 100
+        else if pickerView == districtPicker {
+            return districts[selectedProvinceIndex].count
         }
         // If it s the district picker
-        else if pickerView == districtPicker {
-            return 100
+        else if pickerView == provincePickerView {
+            return city.count
         }
         
         return 0
@@ -342,16 +513,16 @@ extension PersonalInformationViewController: UIPickerViewDelegate, UIPickerViewD
         if pickerView == genderPicker {
             return genderArr[row]
         }
-        // If it s the provice picker
-        else if pickerView == provincePicker {
-            return "province"
-        }
         // If it s the district picker
         else if pickerView == districtPicker {
-            return "district"
+            return districts[selectedProvinceIndex][row]
+        }
+        // If it s the provice picker
+        else if pickerView == provincePickerView {
+            return city[row]
         }
         
-        return "Failed to load"
+        return "none"
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -359,14 +530,14 @@ extension PersonalInformationViewController: UIPickerViewDelegate, UIPickerViewD
         if pickerView == genderPicker {
             selectedGender = genderArr[row] as String
         }
-        // If it s the provice picker
-        else if pickerView == provincePicker {
-            
-        }
         // If it s the district picker
         else if pickerView == districtPicker {
-            
+            selectedDistrict = districts[selectedProvinceIndex ][row] as String
         }
+        // If it s the provice picker
+        else if pickerView == provincePickerView{
+        }
+        
     }
     
     

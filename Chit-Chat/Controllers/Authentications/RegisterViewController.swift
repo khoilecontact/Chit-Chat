@@ -16,7 +16,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
     var alertMessage = ""
     var genderArr = ["Male", "Female"]
     var selectedGender = "Male"
-    var selectedProvince: String = city[0]
+    var selectedProvince = ""
     var selectedProvinceIndex = 0
     var selectedDistrict = ""
     
@@ -165,7 +165,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         label.textColor = Appearance.tint
         return label
     }()
-    
+        
     let genderPicker: UIPickerView = {
         let picker = UIPickerView()
         return picker
@@ -199,9 +199,17 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         return label
     }()
     
-    let districtPicker: UIPickerView = {
-        let picker = UIPickerView()
-        return picker
+    let districtButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("none", for: .normal)
+        button.setTitleColor(Appearance.tint, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15, weight: .regular)
+
+        button.layer.cornerRadius = 12
+        button.layer.borderWidth = 1
+        button.layer.borderColor = Appearance.tint.cgColor
+        button.backgroundColor = .systemBackground
+        return button
     }()
     
     let registerButton: UIButton = {
@@ -226,6 +234,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
     // Pop up
     let provincePickerView = UIPickerView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 10,height: UIScreen.main.bounds.height / 2))
     
+    let districtPicker = UIPickerView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 10,height: UIScreen.main.bounds.height / 2))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -237,6 +246,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign up", style: .done, target: self, action: #selector(registerButtonTapped))
         
         provinceButton.addTarget(self, action: #selector(provinceTapped), for: .touchUpInside)
+        districtButton.addTarget(self, action: #selector(districtTapped), for: .touchUpInside)
         registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
         
         emailField.delegate = self
@@ -266,7 +276,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         scrollView.addSubview(provinceLabel)
         scrollView.addSubview(provinceButton)
         scrollView.addSubview(districtLabel)
-        scrollView.addSubview(districtPicker)
+        scrollView.addSubview(districtButton)
         
         imageView.isUserInteractionEnabled =  true
         
@@ -310,7 +320,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         
         districtLabel.frame = CGRect(x: 25, y: provinceLabel.bottom + 25 , width: 150, height: 52)
         
-        districtPicker.frame = CGRect(x: genderLabel.right + 20, y: provinceLabel.bottom + 10 , width: scrollView.width - 220, height: 100)
+        districtButton.frame = CGRect(x: genderLabel.right + 20, y: provinceLabel.bottom + 30 , width: scrollView.width - 220, height: 35)
         
         registerButton.frame = CGRect(x: scrollView.width / 4, y: districtLabel.bottom + 30 , width: scrollView.width - 175, height: 52)
         
@@ -389,6 +399,38 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
             self.selectedProvinceIndex = self.provincePickerView.selectedRow(inComponent: 0)
             self.selectedProvince = city[self.selectedProvinceIndex]
             self.provinceButton.setTitle(self.selectedProvince, for: .normal)
+            
+            DispatchQueue.main.async {
+                self.districtPicker.reloadAllComponents()
+            }
+            
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func districtTapped() {
+        let vc = UIViewController()
+        let screenWidth = UIScreen.main.bounds.width - 10
+        let screenHeight = UIScreen.main.bounds.height / 2
+        vc.preferredContentSize = CGSize(width: screenWidth, height: screenHeight)
+        
+        
+        districtPicker.selectRow(0, inComponent: 0, animated: false)
+        vc.view.addSubview(districtPicker)
+        districtPicker.centerXAnchor.constraint(equalTo: vc.view.centerXAnchor).isActive = true
+        districtPicker.centerYAnchor.constraint(equalTo: vc.view.centerYAnchor).isActive = true
+        let alert = UIAlertController(title: "Select Province/City", message: "",
+            preferredStyle: .actionSheet)
+                                                                    
+        alert.popoverPresentationController?.sourceView = districtPicker
+        alert.popoverPresentationController?.sourceRect = districtPicker.bounds
+        alert.setValue(vc, forKey: "contentViewController")
+        
+        alert.addAction(UIAlertAction(title: "Select", style: .default, handler: {
+            (UIAlertAction) in
+            self.selectedDistrict = districts[self.selectedProvinceIndex][self.districtPicker.selectedRow(inComponent: 0)]
+            self.districtButton.setTitle(self.selectedDistrict, for: .normal)
         }))
         
         self.present(alert, animated: true, completion: nil)
@@ -486,7 +528,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                     return
                 }
                 
-                let user = User(id: userId, firstName: firstName, lastName: lastName, email: email, dob: dob, isMale: isMale, province: "", district: "")
+                let user = User(id: userId, firstName: firstName, lastName: lastName, email: email, dob: dob, isMale: isMale, province: self!.selectedProvince, district: self!.selectedDistrict)
                 
                 DatabaseManager.shared.insertUnverifiedUser(with: user, completion: {success in
                     if success {
@@ -574,6 +616,18 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
             return false
         }
         
+        if selectedProvince == "" {
+            showingAlert = true
+            alertMessage = "Please choose your province/city"
+            return false
+        }
+        
+        if selectedDistrict == "" {
+            showingAlert = true
+            alertMessage = "Please choose your district"
+            return false
+        }
+        
         
         return true
     }
@@ -647,7 +701,7 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         }
         // If it s the provice picker
         else if pickerView == districtPicker {
-            return districts[selectedProvinceIndex + 1].count
+            return districts[selectedProvinceIndex].count
         }
         // If it s the district picker
         else if pickerView == provincePickerView {
@@ -664,7 +718,7 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         }
         // If it s the district picker
         else if pickerView == districtPicker {
-            return districts[selectedProvinceIndex + 1][row]
+            return districts[selectedProvinceIndex][row]
         }
         // If it s the provice picker
         else if pickerView == provincePickerView {
@@ -681,7 +735,7 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         }
         // If it s the district picker
         else if pickerView == districtPicker {
-            selectedDistrict = districts[selectedProvinceIndex + 1][row] as String
+            selectedDistrict = districts[selectedProvinceIndex ][row] as String
         }
         // If it s the provice picker
         else if pickerView == provincePickerView{
@@ -692,8 +746,3 @@ extension RegisterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
 }
 
-extension RegisterViewController: UIPopoverPresentationControllerDelegate {
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-           return .none
-       }
-}
