@@ -43,4 +43,11 @@ public func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
     return newImage!
 }
 
+public func areEqual (_ left: Any, _ right: Any) -> Bool {
+    if  type(of: left) == type(of: right) &&
+        String(describing: left) == String(describing: right) { return true }
+    if let left = left as? [Any], let right = right as? [Any] { return left == right }
+    if let left = left as? [AnyHashable: Any], let right = right as? [AnyHashable: Any] { return left == right }
+    return false
+}
 
