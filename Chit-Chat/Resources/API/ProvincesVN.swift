@@ -274,7 +274,7 @@ let c17 = [
 ]
 let c18 = [
     "Thành phố Biên Hòa",
-    "Thị xã Long Khánh",
+    "Thành phố Long Khánh",
     "Quận Tân Phú",
     "Huyện Cẩm Mỹ",
     "Huyện Định Quán",

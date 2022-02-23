@@ -118,8 +118,10 @@ class MeViewController: UIViewController {
         
         imageView.image?.withTintColor(Appearance.tint)
         imageView.contentMode = .scaleAspectFit
-        imageView.layer.masksToBounds = true
+        imageView.layer.masksToBounds = false
+        imageView.layer.cornerRadius = imageView.frame.height / 2
         imageView.layer.borderWidth = 0
+        imageView.clipsToBounds = true
         
         nameLabel.text = user.firstName + " " + user.lastName
         nameLabel.textColor = Appearance.tint

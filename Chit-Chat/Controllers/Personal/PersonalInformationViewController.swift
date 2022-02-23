@@ -16,7 +16,7 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
     var genderArr = ["Male", "Female"]
     var selectedGender = "Male"
     var selectedProvince = ""
-    var selectedProvinceIndex = 0
+    var selectedProvinceIndex = -1
     var selectedDistrict = ""
     var currentUser = User(id: "", firstName: "", lastName: "", email: "", dob: "", isMale: true, province: "", district: "")
     
@@ -297,6 +297,23 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
         let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
         
+        let fileName = safeEmail + "_profile_picture.png"
+        let path = "images/" + fileName
+        
+        StorageManager.shared.downloadUrl(for: path, completion: { [weak self] result in
+            switch result {
+            case .failure(let error):
+                print("Failed to download image URL: \(error)")
+                self?.imageView.image = UIImage(systemName: "person.circle")?.withTintColor(Appearance.tint)
+                
+                break
+            
+            case .success(let url):
+                self?.imageView.sd_setImage(with: url, completed: nil)
+            }
+        })
+
+        
         DatabaseManager.shared.getDataFor(path: safeEmail, completion: { [weak self] result in
             switch result {
             case .success(let data):
@@ -307,24 +324,44 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
                       let id = userData["id"] as? String,
                       let isMale = userData["is_male"] as? Bool,
                       let province = userData["province"] as? String,
-                        let district = userData["district"] as? String
+                      let district = userData["district"] as? String,
+                      let dob = userData["dob"] as? String
                 else {
                           return
                       }
                 
-                self?.currentUser = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: "", isMale: isMale, province: "", district: "")
+                self?.selectedGender = isMale ? "Male" : "Female"
+                self?.selectedProvince = province
+                self?.selectedProvinceIndex = city.firstIndex(of: province) ?? 0
+                self?.selectedDistrict = district
+                
+                self?.currentUser = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: dob, isMale: isMale, province: "", district: "")
                 self?.firstNameField.text = firstName
                 self?.lastNameField.text = lastName
                 self?.bioField.text = bio
                 
-                let provinceIndex = city.firstIndex(of: province)
-                self?.provincePickerView.selectRow(provinceIndex ?? 0, inComponent: 0, animated: false)
-                self?.provinceButton.setTitle(province, for: .normal)
+                if let dobDate = dob.toDate(dateFormat: "dd-MM-yyyy") {
+                    self?.dobField.date = dobDate
+                }
                 
-                let districtIndex = districts[provinceIndex ?? 0].firstIndex(of: district)
-                self?.districtPicker.selectRow(districtIndex ?? 0, inComponent: 0, animated: false)
-                self?.districtButton.setTitle(district, for: .normal)
-                self?.districtPicker.reloadAllComponents()
+                if province != "" {
+                    let provinceIndex = city.firstIndex(of: province)
+                    self?.provincePickerView.selectRow(provinceIndex ?? 0, inComponent: 0, animated: false)
+                    self?.provinceButton.setTitle(province, for: .normal)
+                    
+                    let districtIndex = districts[provinceIndex ?? 0].firstIndex(of: district)
+                    self?.districtPicker.selectRow(districtIndex ?? 0, inComponent: 0, animated: false)
+                    self?.districtButton.setTitle(district, for: .normal)
+                    self?.districtPicker.reloadAllComponents()
+                }
+                
+                // Disable change password button if user use linked account
+                let user = Auth.auth().currentUser
+                let provider = user!.providerData[0].providerID
+                
+                if provider != "password" {
+                    self?.changePasswordButton.isEnabled = false
+                }
                 
                 break
             case .failure(let error):
@@ -417,6 +454,42 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         if !isValid {
             alertUserLoginError()
         }
+        
+        spinner.show(in: view)
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
+        
+        guard let firstName = firstNameField.text, let lastName = lastNameField.text, let bio = bioField.text else {
+            return
+        }
+        
+        let dob = dobField.date.toString(dateFormat: "dd-MM-YYYY")
+        let isMale = selectedGender == "Male" ? true : false
+        
+        let updateArray: [String: Any] = [
+            "first_name" : firstName,
+            "last_name" : lastName,
+            "bio" : bio,
+            "dob" : dob,
+            "is_male" : isMale,
+            "province" : selectedProvince,
+            "district" : selectedDistrict
+        ]
+        
+        DatabaseManager.shared.updateUserInfo(with: email, changesArray: updateArray, completion: { success in
+            if success {
+                let arlet = UIAlertController(title: "Success!", message: "Your information has been updated", preferredStyle: .alert)
+                arlet.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                self.present(arlet, animated: true, completion: nil)
+            } else {
+                let arlet = UIAlertController(title: "Failed!", message: "Your information updating failed! Please try again later", preferredStyle: .alert)
+                arlet.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                self.present(arlet, animated: true, completion: nil)
+            }
+        })
+        
+        DispatchQueue.main.async {
+            self.spinner.dismiss(animated: true)
+        }
     }
     
     func validate() -> Bool {
@@ -431,6 +504,18 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
             alertMessage = "Please enter your Lastname"
             return false
         }
+        
+//        if selectedProvince == "" {
+//            showingAlert = true
+//            alertMessage = "Please select your province/city"
+//            return false
+//        }
+//
+//        if selectedDistrict == "" {
+//            showingAlert = true
+//            alertMessage = "Please select your district"
+//            return false
+//        }
         
         return true
     }
@@ -532,7 +617,7 @@ extension PersonalInformationViewController: UIPickerViewDelegate, UIPickerViewD
         }
         // If it s the district picker
         else if pickerView == districtPicker {
-            selectedDistrict = districts[selectedProvinceIndex ][row] as String
+            selectedDistrict = districts[selectedProvinceIndex][row] as String
         }
         // If it s the provice picker
         else if pickerView == provincePickerView{

@@ -51,6 +51,15 @@ extension Date
 
 }
 
+extension String {
+    func toDate(dateFormat format : String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        //dateFormatter.locale = Locale(identifier: "en_US")
+        return dateFormatter.date(from: self)
+    }
+}
+
 extension UIImage {
     static func gradientImage(bounds: CGRect, colors: [UIColor]) -> UIImage {
         let gradientLayer = CAGradientLayer()

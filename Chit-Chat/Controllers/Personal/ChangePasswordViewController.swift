@@ -6,10 +6,14 @@
 //
 
 import UIKit
+import FirebaseAuth
+import JGProgressHUD
 
 class ChangePasswordViewController: UIViewController {
     var showingAlert = false
     var alertMessage = ""
+    
+    private let spinner = JGProgressHUD(style: .dark)
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -129,6 +133,43 @@ class ChangePasswordViewController: UIViewController {
         
         if !isValid {
             alertUserLoginError()
+            return
+        }
+        
+        spinner.show(in: view)
+        
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
+        
+        guard let oldPassword = oldPasswordField.text, let newPassword = newPasswordField.text else {
+            return
+        }
+        
+        let user = Auth.auth().currentUser
+        let credential = EmailAuthProvider.credential(withEmail: email, password: oldPassword)
+        
+        user?.reauthenticate(with: credential, completion: { [weak self] _, error in
+            if error != nil {
+                // Error in sign in
+                let alert = UIAlertController(title: "Wrong!!!", message: "Your password was wrong! Please try another password", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                self?.present(alert, animated: true)
+            } else {
+                user?.updatePassword(to: newPassword, completion: { error in
+                    if let _ = error {
+                        let alert = UIAlertController(title: "Failed!!!", message: "There has been an error! Please try later", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                        self?.present(alert, animated: true)
+                    } else {
+                        let alert = UIAlertController(title: "Success!!!", message: "Your password has been changed", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                        self?.present(alert, animated: true)
+                    }
+                })
+            }
+        })
+        
+        DispatchQueue.main.async {
+            self.spinner.dismiss(animated: true)
         }
     }
 
@@ -148,6 +189,12 @@ class ChangePasswordViewController: UIViewController {
         guard let reNewPassword = reNewPasswordField.text, !reNewPassword.isEmpty else {
             showingAlert = true
             alertMessage = "Please repeat your Repeat New Password"
+            return false
+        }
+        
+        if newPassword != reNewPassword {
+            showingAlert = true
+            alertMessage = "Your re-password is not correct"
             return false
         }
         

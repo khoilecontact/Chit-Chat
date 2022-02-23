@@ -101,7 +101,8 @@ extension DatabaseManager {
                     //append to user dictionary
                     let newElement: [String: Any] = [
                         "id" : user.id,
-                        "name": user.firstName + " " + user.lastName,
+                        "first_name": user.firstName,
+                        "last_name" : user.lastName,
                         "email": user.safeEmail,
                         "bio" : user.bio,
                         "dob" : user.dob,
@@ -125,7 +126,8 @@ extension DatabaseManager {
                     let newCollection: [[String: Any]] = [
                         [
                             "id" : user.id,
-                            "name": user.firstName + " " + user.lastName,
+                            "first_name": user.firstName,
+                            "last_name" : user.lastName,
                             "email": user.email,
                             "bio" : user.bio,
                             "dob" : user.dob,
@@ -272,6 +274,53 @@ extension DatabaseManager {
                     }
                 })
             })
+        })
+    }
+    
+    public func updateUserInfo(with email: String, changesArray: [String: Any], completion: @escaping (Bool) -> Void) {
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+        // Update in Users
+        let UsersListRef = database.child("Users")
+
+        UsersListRef.child(safeEmail).updateChildValues(changesArray, withCompletionBlock: { error, _ in
+            guard let _ = error else {
+                completion(false)
+                return
+            }
+        })
+        
+        // Update in Users_list
+        self.database.child("Users_list").observeSingleEvent(of: .value, with: { snapshot in
+            var userIndex = 0
+            
+            if var usersCollection = snapshot.value as? [[String: Any]] {
+                for index in 0 ..< usersCollection.count {
+                    if usersCollection[index]["email"] as! String == email {
+                        userIndex = index
+                        break
+                    }
+                }
+                
+                // Apply the changes
+                usersCollection[userIndex]["first_name"] = changesArray["first_name"]
+                usersCollection[userIndex]["last_name"] = changesArray["last_name"]
+                usersCollection[userIndex]["bio"] = changesArray["bio"]
+                usersCollection[userIndex]["dob"] = changesArray["dob"]
+                usersCollection[userIndex]["is_male"] = changesArray["is_male"]
+                usersCollection[userIndex]["province"] = changesArray["province"]
+                usersCollection[userIndex]["district"] = changesArray["district"]
+                
+                self.database.child("Users_list").setValue(usersCollection, withCompletionBlock: { error, _ in
+                    guard error == nil else {
+                        completion(false)
+                        return
+                    }
+                    
+                    completion(true)
+                })
+                
+                completion(true)
+            }
         })
     }
 }
