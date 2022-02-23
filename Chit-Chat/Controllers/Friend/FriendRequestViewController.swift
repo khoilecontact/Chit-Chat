@@ -159,6 +159,10 @@ class FriendRequestViewController: UIViewController {
                         return email == user.email
                     })
                     
+                    strongSelf.results.removeAll {
+                        user.email == $0.email
+                    }
+                    
                     DispatchQueue.main.async {
                         strongSelf.tableView.reloadData()
                     }
@@ -188,6 +192,10 @@ class FriendRequestViewController: UIViewController {
                         
                         return email == user.email
                     })
+                    
+                    strongSelf.results.removeAll {
+                        user.email == $0.email
+                    }
                     
                     DispatchQueue.main.async {
                         strongSelf.tableView.reloadData()
@@ -259,13 +267,17 @@ extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         // actions
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { action, view, handler in
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] action, view, handler in
+            guard let strongSelf = self else { return }
             
+            strongSelf.deniesRequest(with: strongSelf.results[indexPath.row])
         }
         deleteAction.backgroundColor = .red
         
-        let addAction = UIContextualAction(style: .destructive, title: "Accept") { action, view, handler in
+        let addAction = UIContextualAction(style: .destructive, title: "Accept") { [weak self] action, view, handler in
+            guard let strongSelf = self else { return }
             
+            strongSelf.acceptRequest(with: strongSelf.results[indexPath.row])
         }
         addAction.backgroundColor = .systemGreen
         
