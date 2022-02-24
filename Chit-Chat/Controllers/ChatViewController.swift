@@ -47,7 +47,6 @@ class ChatViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navBar()
         
-        
         // subviews
         subViews()
         

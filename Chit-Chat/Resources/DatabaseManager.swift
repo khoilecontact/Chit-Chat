@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseDatabase
+import FirebaseAuth
 import MessageKit
 import CoreLocation
 
@@ -96,6 +97,7 @@ extension DatabaseManager {
                 return
             }
 
+            
             self?.database.child("Users_list").observeSingleEvent(of: .value, with: { snapshot in
                 if var usersCollection = snapshot.value as? [[String: Any]] {
                     //append to user dictionary
@@ -323,6 +325,24 @@ extension DatabaseManager {
             }
         })
     }
+    
+    public func resetPassword(with email: String, completion: @escaping (Bool) -> Void) {
+        DatabaseManager.shared.userExists(with: email, completion: { exist in
+            if !exist {
+                completion(false)
+            } else {
+                Auth.auth().sendPasswordReset(withEmail: email, completion: { error in
+                    guard error != nil else {
+                        completion(false)
+                        return
+                    }
+                })
+                
+                completion(true)
+            }
+        })
+    }
+    
 }
 
 extension DatabaseManager {

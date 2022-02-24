@@ -259,6 +259,7 @@ class LoginViewController: UIViewController {
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         githubSignInButton.addTarget(self, action: #selector(didTapGitHub), for: .touchUpInside)
         registerButton.addTarget(self, action: #selector(didTapRegister), for: .touchUpInside)
+        forgotPasswordButton.addTarget(self, action: #selector(didTapForgotPassword), for: .touchUpInside)
         
         emailField.delegate = self
         passwordField.delegate = self
@@ -588,6 +589,11 @@ class LoginViewController: UIViewController {
         }
         
         return true
+    }
+    
+    @objc func didTapForgotPassword() {
+        let vc = ForgotPasswordViewController()
+        self.present(vc, animated: true, completion: nil)
     }
     
     func alertUserLoginError() {

@@ -14,6 +14,7 @@
 		222411EE27C1EA9700C5E416 /* FriendListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411ED27C1EA9700C5E416 /* FriendListViewController.swift */; };
 		222411F027C1EAA500C5E416 /* DarkModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411EF27C1EAA500C5E416 /* DarkModeViewController.swift */; };
 		222411F327C3359500C5E416 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411F227C3359500C5E416 /* ChangePasswordViewController.swift */; };
+		222411F827C7345E00C5E416 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411F727C7345D00C5E416 /* ForgotPasswordViewController.swift */; };
 		22714E65277D5D4F0004F942 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E64277D5D4F0004F942 /* AppDelegate.swift */; };
 		22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E66277D5D4F0004F942 /* SceneDelegate.swift */; };
 		22714E69277D5D4F0004F942 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E68277D5D4F0004F942 /* ChatViewController.swift */; };
@@ -82,6 +83,7 @@
 		222411ED27C1EA9700C5E416 /* FriendListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListViewController.swift; sourceTree = "<group>"; };
 		222411EF27C1EAA500C5E416 /* DarkModeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeViewController.swift; sourceTree = "<group>"; };
 		222411F227C3359500C5E416 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		222411F727C7345D00C5E416 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		22714E61277D5D4F0004F942 /* Chit-Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chit-Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22714E64277D5D4F0004F942 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22714E66277D5D4F0004F942 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -317,6 +319,7 @@
 			children = (
 				22F1999527A0E67A00CAE0D5 /* LoginViewController.swift */,
 				22DFEB4B27AC101100ABAD9E /* RegisterViewController.swift */,
+				222411F727C7345D00C5E416 /* ForgotPasswordViewController.swift */,
 			);
 			path = Authentications;
 			sourceTree = "<group>";
@@ -650,6 +653,7 @@
 				DA85AF6F27BA5B430005215B /* MeViewController.swift in Sources */,
 				22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */,
 				22DFEB4C27AC101100ABAD9E /* RegisterViewController.swift in Sources */,
+				222411F827C7345E00C5E416 /* ForgotPasswordViewController.swift in Sources */,
 				DA0D67B627C0C7DF0016C4AC /* FriendRequestViewCell.swift in Sources */,
 				DA718D4D27A0F6CA0020B0C9 /* Conversation.swift in Sources */,
 				222411F027C1EAA500C5E416 /* DarkModeViewController.swift in Sources */,

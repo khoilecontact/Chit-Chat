@@ -26,6 +26,8 @@ class MeViewController: UIViewController {
         super.viewDidLoad()
         
         personalInfoButton.addTarget(self, action: #selector(personalInfoTapped), for: .touchUpInside)
+        friendListButton.addTarget(self, action: #selector(friendListTapped), for: .touchUpInside)
+        darkModeButton.addTarget(self, action: #selector(darkModeTapped), for: .touchUpInside)
         logOutButton.addTarget(self, action: #selector(logOutButtonTapped), for: .touchUpInside)
         
         // Get data of user
@@ -166,6 +168,16 @@ class MeViewController: UIViewController {
     
     @objc func personalInfoTapped() {
         let vc = PersonalInformationViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func friendListTapped() {
+        let vc = FriendsViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func darkModeTapped() {
+        let vc = DarkModeViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
     
