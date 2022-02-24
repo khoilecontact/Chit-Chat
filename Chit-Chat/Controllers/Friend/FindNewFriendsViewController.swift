@@ -12,12 +12,12 @@ final class FindNewFriendsViewController: UIViewController {
     
     private let spinner = JGProgressHUD(style: .dark)
     
-    public var completion: ((FriendsResult) -> Void)?
+    public var completion: ((UserNode) -> Void)?
     
     private var users = [[String: Any]]()
     private var hasFetched = false
     
-    private var results = [FriendsResult]()
+    private var results = [UserNode]()
     
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -211,25 +211,39 @@ extension FindNewFriendsViewController: UISearchBarDelegate {
         
         spinner.dismiss()
         
-        var results: [FriendsResult] = users.filter({
+        let newResults: [UserNode] = users.filter({
             guard let email = ($0["email"] as? String)?.lowercased(), email != currentUserEmail else {
                 return false
             }
             
-            guard let name = ($0["name"] as? String)?.lowercased() else {
+            guard let name = "\(($0["first_name"] as? String)!.lowercased()) \(($0["last_name"] as? String)!.lowercased())" as? String else {
                 return false
             }
             
             return name.hasPrefix(term.lowercased()) || email.hasPrefix(term.lowercased())
         }).compactMap({
-            guard let email = $0["email"], let name = $0["name"] else {
+            guard let id = $0["id"] as? String,
+                  let email = $0["email"] as? String,
+                  let lastName = $0["last_name"] as? String,
+                  let firstName = $0["first_name"] as? String,
+                  let bio = $0["bio"] as? String?,
+                  let dob = $0["dob"] as? String?,
+                  let isMale = $0["is_male"] as? Bool
+            else {
+                print("excepted type")
                 return nil
             }
             
-            return FriendsResult(name: name as! String, email: email as! String)
+            return UserNode(id: id,
+                            firstName: firstName,
+                            lastName: lastName,
+                            bio: bio ?? "",
+                            email: email,
+                            dob: dob ?? "",
+                            isMale: isMale)
         })
         
-        self.results = results
+        self.results = newResults
         updateUI()
     }
     

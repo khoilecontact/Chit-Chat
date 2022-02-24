@@ -1038,7 +1038,7 @@ extension DatabaseManager {
                 friendList?.append(request[0])
                 
                 let updateChild = [
-                    "/friend_request_list": friendRequestList,
+                    "friend_request_list": friendRequestList,
                     "friend_list": friendList ?? [request[0]]
                 ]
                 
