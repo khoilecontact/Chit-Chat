@@ -66,8 +66,8 @@ class NewFriendsViewCell: UITableViewCell {
     }
     
     // MARK: - Closure call data
-    public func configure(with model: FriendsResult) {
-        userNameLabel.text = model.name
+    public func configure(with model: UserNode) {
+        userNameLabel.text = "\(model.firstName) \(model.lastName)"
         userEmailLabel.text = model.email
         let url = URL(string: "https://github.com/khoilecontact.png?size=400")
         userImageView.sd_setImage(with: url, completed: nil)
