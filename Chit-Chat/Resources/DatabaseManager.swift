@@ -902,7 +902,7 @@ extension DatabaseManager {
     public func getAllFriendsOfUser(with unSafeEmail: String, completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
         let safeEmail = DatabaseManager.safeEmail(emailAddress: unSafeEmail)
         
-        database.child("Users/\(safeEmail)/friend_list").observeSingleEvent(of: .value, with: { snapshot in
+        database.child("Users/\(safeEmail)/friend_list").observe( .value, with: { snapshot in
             guard let value = snapshot.value as? [[String: Any]] else {
                 completion(.failure(DatabaseError.failedToFetch))
                 return
