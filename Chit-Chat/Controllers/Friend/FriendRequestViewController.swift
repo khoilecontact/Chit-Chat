@@ -200,8 +200,6 @@ class FriendRequestViewController: UIViewController {
                     DispatchQueue.main.async {
                         strongSelf.tableView.reloadData()
                     }
-                    // remove from variable
-                    strongSelf.tableView.reloadData()
                 }
                 else {
                     print("Failed to finish denies request")
