@@ -92,10 +92,11 @@ class DarkModeViewController: UIViewController, UITableViewDataSource, UITableVi
             break
         }
         
-        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
         
     }
-
 }
 
 class DarkModeCell: UITableViewCell {
@@ -136,6 +137,8 @@ class DarkModeCell: UITableViewCell {
         cellLabel.text = name
         if isChecked {
             isCheckLabel.text = "✓"
+        } else {
+            isCheckLabel.text = ""
         }
     }
     

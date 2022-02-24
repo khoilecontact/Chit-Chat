@@ -455,6 +455,8 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
             alertUserLoginError()
         }
         
+        let currentUser = Auth.auth().currentUser
+        
         spinner.show(in: view)
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
         
@@ -475,15 +477,40 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
             "district" : selectedDistrict
         ]
         
-        DatabaseManager.shared.updateUserInfo(with: email, changesArray: updateArray, completion: { success in
+        let user = User(id: currentUser?.uid ?? "", firstName: firstName, lastName: lastName, email: email, dob: dob, isMale: isMale, province: selectedProvince, district: selectedDistrict)
+        
+        DatabaseManager.shared.updateUserInfo(with: email, changesArray: updateArray, completion: { [weak self] success in
+            print(success)
             if success {
+                //upload image
+                guard let image = self?.imageView.image, let data = image.pngData() else
+                {
+                    return
+                }
+                
+                let fileName = user.profilePictureFileName
+                StorageManager.shared.uploadFrofilePicture(with: data, fileName: fileName, completion: { result in
+                    switch result {
+                    case .success(let downloadUrl):
+                        UserDefaults.standard.setValue(downloadUrl, forKey: "profile_picture_url")
+                    case .failure(let error):
+                        print("Storage manager error: \(error)")
+                        
+                        let arlet = UIAlertController(title: "Failed!", message: "Your avatar updating failed! Please try again later", preferredStyle: .alert)
+                        arlet.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                        self?.present(arlet, animated: true, completion: nil)
+                        return
+                    }
+                })
+                
                 let arlet = UIAlertController(title: "Success!", message: "Your information has been updated", preferredStyle: .alert)
                 arlet.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-                self.present(arlet, animated: true, completion: nil)
+                self?.present(arlet, animated: true, completion: nil)
+                
             } else {
                 let arlet = UIAlertController(title: "Failed!", message: "Your information updating failed! Please try again later", preferredStyle: .alert)
                 arlet.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-                self.present(arlet, animated: true, completion: nil)
+                self?.present(arlet, animated: true, completion: nil)
             }
         })
         
