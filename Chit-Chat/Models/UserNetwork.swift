@@ -15,6 +15,8 @@ struct UserNode {
     let id: String
     let firstName: String
     let lastName: String
+    let province: String
+    let district: String
     let bio: String
     let email: String
     let dob: String
