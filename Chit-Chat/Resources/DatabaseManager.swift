@@ -1001,6 +1001,7 @@ extension DatabaseManager {
         }
         
         let safeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
+        let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
         database.child("Users/\(safeEmail)").observeSingleEvent(of: .value, with: { [weak self] snapshot in
             guard let strongSelf = self else { return }
@@ -1010,67 +1011,65 @@ extension DatabaseManager {
                 return
             }
             
-            guard let email = value["email"] as? String,
-                  let firstName = value["first_name"] as? String,
-                  let lastName = value["last_name"] as? String,
-                  let dob = value["dob"] as? String?,
-                  let bio = value["bio"] as? String?,
-                  let id = value["id"] as? String,
-                  let isMale = value["is_male"] as? Bool,
-                  var sentFriendRequest = value["sent_friend_request"] as? [[String: Any]]
-            else {
-                return
-            }
-            
-            let myInfo: [String: Any] = [
-                "email": email,
-                "fist_name": firstName,
-                "last_name": lastName,
-                "dob": dob ?? "",
-                "bio": bio ?? "",
-                "id": id,
-                "is_male": isMale
-            ]
-            
-            let myFriendRequest: [String: Any] = [
-                "email": otherUser.email,
-                "fist_name": otherUser.firstName,
-                "last_name": otherUser.lastName,
-                "dob": otherUser.dob,
-                "bio": otherUser.bio,
-                "id": otherUser.id,
-                "is_male": otherUser.isMale
-            ]
-            
-            sentFriendRequest.append(myFriendRequest)
-            
-            strongSelf.database.child("Users/\(safeEmail)/sent_friend_request").setValue(sentFriendRequest) { error, _ in
-                guard error == nil else {
+            if let email = value["email"] as? String,
+               let firstName = value["first_name"] as? String,
+               let lastName = value["last_name"] as? String,
+               let dob = value["dob"] as? String?,
+               let bio = value["bio"] as? String?,
+               let id = value["id"] as? String,
+               let isMale = value["is_male"] as? Bool,
+               var sentFriendRequest = value["sent_friend_request"] as? [[String: Any]]?
+            {
+                let myInfo: [String: Any] = [
+                    "email": email,
+                    "fist_name": firstName,
+                    "last_name": lastName,
+                    "dob": dob ?? "",
+                    "bio": bio ?? "",
+                    "id": id,
+                    "is_male": isMale
+                ]
+                
+                let myFriendRequest: [String: Any] = [
+                    "email": otherUser.email,
+                    "fist_name": otherUser.firstName,
+                    "last_name": otherUser.lastName,
+                    "dob": otherUser.dob,
+                    "bio": otherUser.bio,
+                    "id": otherUser.id,
+                    "is_male": otherUser.isMale
+                ]
+                
+                sentFriendRequest?.append(myFriendRequest)
+                
+                strongSelf.database.child("Users/\(safeEmail)/sent_friend_request").setValue(sentFriendRequest ?? [myFriendRequest]) { error, _ in
+                    guard error == nil else {
+                        completion(.failure(DatabaseError.failedToFetch))
+                        return
+                    }
+                }
+                
+                strongSelf.database.child("Users/\(otherSafeEmail)/friend_request_list").observe(.value) { snapshot in
+                    if var currentRequestList = snapshot.value as? [[String: Any]] {
+                        
+                        currentRequestList.append(myInfo)
+                        
+                        strongSelf.database.child("Users/\(otherSafeEmail)/friend_request_list").setValue(currentRequestList) { error, _ in
+                            guard error == nil else {
+                                completion(.failure(DatabaseError.failedToFetch))
+                                return
+                            }
+                            
+                            completion(.success(true))
+                            return
+                        }
+                    }
+                    
                     completion(.failure(DatabaseError.failedToFetch))
                     return
                 }
             }
             
-            let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
-            strongSelf.database.child("Users/\(otherSafeEmail)/friend_request_list").observe(.value) { snapshot in
-                if var currentRequestList = snapshot.value as? [[String: Any]] {
-                    
-                    currentRequestList.append(myInfo)
-                    
-                    strongSelf.database.child("Users/\(otherSafeEmail)/friend_request_list").setValue(currentRequestList) { error, _ in
-                        guard error == nil else {
-                            completion(.failure(DatabaseError.failedToFetch))
-                            return
-                        }
-                        
-                        completion(.success(true))
-                        return
-                    }
-                }
-                
-                completion(.failure(DatabaseError.failedToFetch))
-                return
-            }
         })
     }
     
@@ -1111,20 +1110,6 @@ extension DatabaseManager {
                     "friend_list": friendList ?? [request[0]]
                 ]
                 
-                //                strongSelf.database.child("Users/\(mySafeEmail)/friend_request_list").setValue(friendRequestList, withCompletionBlock: { error, _ in
-                //                    guard error == nil else {
-                //                        completion(.failure(DatabaseError.failedToFetch))
-                //                        return
-                //                    }
-                //
-                //                    strongSelf.database.child("Users/\(mySafeEmail)/friend_list").setValue(friendList ?? [request[0]]) { error, _ in
-                //                        guard error == nil else {
-                //                            completion(.failure(DatabaseError.failedToFetch))
-                //                            return
-                //                        }
-                //                    }
-                //                })
-                
                 strongSelf.database.child("Users/\(mySafeEmail)").updateChildValues(updateChild) { error, _ in
                     guard error == nil else {
                         print("Failed to save")
@@ -1159,22 +1144,6 @@ extension DatabaseManager {
                             "sent_friend_request": otherSentFriendRequestList,
                             "friend_list": otherfriendList ?? [otherRequest[0]]
                         ]
-                        
-                        //                        strongSelf.database.child("Users/\(otherSafeEmail)/sent_friend_request").setValue(otherSentFriendRequestList, withCompletionBlock: { error, _ in
-                        //                            guard error == nil else {
-                        //                                completion(.failure(DatabaseError.failedToFetch))
-                        //                                return
-                        //                            }
-                        //
-                        //                            strongSelf.database.child("Users/\(otherSafeEmail)/friend_list").setValue(otherfriendList ?? [otherRequest[0]]) { error, _ in
-                        //                                guard error == nil else {
-                        //                                    completion(.failure(DatabaseError.failedToFetch))
-                        //                                    return
-                        //                                }
-                        //                            }
-                        //
-                        //                            completion(.success(true))
-                        //                        })
                         
                         strongSelf.database.child("Users/\(otherSafeEmail)").updateChildValues(otherUpdateChild) { error, _ in
                             guard error == nil else {
@@ -1263,6 +1232,10 @@ extension DatabaseManager {
                 }
             }
         }
+    }
+    
+    func unseggest(with otherUser: UserNode, completion: @escaping (Result<Bool, Error>) -> Void) {
+        
     }
     
 }
