@@ -30,11 +30,11 @@ struct User {
     let isMale: Bool
     let province: String
     let district: String
-    let friendRequestList: [UserNode]
-    let sentfriendRequestList: [UserNode]
-    let friendList: [UserNode]
-    let blackList: [UserNode]
-    let conversations: [MessagesCollection]
+    var friendRequestList: [UserNode]
+    var sentfriendRequestList: [UserNode]
+    var friendList: [UserNode]
+    var blackList: [UserNode]
+    var conversations: [MessagesCollection]
     
     var safeEmail: String
     
