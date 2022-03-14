@@ -173,8 +173,8 @@ class MeViewController: UIViewController {
     }
     
     @objc func friendListTapped() {
-//        let vc = FriendsViewController()
-        let vc = NotAddedFriendViewController(user: user!)
+        let vc = FriendsViewController()
+//        let vc = NotAddedFriendViewController(user: user!)
         navigationController?.pushViewController(vc, animated: true)
     }
     
