@@ -19,7 +19,7 @@ class FriendsViewController: UIViewController {
     
     private let searchBar: UISearchBar = {
         let bar = UISearchBar()
-        bar.placeholder = "Seach for someone ..."
+        bar.placeholder = "Search for someone ..."
         return bar
     }()
     
