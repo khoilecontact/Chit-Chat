@@ -11,10 +11,10 @@
 		222411E727B7AB6900C5E416 /* ExternalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411E627B7AB6900C5E416 /* ExternalFunctions.swift */; };
 		222411E927BF991400C5E416 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411E827BF991400C5E416 /* Appearance.swift */; };
 		222411EC27C1EA8900C5E416 /* PersonalInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411EB27C1EA8900C5E416 /* PersonalInformationViewController.swift */; };
-		222411EE27C1EA9700C5E416 /* FriendListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411ED27C1EA9700C5E416 /* FriendListViewController.swift */; };
 		222411F027C1EAA500C5E416 /* DarkModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411EF27C1EAA500C5E416 /* DarkModeViewController.swift */; };
 		222411F327C3359500C5E416 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411F227C3359500C5E416 /* ChangePasswordViewController.swift */; };
 		222411F827C7345E00C5E416 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411F727C7345D00C5E416 /* ForgotPasswordViewController.swift */; };
+		225E476127D9E1B000F71938 /* NotAddedFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E476027D9E1B000F71938 /* NotAddedFriendViewController.swift */; };
 		22714E65277D5D4F0004F942 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E64277D5D4F0004F942 /* AppDelegate.swift */; };
 		22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E66277D5D4F0004F942 /* SceneDelegate.swift */; };
 		22714E69277D5D4F0004F942 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E68277D5D4F0004F942 /* ChatViewController.swift */; };
@@ -80,10 +80,10 @@
 		222411E627B7AB6900C5E416 /* ExternalFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalFunctions.swift; sourceTree = "<group>"; };
 		222411E827BF991400C5E416 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		222411EB27C1EA8900C5E416 /* PersonalInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInformationViewController.swift; sourceTree = "<group>"; };
-		222411ED27C1EA9700C5E416 /* FriendListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListViewController.swift; sourceTree = "<group>"; };
 		222411EF27C1EAA500C5E416 /* DarkModeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeViewController.swift; sourceTree = "<group>"; };
 		222411F227C3359500C5E416 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		222411F727C7345D00C5E416 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
+		225E476027D9E1B000F71938 /* NotAddedFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotAddedFriendViewController.swift; sourceTree = "<group>"; };
 		22714E61277D5D4F0004F942 /* Chit-Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chit-Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22714E64277D5D4F0004F942 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22714E66277D5D4F0004F942 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -176,8 +176,8 @@
 		222411EA27C1EA7000C5E416 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				225E475F27D9E17100F71938 /* PersonalPages */,
 				222411EB27C1EA8900C5E416 /* PersonalInformationViewController.swift */,
-				222411ED27C1EA9700C5E416 /* FriendListViewController.swift */,
 				222411EF27C1EAA500C5E416 /* DarkModeViewController.swift */,
 				222411F227C3359500C5E416 /* ChangePasswordViewController.swift */,
 			);
@@ -192,6 +192,14 @@
 				DAE31CEF27B227980035E65B /* FriendsViewController.swift */,
 			);
 			path = Friend;
+			sourceTree = "<group>";
+		};
+		225E475F27D9E17100F71938 /* PersonalPages */ = {
+			isa = PBXGroup;
+			children = (
+				225E476027D9E1B000F71938 /* NotAddedFriendViewController.swift */,
+			);
+			path = PersonalPages;
 			sourceTree = "<group>";
 		};
 		22714E58277D5D4F0004F942 = {
@@ -627,7 +635,6 @@
 			files = (
 				222411E327B2129100C5E416 /* GithubConstants.swift in Sources */,
 				222411E927BF991400C5E416 /* Appearance.swift in Sources */,
-				222411EE27C1EA9700C5E416 /* FriendListViewController.swift in Sources */,
 				DA25C3C727B252190004FE2B /* FindNewFriendsViewController.swift in Sources */,
 				222411E727B7AB6900C5E416 /* ExternalFunctions.swift in Sources */,
 				DA0D67B427C0C7C20016C4AC /* FriendRequestViewController.swift in Sources */,
@@ -649,6 +656,7 @@
 				22CCFE46279FF59C009F7C8A /* User.swift in Sources */,
 				DA718D4F27A0F6E70020B0C9 /* UserNetwork.swift in Sources */,
 				22714E65277D5D4F0004F942 /* AppDelegate.swift in Sources */,
+				225E476127D9E1B000F71938 /* NotAddedFriendViewController.swift in Sources */,
 				DAEE3D5F27BC0AC900334E06 /* PhotoViewerViewController.swift in Sources */,
 				DA85AF6F27BA5B430005215B /* MeViewController.swift in Sources */,
 				22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */,
@@ -853,6 +861,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-Xlinker",
+					"-interposable",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.khoile.Chit-Chat";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -59,15 +59,15 @@ class FriendsViewController: UIViewController {
     
     func fakeData() {
         // fake data
-        let node = UserNode(id: "hash123",
-                            firstName: "Khoi",
-                            lastName: "Le",
-                            bio: "This is my bio",
-                            email: "uit@gm.uit.edu.vn",
-                            dob: "",
-                            isMale: true)
-        
-        friends.append(node)
+//        let node = UserNode(id: "hash123",
+//                            firstName: "Khoi",
+//                            lastName: "Le",
+//                            bio: "This is my bio",
+//                            email: "uit@gm.uit.edu.vn",
+//                            dob: "",
+//                            isMale: true)
+//        
+//        friends.append(node)
         
         // --- ---
     }
@@ -118,12 +118,14 @@ class FriendsViewController: UIViewController {
     func parseToFriends(with listMap: [[String: Any]]) {
         friends = listMap.compactMap{
             guard let id = $0["id"] as? String,
-            let email = $0["email"] as? String,
-            let lastName = $0["last_name"] as? String,
-            let firstName = $0["first_name"] as? String,
-            let bio = $0["bio"] as? String?,
-            let dob = $0["dob"] as? String?,
-            let isMale = $0["is_male"] as? Bool
+                  let email = $0["email"] as? String,
+                  let lastName = $0["last_name"] as? String,
+                  let firstName = $0["first_name"] as? String,
+                  let bio = $0["bio"] as? String?,
+                  let dob = $0["dob"] as? String?,
+                  let isMale = $0["is_male"] as? Bool,
+                  let province = $0["province"] as? String,
+                  let district = $0["district"] as? String
             else {
                 print("excepted type")
                 return nil
@@ -132,6 +134,8 @@ class FriendsViewController: UIViewController {
             return UserNode(id: id,
                             firstName: firstName,
                             lastName: lastName,
+                            province: province,
+                            district: district,
                             bio: bio ?? "",
                             email: email,
                             dob: dob ?? "",

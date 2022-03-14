@@ -122,12 +122,14 @@ class FriendRequestViewController: UIViewController {
     func parseToFriendsRequest(with listMap: [[String: Any]]) {
         results = listMap.compactMap{
             guard let id = $0["id"] as? String,
-            let email = $0["email"] as? String,
-            let lastName = $0["last_name"] as? String,
-            let firstName = $0["first_name"] as? String,
-            let bio = $0["bio"] as? String?,
-            let dob = $0["dob"] as? String?,
-            let isMale = $0["is_male"] as? Bool
+                  let email = $0["email"] as? String,
+                  let lastName = $0["last_name"] as? String,
+                  let firstName = $0["first_name"] as? String,
+                  let bio = $0["bio"] as? String?,
+                  let dob = $0["dob"] as? String?,
+                  let isMale = $0["is_male"] as? Bool,
+                  let province = $0["province"] as? String,
+                  let district = $0["district"] as? String
             else {
                 print("excepted type")
                 return nil
@@ -136,6 +138,8 @@ class FriendRequestViewController: UIViewController {
             return UserNode(id: id,
                             firstName: firstName,
                             lastName: lastName,
+                            province: province,
+                            district: district,
                             bio: bio ?? "",
                             email: email,
                             dob: dob ?? "",
@@ -351,7 +355,9 @@ extension FriendRequestViewController: UISearchBarDelegate {
                   let firstName = $0["first_name"] as? String,
                   let bio = $0["bio"] as? String?,
                   let dob = $0["dob"] as? String?,
-                  let isMale = $0["is_male"] as? Bool
+                  let isMale = $0["is_male"] as? Bool,
+                  let province = $0["province"] as? String,
+                  let district = $0["district"] as? String
             else {
                 print("excepted type")
                 return nil
@@ -360,6 +366,8 @@ extension FriendRequestViewController: UISearchBarDelegate {
             return UserNode(id: id,
                             firstName: firstName,
                             lastName: lastName,
+                            province: province,
+                            district: district,
                             bio: bio ?? "",
                             email: email,
                             dob: dob ?? "",

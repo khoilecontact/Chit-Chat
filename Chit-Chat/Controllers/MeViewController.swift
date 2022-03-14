@@ -73,15 +73,16 @@ class MeViewController: UIViewController {
                         let firstName = userData["first_name"] as? String,
                       let lastName = userData["last_name"] as? String,
                       let id = userData["id"] as? String,
-                      let isMale = userData["is_male"] as? Bool
-//                      ,let province = userData["province"] as? String,
-//                        let district = userData["district"] as? String
+                      let isMale = userData["is_male"] as? Bool,
+                      let dob = userData["dob"] as? String,
+                      let province = userData["province"] as? String,
+                      let district = userData["district"] as? String
                 else {
                           completion(nil)
                           return
                       }
                 
-                let userResult = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: "", isMale: isMale, province: "", district: "")
+                let userResult = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: dob, isMale: isMale, province: province, district: district)
                 completion(userResult)
                 
                 break
@@ -172,7 +173,8 @@ class MeViewController: UIViewController {
     }
     
     @objc func friendListTapped() {
-        let vc = FriendsViewController()
+//        let vc = FriendsViewController()
+        let vc = NotAddedFriendViewController(user: user!)
         navigationController?.pushViewController(vc, animated: true)
     }
     
