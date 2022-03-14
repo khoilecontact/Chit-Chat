@@ -64,4 +64,29 @@ struct User {
             return "\(safeEmailGenerate)_profile_picture.png"
         }()
     }
+    
+    init(id: String, firstName: String, lastName: String, bio: String, email: String, dob: String, isMale: Bool, province: String, district: String) {
+        var safeEmailGenerate = email.replacingOccurrences(of: ".", with: ",")
+        safeEmailGenerate = safeEmailGenerate.replacingOccurrences(of: "@", with: "-")
+
+        self.id = id
+        self.firstName = firstName
+        self.lastName = lastName
+        self.bio = bio
+        self.email = email
+        self.dob = dob
+        self.isMale = isMale
+        self.province = province
+        self.district = district
+        
+        self.friendRequestList = []
+        self.sentfriendRequestList = []
+        self.friendList = []
+        self.blackList = []
+        self.conversations = []
+        self.safeEmail = safeEmailGenerate
+        self.profilePictureFileName = { () -> String in
+            return "\(safeEmailGenerate)_profile_picture.png"
+        }()
+    }
 }

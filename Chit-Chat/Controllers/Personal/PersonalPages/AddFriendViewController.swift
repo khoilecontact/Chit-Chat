@@ -37,12 +37,39 @@ class AddFriendViewController: UIViewController {
         return label
     }()
     
+    // Cases for friend status
+    
+    // Request Sent
+    let requestSentButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Request Sent", for: .normal)
+        button.backgroundColor = UIColor.systemGray2
+        button.setTitleColor(Appearance.tint, for: .normal)
+        button.layer.cornerRadius = 20
+
+        button.layer.borderWidth = 0
+        button.titleLabel?.textAlignment = .center
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
+        button.setImage(UIImage(systemName: "airplane"), for: .normal)
+        button.imageView?.tintColor = Appearance.tint
+        
+        // Add shadow
+        button.layer.shadowColor = UIColor.gray.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.masksToBounds = false
+        button.layer.shadowOpacity = 1
+        button.layer.shadowRadius = 1
+        
+        return button
+    }()
+    
+    // Stranger
     let addFriendButton: UIButton = {
         let button = UIButton()
         button.setTitle("Add Friend", for: .normal)
         button.backgroundColor = .init(red: CGFloat(108) / 255.0, green: CGFloat(164) / 255.0, blue: CGFloat(212) / 255.0, alpha: 1.0)
         button.setTitleColor(Appearance.tint, for: .normal)
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = 20
 
         button.layer.borderWidth = 0
         button.titleLabel?.textAlignment = .center
@@ -59,6 +86,102 @@ class AddFriendViewController: UIViewController {
         
         return button
     }()
+    
+    // Received a friend request
+    let confirmButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Confirm", for: .normal)
+        button.backgroundColor = .init(red: CGFloat(108) / 255.0, green: CGFloat(164) / 255.0, blue: CGFloat(212) / 255.0, alpha: 1.0)
+        button.setTitleColor(Appearance.tint, for: .normal)
+        button.layer.cornerRadius = 20
+
+        button.layer.borderWidth = 0
+        button.titleLabel?.textAlignment = .center
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
+        button.setImage(UIImage(systemName: "checkmark"), for: .normal)
+        button.imageView?.tintColor = Appearance.tint
+        
+        // Add shadow
+        button.layer.shadowColor = UIColor.gray.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.masksToBounds = false
+        button.layer.shadowOpacity = 1
+        button.layer.shadowRadius = 1
+        
+        return button
+    }()
+    
+    let cancelButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Cancel", for: .normal)
+        button.backgroundColor = .systemRed
+        button.setTitleColor(Appearance.tint, for: .normal)
+        button.layer.cornerRadius = 20
+
+        button.layer.borderWidth = 0
+        button.titleLabel?.textAlignment = .center
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
+        button.setImage(UIImage(systemName: "xmark.square"), for: .normal)
+        button.imageView?.tintColor = Appearance.tint
+        
+        // Add shadow
+        button.layer.shadowColor = UIColor.gray.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.masksToBounds = false
+        button.layer.shadowOpacity = 1
+        button.layer.shadowRadius = 1
+        
+        return button
+    }()
+    
+    // Added friend
+    let friendStatusButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Friend", for: .normal)
+        button.backgroundColor = .systemBackground
+        button.setTitleColor(Appearance.tint, for: .normal)
+        button.layer.cornerRadius = 20
+
+        button.layer.borderWidth = 1
+        button.titleLabel?.textAlignment = .center
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
+        button.setImage(UIImage(systemName: "person.fill.checkmark"), for: .normal)
+        button.imageView?.tintColor = Appearance.tint
+        
+        // Add shadow
+        button.layer.shadowColor = UIColor.gray.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.masksToBounds = false
+        button.layer.shadowOpacity = 1
+        button.layer.shadowRadius = 1
+        
+        return button
+    }()
+    
+    let messageButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Message", for: .normal)
+        button.backgroundColor = .systemGreen
+        button.setTitleColor(Appearance.tint, for: .normal)
+        button.layer.cornerRadius = 20
+
+        button.layer.borderWidth = 0
+        button.titleLabel?.textAlignment = .center
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
+        button.setImage(UIImage(systemName: "message"), for: .normal)
+        button.imageView?.tintColor = Appearance.tint
+        
+        // Add shadow
+        button.layer.shadowColor = UIColor.gray.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.masksToBounds = false
+        button.layer.shadowOpacity = 1
+        button.layer.shadowRadius = 1
+        
+        return button
+    }()
+    
+    // Rest of the view
     
     let functionsButton: UIButton = {
         let button = UIButton()
@@ -118,6 +241,11 @@ class AddFriendViewController: UIViewController {
         scrollView.addSubview(nameLabel)
         scrollView.addSubview(functionsButton)
         scrollView.addSubview(addFriendButton)
+        scrollView.addSubview(requestSentButton)
+        scrollView.addSubview(confirmButton)
+        scrollView.addSubview(cancelButton)
+        scrollView.addSubview(friendStatusButton)
+        scrollView.addSubview(messageButton)
         scrollView.addSubview(bioLabel)
         scrollView.addSubview(dobIcon)
         scrollView.addSubview(dobLabel)
@@ -137,9 +265,36 @@ class AddFriendViewController: UIViewController {
         
         functionsButton.frame = CGRect(x: scrollView.right - 40, y: nameLabel.bottom + 10, width: 40, height: 52)
         
-        addFriendButton.frame = CGRect(x: 80, y: nameLabel.bottom + 10, width: scrollView.width - 160, height: 40)
-        
-        bioLabel.frame = CGRect(x: 20, y: addFriendButton.bottom + 30, width: scrollView.width - 40, height: 52)
+        switch friendStatus {
+        case "Sent":
+            requestSentButton.frame = CGRect(x: 80, y: nameLabel.bottom + 10, width: scrollView.width - 160, height: 40)
+
+            bioLabel.frame = CGRect(x: 20, y: requestSentButton.bottom + 30, width: scrollView.width - 40, height: 52)
+            break
+
+        case "Added":
+            friendStatusButton.frame = CGRect(x: 50, y: nameLabel.bottom + 10, width: 130, height: 40)
+            
+            messageButton.frame = CGRect(x: friendStatusButton.right + 20, y: nameLabel.bottom + 10, width: 130, height: 40)
+            
+            bioLabel.frame = CGRect(x: 20, y: friendStatusButton.bottom + 30, width: scrollView.width - 40, height: 52)
+            break
+
+        case "Received":
+            confirmButton.frame = CGRect(x: 50, y: nameLabel.bottom + 10, width: 130, height: 40)
+            
+            cancelButton.frame = CGRect(x: confirmButton.right + 20, y: nameLabel.bottom + 10, width: 130, height: 40)
+            
+            bioLabel.frame = CGRect(x: 20, y: confirmButton.bottom + 30, width: scrollView.width - 40, height: 52)
+            break
+
+        default:
+            // Stranger
+            addFriendButton.frame = CGRect(x: 80, y: nameLabel.bottom + 10, width: scrollView.width - 160, height: 40)
+
+            bioLabel.frame = CGRect(x: 20, y: addFriendButton.bottom + 30, width: scrollView.width - 40, height: 52)
+            break
+        }
         
         dobIcon.frame = CGRect(x: 20, y: bioLabel.bottom + 40, width: 30, height: 52)
         
