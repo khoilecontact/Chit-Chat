@@ -84,6 +84,39 @@ final class FindNewFriendsViewController: UIViewController {
         // searchBar.becomeFirstResponder()
     }
     
+    func sendRequest(with user: UserNode) {
+        DatabaseManager.shared.sendFriendRequest(with: user) { [weak self] result in
+            guard let strongSelf = self else { return }
+            
+            switch result {
+            case .success(let finished):
+                if finished {
+                    strongSelf.users.removeAll(where: {
+                        guard let email = $0["email"] as? String else { return false }
+                        
+                        return email == user.email
+                    })
+                    
+                    strongSelf.results.removeAll {
+                        user.email == $0.email
+                    }
+                    
+                    DispatchQueue.main.async {
+                        strongSelf.tableView.reloadData()
+                    }
+                }
+                else {
+                    print("Failed to send request")
+                    break
+                }
+                
+            case .failure(let error):
+                print("Failed to send request: \(error)")
+            }
+
+        }
+    }
+    
     @objc private func dismissSelf() {
         dismiss(animated: true, completion: nil)
     }
@@ -135,7 +168,8 @@ extension FindNewFriendsViewController: UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let seeProfileAction = UIContextualAction(style: .destructive, title: "See Profile") { action, view, handler in
-            // code
+            // let vc = OtherUserViewController(otherUser: strongSelf.results[indexPath.row])
+            // navigationController?.pushViewController(vc, animated: true)
         }
         seeProfileAction.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
         
@@ -147,13 +181,15 @@ extension FindNewFriendsViewController: UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         // actions
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { action, view, handler in
-            
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] action, view, handler in
+
         }
         deleteAction.backgroundColor = .red
         
-        let addAction = UIContextualAction(style: .destructive, title: "Add") { action, view, handler in
+        let addAction = UIContextualAction(style: .destructive, title: "Add") { [weak self] action, view, handler in
+            guard let strongSelf = self else { return }
             
+            strongSelf.sendRequest(with: strongSelf.results[indexPath.row])
         }
         addAction.backgroundColor = .systemGreen
         
