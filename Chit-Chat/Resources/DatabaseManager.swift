@@ -1116,12 +1116,20 @@ extension DatabaseManager {
                     }
                 }
                 
-                strongSelf.database.child("Users/\(otherSafeEmail)/friend_request_list").observe(.value) { snapshot in
-                    if var currentRequestList = snapshot.value as? [[String: Any]] {
+                // other
+                strongSelf.database.child("Users/\(otherSafeEmail)").observeSingleEvent(of: .value) { otherSnapshot in
+                    
+                    guard let otherValue = otherSnapshot.value as? [String: Any] else {
+                        print("Failed to fetch other profile")
+                        completion(.failure(DatabaseError.failedToFetch))
+                        return
+                    }
+                    
+                    if var currentRequestList = otherValue["friend_request_list"] as? [[String: Any]]? {
                         
-                        currentRequestList.append(myInfo)
+                        currentRequestList?.append(myInfo)
                         
-                        strongSelf.database.child("Users/\(otherSafeEmail)/friend_request_list").setValue(currentRequestList) { error, _ in
+                        strongSelf.database.child("Users/\(otherSafeEmail)/friend_request_list").setValue(currentRequestList ?? [myInfo]) { error, _ in
                             guard error == nil else {
                                 completion(.failure(DatabaseError.failedToFetch))
                                 return
@@ -1131,10 +1139,8 @@ extension DatabaseManager {
                             return
                         }
                     }
-                    
-                    completion(.failure(DatabaseError.failedToFetch))
-                    return
                 }
+                
             }
             
         })
