@@ -8,7 +8,7 @@
 import UIKit
 import FirebaseAuth
 
-class AddFriendViewController: UIViewController {
+class OtherUserViewController: UIViewController {
     var otherUser: User?
     var friendStatus = "Stranger"
     
@@ -379,9 +379,8 @@ class AddFriendViewController: UIViewController {
         // Getting user's friend list
         DatabaseManager.shared.getAllFriendsOfUser(with: otherUser.email, completion: { [weak self] result in
             switch result {
-            case .failure(let error):
-                print("Error in get all friend list: \(error)")
-                return
+            case .failure( _):
+                self?.otherUser?.friendList = []
             
             case .success(let data):
                 self?.otherUser?.friendList = data.compactMap{
@@ -417,9 +416,8 @@ class AddFriendViewController: UIViewController {
         // Get user's friend request
         DatabaseManager.shared.getAllFriendRequestOfUser(with: otherUser.email, completion: { [weak self] result in
             switch result {
-            case .failure(let error):
-                print("Error in get all friend request list: \(error)")
-                return
+            case .failure( _):
+                self?.otherUser?.friendRequestList = []
             
             case .success(let data):
                 self?.otherUser?.friendRequestList = data.compactMap{
@@ -456,9 +454,8 @@ class AddFriendViewController: UIViewController {
         // Get user's sent friend request
         DatabaseManager.shared.getAllSentFriendRequestOfUser(with: otherUser.email, completion: { [weak self] result in
             switch result {
-            case .failure(let error):
-                print("Error in get all friend request list: \(error)")
-                return
+            case .failure( _):
+                self?.otherUser?.sentfriendRequestList = []
             
             case .success(let data):
                 self?.otherUser?.sentfriendRequestList = data.compactMap{
@@ -494,9 +491,8 @@ class AddFriendViewController: UIViewController {
         // Get user's sent friend request
         DatabaseManager.shared.getBlackListOfUser(with: otherUser.email, completion: { [weak self] result in
             switch result {
-            case .failure(let error):
-                print("Error in get all friend request list: \(error)")
-                return
+            case .failure( _):
+                self?.otherUser?.blackList = []
             
             case .success(let data):
                 self?.otherUser?.blackList = data.compactMap{
@@ -547,7 +543,6 @@ class AddFriendViewController: UIViewController {
                 self?.present(ac, animated: true, completion: nil)
                 break
             }
-            
         })
         
         // Update the button
