@@ -30,11 +30,11 @@ struct User {
     let isMale: Bool
     let province: String
     let district: String
-    let friendRequestList: [UserNode]
-    let sentfriendRequestList: [UserNode]
-    let friendList: [UserNode]
-    let blackList: [UserNode]
-    let conversations: [MessagesCollection]
+    var friendRequestList: [UserNode]
+    var sentfriendRequestList: [UserNode]
+    var friendList: [UserNode]
+    var blackList: [UserNode]
+    var conversations: [MessagesCollection]
     
     var safeEmail: String
     
@@ -48,6 +48,31 @@ struct User {
         self.firstName = firstName
         self.lastName = lastName
         self.bio = ""
+        self.email = email
+        self.dob = dob
+        self.isMale = isMale
+        self.province = province
+        self.district = district
+        
+        self.friendRequestList = []
+        self.sentfriendRequestList = []
+        self.friendList = []
+        self.blackList = []
+        self.conversations = []
+        self.safeEmail = safeEmailGenerate
+        self.profilePictureFileName = { () -> String in
+            return "\(safeEmailGenerate)_profile_picture.png"
+        }()
+    }
+    
+    init(id: String, firstName: String, lastName: String, bio: String, email: String, dob: String, isMale: Bool, province: String, district: String) {
+        var safeEmailGenerate = email.replacingOccurrences(of: ".", with: ",")
+        safeEmailGenerate = safeEmailGenerate.replacingOccurrences(of: "@", with: "-")
+
+        self.id = id
+        self.firstName = firstName
+        self.lastName = lastName
+        self.bio = bio
         self.email = email
         self.dob = dob
         self.isMale = isMale

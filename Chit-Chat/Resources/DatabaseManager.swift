@@ -89,6 +89,11 @@ extension DatabaseManager {
             "is_male" : user.isMale,
             "province" : user.province,
             "district" : user.district,
+            "friend_request_list": [],
+            "sent_friend_request": [],
+            "friend_list": [],
+            "black_list": [],
+            "conversations": [],
         ], withCompletionBlock: { [weak self] error, datareference in
             guard error ==  nil else {
                 print("Failed to write to database")
@@ -111,6 +116,11 @@ extension DatabaseManager {
                         "is_male" : user.isMale,
                         "province" : user.province,
                         "district" : user.district,
+                        "friend_request_list": [],
+                        "sent_friend_request": [],
+                        "friend_list": [],
+                        "black_list": [],
+                        "conversations": [],
                     ]
                     
                     usersCollection.append(newElement)
@@ -136,6 +146,11 @@ extension DatabaseManager {
                             "is_male" : user.isMale,
                             "province" : user.province,
                             "district" : user.district,
+                            "friend_request_list": [],
+                            "sent_friend_request": [],
+                            "friend_list": [],
+                            "black_list": [],
+                            "conversations": [],
                         ]
                     ]
                     self?.database.child("Users_list").setValue(newCollection, withCompletionBlock: { error, _ in
@@ -166,6 +181,11 @@ extension DatabaseManager {
             "is_male" : user.isMale,
             "province" : user.province,
             "district" : user.district,
+            "friend_request_list": [],
+            "sent_friend_request": [],
+            "friend_list": [],
+            "black_list": [],
+            "conversations": [],
         ], withCompletionBlock: { error, datareference in
             guard error ==  nil else {
                 print("Failed to write to database")
@@ -210,6 +230,11 @@ extension DatabaseManager {
                 "is_male" : isMale,
                 "province" : province,
                 "district" : district,
+                "friend_request_list": [],
+                "sent_friend_request": [],
+                "friend_list": [],
+                "black_list": [],
+                "conversations": [],
             ], withCompletionBlock: { [weak self] error, datareference in
                 guard error ==  nil else {
                     print("Failed to write to database")
@@ -231,6 +256,11 @@ extension DatabaseManager {
                             "is_male" : isMale,
                             "province" : province,
                             "district" : district,
+                            "friend_request_list": [],
+                            "sent_friend_request": [],
+                            "friend_list": [],
+                            "black_list": [],
+                            "conversations": [],
                         ]
                         
                         usersCollection.append(newElement)
@@ -260,6 +290,11 @@ extension DatabaseManager {
                                 "is_male" : isMale,
                                 "province" : province,
                                 "district" : district,
+                                "friend_request_list": [],
+                                "sent_friend_request": [],
+                                "friend_list": [],
+                                "black_list": [],
+                                "conversations": [],
                             ]
                         ]
                         self?.database.child("Users_list").setValue(newCollection, withCompletionBlock: { error, _ in
@@ -985,6 +1020,32 @@ extension DatabaseManager {
         let safeEmail = DatabaseManager.safeEmail(emailAddress: unSafeEmail)
         
         database.child("Users/\(safeEmail)/friend_request_list").observeSingleEvent(of: .value, with: { snapshot in
+            guard let value = snapshot.value as? [[String: Any]] else {
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            
+            completion(.success(value))
+        })
+    }
+    
+    public func getAllSentFriendRequestOfUser(with unSafeEmail: String, completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: unSafeEmail)
+        
+        database.child("Users/\(safeEmail)/sent_friend_request").observeSingleEvent(of: .value, with: { snapshot in
+            guard let value = snapshot.value as? [[String: Any]] else {
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            
+            completion(.success(value))
+        })
+    }
+    
+    public func getBlackListOfUser(with unSafeEmail: String, completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: unSafeEmail)
+        
+        database.child("Users/\(safeEmail)/black_list").observeSingleEvent(of: .value, with: { snapshot in
             guard let value = snapshot.value as? [[String: Any]] else {
                 completion(.failure(DatabaseError.failedToFetch))
                 return

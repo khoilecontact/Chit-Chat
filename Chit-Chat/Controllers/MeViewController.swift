@@ -76,13 +76,14 @@ class MeViewController: UIViewController {
                       let isMale = userData["is_male"] as? Bool,
                       let dob = userData["dob"] as? String,
                       let province = userData["province"] as? String,
-                      let district = userData["district"] as? String
+                      let district = userData["district"] as? String,
+                      let bio = userData["bio"] as? String
                 else {
                           completion(nil)
                           return
                       }
                 
-                let userResult = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: dob, isMale: isMale, province: province, district: district)
+                let userResult = User(id: id, firstName: firstName, lastName: lastName, bio: bio, email: email, dob: dob, isMale: isMale, province: province, district: district)
                 completion(userResult)
                 
                 break
@@ -173,7 +174,9 @@ class MeViewController: UIViewController {
     }
     
     @objc func friendListTapped() {
-        tabBarController?.selectedIndex = 1
+//        let vc = FriendsViewController()
+        let vc = AddFriendViewController(otherUser: user!)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func darkModeTapped() {
