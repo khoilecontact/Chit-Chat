@@ -167,9 +167,11 @@ extension FindNewFriendsViewController: UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let seeProfileAction = UIContextualAction(style: .destructive, title: "See Profile") { action, view, handler in
-            // let vc = OtherUserViewController(otherUser: strongSelf.results[indexPath.row])
-            // navigationController?.pushViewController(vc, animated: true)
+        let seeProfileAction = UIContextualAction(style: .destructive, title: "See Profile") { [weak self] action, view, handler in
+            convertUserNodeToUser(with: self?.results[indexPath.row] as! UserNode, completion: { user in
+                let vc = OtherUserViewController(otherUser: user)
+                self?.navigationController?.pushViewController(vc, animated: true)
+            })
         }
         seeProfileAction.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
         
