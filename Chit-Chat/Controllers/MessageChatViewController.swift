@@ -101,7 +101,7 @@ class MessageChatViewController: MessagesViewController {
         navBar()
         
         // MARK: - Setup Messages
-        fakeData()
+        // fakeData()
         
         // MARK: - Message Delegate
         messageDelegate()
