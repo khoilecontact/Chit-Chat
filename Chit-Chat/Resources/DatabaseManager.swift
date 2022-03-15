@@ -608,9 +608,10 @@ extension DatabaseManager {
     
     /// Get all messages for a given conversations
     public func getAllMessagesForConversation(with id: String, completion: @escaping (Result<[Message], Error>) -> Void) {
-        database.child("\(id)/messages").observe(.value, with: { snapshot in
+        database.child("Conversations/\(id)/messages").observe(.value, with: { snapshot in
             //print("getAllMessagesForConversation: \(id)")
             guard let value = snapshot.value as? [[String: Any]] else {
+                print("invalid messages return values")
                 completion(.failure(DatabaseError.failedToFetch))
                 return
             }
@@ -719,8 +720,7 @@ extension DatabaseManager {
                 break
             }
             
-            let messageDate = newMessage.sentDate
-            let dateString = messageDate.toString(dateFormat: "dd/MM/YY")
+            let dateString = newMessage.sentDate
             //let conversationId =  newMessage.messageId
             
             guard let myEmail = UserDefaults.standard.value(forKey: "email") else {
