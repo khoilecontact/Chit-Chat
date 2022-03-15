@@ -11,7 +11,7 @@ struct UserNetwork {
     let listUser: [UserNode]
 }
 
-struct UserNode {
+public struct UserNode {
     let id: String
     let firstName: String
     let lastName: String

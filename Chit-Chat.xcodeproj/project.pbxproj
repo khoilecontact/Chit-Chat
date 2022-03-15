@@ -176,7 +176,7 @@
 		222411EA27C1EA7000C5E416 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
-				225E475F27D9E17100F71938 /* PersonalPages */,
+				225E476027D9E1B000F71938 /* OtherUserViewController.swift */,
 				222411EB27C1EA8900C5E416 /* PersonalInformationViewController.swift */,
 				222411EF27C1EAA500C5E416 /* DarkModeViewController.swift */,
 				222411F227C3359500C5E416 /* ChangePasswordViewController.swift */,
@@ -192,14 +192,6 @@
 				DAE31CEF27B227980035E65B /* FriendsViewController.swift */,
 			);
 			path = Friend;
-			sourceTree = "<group>";
-		};
-		225E475F27D9E17100F71938 /* PersonalPages */ = {
-			isa = PBXGroup;
-			children = (
-				225E476027D9E1B000F71938 /* OtherUserViewController.swift */,
-			);
-			path = PersonalPages;
 			sourceTree = "<group>";
 		};
 		22714E58277D5D4F0004F942 = {

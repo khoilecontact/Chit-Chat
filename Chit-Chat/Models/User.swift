@@ -20,7 +20,7 @@ struct MessagesCollection {
     let latestMessage: LatestMessage
 }
 
-struct User {
+public struct User {
     let id: String
     let firstName: String
     let lastName: String

@@ -51,3 +51,8 @@ public func areEqual (_ left: Any, _ right: Any) -> Bool {
     return false
 }
 
+public func convertUserNodeToUser(with userNode: UserNode, completion: @escaping (User) -> Void) {
+    let user = User(id: userNode.id, firstName: userNode.firstName, lastName: userNode.lastName, bio: userNode.bio, email: userNode.email, dob: userNode.dob, isMale: userNode.isMale, province: userNode.province, district: userNode.district)
+    
+    completion(user)
+}
