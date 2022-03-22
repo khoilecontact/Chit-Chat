@@ -239,14 +239,15 @@ extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegat
         
         convertUserNodeToUser(with: self.results[indexPath.row] as! UserNode, completion: { user in
                 let vc = UIViewController()
-                Task.init {
+                async {
                     do {
-                        async let vc = try await OtherUserViewController(otherUser: user)
+                        let vc = try await OtherUserViewController(otherUser: user)
+                        await self.navigationController?.pushViewController(vc, animated: true)
                     } catch {
                         print("Error in find new friend class")
                     }
                 }
-                self.navigationController?.pushViewController(vc, animated: true)
+                
         })    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
