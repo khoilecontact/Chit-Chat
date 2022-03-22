@@ -314,7 +314,11 @@ class OtherUserViewController: UIViewController {
         let safeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
         // Get list data of user
-        await getAllOtherInfoUser()
+        do {
+            try await getAllOtherInfoUser()
+        } catch {
+            
+        }
         
         guard let pageUser = self.otherUser else {
             return
@@ -373,159 +377,178 @@ class OtherUserViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func getAllOtherInfoUser() async -> Void {
+    func getAllOtherInfoUser() async throws -> Void {
         guard let otherUser = otherUser else { return }
         
-        // Getting user's friend list
-        DatabaseManager.shared.getAllFriendsOfUser(with: otherUser.email, completion: { [weak self] result in
-            switch result {
-            case .failure( _):
-                self?.otherUser?.friendList = []
-            
-            case .success(let data):
-                self?.otherUser?.friendList = data.compactMap{
-                    guard let id = $0["id"] as? String,
-                          let email = $0["email"] as? String,
-                          let lastName = $0["last_name"] as? String,
-                          let firstName = $0["first_name"] as? String,
-                          let bio = $0["bio"] as? String?,
-                          let dob = $0["dob"] as? String?,
-                          let isMale = $0["is_male"] as? Bool,
-                          let province = $0["province"] as? String,
-                          let district = $0["district"] as? String
-                    else {
-                        print("excepted type")
-                        return nil
-                    }
+        DispatchQueue.global(qos: .background).async {
+            // Getting user's friend list
+            do {
+                try DatabaseManager.shared.getAllFriendsOfUser(with: otherUser.email, completion: { [weak self] result in
+                    switch result {
+                    case .failure( _):
+                        let friendList: [UserNode] = []
                     
-                    return UserNode(id: id,
-                                    firstName: firstName,
-                                    lastName: lastName,
-                                    province: province,
-                                    district: district,
-                                    bio: bio ?? "",
-                                    email: email,
-                                    dob: dob ?? "",
-                                    isMale: isMale)
-                }
-                
-                break
-            }
-        })
-        
-        // Get user's friend request
-        DatabaseManager.shared.getAllFriendRequestOfUser(with: otherUser.email, completion: { [weak self] result in
-            switch result {
-            case .failure( _):
-                self?.otherUser?.friendRequestList = []
-            
-            case .success(let data):
-                self?.otherUser?.friendRequestList = data.compactMap{
-                    guard let id = $0["id"] as? String,
-                          let email = $0["email"] as? String,
-                          let lastName = $0["last_name"] as? String,
-                          let firstName = $0["first_name"] as? String,
-                          let bio = $0["bio"] as? String?,
-                          let dob = $0["dob"] as? String?,
-                          let isMale = $0["is_male"] as? Bool,
-                          let province = $0["province"] as? String,
-                          let district = $0["district"] as? String
-                    else {
-                        print("excepted type")
-                        return nil
+                    case .success(let data):
+                        let friendList: [UserNode] = data.compactMap{
+                            guard let id = $0["id"] as? String,
+                                  let email = $0["email"] as? String,
+                                  let lastName = $0["last_name"] as? String,
+                                  let firstName = $0["first_name"] as? String,
+                                  let bio = $0["bio"] as? String?,
+                                  let dob = $0["dob"] as? String?,
+                                  let isMale = $0["is_male"] as? Bool,
+                                  let province = $0["province"] as? String,
+                                  let district = $0["district"] as? String
+                            else {
+                                print("excepted type")
+                                return nil
+                            }
+                            
+                            return UserNode(id: id,
+                                            firstName: firstName,
+                                            lastName: lastName,
+                                            province: province,
+                                            district: district,
+                                            bio: bio ?? "",
+                                            email: email,
+                                            dob: dob ?? "",
+                                            isMale: isMale)
+                        }
+                        
+                        break
                     }
-                    
-                    return UserNode(id: id,
-                                    firstName: firstName,
-                                    lastName: lastName,
-                                    province: province,
-                                    district: district,
-                                    bio: bio ?? "",
-                                    email: email,
-                                    dob: dob ?? "",
-                                    isMale: isMale)
-                }
+                })
+            } catch {
                 
-                break
             }
             
-        })
-        
-        // Get user's sent friend request
-        await DatabaseManager.shared.getAllSentFriendRequestOfUser(with: otherUser.email, completion: { [weak self] result in
-            switch result {
-            case .failure( _):
-                self?.otherUser?.sentfriendRequestList = []
-            
-            case .success(let data):
-                self?.otherUser?.sentfriendRequestList = data.compactMap{
-                    guard let id = $0["id"] as? String,
-                          let email = $0["email"] as? String,
-                          let lastName = $0["last_name"] as? String,
-                          let firstName = $0["first_name"] as? String,
-                          let bio = $0["bio"] as? String?,
-                          let dob = $0["dob"] as? String?,
-                          let isMale = $0["is_male"] as? Bool,
-                          let province = $0["province"] as? String,
-                          let district = $0["district"] as? String
-                    else {
-                        print("excepted type")
-                        return nil
+            // Get user's friend request
+            do {
+                try DatabaseManager.shared.getAllFriendRequestOfUser(with: otherUser.email, completion: { [weak self] result in
+                    switch result {
+                    case .failure( _):
+                        let friendRequestList: [UserNode] = []
+                        print("FAILED")
+                    
+                    case .success(let data):
+                        print("SUCCESS")
+                        let friendRequestList: [UserNode] = data.compactMap{
+                            guard let id = $0["id"] as? String,
+                                  let email = $0["email"] as? String,
+                                  let lastName = $0["last_name"] as? String,
+                                  let firstName = $0["first_name"] as? String,
+                                  let bio = $0["bio"] as? String?,
+                                  let dob = $0["dob"] as? String?,
+                                  let isMale = $0["is_male"] as? Bool,
+                                  let province = $0["province"] as? String,
+                                  let district = $0["district"] as? String
+                            else {
+                                print("excepted type")
+                                return nil
+                            }
+                            
+                            return UserNode(id: id,
+                                            firstName: firstName,
+                                            lastName: lastName,
+                                            province: province,
+                                            district: district,
+                                            bio: bio ?? "",
+                                            email: email,
+                                            dob: dob ?? "",
+                                            isMale: isMale)
+                        }
+                        
+                        break
                     }
                     
-                    return UserNode(id: id,
-                                    firstName: firstName,
-                                    lastName: lastName,
-                                    province: province,
-                                    district: district,
-                                    bio: bio ?? "",
-                                    email: email,
-                                    dob: dob ?? "",
-                                    isMale: isMale)
-                }
+                })
+            } catch {
                 
-                print(self?.otherUser)
-                
-                break
             }
-        })
-        
-        // Get user's sent friend request
-        DatabaseManager.shared.getBlackListOfUser(with: otherUser.email, completion: { [weak self] result in
-            switch result {
-            case .failure( _):
-                self?.otherUser?.blackList = []
             
-            case .success(let data):
-                self?.otherUser?.blackList = data.compactMap{
-                    guard let id = $0["id"] as? String,
-                          let email = $0["email"] as? String,
-                          let lastName = $0["last_name"] as? String,
-                          let firstName = $0["first_name"] as? String,
-                          let bio = $0["bio"] as? String?,
-                          let dob = $0["dob"] as? String?,
-                          let isMale = $0["is_male"] as? Bool,
-                          let province = $0["province"] as? String,
-                          let district = $0["district"] as? String
-                    else {
-                        print("excepted type")
-                        return nil
-                    }
+            // Get user's sent friend request
+            do {
+                try DatabaseManager.shared.getAllSentFriendRequestOfUser(with: otherUser.email, completion: { [weak self] result in
+                    switch result {
+                    case .failure( _):
+                        let sentfriendRequestList: [UserNode] = []
                     
-                    return UserNode(id: id,
-                                    firstName: firstName,
-                                    lastName: lastName,
-                                    province: province,
-                                    district: district,
-                                    bio: bio ?? "",
-                                    email: email,
-                                    dob: dob ?? "",
-                                    isMale: isMale)
-                }
+                    case .success(let data):
+                        let sentfriendRequestList: [UserNode] = data.compactMap{
+                            guard let id = $0["id"] as? String,
+                                  let email = $0["email"] as? String,
+                                  let lastName = $0["last_name"] as? String,
+                                  let firstName = $0["first_name"] as? String,
+                                  let bio = $0["bio"] as? String?,
+                                  let dob = $0["dob"] as? String?,
+                                  let isMale = $0["is_male"] as? Bool,
+                                  let province = $0["province"] as? String,
+                                  let district = $0["district"] as? String
+                            else {
+                                print("excepted type")
+                                return nil
+                            }
+                            
+                            return UserNode(id: id,
+                                            firstName: firstName,
+                                            lastName: lastName,
+                                            province: province,
+                                            district: district,
+                                            bio: bio ?? "",
+                                            email: email,
+                                            dob: dob ?? "",
+                                            isMale: isMale)
+                        }
+                        
+                        break
+                    }
+                })
+            } catch {
                 
-                break
             }
-        })
+            
+            // Get user's sent friend request
+            do {
+                try DatabaseManager.shared.getBlackListOfUser(with: otherUser.email, completion: { [weak self] result in
+                    switch result {
+                    case .failure( _):
+                        let blackList: [UserNode] = []
+                    
+                    case .success(let data):
+                        let blackList: [UserNode] = data.compactMap{
+                            guard let id = $0["id"] as? String,
+                                  let email = $0["email"] as? String,
+                                  let lastName = $0["last_name"] as? String,
+                                  let firstName = $0["first_name"] as? String,
+                                  let bio = $0["bio"] as? String?,
+                                  let dob = $0["dob"] as? String?,
+                                  let isMale = $0["is_male"] as? Bool,
+                                  let province = $0["province"] as? String,
+                                  let district = $0["district"] as? String
+                            else {
+                                print("excepted type")
+                                return nil
+                            }
+                            
+                            return UserNode(id: id,
+                                            firstName: firstName,
+                                            lastName: lastName,
+                                            province: province,
+                                            district: district,
+                                            bio: bio ?? "",
+                                            email: email,
+                                            dob: dob ?? "",
+                                            isMale: isMale)
+                        }
+                        
+                        break
+                    }
+                })
+            } catch {
+                
+            }
+            
+        }
         
         
     }

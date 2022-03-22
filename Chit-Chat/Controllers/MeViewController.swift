@@ -174,9 +174,16 @@ class MeViewController: UIViewController {
     }
     
     @objc func friendListTapped() {
-        let vc = FriendsViewController()
-//        let vc = AddFriendViewController(otherUser: user!)
-        navigationController?.pushViewController(vc, animated: true)
+//        _ = self.tabBarController?.selectedIndex = 1
+        async {
+            do {
+                let vc = try await OtherUserViewController(otherUser: user!)
+                await navigationController?.pushViewController(vc, animated: true)
+            } catch {
+                print("Phat nguuu")
+            }
+        }
+        
     }
     
     @objc func darkModeTapped() {
