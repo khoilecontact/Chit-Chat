@@ -1085,7 +1085,7 @@ extension DatabaseManager {
             {
                 let myInfo: [String: Any] = [
                     "email": email,
-                    "fist_name": firstName,
+                    "first_name": firstName,
                     "province": province ?? "",
                     "district": district ?? "",
                     "last_name": lastName,
@@ -1097,7 +1097,7 @@ extension DatabaseManager {
                 
                 let myFriendRequest: [String: Any] = [
                     "email": otherUser.email,
-                    "fist_name": otherUser.firstName,
+                    "first_name": otherUser.firstName,
                     "last_name": otherUser.lastName,
                     "province": otherUser.province,
                     "district": otherUser.district,

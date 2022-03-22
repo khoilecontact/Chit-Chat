@@ -305,20 +305,21 @@ class OtherUserViewController: UIViewController {
         genderLabel.frame = CGRect(x: genderIcon.right + 20, y: dobIcon.bottom + 30, width: scrollView.width - 100, height: 52)
     }
     
-    init(otherUser: User) {
+    init(otherUser: User) async {
         super.init(nibName: nil, bundle: nil)
         
         guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else { return }
         self.otherUser = otherUser
-        
-        guard let pageUser = self.otherUser else {
-            return
-        }
 
         let safeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
         // Get list data of user
-        getAllOtherInfoUser()
+        await getAllOtherInfoUser()
+        
+        guard let pageUser = self.otherUser else {
+            return
+        }
+        print(pageUser)
         
         // Loading user's image
         let fileName = safeEmail + "_profile_picture.png"
@@ -346,7 +347,6 @@ class OtherUserViewController: UIViewController {
         dobLabel.text = otherUser.dob
         
         genderLabel.text = otherUser.isMale ? "Male" : "Female"
-        
         // Check for friend status
         // Case: They sent you a sent request
         for user in pageUser.sentfriendRequestList {
@@ -373,7 +373,7 @@ class OtherUserViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func getAllOtherInfoUser() {
+    func getAllOtherInfoUser() async -> Void {
         guard let otherUser = otherUser else { return }
         
         // Getting user's friend list
@@ -452,7 +452,7 @@ class OtherUserViewController: UIViewController {
         })
         
         // Get user's sent friend request
-        DatabaseManager.shared.getAllSentFriendRequestOfUser(with: otherUser.email, completion: { [weak self] result in
+        await DatabaseManager.shared.getAllSentFriendRequestOfUser(with: otherUser.email, completion: { [weak self] result in
             switch result {
             case .failure( _):
                 self?.otherUser?.sentfriendRequestList = []
@@ -483,6 +483,8 @@ class OtherUserViewController: UIViewController {
                                     dob: dob ?? "",
                                     isMale: isMale)
                 }
+                
+                print(self?.otherUser)
                 
                 break
             }
@@ -524,6 +526,8 @@ class OtherUserViewController: UIViewController {
                 break
             }
         })
+        
+        
     }
     
     @objc func addFriendTapped() {
