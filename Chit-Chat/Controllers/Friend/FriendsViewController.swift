@@ -180,8 +180,18 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let model = friends[indexPath.row]
-        openProfilePage(model)
+        
+        convertUserNodeToUser(with: self.friends[indexPath.row] as! UserNode, completion: { user in
+                let vc = UIViewController()
+                Task.init {
+                    do {
+                        async let vc = try await OtherUserViewController(otherUser: user)
+                    } catch {
+                        print("Error in find new friend class")
+                    }
+                }
+                self.navigationController?.pushViewController(vc, animated: true)
+        })
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
