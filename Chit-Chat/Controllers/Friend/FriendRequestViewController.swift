@@ -237,14 +237,17 @@ extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegat
         tableView.deselectRow(at: indexPath, animated: true)
         let targetUserData = results[indexPath.row]
         
-        dismiss(animated: true, completion: { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            strongSelf.completion?(targetUserData)
-        })
-    }
+        convertUserNodeToUser(with: self.results[indexPath.row] as! UserNode, completion: { user in
+                let vc = UIViewController()
+                Task.init {
+                    do {
+                        async let vc = try await OtherUserViewController(otherUser: user)
+                    } catch {
+                        print("Error in find new friend class")
+                    }
+                }
+                self.navigationController?.pushViewController(vc, animated: true)
+        })    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
@@ -256,8 +259,18 @@ extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let seeProfileAction = UIContextualAction(style: .destructive, title: "See Profile") { action, view, handler in
-            // code
+        let seeProfileAction = UIContextualAction(style: .destructive, title: "See Profile") { [weak self] action, view, handler in
+            convertUserNodeToUser(with: self?.results[indexPath.row] as! UserNode, completion: { user in
+                let vc = UIViewController()
+                Task.init {
+                    do {
+                        async let vc = try await OtherUserViewController(otherUser: user)
+                    } catch {
+                        print("Error in find new friend class")
+                    }
+                }
+                self?.navigationController?.pushViewController(vc, animated: true)
+            })
         }
         seeProfileAction.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
         
