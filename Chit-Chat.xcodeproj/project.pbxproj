@@ -40,6 +40,9 @@
 		B3449D7E0B600DA6EC715B77 /* Pods_Chit_Chat_Chit_ChatUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBC31E93979BE04766A3846F /* Pods_Chit_Chat_Chit_ChatUITests.framework */; };
 		DA0D67B427C0C7C20016C4AC /* FriendRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0D67B327C0C7C20016C4AC /* FriendRequestViewController.swift */; };
 		DA0D67B627C0C7DF0016C4AC /* FriendRequestViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0D67B527C0C7DF0016C4AC /* FriendRequestViewCell.swift */; };
+		DA20B66B27E9D5CA00F869E6 /* UserDBManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA20B66A27E9D5CA00F869E6 /* UserDBManger.swift */; };
+		DA20B66D27E9D5EA00F869E6 /* ConversationsDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA20B66C27E9D5EA00F869E6 /* ConversationsDBManager.swift */; };
+		DA20B66F27E9D63E00F869E6 /* FriendsOfUserDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA20B66E27E9D63E00F869E6 /* FriendsOfUserDBManager.swift */; };
 		DA25C3C727B252190004FE2B /* FindNewFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA25C3C627B252190004FE2B /* FindNewFriendsViewController.swift */; };
 		DA28940527C2734F00011900 /* ProvincesVN.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA28940427C2734F00011900 /* ProvincesVN.swift */; };
 		DA3B4AD627B3B25C0093E2B3 /* Friends_Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3B4AD527B3B25C0093E2B3 /* Friends_Test.swift */; };
@@ -118,6 +121,9 @@
 		C56AF88553BD6B57C26D5537 /* Pods-Chit-Chat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chit-Chat.debug.xcconfig"; path = "Target Support Files/Pods-Chit-Chat/Pods-Chit-Chat.debug.xcconfig"; sourceTree = "<group>"; };
 		DA0D67B327C0C7C20016C4AC /* FriendRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestViewController.swift; sourceTree = "<group>"; };
 		DA0D67B527C0C7DF0016C4AC /* FriendRequestViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestViewCell.swift; sourceTree = "<group>"; };
+		DA20B66A27E9D5CA00F869E6 /* UserDBManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDBManger.swift; sourceTree = "<group>"; };
+		DA20B66C27E9D5EA00F869E6 /* ConversationsDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsDBManager.swift; sourceTree = "<group>"; };
+		DA20B66E27E9D63E00F869E6 /* FriendsOfUserDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsOfUserDBManager.swift; sourceTree = "<group>"; };
 		DA25C3C627B252190004FE2B /* FindNewFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNewFriendsViewController.swift; sourceTree = "<group>"; };
 		DA28940427C2734F00011900 /* ProvincesVN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvincesVN.swift; sourceTree = "<group>"; };
 		DA3B4AD527B3B25C0093E2B3 /* Friends_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friends_Test.swift; sourceTree = "<group>"; };
@@ -298,6 +304,9 @@
 				22CCFE43279FF58C009F7C8A /* DatabaseManager.swift */,
 				222411E627B7AB6900C5E416 /* ExternalFunctions.swift */,
 				222411E827BF991400C5E416 /* Appearance.swift */,
+				DA20B66A27E9D5CA00F869E6 /* UserDBManger.swift */,
+				DA20B66C27E9D5EA00F869E6 /* ConversationsDBManager.swift */,
+				DA20B66E27E9D63E00F869E6 /* FriendsOfUserDBManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -647,6 +656,7 @@
 				22CCFE42279FF582009F7C8A /* StorageManager.swift in Sources */,
 				22CCFE46279FF59C009F7C8A /* User.swift in Sources */,
 				DA718D4F27A0F6E70020B0C9 /* UserNetwork.swift in Sources */,
+				DA20B66F27E9D63E00F869E6 /* FriendsOfUserDBManager.swift in Sources */,
 				22714E65277D5D4F0004F942 /* AppDelegate.swift in Sources */,
 				225E476127D9E1B000F71938 /* OtherUserViewController.swift in Sources */,
 				DAEE3D5F27BC0AC900334E06 /* PhotoViewerViewController.swift in Sources */,
@@ -654,11 +664,13 @@
 				22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */,
 				22DFEB4C27AC101100ABAD9E /* RegisterViewController.swift in Sources */,
 				222411F827C7345E00C5E416 /* ForgotPasswordViewController.swift in Sources */,
+				DA20B66B27E9D5CA00F869E6 /* UserDBManger.swift in Sources */,
 				DA0D67B627C0C7DF0016C4AC /* FriendRequestViewCell.swift in Sources */,
 				DA718D4D27A0F6CA0020B0C9 /* Conversation.swift in Sources */,
 				222411F027C1EAA500C5E416 /* DarkModeViewController.swift in Sources */,
 				22CCFE44279FF58C009F7C8A /* DatabaseManager.swift in Sources */,
 				DA85AF6D27BA585D0005215B /* MessageChatViewController.swift in Sources */,
+				DA20B66D27E9D5EA00F869E6 /* ConversationsDBManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
