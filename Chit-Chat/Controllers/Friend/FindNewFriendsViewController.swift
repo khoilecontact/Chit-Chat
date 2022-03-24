@@ -165,18 +165,10 @@ extension FindNewFriendsViewController: UITableViewDataSource, UITableViewDelega
         return true
     }
     
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) async -> UISwipeActionsConfiguration? {
-        
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let seeProfileAction = UIContextualAction(style: .destructive, title: "See Profile") { [weak self] action, view, handler in
-            convertUserNodeToUser(with: self?.results[indexPath.row] as! UserNode, completion: { user in
-                let vc = UIViewController()
-                Task.init {
-                    do {
-                        async let vc = try await OtherUserViewController(otherUser: user)
-                    } catch {
-                        print("Error in find new friend class")
-                    }
-                }
+            convertUserNodeToUser(with: (self?.results[indexPath.row])!, completion: { user in
+                let vc = OtherUserViewController(otherUser: user)
                 self?.navigationController?.pushViewController(vc, animated: true)
             })
         }

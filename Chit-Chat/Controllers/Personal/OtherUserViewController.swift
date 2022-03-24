@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 
 class OtherUserViewController: UIViewController {
     var otherUser: User?
@@ -46,7 +47,7 @@ class OtherUserViewController: UIViewController {
         button.backgroundColor = UIColor.systemGray2
         button.setTitleColor(Appearance.tint, for: .normal)
         button.layer.cornerRadius = 20
-
+        
         button.layer.borderWidth = 0
         button.titleLabel?.textAlignment = .center
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
@@ -70,7 +71,7 @@ class OtherUserViewController: UIViewController {
         button.backgroundColor = .init(red: CGFloat(108) / 255.0, green: CGFloat(164) / 255.0, blue: CGFloat(212) / 255.0, alpha: 1.0)
         button.setTitleColor(Appearance.tint, for: .normal)
         button.layer.cornerRadius = 20
-
+        
         button.layer.borderWidth = 0
         button.titleLabel?.textAlignment = .center
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
@@ -94,7 +95,7 @@ class OtherUserViewController: UIViewController {
         button.backgroundColor = .init(red: CGFloat(108) / 255.0, green: CGFloat(164) / 255.0, blue: CGFloat(212) / 255.0, alpha: 1.0)
         button.setTitleColor(Appearance.tint, for: .normal)
         button.layer.cornerRadius = 20
-
+        
         button.layer.borderWidth = 0
         button.titleLabel?.textAlignment = .center
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
@@ -117,7 +118,7 @@ class OtherUserViewController: UIViewController {
         button.backgroundColor = .systemRed
         button.setTitleColor(Appearance.tint, for: .normal)
         button.layer.cornerRadius = 20
-
+        
         button.layer.borderWidth = 0
         button.titleLabel?.textAlignment = .center
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
@@ -141,7 +142,7 @@ class OtherUserViewController: UIViewController {
         button.backgroundColor = .systemBackground
         button.setTitleColor(Appearance.tint, for: .normal)
         button.layer.cornerRadius = 20
-
+        
         button.layer.borderWidth = 1
         button.titleLabel?.textAlignment = .center
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
@@ -164,7 +165,7 @@ class OtherUserViewController: UIViewController {
         button.backgroundColor = .systemGreen
         button.setTitleColor(Appearance.tint, for: .normal)
         button.layer.cornerRadius = 20
-
+        
         button.layer.borderWidth = 0
         button.titleLabel?.textAlignment = .center
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
@@ -253,8 +254,7 @@ class OtherUserViewController: UIViewController {
         scrollView.addSubview(genderLabel)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    func initLayout() {
         scrollView.frame = view.bounds
         
         let size = scrollView.width / 3
@@ -268,10 +268,10 @@ class OtherUserViewController: UIViewController {
         switch friendStatus {
         case "Sent":
             requestSentButton.frame = CGRect(x: 80, y: nameLabel.bottom + 10, width: scrollView.width - 160, height: 40)
-
+            
             bioLabel.frame = CGRect(x: 20, y: requestSentButton.bottom + 30, width: scrollView.width - 40, height: 52)
             break
-
+            
         case "Added":
             friendStatusButton.frame = CGRect(x: 50, y: nameLabel.bottom + 10, width: 130, height: 40)
             
@@ -279,7 +279,7 @@ class OtherUserViewController: UIViewController {
             
             bioLabel.frame = CGRect(x: 20, y: friendStatusButton.bottom + 30, width: scrollView.width - 40, height: 52)
             break
-
+            
         case "Received":
             confirmButton.frame = CGRect(x: 50, y: nameLabel.bottom + 10, width: 130, height: 40)
             
@@ -287,11 +287,11 @@ class OtherUserViewController: UIViewController {
             
             bioLabel.frame = CGRect(x: 20, y: confirmButton.bottom + 30, width: scrollView.width - 40, height: 52)
             break
-
+            
         default:
             // Stranger
             addFriendButton.frame = CGRect(x: 80, y: nameLabel.bottom + 10, width: scrollView.width - 160, height: 40)
-
+            
             bioLabel.frame = CGRect(x: 20, y: addFriendButton.bottom + 30, width: scrollView.width - 40, height: 52)
             break
         }
@@ -305,253 +305,84 @@ class OtherUserViewController: UIViewController {
         genderLabel.frame = CGRect(x: genderIcon.right + 20, y: dobIcon.bottom + 30, width: scrollView.width - 100, height: 52)
     }
     
-    init(otherUser: User) async {
+    init(otherUser: User) {
         super.init(nibName: nil, bundle: nil)
         
         guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else { return }
         self.otherUser = otherUser
-
+        
         let safeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
         // Get list data of user
-        do {
-            try await getAllOtherInfoUser()
-        } catch {
-            
-        }
-        
-        guard let pageUser = self.otherUser else {
-            return
-        }
-        print(pageUser)
-        
-        // Loading user's image
-        let fileName = safeEmail + "_profile_picture.png"
-        let path = "images/" + fileName
-        
-        StorageManager.shared.downloadUrl(for: path, completion: { [weak self] result in
-            switch result {
-            case .failure(let error):
-                print("Failed to download image URL: \(error)")
-                self?.imageView.image = UIImage(systemName: "person.circle")?.withTintColor(Appearance.tint)
-                
-                break
-            
-            case .success(let url):
-                self?.imageView.sd_setImage(with: url, completed: nil)
-            }
+        UserManger.shared.getAllFriendOfUser(with: otherUser.email, completion: { friendList in
+            UserManger.shared.getAllFriendRequestOfUser(with: otherUser.email, completion: { friendRequest in
+                UserManger.shared.getAllSentFriendRequestOfUser(with: otherUser.email, completion: { sentRequest in
+                    UserManger.shared.getAllBlacklistOfUser(with: otherUser.email, completion: { blacklist in
+                        self.otherUser?.friendList = friendList
+                        
+                        guard let pageUser = self.otherUser else {
+                            return
+                        }
+                        
+                        // Loading user's image
+                        let fileName = safeEmail + "_profile_picture.png"
+                        let path = "images/" + fileName
+                        
+                        StorageManager.shared.downloadUrl(for: path, completion: { [weak self] result in
+                            switch result {
+                            case .failure(let error):
+                                print("Failed to download image URL: \(error)")
+                                self?.imageView.image = UIImage(systemName: "person.circle")?.withTintColor(Appearance.tint)
+                                
+                                break
+                                
+                            case .success(let url):
+                                self?.imageView.sd_setImage(with: url, completed: nil)
+                            }
+                        })
+                        
+                        self.title = otherUser.firstName + " " + otherUser.lastName
+                        
+                        self.nameLabel.text = otherUser.firstName + " " + otherUser.lastName
+                        
+                        self.bioLabel.text = (otherUser.bio == "") ? "This user has no bio yet" : otherUser.bio
+                        
+                        self.dobLabel.text = otherUser.dob
+                        
+                        self.genderLabel.text = otherUser.isMale ? "Male" : "Female"
+                        // Check for friend status
+                        // Case: They sent you a sent request
+                        for user in pageUser.sentfriendRequestList {
+                            if user.email == currentUserEmail {
+                                self.friendStatus = "Received"
+                            }
+                        }
+                        // Case: You have sent them a friend request
+                        for user in pageUser.friendRequestList {
+                            if user.email == currentUserEmail {
+                                self.friendStatus = "Sent"
+                            }
+                        }
+                        // Case: You're friends
+                        for user in pageUser.friendList {
+                            if user.email == currentUserEmail {
+                                self.friendStatus = "Added"
+                            }
+                        }
+                        // Case: Nobody sent a friend request
+                        
+                        self.initLayout()
+                    })
+                })
+            })
         })
-        
-        title = otherUser.firstName + " " + otherUser.lastName
-        
-        nameLabel.text = otherUser.firstName + " " + otherUser.lastName
-        
-        bioLabel.text = (otherUser.bio == "") ? "This user has no bio yet" : otherUser.bio
-        
-        dobLabel.text = otherUser.dob
-        
-        genderLabel.text = otherUser.isMale ? "Male" : "Female"
-        // Check for friend status
-        // Case: They sent you a sent request
-        for user in pageUser.sentfriendRequestList {
-            if user.email == currentUserEmail {
-                friendStatus = "Received"
-            }
-        }
-        // Case: You have sent them a friend request
-        for user in pageUser.friendRequestList {
-            if user.email == currentUserEmail {
-                friendStatus = "Sent"
-            }
-        }
-        // Case: You're friends
-        for user in pageUser.friendList {
-            if user.email == currentUserEmail {
-                friendStatus = "Added"
-            }
-        }
-        // Case: Nobody sent a friend request
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func getAllOtherInfoUser() async throws -> Void {
-        guard let otherUser = otherUser else { return }
-        
-        DispatchQueue.global(qos: .background).async {
-            // Getting user's friend list
-            do {
-                try DatabaseManager.shared.getAllFriendsOfUser(with: otherUser.email, completion: { [weak self] result in
-                    switch result {
-                    case .failure( _):
-                        let friendList: [UserNode] = []
-                    
-                    case .success(let data):
-                        let friendList: [UserNode] = data.compactMap{
-                            guard let id = $0["id"] as? String,
-                                  let email = $0["email"] as? String,
-                                  let lastName = $0["last_name"] as? String,
-                                  let firstName = $0["first_name"] as? String,
-                                  let bio = $0["bio"] as? String?,
-                                  let dob = $0["dob"] as? String?,
-                                  let isMale = $0["is_male"] as? Bool,
-                                  let province = $0["province"] as? String,
-                                  let district = $0["district"] as? String
-                            else {
-                                print("excepted type")
-                                return nil
-                            }
-                            
-                            return UserNode(id: id,
-                                            firstName: firstName,
-                                            lastName: lastName,
-                                            province: province,
-                                            district: district,
-                                            bio: bio ?? "",
-                                            email: email,
-                                            dob: dob ?? "",
-                                            isMale: isMale)
-                        }
-                        
-                        break
-                    }
-                })
-            } catch {
-                
-            }
-            
-            // Get user's friend request
-            do {
-                try DatabaseManager.shared.getAllFriendRequestOfUser(with: otherUser.email, completion: { [weak self] result in
-                    switch result {
-                    case .failure( _):
-                        let friendRequestList: [UserNode] = []
-                        print("FAILED")
-                    
-                    case .success(let data):
-                        print("SUCCESS")
-                        let friendRequestList: [UserNode] = data.compactMap{
-                            guard let id = $0["id"] as? String,
-                                  let email = $0["email"] as? String,
-                                  let lastName = $0["last_name"] as? String,
-                                  let firstName = $0["first_name"] as? String,
-                                  let bio = $0["bio"] as? String?,
-                                  let dob = $0["dob"] as? String?,
-                                  let isMale = $0["is_male"] as? Bool,
-                                  let province = $0["province"] as? String,
-                                  let district = $0["district"] as? String
-                            else {
-                                print("excepted type")
-                                return nil
-                            }
-                            
-                            return UserNode(id: id,
-                                            firstName: firstName,
-                                            lastName: lastName,
-                                            province: province,
-                                            district: district,
-                                            bio: bio ?? "",
-                                            email: email,
-                                            dob: dob ?? "",
-                                            isMale: isMale)
-                        }
-                        
-                        break
-                    }
-                    
-                })
-            } catch {
-                
-            }
-            
-            // Get user's sent friend request
-            do {
-                try DatabaseManager.shared.getAllSentFriendRequestOfUser(with: otherUser.email, completion: { [weak self] result in
-                    switch result {
-                    case .failure( _):
-                        let sentfriendRequestList: [UserNode] = []
-                    
-                    case .success(let data):
-                        let sentfriendRequestList: [UserNode] = data.compactMap{
-                            guard let id = $0["id"] as? String,
-                                  let email = $0["email"] as? String,
-                                  let lastName = $0["last_name"] as? String,
-                                  let firstName = $0["first_name"] as? String,
-                                  let bio = $0["bio"] as? String?,
-                                  let dob = $0["dob"] as? String?,
-                                  let isMale = $0["is_male"] as? Bool,
-                                  let province = $0["province"] as? String,
-                                  let district = $0["district"] as? String
-                            else {
-                                print("excepted type")
-                                return nil
-                            }
-                            
-                            return UserNode(id: id,
-                                            firstName: firstName,
-                                            lastName: lastName,
-                                            province: province,
-                                            district: district,
-                                            bio: bio ?? "",
-                                            email: email,
-                                            dob: dob ?? "",
-                                            isMale: isMale)
-                        }
-                        
-                        break
-                    }
-                })
-            } catch {
-                
-            }
-            
-            // Get user's sent friend request
-            do {
-                try DatabaseManager.shared.getBlackListOfUser(with: otherUser.email, completion: { [weak self] result in
-                    switch result {
-                    case .failure( _):
-                        let blackList: [UserNode] = []
-                    
-                    case .success(let data):
-                        let blackList: [UserNode] = data.compactMap{
-                            guard let id = $0["id"] as? String,
-                                  let email = $0["email"] as? String,
-                                  let lastName = $0["last_name"] as? String,
-                                  let firstName = $0["first_name"] as? String,
-                                  let bio = $0["bio"] as? String?,
-                                  let dob = $0["dob"] as? String?,
-                                  let isMale = $0["is_male"] as? Bool,
-                                  let province = $0["province"] as? String,
-                                  let district = $0["district"] as? String
-                            else {
-                                print("excepted type")
-                                return nil
-                            }
-                            
-                            return UserNode(id: id,
-                                            firstName: firstName,
-                                            lastName: lastName,
-                                            province: province,
-                                            district: district,
-                                            bio: bio ?? "",
-                                            email: email,
-                                            dob: dob ?? "",
-                                            isMale: isMale)
-                        }
-                        
-                        break
-                    }
-                })
-            } catch {
-                
-            }
-            
-        }
-        
-        
-    }
+    
     
     @objc func addFriendTapped() {
         guard let user = otherUser else { return }

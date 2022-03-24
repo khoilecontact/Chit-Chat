@@ -146,7 +146,7 @@ class LoginViewController: UIViewController {
                 button.layer.borderColor = UIColor.black.cgColor
                 
                 // action
-                button.addTarget(self, action: #selector(googleSignInButtonTapped), for: .touchUpInside)
+                button.addTarget(LoginViewController.self, action: #selector(googleSignInButtonTapped), for: .touchUpInside)
                 
                 // Add shadow
                 button.layer.shadowColor = UIColor.gray.cgColor
@@ -159,7 +159,7 @@ class LoginViewController: UIViewController {
             } else {
                 let button = UIButton()
                 // action
-                button.addTarget(self, action: #selector(googleSignInButtonTapped), for: .touchUpInside)
+                button.addTarget(LoginViewController.self, action: #selector(googleSignInButtonTapped), for: .touchUpInside)
                 //
                 
                 button.setTitle("Continue with Google", for: .normal)

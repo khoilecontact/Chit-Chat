@@ -61,6 +61,8 @@ class FriendRequestViewController: UIViewController {
         setupSearchBar()
         
         fetchFriendRequest()
+        
+        print("HI")
     }
     
     override func viewWillLayoutSubviews() {

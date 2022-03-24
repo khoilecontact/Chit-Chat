@@ -25,6 +25,7 @@
 		22714E7F277D5D510004F942 /* Chit_ChatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E7E277D5D510004F942 /* Chit_ChatTests.swift */; };
 		22714E89277D5D510004F942 /* Chit_ChatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E88277D5D510004F942 /* Chit_ChatUITests.swift */; };
 		22714E8B277D5D510004F942 /* Chit_ChatUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E8A277D5D510004F942 /* Chit_ChatUITestsLaunchTests.swift */; };
+		229D21D927EC1AA600537AD6 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229D21D827EC1AA600537AD6 /* UserManager.swift */; };
 		22CCFE40279FF573009F7C8A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CCFE3F279FF573009F7C8A /* Extensions.swift */; };
 		22CCFE42279FF582009F7C8A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CCFE41279FF582009F7C8A /* StorageManager.swift */; };
 		22CCFE44279FF58C009F7C8A /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CCFE43279FF58C009F7C8A /* DatabaseManager.swift */; };
@@ -98,6 +99,7 @@
 		22714E84277D5D510004F942 /* Chit-ChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Chit-ChatUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22714E88277D5D510004F942 /* Chit_ChatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chit_ChatUITests.swift; sourceTree = "<group>"; };
 		22714E8A277D5D510004F942 /* Chit_ChatUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chit_ChatUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		229D21D827EC1AA600537AD6 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		22CCFE3F279FF573009F7C8A /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		22CCFE41279FF582009F7C8A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		22CCFE43279FF58C009F7C8A /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
@@ -250,6 +252,14 @@
 			path = "Chit-ChatUITests";
 			sourceTree = "<group>";
 		};
+		229D21DA27EC1AAB00537AD6 /* DatabaseManager */ = {
+			isa = PBXGroup;
+			children = (
+				229D21D827EC1AA600537AD6 /* UserManager.swift */,
+			);
+			path = DatabaseManager;
+			sourceTree = "<group>";
+		};
 		22CCFE38279FF4B3009F7C8A /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -290,6 +300,7 @@
 		22CCFE3C279FF50B009F7C8A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				229D21DA27EC1AAB00537AD6 /* DatabaseManager */,
 				DA28940327C2728100011900 /* API */,
 				22CCFE3F279FF573009F7C8A /* Extensions.swift */,
 				22714E66277D5D4F0004F942 /* SceneDelegate.swift */,
@@ -648,6 +659,7 @@
 				22CCFE46279FF59C009F7C8A /* User.swift in Sources */,
 				DA718D4F27A0F6E70020B0C9 /* UserNetwork.swift in Sources */,
 				22714E65277D5D4F0004F942 /* AppDelegate.swift in Sources */,
+				229D21D927EC1AA600537AD6 /* UserManager.swift in Sources */,
 				225E476127D9E1B000F71938 /* OtherUserViewController.swift in Sources */,
 				DAEE3D5F27BC0AC900334E06 /* PhotoViewerViewController.swift in Sources */,
 				DA85AF6F27BA5B430005215B /* MeViewController.swift in Sources */,

@@ -174,15 +174,15 @@ class MeViewController: UIViewController {
     }
     
     @objc func friendListTapped() {
-//        _ = self.tabBarController?.selectedIndex = 1
-        async {
-            do {
-                let vc = try await OtherUserViewController(otherUser: user!)
-                await navigationController?.pushViewController(vc, animated: true)
-            } catch {
-                print("Phat nguuu")
-            }
-        }
+        _ = self.tabBarController?.selectedIndex = 1
+//        Task.init {
+//            do {
+//                let vc = try await OtherUserViewController(otherUser: user!)
+//                await navigationController?.pushViewController(vc, animated: true)
+//            } catch {
+//                print("Phat nguuu")
+//            }
+//        }
         
     }
     
