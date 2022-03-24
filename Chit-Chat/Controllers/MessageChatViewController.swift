@@ -79,6 +79,9 @@ class MessageChatViewController: MessagesViewController {
                     strongSelf.messagesCollectionView.reloadDataAndKeepOffset()
                 }
             case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.isNewConversation = true
+                }
                 print("Failed to load messages for conversation: \(error)")
             }
         })
@@ -354,7 +357,7 @@ class MessageChatViewController: MessagesViewController {
                                   sentDate: Date(),
                                   kind: .location(location))
             
-            DatabaseManager.shared.sendMessage(to: conversationId, name: name, otherUserEmail: strongSelf.otherUserEmail, newMessage: message, completion: { success in
+            DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: strongSelf.otherUserEmail, name: name, newMessage: message, completion: { success in
                 if success {
                     print("sent location message")
                 }
@@ -484,7 +487,7 @@ extension MessageChatViewController: UIImagePickerControllerDelegate, UINavigati
                                           sentDate: Date(),
                                           kind: .photo(media))
                     
-                    DatabaseManager.shared.sendMessage(to: conversationId, name: name, otherUserEmail: strongSelf.otherUserEmail, newMessage: message, completion: { success in
+                    DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: strongSelf.otherUserEmail, name: name, newMessage: message, completion: { success in
                         
                         if success {
                             print("sent photo message")
@@ -528,7 +531,7 @@ extension MessageChatViewController: UIImagePickerControllerDelegate, UINavigati
                                           sentDate: Date(),
                                           kind: .video(media))
                     
-                    DatabaseManager.shared.sendMessage(to: conversationId, name: name, otherUserEmail: strongSelf.otherUserEmail, newMessage: message, completion: { success in
+                    DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: strongSelf.otherUserEmail, name: name, newMessage: message, completion: { success in
                         
                         if success {
                             print("sent photo message")
@@ -588,7 +591,7 @@ extension MessageChatViewController: InputBarAccessoryViewDelegate {
                   let name = title else {
                       return
                   }
-            DatabaseManager.shared.sendMessage(to: conversationId, name: name, otherUserEmail: otherUserEmail, newMessage: message, completion: { [weak self] success in
+            DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: otherUserEmail, name: name, newMessage: message, completion: { [weak self] success in
                 
                 guard let strongSelf = self else {return}
                 

@@ -329,7 +329,7 @@ class OtherUserViewController: UIViewController {
         let fileName = safeEmail + "_profile_picture.png"
         let path = "images/" + fileName
         
-        StorageManager.shared.downloadUrl(for: path, completion: { [weak self] result in
+        await StorageManager.shared.downloadUrl(for: path, completion: { [weak self] result in
             switch result {
             case .failure(let error):
                 print("Failed to download image URL: \(error)")
