@@ -96,7 +96,7 @@ class ChatViewController: UIViewController {
         
         let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
         
-        DatabaseManager.shared.getAllConversations(for: safeEmail) { [weak self] result in
+        DatabaseManager.shared.getAllConversation(for: safeEmail) { [weak self] result in
             guard let strongSelf = self else { return }
             
             switch result {
