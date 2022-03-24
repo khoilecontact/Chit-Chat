@@ -314,10 +314,10 @@ class OtherUserViewController: UIViewController {
         let safeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
         // Get list data of user
-        UserManger.shared.getAllFriendOfUser(with: otherUser.email, completion: { friendList in
-            UserManger.shared.getAllFriendRequestOfUser(with: otherUser.email, completion: { friendRequest in
-                UserManger.shared.getAllSentFriendRequestOfUser(with: otherUser.email, completion: { sentRequest in
-                    UserManger.shared.getAllBlacklistOfUser(with: otherUser.email, completion: { blacklist in
+        UserAdvancedManager.shared.getAllFriendOfUser(with: otherUser.email, completion: { friendList in
+            UserAdvancedManager.shared.getAllFriendRequestOfUser(with: otherUser.email, completion: { friendRequest in
+                UserAdvancedManager.shared.getAllSentFriendRequestOfUser(with: otherUser.email, completion: { sentRequest in
+                    UserAdvancedManager.shared.getAllBlacklistOfUser(with: otherUser.email, completion: { blacklist in
                         self.otherUser?.friendList = friendList
                         
                         guard let pageUser = self.otherUser else {

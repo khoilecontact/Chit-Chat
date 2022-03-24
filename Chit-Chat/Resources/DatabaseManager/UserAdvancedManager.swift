@@ -11,8 +11,8 @@ import FirebaseAuth
 import MessageKit
 import CoreLocation
 
-final class UserManger {
-    public static let shared = UserManger()
+final class UserAdvancedManager {
+    public static let shared = UserAdvancedManager()
     
     //force to use this init
     private init() {}
@@ -26,7 +26,7 @@ final class UserManger {
     }
 }
 
-extension UserManger {
+extension UserAdvancedManager {
     
     public func getAllFriendOfUser(with unSafeEmail: String, completion: @escaping ([UserNode]) -> Void) {
         let safeEmail = DatabaseManager.safeEmail(emailAddress: unSafeEmail)
