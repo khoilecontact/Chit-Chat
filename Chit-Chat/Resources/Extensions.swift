@@ -106,5 +106,11 @@ extension Dictionary where Value: Any {
     }
 }
 
+extension User {
+    func toUserNode() -> UserNode {
+        return UserNode(id: self.id, firstName: self.firstName, lastName: self.lastName, province: self.province, district: self.district, bio: self.bio, email: self.email, dob: self.dob, isMale: self.isMale)
+    }
+}
+
 
 

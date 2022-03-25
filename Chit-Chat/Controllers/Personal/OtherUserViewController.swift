@@ -234,6 +234,7 @@ class OtherUserViewController: UIViewController {
         super.viewDidLoad()
         
         addFriendButton.addTarget(self, action: #selector(addFriendTapped), for: .touchUpInside)
+        requestSentButton.addTarget(self, action: #selector(requestSentButtonTapped), for: .touchUpInside)
         
         view.backgroundColor = .systemBackground
         
@@ -404,9 +405,50 @@ class OtherUserViewController: UIViewController {
         })
         
         // Update the button
-        addFriendButton.setTitle("Request sent", for: .normal)
-        addFriendButton.setImage(UIImage(systemName: "airplane"), for: .normal)
-        addFriendButton.backgroundColor = UIColor.systemGray2
+        DispatchQueue.main.async {
+            self.friendStatus = "Sent"
+            self.addFriendButton.isHidden = true
+            self.addFriendButton.removeFromSuperview()
+            
+            self.requestSentButton.isHidden = false
+            self.requestSentButton.frame = CGRect(x: 80, y: self.nameLabel.bottom + 10, width: self.scrollView.width - 160, height: 40)
+            
+            self.bioLabel.frame = CGRect(x: 20, y: self.requestSentButton.bottom + 30, width: self.scrollView.width - 40, height: 52)
+        }
+        
     }
+    
+    @objc func requestSentButtonTapped() {
+        guard let user = self.otherUser else { return }
+        let userNode: UserNode = user.toUserNode()
+        
+        let alert = UIAlertController()
+        alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: {_ in
+            DatabaseManager.shared.deniesFriendRequest(with: userNode, completion: { result in
+                switch result {
+                case .failure( _):
+                    let secondAlert = UIAlertController(title: "Failed", message: "Failed to revoke request", preferredStyle: .alert)
+                    secondAlert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                    break
+                    
+                case .success(let success):
+                    if success {
+                        DispatchQueue.main.async {
+                            self.friendStatus = "Stranger"
+                            self.requestSentButton.isHidden = true
+                            self.requestSentButton.removeFromSuperview()
+                            
+                            self.addFriendButton.isHidden = false
+                            self.addFriendButton.frame = CGRect(x: 80, y: self.nameLabel.bottom + 10, width: self.scrollView.width - 160, height: 40)
+                            
+                            self.bioLabel.frame = CGRect(x: 20, y: self.addFriendButton.bottom + 30, width: self.scrollView.width - 40, height: 52)
+                        }
+                    }
+                    break
+                }
+            })
+        }))
+    }
+    
     
 }
