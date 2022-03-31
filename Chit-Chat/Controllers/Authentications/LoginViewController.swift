@@ -344,9 +344,37 @@ class LoginViewController: UIViewController {
         
         // Firebase Login
         FirebaseAuth.Auth.auth().signIn(withEmail: emailField.text!, password: passwordField.text!, completion: { [weak self] authResult, error in
-            
             DispatchQueue.main.async {
                 self?.spinner.dismiss()
+            }
+            
+            if error != nil {
+                let alert = UIAlertController()
+                alert.title = "Failed to Log In"
+                
+                if let errorCode = AuthErrorCode(rawValue: error!._code) {
+                    switch errorCode {
+                    case .emailAlreadyInUse:
+                        alert.message = "The email is already in use with another account"
+                    case .userNotFound:
+                        alert.message = "Account not found for the specified user. Please check and try again"
+                    case .userDisabled:
+                        alert.message = "Your account has been disabled. Please contact support."
+                    case .invalidEmail, .invalidSender, .invalidRecipientEmail:
+                        alert.message = "Please enter a valid email"
+                    case .networkError:
+                        alert.message = "Network error. Please try again."
+                    case .weakPassword:
+                        alert.message = "Your password is too weak. The password must be 6 characters long or more."
+                    case .wrongPassword:
+                        alert.message = "Your password is incorrect. Please try again or use 'Forgot password' to reset your password"
+                    default:
+                        alert.message = "Unknown error occurred"
+                    }
+                }
+                
+                alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                self?.present(alert, animated: true)
             }
             
             guard let result = authResult, error == nil else {

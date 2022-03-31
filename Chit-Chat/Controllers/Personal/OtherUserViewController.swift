@@ -234,7 +234,14 @@ class OtherUserViewController: UIViewController {
         super.viewDidLoad()
         
         addFriendButton.addTarget(self, action: #selector(addFriendTapped), for: .touchUpInside)
+        
         requestSentButton.addTarget(self, action: #selector(requestSentButtonTapped), for: .touchUpInside)
+        
+        friendStatusButton.addTarget(self, action: #selector(friendStatusButtonTapped), for: .touchUpInside)
+//        messageButton
+//
+//        confirmButton
+//        cancelButton
         
         view.backgroundColor = .systemBackground
         
@@ -318,10 +325,13 @@ class OtherUserViewController: UIViewController {
         UserAdvancedManager.shared.getAllFriendOfUser(with: otherUser.email, completion: { friendList in
             UserAdvancedManager.shared.getAllFriendRequestOfUser(with: otherUser.email, completion: { friendRequest in
                 UserAdvancedManager.shared.getAllSentFriendRequestOfUser(with: otherUser.email, completion: { sentRequest in
-                    UserAdvancedManager.shared.getAllBlacklistOfUser(with: otherUser.email, completion: { blacklist in
-                        self.otherUser?.friendList = friendList
+                    UserAdvancedManager.shared.getAllBlacklistOfUser(with: otherUser.email, completion: { [weak self] blacklist in
+                        self?.otherUser?.friendList = friendList
+                        self?.otherUser?.friendRequestList = friendRequest
+                        self?.otherUser?.sentfriendRequestList = sentRequest
+                        self?.otherUser?.blackList = blacklist
                         
-                        guard let pageUser = self.otherUser else {
+                        guard let pageUser = self?.otherUser else {
                             return
                         }
                         
@@ -342,37 +352,37 @@ class OtherUserViewController: UIViewController {
                             }
                         })
                         
-                        self.title = otherUser.firstName + " " + otherUser.lastName
+                        self?.title = otherUser.firstName + " " + otherUser.lastName
                         
-                        self.nameLabel.text = otherUser.firstName + " " + otherUser.lastName
+                        self?.nameLabel.text = otherUser.firstName + " " + otherUser.lastName
                         
-                        self.bioLabel.text = (otherUser.bio == "") ? "This user has no bio yet" : otherUser.bio
+                        self?.bioLabel.text = (otherUser.bio == "") ? "This user has no bio yet" : otherUser.bio
                         
-                        self.dobLabel.text = otherUser.dob
+                        self?.dobLabel.text = otherUser.dob
                         
-                        self.genderLabel.text = otherUser.isMale ? "Male" : "Female"
+                        self?.genderLabel.text = otherUser.isMale ? "Male" : "Female"
                         // Check for friend status
                         // Case: They sent you a sent request
                         for user in pageUser.sentfriendRequestList {
                             if user.email == currentUserEmail {
-                                self.friendStatus = "Received"
+                                self?.friendStatus = "Received"
                             }
                         }
                         // Case: You have sent them a friend request
                         for user in pageUser.friendRequestList {
                             if user.email == currentUserEmail {
-                                self.friendStatus = "Sent"
+                                self?.friendStatus = "Sent"
                             }
                         }
                         // Case: You're friends
                         for user in pageUser.friendList {
                             if user.email == currentUserEmail {
-                                self.friendStatus = "Added"
+                                self?.friendStatus = "Added"
                             }
                         }
                         // Case: Nobody sent a friend request
                         
-                        self.initLayout()
+                        self?.initLayout()
                     })
                 })
             })
@@ -448,6 +458,38 @@ class OtherUserViewController: UIViewController {
                 }
             })
         }))
+    }
+    
+    @objc func friendStatusButtonTapped() {
+        guard let user = self.otherUser else { return }
+        let userNode: UserNode = user.toUserNode()
+        
+        let vc = UIViewController()
+        let screenWidth = UIScreen.main.bounds.width - 10
+        let screenHeight = UIScreen.main.bounds.height / 2
+        vc.preferredContentSize = CGSize(width: screenWidth, height: screenHeight)
+            
+        let alert = UIAlertController(title: "Change friend status", message: "",
+            preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Unfriend", style: .default, handler: { (alert: UIAlertAction) in 
+            DatabaseManager.shared.unfriend(with: userNode, completion: { [weak self] result in
+                switch result {
+                case .failure(_):
+                    let secondAlert = UIAlertController(title: "Failed", message: "Something when wrong, please try again later", preferredStyle: .alert)
+                    secondAlert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                    self?.present(secondAlert, animated: true)
+                    break
+                case .success(_):
+                    self?.friendStatus = "Stranger"
+                    self?.initLayout()
+                    break
+                }
+                
+            })
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     

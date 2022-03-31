@@ -530,7 +530,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                 
                 let user = User(id: userId, firstName: firstName, lastName: lastName, email: email, dob: dob, isMale: isMale, province: self!.selectedProvince, district: self!.selectedDistrict)
                 
-                DatabaseManager.shared.insertUnverifiedUser(with: user, completion: {success in
+                DatabaseManager.shared.insertUnverifiedUser(with: user, completion: { [weak self] success in
                     if success {
                         //upload image
                         guard let image = self?.imageView.image, let data = image.pngData() else {
@@ -547,6 +547,8 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                                 print("Storage manager error: \(error)")
                             }
                         })
+                        
+                        self?.navigationController?.popViewController(animated: true)
                     }
                 })
                 
