@@ -13,6 +13,9 @@ class OtherUserViewController: UIViewController {
     var otherUser: User?
     var friendStatus = "Stranger"
     
+    private var users = [[String: Any]]()
+    private var results = [UserNode]()
+    
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.clipsToBounds = true
@@ -238,10 +241,10 @@ class OtherUserViewController: UIViewController {
         requestSentButton.addTarget(self, action: #selector(requestSentButtonTapped), for: .touchUpInside)
         
         friendStatusButton.addTarget(self, action: #selector(friendStatusButtonTapped), for: .touchUpInside)
-//        messageButton
-//
-//        confirmButton
-//        cancelButton
+        messageButton.addTarget(self, action: #selector(messageButtonTapped), for: .touchUpInside)
+
+        confirmButton.addTarget(self, action: #selector(confirmRequestTapped), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(cancelRequestTapped), for: .touchUpInside)
         
         view.backgroundColor = .systemBackground
         
@@ -472,25 +475,178 @@ class OtherUserViewController: UIViewController {
         let alert = UIAlertController(title: "Change friend status", message: "",
             preferredStyle: .actionSheet)
         
-        alert.addAction(UIAlertAction(title: "Unfriend", style: .default, handler: { (alert: UIAlertAction) in 
-            DatabaseManager.shared.unfriend(with: userNode, completion: { [weak self] result in
-                switch result {
-                case .failure(_):
-                    let secondAlert = UIAlertController(title: "Failed", message: "Something when wrong, please try again later", preferredStyle: .alert)
-                    secondAlert.addAction(UIAlertAction(title: "Ok", style: .cancel))
-                    self?.present(secondAlert, animated: true)
-                    break
-                case .success(_):
-                    self?.friendStatus = "Stranger"
-                    self?.initLayout()
-                    break
-                }
-                
-            })
+        alert.addAction(UIAlertAction(title: "Unfriend", style: .default, handler: { [weak self] (alert: UIAlertAction) in 
+            let confirmAlert = UIAlertController(title: "Do you confirm to unfriend?", message: "This action can not be undo", preferredStyle: .actionSheet)
+            confirmAlert.addAction(UIAlertAction(title: "Unfriend", style: .destructive, handler: { (alert: UIAlertAction) in
+                DatabaseManager.shared.unfriend(with: userNode, completion: { [weak self] result in
+                    switch result {
+                    case .failure(_):
+                        let secondAlert = UIAlertController(title: "Failed", message: "Something when wrong, please try again later", preferredStyle: .alert)
+                        secondAlert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                        self?.present(secondAlert, animated: true)
+                        break
+                    case .success(_):
+                        self?.friendStatus = "Stranger"
+                        self?.friendStatusButton.isHidden = true
+                        self?.friendStatusButton.removeFromSuperview()
+                        
+                        self?.messageButton.isHidden = true
+                        self?.messageButton.removeFromSuperview()
+                        
+                        self?.initLayout()
+                        break
+                    }
+                    
+                })
+            }))
+            confirmAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self?.present(confirmAlert, animated: true)
         }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         
         self.present(alert, animated: true, completion: nil)
     }
     
+    @objc func messageButtonTapped() {
+        guard let user = self.otherUser else { return }
+        
+        let vc = MessageChatViewController(with: user.email, id: user.id)
+        vc.title = user.firstName + " " + user.lastName
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
+    }
     
+    @objc func cancelRequestTapped() {
+        guard let user = self.otherUser else { return }
+        let userNode: UserNode = user.toUserNode()
+        
+        self.deniesRequest(with: userNode)
+    }
+    
+    @objc func confirmRequestTapped() {
+        guard let user = self.otherUser else { return }
+        let userNode: UserNode = user.toUserNode()
+        
+        self.acceptRequest(with: userNode)
+    }
+    
+    
+}
+
+extension OtherUserViewController {
+    func deniesRequest(with user: UserNode) {
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
+        
+        DatabaseManager.shared.getAllFriendRequestOfUser(with: email) { [weak self] result in
+            guard let strongSelf = self else { return }
+            
+            switch result {
+            case .success(let requestData):
+                strongSelf.users = requestData
+                strongSelf.parseToFriendsRequest(with: requestData)
+                
+                // delete friend request
+                DatabaseManager.shared.deniesFriendRequest(with: user) { [weak self] result in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    
+                    switch result {
+                    case .success(let finished):
+                        if finished {
+                            strongSelf.users.removeAll(where: {
+                                guard let email = $0["email"] as? String else { return false }
+                                
+                                return email == user.email
+                            })
+                            
+                            strongSelf.results.removeAll {
+                                user.email == $0.email
+                            }
+                            
+                            self?.friendStatus = "Stranger"
+                            self?.confirmButton.removeFromSuperview()
+                            self?.cancelButton.removeFromSuperview()
+                            
+                            self?.initLayout()
+                        }
+                        else {
+                            print("Failed to finish denies request")
+                            break
+                        }
+                        
+                    case .failure(let error):
+                        print("Failed to denies request: \(error)")
+                    }
+                }
+            case .failure(let error):
+                print("Failed to load friend request data: \(error)")
+            }
+        }
+    }
+    
+    func acceptRequest(with user: UserNode) {
+        DatabaseManager.shared.acceptFriendRequest(with: user) { [weak self] result in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            switch result {
+            case .success(let finished):
+                if finished {
+                    // remove from variable
+                    strongSelf.users.removeAll(where: {
+                        guard let email = $0["email"] as? String else { return false }
+                        
+                        return email == user.email
+                    })
+                    
+                    strongSelf.results.removeAll {
+                        user.email == $0.email
+                    }
+                    
+                    self?.friendStatus = "Added"
+                    self?.confirmButton.removeFromSuperview()
+                    self?.cancelButton.removeFromSuperview()
+                    
+                    self?.initLayout()
+                }
+                else {
+                    print("Failed to finish accept request")
+                    break
+                }
+                
+            case .failure(let error):
+                print("Failed to accept request: \(error)")
+            }
+        }
+    }
+    
+    func parseToFriendsRequest(with listMap: [[String: Any]]) {
+        results = listMap.compactMap{
+            guard let id = $0["id"] as? String,
+                  let email = $0["email"] as? String,
+                  let lastName = $0["last_name"] as? String,
+                  let firstName = $0["first_name"] as? String,
+                  let bio = $0["bio"] as? String?,
+                  let dob = $0["dob"] as? String?,
+                  let isMale = $0["is_male"] as? Bool,
+                  let province = $0["province"] as? String,
+                  let district = $0["district"] as? String
+            else {
+                print("excepted type")
+                return nil
+            }
+            
+            return UserNode(id: id,
+                            firstName: firstName,
+                            lastName: lastName,
+                            province: province,
+                            district: district,
+                            bio: bio ?? "",
+                            email: email,
+                            dob: dob ?? "",
+                            isMale: isMale)
+        }
+    }
 }

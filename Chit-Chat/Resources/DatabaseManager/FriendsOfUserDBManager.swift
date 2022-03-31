@@ -395,9 +395,7 @@ extension DatabaseManager {
             completion(.failure(DatabaseError.failedToFind))
             return
         }
-        
-        /// move from my frequest_list -> my friend_list && move from other's sentRequest_list -> other's friend_list
-        
+                
         let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
         let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
@@ -418,6 +416,7 @@ extension DatabaseManager {
                     return email.hasPrefix(otherUser.email)
                 })
                 
+                // Error here
                 sentFriendRequestList.removeAll(where: { request[0] as NSDictionary == $0 as NSDictionary })
                 
                 strongSelf.database.child("Users/\(mySafeEmail)/friend_list").setValue(sentFriendRequestList, withCompletionBlock: { error, _ in
@@ -427,7 +426,7 @@ extension DatabaseManager {
                     }
                 })
                 
-                // request sender
+                // other person
                 strongSelf.database.child("Users/\(otherSafeEmail)").observe(.value) { snapshot in
                     // request sender
                     guard let otherValue = snapshot.value as? [String: Any] else {
@@ -445,7 +444,14 @@ extension DatabaseManager {
                             return email.hasPrefix(myEmail)
                         })
                         
-                        otherFriendRequestList.removeAll(where: { otherRequest[0] as NSDictionary == $0 as NSDictionary })
+                        for index in 0 ..< otherFriendRequestList.count {
+                            if otherFriendRequestList.count > 0 && index <= otherFriendRequestList.count && otherRequest.count > 0 {
+                                if otherRequest[0] as NSDictionary == otherFriendRequestList[index] as NSDictionary {
+                                    otherFriendRequestList.remove(at: index)
+                                }
+                            }
+                        }
+                        //otherFriendRequestList.removeAll(where: { otherRequest[0] as NSDictionary == $0 as NSDictionary })
                         
                         strongSelf.database.child("Users/\(otherSafeEmail)/friend_list").setValue(otherFriendRequestList, withCompletionBlock: { error, _ in
                             guard error == nil else {
