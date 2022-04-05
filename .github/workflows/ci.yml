@@ -26,7 +26,7 @@ jobs:
           ${{ runner.os }}-pods-
     - name: CocoaPod Install
       run: pod install
-    - name: Build
-      run: xcodebuild -workspace Chit-Chat.xcworkspace -scheme Chit-Chat -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12'
+    # - name: Build
+    #   run: xcodebuild -workspace Chit-Chat.xcworkspace -scheme Chit-Chat -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12'
     - name: Test
       run: xcodebuild -workspace Chit-Chat.xcworkspace -scheme Chit-Chat -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12' test
