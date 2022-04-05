@@ -5,6 +5,10 @@
 
 name: Pull request
 on: 
+  push:
+    branches:
+        - main
+        - sub
   pull_request:
     branches:
       - main
