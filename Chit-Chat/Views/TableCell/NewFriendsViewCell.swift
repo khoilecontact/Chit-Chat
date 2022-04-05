@@ -69,11 +69,26 @@ class NewFriendsViewCell: UITableViewCell {
     public func configure(with model: UserNode) {
         userNameLabel.text = "\(model.firstName) \(model.lastName)"
         userEmailLabel.text = model.email
-        let url = URL(string: "https://github.com/khoilecontact.png?size=400")
-        userImageView.sd_setImage(with: url, completed: nil)
         
-        //        let path = "images/\(model.email)_profile_picture.png"
+        //        let url = URL(string: "https://github.com/khoilecontact.png?size=400")
+        //        userImageView.sd_setImage(with: url, completed: nil)
+        
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: model.email)
+        
+        let path = "images/\(safeEmail)_profile_picture.png"
         // call to Storage manager to take img
+        StorageManager.shared.downloadUrl(for: path) { [weak self] result in
+            guard let strongSelf = self else { return }
+            
+            switch result {
+            case .success(let url):
+                DispatchQueue.main.async {
+                    strongSelf.userImageView.sd_setImage(with: url, completed: nil)
+                }
+            case .failure(let error):
+                print("Failed to get image url: \(error)")
+            }
+        }
     }
     
 }

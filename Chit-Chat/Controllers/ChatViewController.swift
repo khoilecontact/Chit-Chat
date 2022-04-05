@@ -56,8 +56,8 @@ class ChatViewController: UIViewController {
         
         // start
         screenConversations(false)
-        startListeningForConversations()
         createLoginObserver()
+        startListeningForConversations()
     }
     
     override func viewDidAppear(_ animated: Bool) {

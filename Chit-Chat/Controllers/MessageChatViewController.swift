@@ -702,6 +702,7 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
         else {
             // other user
             if let otherUserImageURL = otherUserPhotoURL {
+                print("da fetch")
                 avatarView.sd_setImage(with: otherUserImageURL, completed: nil)
                 // otherUserAvatar.sd_setImage(with: otherUserImageURL, placeholderImage: resizeImage(image: UIImage(systemName: "person.crop.circle")!, targetSize: CGSize(width: 30, height: 30)))
                 otherUserAvatar.sd_setImage(with: otherUserImageURL, placeholderImage: nil, context: [.imageTransformer: SDImageResizingTransformer(size: CGSize(width: 30, height: 30), scaleMode: .fill)])
@@ -710,7 +711,7 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
                 // ${safeOtherEmail}_profile_picture.png
                 
                 let email = otherUserEmail
-                
+                print("chua fetch")
                 let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
                 let path = "images/\(safeEmail)_profile_picture.png"
                 
