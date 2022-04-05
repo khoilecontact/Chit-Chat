@@ -7,8 +7,8 @@ name: Pull request
 on: 
   push:
     branches:
-        - main
-        - sub
+      - main
+      - sub
   pull_request:
     branches:
       - main
@@ -34,4 +34,4 @@ jobs:
           ruby-version: 2.4.0
           bundler-cache: true
       - name: Test - Fastlane tests
-        run: bundle exec fastlane test
+        run: gem update --system 3.2.3 && bundle exec fastlane test
