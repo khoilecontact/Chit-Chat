@@ -126,19 +126,42 @@ class LoginViewController: UIViewController {
 //
 //    private let googleSignInButton = GIDSignInButton()
     
+    private let FBloginButton: FBLoginButton = {
+        let button = FBLoginButton()
+        button.permissions = ["email", "public_profile"]
+        button.layer.cornerRadius = 22
+        button.clipsToBounds = true
+        button.layer.masksToBounds = true
+//            button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+        button.frame = CGRect(x: 160, y: 100, width: 50, height: 50)
+        button.titleLabel?.removeFromSuperview()
+        button.contentMode = .scaleAspectFit
+        button.imageView?.contentMode = .center
+        
+        // Add shadow
+        button.layer.shadowColor = UIColor.gray.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.shadowOpacity = 1
+        button.layer.shadowRadius = 1
+        
+        return button
+    }()
+    
     private let googleSignInButton: UIButton = {
             if #available(iOS 15.0, *) {
                 var config = UIButton.Configuration.filled()
-                config.title = "Continue with Google"
+//                config.title = "Continue with Google"
                 config.image = resizeImage(image: UIImage(named: "GoogleIcon")!, targetSize: CGSize(width: 30, height: 30))
-                config.imagePadding = 60
-                config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 30)
+//                config.imagePadding = 60
+//                config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 30)
                 config.baseBackgroundColor = UIColor.white
                 config.baseForegroundColor = UIColor.black
+                config.titleAlignment = .center
                 
                 let button = UIButton(configuration: config, primaryAction: nil)
                 button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
-                button.layer.cornerRadius = 5
+                button.layer.cornerRadius = 22
+                button.clipsToBounds = true
                 button.layer.masksToBounds = true
                 
                 button.setTitleColor(UIColor.black, for: .normal)
@@ -151,7 +174,6 @@ class LoginViewController: UIViewController {
                 // Add shadow
                 button.layer.shadowColor = UIColor.gray.cgColor
                 button.layer.shadowOffset = CGSize(width: 0, height: 3)
-                button.layer.masksToBounds = false
                 button.layer.shadowOpacity = 1
                 button.layer.shadowRadius = 1
                 
@@ -162,11 +184,11 @@ class LoginViewController: UIViewController {
                 button.addTarget(LoginViewController.self, action: #selector(googleSignInButtonTapped), for: .touchUpInside)
                 //
                 
-                button.setTitle("Continue with Google", for: .normal)
+//                button.setTitle("Continue with Google", for: .normal)
                 button.setTitleColor(.black, for: .normal)
                 button.backgroundColor = .white
                 button.tintColor = .white
-                button.layer.cornerRadius = 5
+                button.layer.cornerRadius = 22
                 button.layer.masksToBounds = true
                 // Google icon
                 let icon = resizeImage(image: UIImage(named: "GoogleIcon")!, targetSize: CGSize(width: 30, height: 30))
@@ -178,45 +200,30 @@ class LoginViewController: UIViewController {
                 return button
             }
         }()
-        
-        private let FBloginButton: FBLoginButton = {
-            let button = FBLoginButton()
-            button.permissions = ["email", "public_profile"]
-            button.layer.cornerRadius = 15
-            button.layer.masksToBounds = true
-            button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
-            button.titleLabel?.textAlignment = .center
-            
-            // Add shadow
-            button.layer.shadowColor = UIColor.gray.cgColor
-            button.layer.shadowOffset = CGSize(width: 0, height: 3)
-            button.layer.masksToBounds = false
-            button.layer.shadowOpacity = 1
-            button.layer.shadowRadius = 1
-            
-            return button
-        }()
     
     private let githubSignInButton: UIButton = {
         var config = UIButton.Configuration.filled()
-        config.title = "Log in with GitHub"
+//        config.title = "Log in with GitHub"
         config.image = resizeImage(image: UIImage(named: "GitHubLogo")!, targetSize: CGSize(width: 30, height: 30))
-        config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 30)
-        config.imagePadding = 60
+//        config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 30)
+//        config.imagePadding = 60
         config.baseBackgroundColor = UIColor.gray
         config.baseForegroundColor = UIColor.white
+        config.titleAlignment = .center
         
         let button = UIButton(configuration: config, primaryAction: nil)
         button.layer.borderWidth = 0
         button.titleLabel?.font = .systemFont(ofSize: 15)
         
-        button.imageView?.contentMode = .left
-        button.layer.cornerRadius = 12
+        button.imageView?.contentMode = .center
+        button.frame = CGRect(x: 160, y: 100, width: 50, height: 50)
+        button.layer.cornerRadius = 22
+        button.clipsToBounds = true
         
         // Add shadow
         button.layer.shadowColor = UIColor.gray.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
-        button.layer.masksToBounds = false
+        button.layer.masksToBounds = true
         button.layer.shadowOpacity = 1
         button.layer.shadowRadius = 1
         
@@ -307,11 +314,11 @@ class LoginViewController: UIViewController {
         
         forgotPasswordButton.frame = CGRect(x: forgotPasswordLabel.right + 3, y: loginButton.bottom + 15, width: 110, height: 20)
         
-        FBloginButton.frame = CGRect(x: 30, y: forgotPasswordLabel.bottom + 20 , width: scrollView.width - 60, height: 52)
+        FBloginButton.frame = CGRect(x: 100, y: forgotPasswordLabel.bottom + 20 , width: 45, height: 45)
         
-        googleSignInButton.frame = CGRect(x: 30, y: FBloginButton.bottom + 20 , width: scrollView.width - 60, height: 52)
+        googleSignInButton.frame = CGRect(x: FBloginButton.right + 30, y: forgotPasswordLabel.bottom + 20 , width: 45, height: 45)
         
-        githubSignInButton.frame = CGRect(x: 30, y: googleSignInButton.bottom + 20 , width: scrollView.width - 60, height: 52)
+        githubSignInButton.frame = CGRect(x: googleSignInButton.right + 30, y: forgotPasswordLabel.bottom + 20 , width: 45, height: 45)
         
         registerButton.frame = CGRect(x: scrollView.width / 4, y: githubSignInButton.bottom + 30, width: scrollView.width - 175, height: 52)
         
@@ -428,6 +435,7 @@ class LoginViewController: UIViewController {
             
             UserDefaults.standard.set(email, forKey: "email")
             
+            NotificationCenter.default.post(name: .didLogInNotification, object: nil)
             self?.navigationController?.dismiss(animated: true, completion: nil)
         })
         

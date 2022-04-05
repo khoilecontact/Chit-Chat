@@ -246,6 +246,8 @@ class OtherUserViewController: UIViewController {
         confirmButton.addTarget(self, action: #selector(confirmRequestTapped), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(cancelRequestTapped), for: .touchUpInside)
         
+        functionsButton.addTarget(self, action: #selector(functionButtonTapped), for: .touchUpInside)
+        
         view.backgroundColor = .systemBackground
         
         view.addSubview(scrollView)
@@ -258,6 +260,7 @@ class OtherUserViewController: UIViewController {
         scrollView.addSubview(cancelButton)
         scrollView.addSubview(friendStatusButton)
         scrollView.addSubview(messageButton)
+        scrollView.addSubview(functionsButton)
         scrollView.addSubview(bioLabel)
         scrollView.addSubview(dobIcon)
         scrollView.addSubview(dobLabel)
@@ -297,6 +300,10 @@ class OtherUserViewController: UIViewController {
             cancelButton.frame = CGRect(x: confirmButton.right + 20, y: nameLabel.bottom + 10, width: 130, height: 40)
             
             bioLabel.frame = CGRect(x: 20, y: confirmButton.bottom + 30, width: scrollView.width - 40, height: 52)
+            break
+            
+        case "Blocked":
+            // Handle UI for blocked person
             break
             
         default:
@@ -369,21 +376,50 @@ class OtherUserViewController: UIViewController {
                         for user in pageUser.sentfriendRequestList {
                             if user.email == currentUserEmail {
                                 self?.friendStatus = "Received"
+                                break
                             }
                         }
                         // Case: You have sent them a friend request
                         for user in pageUser.friendRequestList {
                             if user.email == currentUserEmail {
                                 self?.friendStatus = "Sent"
+                                break
                             }
                         }
                         // Case: You're friends
                         for user in pageUser.friendList {
                             if user.email == currentUserEmail {
                                 self?.friendStatus = "Added"
+                                break
                             }
                         }
+                        // Case: You or they block each other
+                        // other user's blacklist
+                        for user in pageUser.blackList {
+                            if user.email == currentUserEmail {
+                                self?.friendStatus = "Blocked"
+                                break
+                            }
+                        }
+                        
+                        // current user blacklist
+                        DatabaseManager.shared.getBlackListOfUser(with: currentUserEmail, completion: { result in
+                            switch result {
+                            case.success(let blackListUser):
+                                for user in blackListUser {
+                                    if user["email"] as! String == currentUserEmail {
+                                        self?.friendStatus = "Blocked"
+                                        break
+                                    }
+                                }
+                                
+                            case .failure( _):
+                                print("Error in getting current user's blacklist")
+                            }
+                    
+                        })
                         // Case: Nobody sent a friend request
+                        self?.friendStatus = "Stranger"
                         
                         self?.initLayout()
                     })
@@ -467,44 +503,7 @@ class OtherUserViewController: UIViewController {
         guard let user = self.otherUser else { return }
         let userNode: UserNode = user.toUserNode()
         
-        let vc = UIViewController()
-        let screenWidth = UIScreen.main.bounds.width - 10
-        let screenHeight = UIScreen.main.bounds.height / 2
-        vc.preferredContentSize = CGSize(width: screenWidth, height: screenHeight)
-            
-        let alert = UIAlertController(title: "Change friend status", message: "",
-            preferredStyle: .actionSheet)
-        
-        alert.addAction(UIAlertAction(title: "Unfriend", style: .default, handler: { [weak self] (alert: UIAlertAction) in 
-            let confirmAlert = UIAlertController(title: "Do you confirm to unfriend?", message: "This action can not be undo", preferredStyle: .actionSheet)
-            confirmAlert.addAction(UIAlertAction(title: "Unfriend", style: .destructive, handler: { (alert: UIAlertAction) in
-                DatabaseManager.shared.unfriend(with: userNode, completion: { [weak self] result in
-                    switch result {
-                    case .failure(_):
-                        let secondAlert = UIAlertController(title: "Failed", message: "Something when wrong, please try again later", preferredStyle: .alert)
-                        secondAlert.addAction(UIAlertAction(title: "Ok", style: .cancel))
-                        self?.present(secondAlert, animated: true)
-                        break
-                    case .success(_):
-                        self?.friendStatus = "Stranger"
-                        self?.friendStatusButton.isHidden = true
-                        self?.friendStatusButton.removeFromSuperview()
-                        
-                        self?.messageButton.isHidden = true
-                        self?.messageButton.removeFromSuperview()
-                        
-                        self?.initLayout()
-                        break
-                    }
-                    
-                })
-            }))
-            confirmAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            self?.present(confirmAlert, animated: true)
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        
-        self.present(alert, animated: true, completion: nil)
+        self.unfriend(with: userNode)
     }
     
     @objc func messageButtonTapped() {
@@ -530,10 +529,20 @@ class OtherUserViewController: UIViewController {
         self.acceptRequest(with: userNode)
     }
     
+    @objc func functionButtonTapped() {
+        let alert = UIAlertController(title: "Manage", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Block", style: .default, handler: { (alert: UIAlertAction) in
+            // insert user into blacklist
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        self.present(alert, animated: true)
+    }
+    
     
 }
 
-extension OtherUserViewController {
+extension OtherUserViewController { 
     func deniesRequest(with user: UserNode) {
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
         
@@ -620,6 +629,49 @@ extension OtherUserViewController {
                 print("Failed to accept request: \(error)")
             }
         }
+    }
+    
+    func unfriend(with otherUser: UserNode) {
+        let userNode: UserNode = otherUser
+        
+        let vc = UIViewController()
+        let screenWidth = UIScreen.main.bounds.width - 10
+        let screenHeight = UIScreen.main.bounds.height / 2
+        vc.preferredContentSize = CGSize(width: screenWidth, height: screenHeight)
+            
+        let alert = UIAlertController(title: "Change friend status", message: "",
+            preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Unfriend", style: .default, handler: { [weak self] (alert: UIAlertAction) in
+            let confirmAlert = UIAlertController(title: "Do you confirm to unfriend?", message: "This action can not be undo", preferredStyle: .actionSheet)
+            confirmAlert.addAction(UIAlertAction(title: "Unfriend", style: .destructive, handler: { (alert: UIAlertAction) in
+                DatabaseManager.shared.unfriend(with: userNode, completion: { [weak self] result in
+                    switch result {
+                    case .failure(_):
+                        let secondAlert = UIAlertController(title: "Failed", message: "Something when wrong, please try again later", preferredStyle: .alert)
+                        secondAlert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                        self?.present(secondAlert, animated: true)
+                        break
+                    case .success(_):
+                        self?.friendStatus = "Stranger"
+                        self?.friendStatusButton.isHidden = true
+                        self?.friendStatusButton.removeFromSuperview()
+                        
+                        self?.messageButton.isHidden = true
+                        self?.messageButton.removeFromSuperview()
+                        
+                        self?.initLayout()
+                        break
+                    }
+                    
+                })
+            }))
+            confirmAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self?.present(confirmAlert, animated: true)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     func parseToFriendsRequest(with listMap: [[String: Any]]) {
