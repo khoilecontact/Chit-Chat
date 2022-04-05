@@ -252,17 +252,17 @@ extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegat
         return true
     }
     
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
-        let openConversationAction = UIContextualAction(style: .destructive, title: "Chat with") { [weak self] action, view, handler in
-            
-        }
-        openConversationAction.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
-        
-        let configuration = UISwipeActionsConfiguration(actions: [openConversationAction])
-        configuration.performsFirstActionWithFullSwipe = true
-        return configuration
-    }
+    //    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    //
+    //        let openConversationAction = UIContextualAction(style: .destructive, title: "Chat with") { [weak self] action, view, handler in
+    //
+    //        }
+    //        openConversationAction.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
+    //
+    //        let configuration = UISwipeActionsConfiguration(actions: [openConversationAction])
+    //        configuration.performsFirstActionWithFullSwipe = true
+    //        return configuration
+    //    }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
