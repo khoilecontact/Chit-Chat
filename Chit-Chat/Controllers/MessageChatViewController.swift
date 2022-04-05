@@ -76,7 +76,6 @@ class MessageChatViewController: MessagesViewController {
                         strongSelf.messagesCollectionView.scrollToLastItem()
                     }
                     
-                    strongSelf.messagesCollectionView.reloadDataAndKeepOffset()
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -91,6 +90,9 @@ class MessageChatViewController: MessagesViewController {
         self.conversationId = id
         self.otherUserEmail = email
         super.init(nibName: nil, bundle: nil)
+        if let conversationId = self.conversationId {
+            listenForMessagees(id: conversationId, shouldScrollToBottom: true)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -364,7 +366,6 @@ class MessageChatViewController: MessagesViewController {
                 else {
                     print("failed to send location message")
                 }
-                
             })
         })
         navigationController?.pushViewController(vc, animated: true)

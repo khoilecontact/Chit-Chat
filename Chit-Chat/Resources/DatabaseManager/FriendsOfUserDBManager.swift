@@ -467,6 +467,74 @@ extension DatabaseManager {
         }
     }
     
+    func addToBlackList(with otherUser: UserNode, completion: @escaping (Result<Bool,Error>) -> Void) {
+        guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            completion(.failure(DatabaseError.failedToFind))
+            return
+        }
+        
+        let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
+        
+        // Unfriend user
+        DatabaseManager.shared.unfriend(with: otherUser, completion: { [weak self] unfriendResult in
+            DatabaseManager.shared.revokeFriendRequest(with: otherUser, completion: { revokeRequestResult in
+                DatabaseManager.shared.deniesFriendRequest(with: otherUser, completion: { denyRequestResult in
+                    switch unfriendResult {
+                    case .success(_):
+                        switch revokeRequestResult {
+                        case .success(_):
+                            switch denyRequestResult {
+                            case .success(_):
+                                self?.database.child("Users/\(mySafeEmail)").observe(.value) { snapshot in
+                                    guard let value = snapshot.value as? [String: Any] else {
+                                        completion(.failure(DatabaseError.failedToFetch))
+                                        return
+                                    }
+                                    
+                                    if var blackList = value["black_list"] as? [[String: Any]] {
+                                        
+                                        let newBlackListItem: [String: Any] = [
+                                            "email": otherUser.email,
+                                            "first_name": otherUser.firstName,
+                                            "last_name": otherUser.lastName,
+                                            "province": otherUser.province,
+                                            "district": otherUser.district,
+                                            "dob": otherUser.dob,
+                                            "bio": otherUser.bio,
+                                            "id": otherUser.id,
+                                            "is_male": otherUser.isMale
+                                        ]
+                                        
+                                        blackList.append(newBlackListItem)
+                                        
+                                        self?.database.child("Users/\(mySafeEmail)/black_list").setValue(blackList) { error, _ in
+                                            guard error == nil else {
+                                                completion(.failure(DatabaseError.failedToFetch))
+                                                return
+                                            }
+                                        }
+                                    }
+                                }
+                                break
+                            case .failure(_):
+                                print("Failed to deny user")
+                                break
+                            }
+                            break
+                        case .failure(_):
+                            print("Failed to revoke friend request of user")
+                            break
+                        }
+                        break
+                    case .failure(_):
+                        print("Failed to unfriend user")
+                        break
+                    }
+                })
+            })
+        })
+    }
+    
     func unseggest(with otherUser: UserNode, completion: @escaping (Result<Bool, Error>) -> Void) {
         
     }

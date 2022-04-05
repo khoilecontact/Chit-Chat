@@ -19,6 +19,7 @@ class MeViewController: UIViewController {
     @IBOutlet var friendListButton: UIButton!
     @IBOutlet var darkModeButton: UIButton!
     @IBOutlet var logOutButton: UIButton!
+    @IBOutlet var blackListButton: UIButton!
     
     var user: User?! = nil
     
@@ -159,6 +160,13 @@ class MeViewController: UIViewController {
         darkModeButton.layer.shadowOffset = CGSize(width: 0, height: 3)
         darkModeButton.layer.shadowOpacity = 0.3
         darkModeButton.layer.shadowRadius = 1
+        
+        blackListButton.layer.cornerRadius = 12
+        blackListButton.layer.borderWidth = 1
+        blackListButton.layer.masksToBounds = false
+        blackListButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        blackListButton.layer.shadowOpacity = 0.3
+        blackListButton.layer.shadowRadius = 1
         
         logOutButton.layer.cornerRadius = 12
         logOutButton.layer.borderWidth = 1
