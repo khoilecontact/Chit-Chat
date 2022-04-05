@@ -228,8 +228,26 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         // actions
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { action, view, handler in
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] action, view, handler in
             
+            guard let strongSelf = self else { return }
+            
+            // begin delete
+            let conversationId = strongSelf.conversations[indexPath.row].id
+            
+            tableView.beginUpdates()
+            /// Not put 2 line below in closure bc it will crash by startListenConversations will call 2 times.
+            strongSelf.conversations.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .left)
+            
+            DatabaseManager.shared.deleteConversation(conversationId: conversationId, completion: { success in
+                
+                if !success {
+                    print("Failed to delete")
+                }
+            })
+            
+            tableView.endUpdates()
         }
         // RGB: (211, 33, 44)
         // 242 78 30

@@ -439,6 +439,10 @@ class MessageChatViewController: MessagesViewController {
         
     }
     
+    @objc func menuBtnTapped() {
+        
+    }
+    
     @objc func backBtnTapped() {
         navigationController?.popViewController(animated: true)
     }
