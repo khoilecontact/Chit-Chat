@@ -3,7 +3,8 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build and Test
+name: ci
+
 on: 
   push:
     branches:
@@ -13,20 +14,16 @@ on:
     branches:
       - main
       - sub
+
 jobs:
-  buildAndTest:
+  build-and-test:
     runs-on: macos-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      with:
-        path: Pods
-        key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-pods-
-    - name: CocoaPod Install
-      run: pod install
-    # - name: Build
-    #   run: xcodebuild -workspace Chit-Chat.xcworkspace -scheme Chit-Chat -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12'
-    - name: Test
-      run: xcodebuild -workspace Chit-Chat.xcworkspace -scheme Chit-Chat -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12' test
+    - uses: actions/checkout@v3
+
+    - name: Select Xcode
+      run: sudo xcode-select -switch /Applications/Xcode_12.app
+
+    - name: Build and test
+      run: xcodebuild clean build test -workspace Chit-Chat.xcworkspace -scheme Chit-Chat -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO
