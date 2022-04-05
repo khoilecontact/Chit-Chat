@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Pull request
+name: Build and Test
 on: 
   push:
     branches:
@@ -14,24 +14,19 @@ on:
       - main
       - sub
 jobs:
-  test:
-    runs-on: macos-10.15
-    timeout-minutes: 15
+  buildAndTest:
+    runs-on: macos-latest
     steps:
-      - name: Cancel previous jobs
-        uses: styfle/cancel-workflow-action@0.6.0
-        with:
-          access_token: ${{ github.token }}
-      - name: Git - Checkout
-        uses: actions/checkout@v2.3.4
-        with:
-          ref: ${{ github.ref }}
-      - name: Setup - Xcode
-        run: sudo xcode-select -s /Applications/Xcode_12.3.app
-      - name: Setup - Ruby and bundler dependencies
-        uses: ruby/setup-ruby@v1.57.0
-        with:
-          ruby-version: 2.4.0
-          bundler-cache: true
-      - name: Test - Fastlane tests
-        run: gem update --system 3.2.3 && bundle exec fastlane test
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: Pods
+        key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pods-
+    - name: CocoaPod Install
+      run: pod install
+    - name: Build
+      run: xcodebuild -workspace YourAppName.xcworkspace -scheme YourAppName -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12'
+    - name: Test
+      run: xcodebuild -workspace YourAppName.xcworkspace -scheme YourAppName -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12' test
