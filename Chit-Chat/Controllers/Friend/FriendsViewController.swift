@@ -183,8 +183,8 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
         
         convertUserNodeToUser(with: self.friends[indexPath.row] , completion: { user in
             // KhoiLe fixed - not Phat
-                let vc = OtherUserViewController(otherUser: user)
-                self.navigationController?.pushViewController(vc, animated: true)
+            let vc = OtherUserViewController(otherUser: user)
+            self.navigationController?.pushViewController(vc, animated: true)
         })
     }
     
@@ -207,8 +207,30 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         // actions
-        let unfriendAction = UIContextualAction(style: .destructive, title: "Unfriend") { action, view, handler in
+        let unfriendAction = UIContextualAction(style: .destructive, title: "Unfriend") { [weak self] action, view, handler in
+            guard let strongSelf = self else { return }
             
+            DatabaseManager.shared.unfriend(with: strongSelf.friends[indexPath.row]) { [weak self] result in
+                switch result {
+                case .success(let isDone):
+                    if isDone {
+                        // begin delete
+                        tableView.beginUpdates()
+                        /// Not put 2 line below in closure bc it will crash by startListenConversations will call 2 times.
+                        strongSelf.friends.remove(at: indexPath.row)
+                        tableView.deleteRows(at: [indexPath], with: .left)
+                        
+                        tableView.endUpdates()
+                    }
+                    else {
+                        print("Failed to delete friend in success case")
+                    }
+                    break
+                case .failure(let error):
+                    print("Failed to unfriend with error: \(error)")
+                    break
+                }
+            }
         }
         // RGB: (211, 33, 44)
         // 242 78 30

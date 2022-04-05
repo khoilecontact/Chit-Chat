@@ -237,20 +237,12 @@ extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let targetUserData = results[indexPath.row]
-        
-        convertUserNodeToUser(with: self.results[indexPath.row] as! UserNode, completion: { user in
-                let vc = UIViewController()
-                async {
-                    do {
-                        let vc = try await OtherUserViewController(otherUser: user)
-                        await self.navigationController?.pushViewController(vc, animated: true)
-                    } catch {
-                        print("Error in find new friend class")
-                    }
-                }
-                
-        })    }
+            
+        convertUserNodeToUser(with: self.results[indexPath.row] , completion: { user in
+            let vc = OtherUserViewController(otherUser: user)
+            self.navigationController?.pushViewController(vc, animated: true)
+        })
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
@@ -262,22 +254,12 @@ extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let seeProfileAction = UIContextualAction(style: .destructive, title: "See Profile") { [weak self] action, view, handler in
-            convertUserNodeToUser(with: self?.results[indexPath.row] as! UserNode, completion: { user in
-                let vc = UIViewController()
-                Task.init {
-                    do {
-                        async let vc = try await OtherUserViewController(otherUser: user)
-                    } catch {
-                        print("Error in find new friend class")
-                    }
-                }
-                self?.navigationController?.pushViewController(vc, animated: true)
-            })
+        let openConversationAction = UIContextualAction(style: .destructive, title: "Chat with") { [weak self] action, view, handler in
+            
         }
-        seeProfileAction.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
+        openConversationAction.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
         
-        let configuration = UISwipeActionsConfiguration(actions: [seeProfileAction])
+        let configuration = UISwipeActionsConfiguration(actions: [openConversationAction])
         configuration.performsFirstActionWithFullSwipe = true
         return configuration
     }

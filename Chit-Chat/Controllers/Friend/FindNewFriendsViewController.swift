@@ -117,6 +117,16 @@ final class FindNewFriendsViewController: UIViewController {
         }
     }
     
+    func openConversation(_ model: UserNode) {
+        // open chat space
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: model.email)
+        
+        let vc = MessageChatViewController(with: safeEmail, id: model.id)
+        vc.title = "\(model.firstName) \(model.lastName)"
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     @objc private func dismissSelf() {
         dismiss(animated: true, completion: nil)
     }
@@ -146,14 +156,10 @@ extension FindNewFriendsViewController: UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let targetUserData = results[indexPath.row]
-        
-        dismiss(animated: true, completion: { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
             
-            strongSelf.completion?(targetUserData)
+        convertUserNodeToUser(with: self.results[indexPath.row] , completion: { user in
+            let vc = OtherUserViewController(otherUser: user)
+            self.navigationController?.pushViewController(vc, animated: true)
         })
     }
     
@@ -166,15 +172,15 @@ extension FindNewFriendsViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let seeProfileAction = UIContextualAction(style: .destructive, title: "See Profile") { [weak self] action, view, handler in
-            convertUserNodeToUser(with: (self?.results[indexPath.row])!, completion: { user in
-                let vc = OtherUserViewController(otherUser: user)
-                self?.navigationController?.pushViewController(vc, animated: true)
-            })
+        let openConversationAction = UIContextualAction(style: .destructive, title: "Chat with") { [weak self] action, view, handler in
+            
+            guard let strongSelf = self else { return }
+            
+            strongSelf.openConversation(strongSelf.results[indexPath.row])
         }
-        seeProfileAction.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
+        openConversationAction.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
         
-        let configuration = UISwipeActionsConfiguration(actions: [seeProfileAction])
+        let configuration = UISwipeActionsConfiguration(actions: [openConversationAction])
         configuration.performsFirstActionWithFullSwipe = true
         return configuration
     }
