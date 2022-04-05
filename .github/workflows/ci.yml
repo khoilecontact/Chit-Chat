@@ -7,7 +7,8 @@ name: Pull request
 on: 
   pull_request:
     branches:
-      - develop
+      - main
+      - sub
 jobs:
   test:
     runs-on: macos-10.15
