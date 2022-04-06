@@ -748,6 +748,7 @@ class LoginViewController: UIViewController {
                         return
                     }
 
+                    NotificationCenter.default.post(name: .didLogInNotification, object: nil)
                     print("Sucessfully log in")
                     self?.navigationController?.dismiss(animated: true, completion: nil)
                 })
@@ -816,119 +817,4 @@ extension LoginViewController: UITextFieldDelegate {
         
         return true
     }
-}
-
-extension LoginViewController: LoginButtonDelegate {
-    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
-        //nothing
-    }
-    
-    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
-        // Unwraph token from Facebook
-        guard let token = result?.token?.tokenString else {
-            print("User failed to log in with Facebook")
-            return
-        }
-
-        let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields": "id, email, first_name, last_name, picture.type(large), birthday, gender"], tokenString: token, version: nil, httpMethod: .get)
-
-        facebookRequest.start(completion: { connection, result, error in
-            guard let result = result as? [String: Any ], error == nil else {
-                print("Failed to make Facebook Graph request")
-                return
-            }
-//
-//            //Debug
-//            print(result)
-//                        return
-            
-            // Waiting for FB authorization of birthday and gender field
-            guard let email = result["email"] as? String, let id = result["id"] as? String,
-                  let firstName = result["first_name"] as? String, let lastName = result["last_name"] as? String, let picture = result["picture"] as? [String: Any],
-                  let data = picture["data"] as? [String: Any], let pictureUrl = data["url"] as? String
-//                  ,let dob = result["birthday"] as? String,
-//                  let gender = result["gender"] as? String
-            else {
-                print("Failed to get info from Facebook")
-                return
-            }
-            
-//            var isMale = true
-//
-//            switch gender {
-//            case "female":
-//                isMale = false
-//                break
-//
-//            default:
-//                isMale = true
-//                break
-//            }
-
-            UserDefaults.standard.set(email, forKey: "email")
-            UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
-
-            DatabaseManager.shared.userExists(with: email, completion: { exists in
-                let chatUser = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: "", isMale: true, province: "", district: "")
-                if !exists {
-                    DatabaseManager.shared.insertUser(with: chatUser, completion: { [weak self] success in
-                        if success {
-                            //upload image
-                            guard let url = URL(string: pictureUrl) else {
-                                return
-                            }
-
-                            URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
-
-                                guard data != nil else { return }
-                                guard error == nil else { return }
-                                
-                                DispatchQueue.main.async {
-                                    guard let image = self?.imageView.image, let _ = image.pngData() else {
-                                        return
-                                    }
-                                }
-
-                                let fileName = chatUser.profilePictureFileName
-                                StorageManager.shared.uploadFrofilePicture(with: data!, fileName: fileName, completion: { result in
-                                    switch result {
-                                    case .success(let downloadUrl):
-                                        UserDefaults.standard.setValue(downloadUrl, forKey: "profile_picture_url")
-                                        print(downloadUrl)
-                                    case .failure(let error):
-                                        print("Storage manager error: \(error)")
-                                    }
-                                })
-
-                            }).resume()
-
-                        }
-                    })
-                } else {
-                    let alert = UIAlertController(title: "User existed", message: "Email of user existed! Please try another account", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
-                    self.present(alert, animated: true)
-                    return
-                }
-            })
-
-            //Create user in Firebase database - not in Authentication cuz it's already created in there
-            let credential = FacebookAuthProvider.credential(withAccessToken: token)
-
-            //Log in Firebase using Facebook
-            FirebaseAuth.Auth.auth().signIn(with: credential, completion: { [weak self] authResult, error in
-                guard authResult != nil, error == nil else {
-                    print("Facebook log in fail, MFA maybe needed")
-                    print(error ?? "Not error")
-                    return
-                }
-
-                print("Sucessfully log in")
-                self?.navigationController?.dismiss(animated: true, completion: nil)
-            })
-        })
-
-    }
-    
-    
 }
