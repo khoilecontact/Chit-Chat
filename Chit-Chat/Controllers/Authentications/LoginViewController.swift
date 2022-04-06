@@ -117,34 +117,90 @@ class LoginViewController: UIViewController {
         return forgotPasswordButton
     }()
     
-//    private let FBloginButton: FBLoginButton = {
-//        let button = FBLoginButton()
-//        button.permissions = ["email", "public_profile"]
-//        button.layer.cornerRadius = 12
-//        return button
-//    }()
-//
-//    private let googleSignInButton = GIDSignInButton()
+    //        private let FBloginButton: FBLoginButton = {
+    //            let button = FBLoginButton()
+    //            button.permissions = ["email", "public_profile"]
+    //            button.layer.cornerRadius = 12
+    //            return button
+    //        }()
     
-    private let FBloginButton: FBLoginButton = {
-        let button = FBLoginButton()
-        button.permissions = ["email", "public_profile"]
-        button.layer.cornerRadius = 22
-        button.clipsToBounds = true
-        button.layer.masksToBounds = true
-//            button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
-        button.frame = CGRect(x: 160, y: 100, width: 50, height: 50)
-        button.titleLabel?.removeFromSuperview()
-        button.contentMode = .scaleAspectFit
-        button.imageView?.contentMode = .center
+    //        private let googleSignInButton = GIDSignInButton()
+    
+    //        private let FBloginButton: FBLoginButton = {
+    //            let button = FBLoginButton()
+    //            button.permissions = ["email", "public_profile"]
+    //            button.layer.cornerRadius = 22
+    //            button.clipsToBounds = true
+    //            button.layer.masksToBounds = true
+    //    //            button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+    //            button.frame = CGRect(x: 160, y: 100, width: 50, height: 50)
+    //            button.titleLabel?.removeFromSuperview()
+    //            button.contentMode = .scaleAspectFit
+    //            button.imageView?.contentMode = .center
+    //
+    //            // Add shadow
+    //            button.layer.shadowColor = UIColor.gray.cgColor
+    //            button.layer.shadowOffset = CGSize(width: 0, height: 3)
+    //            button.layer.shadowOpacity = 1
+    //            button.layer.shadowRadius = 1
+    //
+    //            return button
+    //        }()
+    
+    private let fbLoginButton: UIButton = {
+        // button.permission = ["email", "public_profile"]
         
-        // Add shadow
-        button.layer.shadowColor = UIColor.gray.cgColor
-        button.layer.shadowOffset = CGSize(width: 0, height: 3)
-        button.layer.shadowOpacity = 1
-        button.layer.shadowRadius = 1
-        
-        return button
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.filled()
+//                config.title = "Continue with Google"
+            config.image = resizeImage(image: UIImage(named: "FacebookLogo")!, targetSize: CGSize(width: 35, height: 35))
+//                config.imagePadding = 60
+//                config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 30)
+            config.baseBackgroundColor = UIColor(red: 66/255, green: 103/255, blue: 178/255, alpha: 1)
+            config.baseForegroundColor = UIColor.black
+            config.titleAlignment = .center
+            
+            let button = UIButton(configuration: config, primaryAction: nil)
+            button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+            button.layer.cornerRadius = 22
+            button.clipsToBounds = true
+            button.layer.masksToBounds = true
+            
+            button.setTitleColor(UIColor.black, for: .normal)
+            button.layer.borderWidth = 1
+            button.layer.borderColor = UIColor(red: 66/255, green: 103/255, blue: 178/255, alpha: 1).cgColor
+            
+            // action
+            button.addTarget(self, action: #selector(didTapFacebook), for: .touchUpInside)
+            
+            // Add shadow
+            button.layer.shadowColor = UIColor.gray.cgColor
+            button.layer.shadowOffset = CGSize(width: 0, height: 3)
+            button.layer.shadowOpacity = 1
+            button.layer.shadowRadius = 1
+            
+            return button
+        } else {
+            let button = UIButton()
+            // action
+            button.addTarget(self, action: #selector(didTapFacebook), for: .touchUpInside)
+            //
+            
+//                button.setTitle("Continue with Google", for: .normal)
+            button.setTitleColor(.black, for: .normal)
+            button.backgroundColor = UIColor(red: 66/255, green: 103/255, blue: 178/255, alpha: 1)
+            button.tintColor = .white
+            button.layer.cornerRadius = 22
+            button.layer.masksToBounds = true
+            // Google icon
+            let icon = resizeImage(image: UIImage(named: "FacebookLogo")!, targetSize: CGSize(width: 35, height: 35))
+            button.setImage(icon, for: .normal)
+            button.imageView?.contentMode = .scaleAspectFit
+            button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
+            //
+            button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+            return button
+        }
     }()
     
     private let googleSignInButton: UIButton = {
@@ -271,7 +327,7 @@ class LoginViewController: UIViewController {
         emailField.delegate = self
         passwordField.delegate = self
         
-        FBloginButton.delegate = self
+        // FBloginButton.delegate = self
         
         // Add subview
         view.addSubview(scrollView)
@@ -282,7 +338,7 @@ class LoginViewController: UIViewController {
         scrollView.addSubview(loginButton)
         scrollView.addSubview(forgotPasswordLabel)
         scrollView.addSubview(forgotPasswordButton)
-        scrollView.addSubview(FBloginButton)
+        scrollView.addSubview(fbLoginButton)
         scrollView.addSubview(googleSignInButton)
         scrollView.addSubview(githubSignInButton)
         scrollView.addSubview(registerButton)
@@ -314,9 +370,9 @@ class LoginViewController: UIViewController {
         
         forgotPasswordButton.frame = CGRect(x: forgotPasswordLabel.right + 3, y: loginButton.bottom + 15, width: 110, height: 20)
         
-        FBloginButton.frame = CGRect(x: 100, y: forgotPasswordLabel.bottom + 20 , width: 45, height: 45)
+        fbLoginButton.frame = CGRect(x: 100, y: forgotPasswordLabel.bottom + 20 , width: 45, height: 45)
         
-        googleSignInButton.frame = CGRect(x: FBloginButton.right + 30, y: forgotPasswordLabel.bottom + 20 , width: 45, height: 45)
+        googleSignInButton.frame = CGRect(x: fbLoginButton.right + 30, y: forgotPasswordLabel.bottom + 20 , width: 45, height: 45)
         
         githubSignInButton.frame = CGRect(x: googleSignInButton.right + 30, y: forgotPasswordLabel.bottom + 20 , width: 45, height: 45)
         
@@ -587,6 +643,116 @@ class LoginViewController: UIViewController {
         }
         
         
+    }
+    
+    @objc func didTapFacebook() {
+        let loginManager = LoginManager()
+        
+        loginManager.logIn(permissions: ["email", "public_profile"], from: self) { [weak self] result, error in
+            // Unwraph token from Facebook
+            guard let token = result?.token?.tokenString else {
+                print("User failed to log in with Facebook")
+                return
+            }
+
+            let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields": "id, email, first_name, last_name, picture.type(large), birthday, gender"], tokenString: token, version: nil, httpMethod: .get)
+
+            facebookRequest.start(completion: { connection, result, error in
+                guard let result = result as? [String: Any ], error == nil else {
+                    print("Failed to make Facebook Graph request")
+                    return
+                }
+    //
+    //            //Debug
+    //            print(result)
+    //                        return
+                
+                // Waiting for FB authorization of birthday and gender field
+                guard let email = result["email"] as? String, let id = result["id"] as? String,
+                      let firstName = result["first_name"] as? String, let lastName = result["last_name"] as? String, let picture = result["picture"] as? [String: Any],
+                      let data = picture["data"] as? [String: Any], let pictureUrl = data["url"] as? String
+    //                  ,let dob = result["birthday"] as? String,
+    //                  let gender = result["gender"] as? String
+                else {
+                    print("Failed to get info from Facebook")
+                    return
+                }
+                
+    //            var isMale = true
+    //
+    //            switch gender {
+    //            case "female":
+    //                isMale = false
+    //                break
+    //
+    //            default:
+    //                isMale = true
+    //                break
+    //            }
+
+                UserDefaults.standard.set(email, forKey: "email")
+                UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
+
+                DatabaseManager.shared.userExists(with: email, completion: { exists in
+                    let chatUser = User(id: id, firstName: firstName, lastName: lastName, email: email, dob: "", isMale: true, province: "", district: "")
+                    if !exists {
+                        DatabaseManager.shared.insertUser(with: chatUser, completion: { [weak self] success in
+                            if success {
+                                //upload image
+                                guard let url = URL(string: pictureUrl) else {
+                                    return
+                                }
+
+                                URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
+
+                                    guard data != nil else { return }
+                                    guard error == nil else { return }
+                                    
+                                    DispatchQueue.main.async {
+                                        guard let image = self?.imageView.image, let _ = image.pngData() else {
+                                            return
+                                        }
+                                    }
+
+                                    let fileName = chatUser.profilePictureFileName
+                                    StorageManager.shared.uploadFrofilePicture(with: data!, fileName: fileName, completion: { result in
+                                        switch result {
+                                        case .success(let downloadUrl):
+                                            UserDefaults.standard.setValue(downloadUrl, forKey: "profile_picture_url")
+                                            print(downloadUrl)
+                                        case .failure(let error):
+                                            print("Storage manager error: \(error)")
+                                        }
+                                    })
+
+                                }).resume()
+
+                            }
+                        })
+                    } else {
+                        let alert = UIAlertController(title: "User existed", message: "Email of user existed! Please try another account", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                        self?.present(alert, animated: true)
+                        return
+                    }
+                })
+
+                //Create user in Firebase database - not in Authentication cuz it's already created in there
+                let credential = FacebookAuthProvider.credential(withAccessToken: token)
+
+                //Log in Firebase using Facebook
+                FirebaseAuth.Auth.auth().signIn(with: credential, completion: { [weak self] authResult, error in
+                    guard authResult != nil, error == nil else {
+                        print("Facebook log in fail, MFA maybe needed")
+                        print(error ?? "Not error")
+                        return
+                    }
+
+                    print("Sucessfully log in")
+                    self?.navigationController?.dismiss(animated: true, completion: nil)
+                })
+            })
+        }
     }
     
     @objc func didTapRegister() {
