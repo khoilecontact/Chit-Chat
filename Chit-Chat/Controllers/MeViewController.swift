@@ -34,7 +34,7 @@ class MeViewController: UIViewController {
         friendListButton.addTarget(self, action: #selector(friendListTapped), for: .touchUpInside)
         darkModeButton.addTarget(self, action: #selector(darkModeTapped), for: .touchUpInside)
         logOutButton.addTarget(self, action: #selector(logOutButtonTapped), for: .touchUpInside)
-        
+        blackListButton.addTarget(self, action: #selector(blackListTapped), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -204,7 +204,9 @@ class MeViewController: UIViewController {
     }
     
     @objc func blackListTapped() {
+        let vc = BlackListViewController()
         navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func darkModeTapped() {
