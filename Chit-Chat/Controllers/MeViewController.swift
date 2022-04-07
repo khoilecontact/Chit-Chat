@@ -12,6 +12,7 @@ import GoogleSignIn
 import SDWebImage
 
 class MeViewController: UIViewController {
+    @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var bioLabel: UILabel!
@@ -41,6 +42,11 @@ class MeViewController: UIViewController {
             }
         })
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -120,6 +126,8 @@ class MeViewController: UIViewController {
                 self?.imageView.sd_setImage(with: url, completed: nil)
             }
         })
+        
+        
         
         imageView.image?.withTintColor(Appearance.tint)
 //        imageView.contentMode = .scaleToFill
