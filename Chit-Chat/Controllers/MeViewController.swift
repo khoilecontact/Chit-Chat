@@ -129,6 +129,7 @@ class MeViewController: UIViewController {
         
         
         imageView.image?.withTintColor(Appearance.tint)
+        imageView.contentMode = .scaleAspectFill
 //        imageView.contentMode = .scaleToFill
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = imageView.frame.height / 2

@@ -29,6 +29,8 @@ class DarkModeViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Application Appearance"
+        
         tableView.delegate = self
         tableView.dataSource = self
         
