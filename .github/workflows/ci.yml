@@ -8,12 +8,12 @@ name: ci
 on: 
   push:
     branches:
-      - main
-      - sub
+      # - main
+      # - sub
   pull_request:
     branches:
-      - main
-      - sub
+      # - main
+      # - sub
 
 jobs:
   build-and-test:
