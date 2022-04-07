@@ -24,58 +24,58 @@ class Model_Test: XCTestCase {
     //        try testUserNetwork()
     //    }
     
-    func testUser() throws {
-        let latestMessage = LatestMessage(date: Date(), text: "Hello World", isRead: false)
-        
-        let conversations = MessagesCollection(id: "fir5tM3ss4g35", name: "Doctor", otherUserEmail: "yds@gm.yds.edu.vn", latestMessage: latestMessage)
-        
-        let node = UserNode(id: "hash123",
-                            firstName: "Khoi",
-                            lastName: "Le",
-                            bio: "This is my bio",
-                            email: "uit@gm.uit.edu.vn",
-                            dob: Date(),
-                            isMale: true)
-        
-        /**
-         "id" : user.id,
-         "first_name": user.firstName,
-         "last_name": user.lastName,
-         "bio" : user.bio,
-         "email" : user.email,
-         "password" : user.password,
-         "dob" : user.dob,
-         "is_male" : user.isMale
-         */
-        
-        let instance = User(id: "hash123", firstName: "Khoi",
-                            lastName: "Le",
-                            email: "uit@gm.uit.edu.vn",
-                            dob: Date().toString(dateFormat: "dd-MM-YYYY"),
-                            isMale: true)
-        
-        XCTAssertNotNil(instance, "Sorry, user model test case failed.")
-        
-    }
-    
-    func testConversation() throws {
-        let conversation = MessageOfConversation(id: "fir5tM3ss4g35", type: "text", content: "Hello World", sender_email: "yds@gm.yds.edu.vn", name: "Doctor")
-        let instance = Conversations(messages: [conversation])
-        
-        XCTAssertNotNil(instance, "Sorry, conversation model test case failed.")
-    }
-    
-    func testUserNetwork() throws {
-        let node = UserNode(id: "hash123",
-                            firstName: "Khoi",
-                            lastName: "Le",
-                            bio: "This is my bio",
-                            email: "uit@gm.uit.edu.vn",
-                            dob: Date(),
-                            isMale: true)
-        let instance = UserNetwork(listUser: [node])
-        
-        XCTAssertNotNil(instance, "Sorry, user network model test case failed.")
-    }
+    //    func testUser() throws {
+    //        let latestMessage = LatestMessage(date: Date(), text: "Hello World", isRead: false)
+    //        
+    //        let conversations = MessagesCollection(id: "fir5tM3ss4g35", name: "Doctor", otherUserEmail: "yds@gm.yds.edu.vn", latestMessage: latestMessage)
+    //        
+    //        let node = UserNode(id: "hash123",
+    //                            firstName: "Khoi",
+    //                            lastName: "Le",
+    //                            bio: "This is my bio",
+    //                            email: "uit@gm.uit.edu.vn",
+    //                            dob: Date(),
+    //                            isMale: true)
+    //        
+    //        /**
+    //         "id" : user.id,
+    //         "first_name": user.firstName,
+    //         "last_name": user.lastName,
+    //         "bio" : user.bio,
+    //         "email" : user.email,
+    //         "password" : user.password,
+    //         "dob" : user.dob,
+    //         "is_male" : user.isMale
+    //         */
+    //        
+    //        let instance = User(id: "hash123", firstName: "Khoi",
+    //                            lastName: "Le",
+    //                            email: "uit@gm.uit.edu.vn",
+    //                            dob: Date().toString(dateFormat: "dd-MM-YYYY"),
+    //                            isMale: true)
+    //        
+    //        XCTAssertNotNil(instance, "Sorry, user model test case failed.")
+    //        
+    //    }
+    //    
+    //    func testConversation() throws {
+    //        let conversation = MessageOfConversation(id: "fir5tM3ss4g35", type: "text", content: "Hello World", sender_email: "yds@gm.yds.edu.vn", name: "Doctor")
+    //        let instance = Conversations(messages: [conversation])
+    //        
+    //        XCTAssertNotNil(instance, "Sorry, conversation model test case failed.")
+    //    }
+    //    
+    //    func testUserNetwork() throws {
+    //        let node = UserNode(id: "hash123",
+    //                            firstName: "Khoi",
+    //                            lastName: "Le",
+    //                            bio: "This is my bio",
+    //                            email: "uit@gm.uit.edu.vn",
+    //                            dob: Date(),
+    //                            isMale: true)
+    //        let instance = UserNetwork(listUser: [node])
+    //        
+    //        XCTAssertNotNil(instance, "Sorry, user network model test case failed.")
+    //    }
     
 }
