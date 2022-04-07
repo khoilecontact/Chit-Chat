@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import JGProgressHUD
 
 class OtherUserViewController: UIViewController {
     var otherUser: User?
@@ -15,6 +16,8 @@ class OtherUserViewController: UIViewController {
     
     private var users = [[String: Any]]()
     private var results = [UserNode]()
+    
+    private let spinner = JGProgressHUD(style: .dark)
     
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -326,6 +329,8 @@ class OtherUserViewController: UIViewController {
     init(otherUser: User) {
         super.init(nibName: nil, bundle: nil)
         
+        spinner.show(in: view)
+        
         guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else { return }
         self.otherUser = otherUser
         
@@ -422,6 +427,10 @@ class OtherUserViewController: UIViewController {
                         self?.friendStatus = "Stranger"
                         
                         self?.initLayout()
+                        
+                        DispatchQueue.main.async {
+                            self?.spinner.dismiss()
+                        }
                     })
                 })
             })

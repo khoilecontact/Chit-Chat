@@ -53,16 +53,16 @@ class ChatViewController: UIViewController {
         // config
         configSearchBar()
         configTableView()
-        
-        // start
-        screenConversations(false)
-        createLoginObserver()
-        startListeningForConversations()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         validateAuth()
+        
+        // start
+        screenConversations(false)
+        createLoginObserver()
+        startListeningForConversations()
     }
     
     override func viewDidLayoutSubviews() {

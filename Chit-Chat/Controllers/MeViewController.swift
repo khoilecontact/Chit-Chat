@@ -10,6 +10,7 @@ import FirebaseAuth
 import FBSDKLoginKit
 import GoogleSignIn
 import SDWebImage
+import JGProgressHUD
 
 class MeViewController: UIViewController {
     @IBOutlet var scrollView: UIScrollView!
@@ -24,6 +25,8 @@ class MeViewController: UIViewController {
     
     var user: User?! = nil
     
+    private let spinner = JGProgressHUD(style: .dark)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,16 +34,6 @@ class MeViewController: UIViewController {
         friendListButton.addTarget(self, action: #selector(friendListTapped), for: .touchUpInside)
         darkModeButton.addTarget(self, action: #selector(darkModeTapped), for: .touchUpInside)
         logOutButton.addTarget(self, action: #selector(logOutButtonTapped), for: .touchUpInside)
-        
-        // Get data of user
-        getUserInfo(completion: { [weak self] user in
-            if user != nil {
-                self?.user = user
-                
-                // Initilize data for layout
-                self?.initLayout()
-            }
-        })
         
     }
     
@@ -50,6 +43,8 @@ class MeViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        spinner.show(in: view)
+        
         // Get data of user
         getUserInfo(completion: { [weak self] user in
             if user != nil {
@@ -57,6 +52,10 @@ class MeViewController: UIViewController {
                 
                 // Initilize data for layout
                 self?.initLayout()
+                
+                DispatchQueue.main.async {
+                    self?.spinner.dismiss()
+                }
             }
         })
     }
@@ -186,6 +185,7 @@ class MeViewController: UIViewController {
     
     @objc func personalInfoTapped() {
         let vc = PersonalInformationViewController()
+        navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -202,8 +202,13 @@ class MeViewController: UIViewController {
         
     }
     
+    @objc func blackListTapped() {
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
     @objc func darkModeTapped() {
         let vc = DarkModeViewController()
+        navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.pushViewController(vc, animated: true)
     }
     

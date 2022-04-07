@@ -197,7 +197,6 @@
 			children = (
 				DA25C3C627B252190004FE2B /* FindNewFriendsViewController.swift */,
 				DA0D67B327C0C7C20016C4AC /* FriendRequestViewController.swift */,
-				DAE31CEF27B227980035E65B /* FriendsViewController.swift */,
 			);
 			path = Friend;
 			sourceTree = "<group>";
@@ -269,6 +268,14 @@
 			path = DatabaseManager;
 			sourceTree = "<group>";
 		};
+		22ACD98327FEDCFA004DD7AC /* Chats */ = {
+			isa = PBXGroup;
+			children = (
+				DA85AF6C27BA585D0005215B /* MessageChatViewController.swift */,
+			);
+			path = Chats;
+			sourceTree = "<group>";
+		};
 		22CCFE38279FF4B3009F7C8A /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -295,12 +302,13 @@
 		22CCFE3B279FF4FF009F7C8A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				22ACD98327FEDCFA004DD7AC /* Chats */,
 				222411F127C21C6C00C5E416 /* Friend */,
 				222411EA27C1EA7000C5E416 /* Personal */,
 				DAEE3D5B27BC0A2D00334E06 /* Helpers */,
 				22F1999027A0E5F000CAE0D5 /* Authentications */,
 				22714E68277D5D4F0004F942 /* ChatViewController.swift */,
-				DA85AF6C27BA585D0005215B /* MessageChatViewController.swift */,
+				DAE31CEF27B227980035E65B /* FriendsViewController.swift */,
 				DA85AF6E27BA5B430005215B /* MeViewController.swift */,
 			);
 			path = Controllers;
