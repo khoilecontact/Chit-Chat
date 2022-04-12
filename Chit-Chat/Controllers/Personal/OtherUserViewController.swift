@@ -424,13 +424,12 @@ class OtherUserViewController: UIViewController {
                     
                         })
                         // Case: Nobody sent a friend request
-                        self?.friendStatus = "Stranger"
                         
                         self?.initLayout()
                         
-                        DispatchQueue.main.async {
-                            self?.spinner.dismiss()
-                        }
+//                        DispatchQueue.main.async {
+//                            self?.spinner.dismiss()
+//                        }
                     })
                 })
             })

@@ -18,7 +18,7 @@ class BlackListViewController: UIViewController {
     
     private let searchBar: UISearchBar = {
         let bar = UISearchBar()
-        bar.placeholder = "Search for someone ..."
+        bar.placeholder = "Search for blacklist ..."
         return bar
     }()
     
@@ -27,6 +27,14 @@ class BlackListViewController: UIViewController {
         table.isHidden = false
         table.register(FriendsCell.self, forCellReuseIdentifier: FriendsCell.identifier)
         return table
+    }()
+    
+    let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Your BlackList is empty"
+        label.textColor = UIColor.gray
+        label.adjustsFontSizeToFitWidth = true
+        return label
     }()
     
     override func viewDidLoad() {
@@ -38,6 +46,8 @@ class BlackListViewController: UIViewController {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
+        
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -54,17 +64,26 @@ class BlackListViewController: UIViewController {
     func fetchBlackList() {
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
         
+        self.emptyLabel.removeFromSuperview()
+        self.view.addSubview(tableView)
+        
         DatabaseManager.shared.getBlackListOfUser(with: email) { [weak self] result in
             guard let strongSelf = self else { return }
             
             switch result {
-            case .success(let friendsData):
-                strongSelf.parseToFriends(with: friendsData)
+            case .success(let blacklistData):
+                print(blacklistData)
+                strongSelf.parseToFriends(with: blacklistData)
                 DispatchQueue.main.async {
                     strongSelf.tableView.reloadData()
                 }
-            case .failure(let error):
-                print("Failed to load user's friends: \(error)")
+                break
+            case .failure(_):
+                self!.tableView.removeFromSuperview()
+                
+                self!.view.addSubview(self!.emptyLabel)
+                self!.emptyLabel.frame = CGRect(x: 120, y: 280, width: 290, height: 290)
+                break
             }
         }
     }
