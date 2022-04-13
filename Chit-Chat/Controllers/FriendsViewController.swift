@@ -35,16 +35,15 @@ class FriendsViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         // fakeData()
-        
-        navigationBar()
-        setupSearchBar()
-        setupTableView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // start
         fetchFriendList()
+        navigationBar()
+        setupSearchBar()
+        setupTableView()
     }
     
     override func viewDidLayoutSubviews() {
@@ -87,8 +86,11 @@ class FriendsViewController: UIViewController {
                 DispatchQueue.main.async {
                     strongSelf.tableView.reloadData()
                 }
-            case .failure(let error):
-                print("Failed to load user's friends: \(error)")
+            case .failure(_):
+                self?.friends = []
+                DispatchQueue.main.async {
+                    strongSelf.tableView.reloadData()
+                }
             }
         }
     }

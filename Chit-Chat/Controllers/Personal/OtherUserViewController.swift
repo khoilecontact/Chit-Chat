@@ -30,7 +30,7 @@ class OtherUserViewController: UIViewController {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person.circle")
         imageView.tintColor = Appearance.tint
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 1
         return imageView
@@ -271,61 +271,6 @@ class OtherUserViewController: UIViewController {
         scrollView.addSubview(genderLabel)
     }
     
-    func initLayout() {
-        scrollView.frame = view.bounds
-        
-        let size = scrollView.width / 3
-        imageView.frame = CGRect(x: size, y: 20, width: size, height: size)
-        imageView.layer.cornerRadius = imageView.width / 2.0
-        
-        nameLabel.frame = CGRect(x: 40, y: imageView.bottom + 5, width: scrollView.width - 80, height: 52)
-        
-        functionsButton.frame = CGRect(x: scrollView.right - 40, y: nameLabel.bottom + 10, width: 40, height: 52)
-        
-        switch friendStatus {
-        case "Sent":
-            requestSentButton.frame = CGRect(x: 80, y: nameLabel.bottom + 10, width: scrollView.width - 160, height: 40)
-            
-            bioLabel.frame = CGRect(x: 20, y: requestSentButton.bottom + 30, width: scrollView.width - 40, height: 52)
-            break
-            
-        case "Added":
-            friendStatusButton.frame = CGRect(x: 50, y: nameLabel.bottom + 10, width: 130, height: 40)
-            
-            messageButton.frame = CGRect(x: friendStatusButton.right + 20, y: nameLabel.bottom + 10, width: 130, height: 40)
-            
-            bioLabel.frame = CGRect(x: 20, y: friendStatusButton.bottom + 30, width: scrollView.width - 40, height: 52)
-            break
-            
-        case "Received":
-            confirmButton.frame = CGRect(x: 50, y: nameLabel.bottom + 10, width: 130, height: 40)
-            
-            cancelButton.frame = CGRect(x: confirmButton.right + 20, y: nameLabel.bottom + 10, width: 130, height: 40)
-            
-            bioLabel.frame = CGRect(x: 20, y: confirmButton.bottom + 30, width: scrollView.width - 40, height: 52)
-            break
-            
-        case "Blocked":
-            // Handle UI for blocked person
-            break
-            
-        default:
-            // Stranger
-            addFriendButton.frame = CGRect(x: 80, y: nameLabel.bottom + 10, width: scrollView.width - 160, height: 40)
-            
-            bioLabel.frame = CGRect(x: 20, y: addFriendButton.bottom + 30, width: scrollView.width - 40, height: 52)
-            break
-        }
-        
-        dobIcon.frame = CGRect(x: 20, y: bioLabel.bottom + 40, width: 30, height: 52)
-        
-        dobLabel.frame = CGRect(x: dobIcon.right + 20, y: bioLabel.bottom + 40, width: scrollView.width - 70, height: 52)
-        
-        genderIcon.frame = CGRect(x: 20, y: dobIcon.bottom + 30, width: 30, height: 40)
-        
-        genderLabel.frame = CGRect(x: genderIcon.right + 20, y: dobIcon.bottom + 30, width: scrollView.width - 100, height: 52)
-    }
-    
     init(otherUser: User) {
         super.init(nibName: nil, bundle: nil)
         
@@ -419,7 +364,7 @@ class OtherUserViewController: UIViewController {
                                 }
                                 
                             case .failure( _):
-                                print("Error in getting current user's blacklist")
+                                break
                             }
                     
                         })
@@ -427,9 +372,9 @@ class OtherUserViewController: UIViewController {
                         
                         self?.initLayout()
                         
-//                        DispatchQueue.main.async {
-//                            self?.spinner.dismiss()
-//                        }
+                        DispatchQueue.main.async {
+                            self?.spinner.dismiss()
+                        }
                     })
                 })
             })
@@ -440,6 +385,60 @@ class OtherUserViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func initLayout() {
+        scrollView.frame = view.bounds
+        
+        let size = scrollView.width / 3
+        imageView.frame = CGRect(x: size, y: 20, width: size, height: size)
+        imageView.layer.cornerRadius = imageView.width / 2.0
+        
+        nameLabel.frame = CGRect(x: 40, y: imageView.bottom + 5, width: scrollView.width - 80, height: 52)
+        
+        functionsButton.frame = CGRect(x: scrollView.right - 40, y: nameLabel.bottom + 10, width: 40, height: 52)
+        
+        switch friendStatus {
+        case "Sent":
+            requestSentButton.frame = CGRect(x: 80, y: nameLabel.bottom + 10, width: scrollView.width - 160, height: 40)
+            
+            bioLabel.frame = CGRect(x: 20, y: requestSentButton.bottom + 30, width: scrollView.width - 40, height: 52)
+            break
+            
+        case "Added":
+            friendStatusButton.frame = CGRect(x: 50, y: nameLabel.bottom + 10, width: 130, height: 40)
+            
+            messageButton.frame = CGRect(x: friendStatusButton.right + 20, y: nameLabel.bottom + 10, width: 130, height: 40)
+            
+            bioLabel.frame = CGRect(x: 20, y: friendStatusButton.bottom + 30, width: scrollView.width - 40, height: 52)
+            break
+            
+        case "Received":
+            confirmButton.frame = CGRect(x: 50, y: nameLabel.bottom + 10, width: 130, height: 40)
+            
+            cancelButton.frame = CGRect(x: confirmButton.right + 20, y: nameLabel.bottom + 10, width: 130, height: 40)
+            
+            bioLabel.frame = CGRect(x: 20, y: confirmButton.bottom + 30, width: scrollView.width - 40, height: 52)
+            break
+            
+        case "Blocked":
+            // Handle UI for blocked person
+            break
+            
+        default:
+            // Stranger
+            addFriendButton.frame = CGRect(x: 80, y: nameLabel.bottom + 10, width: scrollView.width - 160, height: 40)
+            
+            bioLabel.frame = CGRect(x: 20, y: addFriendButton.bottom + 30, width: scrollView.width - 40, height: 52)
+            break
+        }
+        
+        dobIcon.frame = CGRect(x: 20, y: bioLabel.bottom + 40, width: 30, height: 52)
+        
+        dobLabel.frame = CGRect(x: dobIcon.right + 20, y: bioLabel.bottom + 40, width: scrollView.width - 70, height: 52)
+        
+        genderIcon.frame = CGRect(x: 20, y: dobIcon.bottom + 30, width: 30, height: 40)
+        
+        genderLabel.frame = CGRect(x: genderIcon.right + 20, y: dobIcon.bottom + 30, width: scrollView.width - 100, height: 52)
+    }
     
     
     @objc func addFriendTapped() {
@@ -539,8 +538,23 @@ class OtherUserViewController: UIViewController {
     
     @objc func functionButtonTapped() {
         let alert = UIAlertController(title: "Manage", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Block", style: .default, handler: { (alert: UIAlertAction) in
+        alert.addAction(UIAlertAction(title: "Block", style: .destructive, handler: { [weak self] (alert: UIAlertAction) in
+            guard self?.otherUser != nil else { return }
+            guard let otherUserNode = self?.otherUser!.toUserNode() as? UserNode else { return }
+            
             // insert user into blacklist
+            DatabaseManager.shared.addToBlackList(with: otherUserNode, completion: { result in
+                switch result {
+                case .success(_):
+                    self?.initLayout()
+                    break
+                
+                case .failure(let err):
+                    print("Error in adding to blacklist \(err)")
+                    break
+                }
+            })
+            
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         

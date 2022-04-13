@@ -34,6 +34,7 @@ class BlackListViewController: UIViewController {
         label.text = "Your BlackList is empty"
         label.textColor = UIColor.gray
         label.adjustsFontSizeToFitWidth = true
+        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         return label
     }()
     
@@ -82,7 +83,7 @@ class BlackListViewController: UIViewController {
                 self!.tableView.removeFromSuperview()
                 
                 self!.view.addSubview(self!.emptyLabel)
-                self!.emptyLabel.frame = CGRect(x: 120, y: 280, width: 290, height: 290)
+                self!.emptyLabel.frame = CGRect(x: 90, y: 280, width: 290, height: 290)
                 break
             }
         }
