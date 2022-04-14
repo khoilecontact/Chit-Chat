@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import JGProgressHUD
+import FirebaseDatabase
 
 class FriendsViewController: UIViewController {
     
@@ -108,12 +109,33 @@ class FriendsViewController: UIViewController {
     
     func openConversation(_ model: UserNode) {
         // open chat space
-        let safeEmail = DatabaseManager.safeEmail(emailAddress: model.email)
+        var conversationId = ""
+        let database = Database.database(url: "https://chit-chat-fc877-default-rtdb.asia-southeast1.firebasedatabase.app").reference()
         
-        let vc = MessageChatViewController(with: safeEmail, id: model.id)
-        vc.title = "\(model.firstName) \(model.lastName)"
-        vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
+        let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: model.email)
+        guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            return
+        }
+        
+        let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
+        
+        database.child("Users/\(mySafeEmail)/conversations").observeSingleEvent(of: .value) { [weak self] snapshot in
+            if let conversations = snapshot.value as? [[String: Any]] {
+                // Delete conversation of current user
+                for conversationIndex in 0 ..< conversations.count {
+                    if conversations[conversationIndex]["other_user_email"] as? String == otherSafeEmail {
+                        conversationId = conversations[conversationIndex]["id"] as! String
+                        break
+                    }
+                }
+                
+                let vc = MessageChatViewController(with: otherSafeEmail, id: conversationId)
+                vc.title = model.firstName + " " + model.lastName
+                vc.navigationItem.largeTitleDisplayMode = .never
+                self?.navigationController?.pushViewController(vc, animated: true)
+                
+            }
+        }
     }
     
     func openProfilePage(_ model: UserNode) {

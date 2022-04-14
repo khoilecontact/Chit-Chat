@@ -477,6 +477,30 @@ extension DatabaseManager {
         let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
         let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
+        self.database.child("Users/\(mySafeEmail)/conversations").observeSingleEvent(of: .value) { snapshot in
+            if var conversations = snapshot.value as? [[String: Any]] {
+                // Delete conversation of current user
+                for conversationIndex in 0 ..< conversations.count {
+                    if conversations[conversationIndex]["other_user_email"] as? String == otherSafeEmail {
+                        conversations.remove(at: conversationIndex)
+                        break
+                    }
+                }
+                
+                self.database.child("Users/\(mySafeEmail)/conversations").setValue(conversations, withCompletionBlock: { error, _ in
+                    guard error == nil else {
+                        completion(.failure(DatabaseError.failedToSave))
+                        return
+                    }
+                })
+            } else {
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            
+        }
+        
+        
         // Unfriend user
         DatabaseManager.shared.unfriend(with: otherUser, completion: { [weak self] unfriendResult in
             DatabaseManager.shared.revokeFriendRequest(with: otherUser, completion: { revokeRequestResult in

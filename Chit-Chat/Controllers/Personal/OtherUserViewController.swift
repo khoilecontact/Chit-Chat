@@ -515,11 +515,34 @@ class OtherUserViewController: UIViewController {
     
     @objc func messageButtonTapped() {
         guard let user = self.otherUser else { return }
+        var conversationId = ""
+        let database = Database.database(url: "https://chit-chat-fc877-default-rtdb.asia-southeast1.firebasedatabase.app").reference()
         
-        let vc = MessageChatViewController(with: user.email, id: user.id)
-        vc.title = user.firstName + " " + user.lastName
-        vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
+        let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: user.email)
+        guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            return
+        }
+        
+        let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
+        
+        database.child("Users/\(mySafeEmail)/conversations").observeSingleEvent(of: .value) { [weak self] snapshot in
+            if let conversations = snapshot.value as? [[String: Any]] {
+                // Delete conversation of current user
+                for conversationIndex in 0 ..< conversations.count {
+                    if conversations[conversationIndex]["other_user_email"] as? String == otherSafeEmail {
+                        conversationId = conversations[conversationIndex]["id"] as! String
+                        break
+                    }
+                }
+                
+                let vc = MessageChatViewController(with: otherSafeEmail, id: conversationId)
+                vc.title = user.firstName + " " + user.lastName
+                vc.navigationItem.largeTitleDisplayMode = .never
+                self?.navigationController?.pushViewController(vc, animated: true)
+                
+            }
+        }
+        
     }
     
     @objc func cancelRequestTapped() {
@@ -541,19 +564,47 @@ class OtherUserViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Block", style: .destructive, handler: { [weak self] (alert: UIAlertAction) in
             guard self?.otherUser != nil else { return }
             guard let otherUserNode = self?.otherUser!.toUserNode() as? UserNode else { return }
-            
+
             // insert user into blacklist
             DatabaseManager.shared.addToBlackList(with: otherUserNode, completion: { result in
                 switch result {
                 case .success(_):
                     self?.initLayout()
                     break
-                
+
                 case .failure(let err):
                     print("Error in adding to blacklist \(err)")
                     break
                 }
             })
+            
+//            let database = Database.database(url: "https://chit-chat-fc877-default-rtdb.asia-southeast1.firebasedatabase.app").reference()
+//            
+//            let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: (self?.otherUser?.email)!)
+//            guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+//                return
+//            }
+//            
+//            let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
+//            
+//            database.child("Users/\(mySafeEmail)/conversations").observeSingleEvent(of: .value) { [weak self] snapshot in
+//                if var conversations = snapshot.value as? [[String: Any]] {
+//                    // Delete conversation of current user
+//                    for conversationIndex in 0 ..< conversations.count {
+//                        if conversations[conversationIndex]["other_user_email"] as? String == otherSafeEmail {
+//                            conversations.remove(at: conversationIndex)
+//                            break
+//                        }
+//                    }
+//                    
+//                    database.child("Users/\(mySafeEmail)/conversations").setValue(conversations, withCompletionBlock: { error, _ in
+//                        guard error == nil else {
+//                            return
+//                        }
+//                    })
+//                    
+//                }
+//            }
             
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))

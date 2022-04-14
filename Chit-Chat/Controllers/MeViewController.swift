@@ -219,7 +219,7 @@ class MeViewController: UIViewController {
 
             let actionAlert = UIAlertController(title: "Do you wanna logout?", message: "Choose Log Out to Logout", preferredStyle: .alert)
             
-            actionAlert.addAction(UIAlertAction(title: "LogOut", style: .destructive, handler: { [weak self] _ in
+            actionAlert.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { [weak self] _ in
                 
                 UserDefaults.standard.setValue(nil, forKey: "email")
                 UserDefaults.standard.setValue(nil, forKey: "name")
