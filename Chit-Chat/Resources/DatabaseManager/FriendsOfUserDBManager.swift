@@ -187,8 +187,10 @@ extension DatabaseManager {
                     return email.hasPrefix(otherUser.email)
                 })
                 
-                friendRequestList.removeAll(where: { request[0] as NSDictionary == $0 as NSDictionary })
-                friendList?.append(request[0])
+                if !request.isEmpty {
+                    friendRequestList.removeAll(where: { request[0] as NSDictionary == $0 as NSDictionary })
+                    friendList?.append(request[0])
+                }
                 
                 let updateChild = [
                     "friend_request_list": friendRequestList,
@@ -487,9 +489,7 @@ extension DatabaseManager {
         database.child("Users/\(mySafeEmail)").observe(.value) { [weak self] snapshot in
             print(snapshot)
             if let value = snapshot.value as? [String: Any] {
-                guard var conversations = value["conversations"] as? [[String: Any]] else {
-                    return
-                }
+                var conversations: [[String: Any]] = value["conversations"] as? [[String: Any]] ?? []
                 
                 // Delete conversation of current user
                 for conversationIndex in 0 ..< conversations.count {

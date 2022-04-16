@@ -36,8 +36,6 @@ class ForgotPasswordViewController: UIViewController {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         
-        field.isSecureTextEntry = true
-        
         return field
     }()
     
@@ -105,7 +103,7 @@ class ForgotPasswordViewController: UIViewController {
                 self?.present(alert, animated: true)
             } else {
                 let alert = UIAlertController(title: "Opps!", message: "Your email hasn't been registered or there has been an error! Please check your email and try again later", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel))
+                alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
                 self?.present(alert, animated: true)
             }
         })
