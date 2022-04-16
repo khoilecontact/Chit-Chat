@@ -72,8 +72,15 @@ class MessageChatViewController: MessagesViewController {
                 DispatchQueue.main.async {
                     strongSelf.messagesCollectionView.reloadDataAndKeepOffset()
                     
+                    // open conversastion
                     if shouldScrollToBottom {
                         strongSelf.messagesCollectionView.scrollToLastItem()
+//                        strongSelf.messagesCollectionView.scrollToItem(at: IndexPath(item: 0, section: 4) , at: .centeredVertically, animated: true)
+                    }
+                    
+                    // find a messages
+                    else {
+                        
                     }
                     
                 }
