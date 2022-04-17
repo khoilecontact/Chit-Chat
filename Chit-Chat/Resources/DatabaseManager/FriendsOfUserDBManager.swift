@@ -58,6 +58,7 @@ extension DatabaseManager {
         let safeEmail = DatabaseManager.safeEmail(emailAddress: unSafeEmail)
         
         database.child("Users/\(safeEmail)/black_list").observeSingleEvent(of: .value, with: { snapshot in
+            print(snapshot.va)
             guard let value = snapshot.value as? [[String: Any]] else {
                 completion(.failure(DatabaseError.failedToFetch))
                 return
@@ -533,8 +534,12 @@ extension DatabaseManager {
                         "is_male": otherUser.isMale
                     ]
                     
-                    self?.database.child("Users/\(mySafeEmail)/black_list").setValue(newBlackListElement, withCompletionBlock: { error, _ in
-                        if error == nil {
+                    let newBlackList: [[String: Any]] = [
+                        newBlackListElement
+                    ]
+                    
+                    self?.database.child("Users/\(mySafeEmail)/black_list").setValue(newBlackList, withCompletionBlock: { error, _ in
+                        if error != nil {
                             print("Error in adding in existing black list of new black list of user")
                         }
                     })
