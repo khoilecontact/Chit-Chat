@@ -487,7 +487,7 @@ extension DatabaseManager {
         let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
         database.child("Users/\(mySafeEmail)").observe(.value) { [weak self] snapshot in
-            print(snapshot)
+            
             if let value = snapshot.value as? [String: Any] {
                 var conversations: [[String: Any]] = value["conversations"] as? [[String: Any]] ?? []
                 
@@ -498,6 +498,49 @@ extension DatabaseManager {
                         break
                     }
                 }
+                
+                // Add other user to black list
+                if var blackList: [[String: Any]] = value["black_list"] as? [[String: Any]] {
+                    let newBlackListElement: [String: Any] = [
+                        "id": otherUser.id,
+                        "first_name": otherUser.firstName,
+                        "last_name": otherUser.lastName,
+                        "province": otherUser.province,
+                        "district": otherUser.district,
+                        "bio": otherUser.bio,
+                        "email": otherUser.email,
+                        "dob": otherUser.dob,
+                        "is_male": otherUser.isMale
+                    ]
+                    
+                    blackList.append(newBlackListElement)
+                    
+                    self?.database.child("Users/\(mySafeEmail)/black_list").setValue(blackList, withCompletionBlock: { error, _ in
+                        if error == nil {
+                            print("Error in adding in existing black list of current user")
+                        }
+                    })
+                } else {
+                    let newBlackListElement: [String: Any] = [
+                        "id": otherUser.id,
+                        "first_name": otherUser.firstName,
+                        "last_name": otherUser.lastName,
+                        "province": otherUser.province,
+                        "district": otherUser.district,
+                        "bio": otherUser.bio,
+                        "email": otherUser.email,
+                        "dob": otherUser.dob,
+                        "is_male": otherUser.isMale
+                    ]
+                    
+                    self?.database.child("Users/\(mySafeEmail)/black_list").setValue(newBlackListElement, withCompletionBlock: { error, _ in
+                        if error == nil {
+                            print("Error in adding in existing black list of new black list of user")
+                        }
+                    })
+                }
+                
+                
                 
                 self?.database.child("Users/\(mySafeEmail)/conversations").setValue(conversations, withCompletionBlock: { error, _ in
                     guard error == nil else {

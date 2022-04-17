@@ -577,35 +577,6 @@ class OtherUserViewController: UIViewController {
                     break
                 }
             })
-            
-//            let database = Database.database(url: "https://chit-chat-fc877-default-rtdb.asia-southeast1.firebasedatabase.app").reference()
-//            
-//            let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: (self?.otherUser?.email)!)
-//            guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else {
-//                return
-//            }
-//            
-//            let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
-//            
-//            database.child("Users/\(mySafeEmail)/conversations").observeSingleEvent(of: .value) { [weak self] snapshot in
-//                if var conversations = snapshot.value as? [[String: Any]] {
-//                    // Delete conversation of current user
-//                    for conversationIndex in 0 ..< conversations.count {
-//                        if conversations[conversationIndex]["other_user_email"] as? String == otherSafeEmail {
-//                            conversations.remove(at: conversationIndex)
-//                            break
-//                        }
-//                    }
-//                    
-//                    database.child("Users/\(mySafeEmail)/conversations").setValue(conversations, withCompletionBlock: { error, _ in
-//                        guard error == nil else {
-//                            return
-//                        }
-//                    })
-//                    
-//                }
-//            }
-            
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         
