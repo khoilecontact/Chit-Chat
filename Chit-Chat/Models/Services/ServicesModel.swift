@@ -20,3 +20,12 @@ struct IMess: Codable, Hashable {
     let sender_email: String
     let type: String
 }
+
+struct IMessInConversationResponse: Codable {
+    let result: [IMessInConversation]
+}
+
+struct IMessInConversation: Codable, Hashable {
+    let position: Int
+    let message: IMess
+}
