@@ -27,4 +27,30 @@ extension ServiceManager {
             return nil
         }
     }
+    
+    func findTextInConversation(_ query: String) async throws -> [IMessInConversation]? {
+        do {
+            
+            guard let url = ServiceManager.graphRequestClient(endPoint: "conversation") else {
+                throw serviceError.invalidURL
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            let requestBody = "query=\(query)"
+            let payload = requestBody.data(using: .utf8)!
+            
+            let (responseData, _) = try await URLSession.shared.upload(for: request, from: payload)
+            
+            let data = try JSONDecoder().decode(IMessInConversationResponse.self, from: responseData)
+            
+            return data.result
+            
+        } catch {
+            
+            print("Failed to find text in conversation")
+            throw serviceError.failedToUpload
+            
+        }
+    }
 }
