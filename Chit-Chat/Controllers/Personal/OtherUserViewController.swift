@@ -188,6 +188,16 @@ class OtherUserViewController: UIViewController {
         return button
     }()
     
+    // Blocked
+    let blockLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Current user is not available!"
+        label.textColor = UIColor.gray
+        label.adjustsFontSizeToFitWidth = true
+        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        return label
+    }()
+    
     // Rest of the view
     
     let functionsButton: UIButton = {
@@ -286,7 +296,7 @@ class OtherUserViewController: UIViewController {
             UserAdvancedManager.shared.getAllFriendRequestOfUser(with: otherUser.email, completion: { friendRequest in
                 UserAdvancedManager.shared.getAllSentFriendRequestOfUser(with: otherUser.email, completion: { sentRequest in
                     UserAdvancedManager.shared.getAllBlacklistOfUser(with: otherUser.email, completion: { [weak self] blacklist in
-                        DatabaseManager.shared.getBlackListOfUser(with: currentUserEmail, completion: { currentBlackList in
+                        UserAdvancedManager.shared.getAllBlacklistOfUser(with: currentUserEmail, completion: { currentBlackList in
                             self?.otherUser?.friendList = friendList
                             self?.otherUser?.friendRequestList = friendRequest
                             self?.otherUser?.sentfriendRequestList = sentRequest
@@ -296,17 +306,11 @@ class OtherUserViewController: UIViewController {
                                 return
                             }
                             
-                            switch currentBlackList {
-                            case.success(let blackListUser):
-                                for user in blackListUser {
-                                    if user["email"] as! String == pageUser.email {
-                                        self?.friendStatus = "Blocked"
-                                        break
-                                    }
+                            for user in currentBlackList {
+                                if user.email == pageUser.email {
+                                    self?.friendStatus = "Blocked"
+                                    break
                                 }
-                                
-                            case .failure( _):
-                                break
                             }
                             
                             // Loading user's image
@@ -422,6 +426,16 @@ class OtherUserViewController: UIViewController {
             
         case "Blocked":
             // Handle UI for blocked person
+            imageView.removeFromSuperview()
+            nameLabel.removeFromSuperview()
+            functionsButton.removeFromSuperview()
+            dobIcon.removeFromSuperview()
+            dobLabel.removeFromSuperview()
+            genderIcon.removeFromSuperview()
+            genderLabel.removeFromSuperview()
+            
+            blockLabel.frame = CGRect(x: 90, y: 280, width: 290, height: 290)
+            
             break
             
         default:

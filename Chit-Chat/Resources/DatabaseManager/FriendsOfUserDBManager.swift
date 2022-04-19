@@ -11,7 +11,6 @@ import FirebaseAuth
 import MessageKit
 import CoreLocation
 
-
 extension DatabaseManager {
     // MARK: - Friend Handle
     // MARK: - Get all user's friend
@@ -54,19 +53,6 @@ extension DatabaseManager {
         })
     }
     
-    public func getBlackListOfUser(with unSafeEmail: String, completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
-        let safeEmail = DatabaseManager.safeEmail(emailAddress: unSafeEmail)
-        
-        database.child("Users/\(safeEmail)/black_list").observeSingleEvent(of: .value, with: { snapshot in
-            print(snapshot.va)
-            guard let value = snapshot.value as? [[String: Any]] else {
-                completion(.failure(DatabaseError.failedToFetch))
-                return
-            }
-            
-            completion(.success(value))
-        })
-    }
     
     public func sendFriendRequest(with otherUser: UserNode, completion: @escaping (Result<Bool, Error>) -> Void) {
         guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else {

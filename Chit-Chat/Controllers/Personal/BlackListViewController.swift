@@ -68,66 +68,20 @@ class BlackListViewController: UIViewController {
         self.emptyLabel.removeFromSuperview()
         self.view.addSubview(tableView)
         
-        DatabaseManager.shared.getBlackListOfUser(with: email) { [weak self] result in
+        UserAdvancedManager.shared.getAllBlacklistOfUser(with: email) { [weak self] blacklistData in
             guard let strongSelf = self else { return }
             
-            switch result {
-            case .success(let blacklistData):
-                print(blacklistData)
-                strongSelf.parseToFriends(with: blacklistData)
+            self?.blackList = blacklistData
+            if !blacklistData.isEmpty {
                 DispatchQueue.main.async {
                     strongSelf.tableView.reloadData()
                 }
-                break
-            case .failure(_):
-                self!.tableView.removeFromSuperview()
+            } else {
+                self?.tableView.removeFromSuperview()
                 
-                self!.view.addSubview(self!.emptyLabel)
-                self!.emptyLabel.frame = CGRect(x: 90, y: 280, width: 290, height: 290)
-                break
+                self?.view.addSubview(self!.emptyLabel)
+                self?.emptyLabel.frame = CGRect(x: 90, y: 280, width: 290, height: 290)
             }
-        }
-    }
-    
-    func openConversation(_ model: UserNode) {
-        // open chat space
-        let safeEmail = DatabaseManager.safeEmail(emailAddress: model.email)
-        
-        let vc = MessageChatViewController(with: safeEmail, id: model.id)
-        vc.title = "\(model.firstName) \(model.lastName)"
-        vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func openProfilePage(_ model: UserNode) {
-
-    }
-    
-    func parseToFriends(with listMap: [[String: Any]]) {
-        blackList = listMap.compactMap{
-            guard let id = $0["id"] as? String,
-                  let email = $0["email"] as? String,
-                  let lastName = $0["last_name"] as? String,
-                  let firstName = $0["first_name"] as? String,
-                  let bio = $0["bio"] as? String?,
-                  let dob = $0["dob"] as? String?,
-                  let isMale = $0["is_male"] as? Bool,
-                  let province = $0["province"] as? String,
-                  let district = $0["district"] as? String
-            else {
-                print("excepted type")
-                return nil
-            }
-            
-            return UserNode(id: id,
-                            firstName: firstName,
-                            lastName: lastName,
-                            province: province,
-                            district: district,
-                            bio: bio ?? "",
-                            email: email,
-                            dob: dob ?? "",
-                            isMale: isMale)
         }
     }
     
