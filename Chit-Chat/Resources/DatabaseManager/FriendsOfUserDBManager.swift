@@ -601,6 +601,34 @@ extension DatabaseManager {
         }
     }
     
+    func removeFromBlackList(with userSafeEmail: String, otherUser: UserNode, completion: @escaping (Result<Bool, Error>) -> Void) {
+        database.child("Users/\(userSafeEmail)").observeSingleEvent(of: .value) { [weak self] snapshot in
+            if let value = snapshot.value as? [String: Any] {
+                // Remove other user from black list
+                if var blackList: [[String: Any]] = value["black_list"] as? [[String: Any]] {
+                    for blackListIndex in 0 ..< blackList.count {
+                        if blackList[blackListIndex]["email"] as! String == otherUser.email {
+                            blackList.remove(at: blackListIndex)
+                            break
+                        }
+                    }
+
+                    self?.database.child("Users/\(userSafeEmail)/black_list").setValue(blackList, withCompletionBlock: { error, _ in
+                        guard error == nil else {
+                            print("Error in adding in existing black list of current user")
+                            return
+                        }
+                    })
+                    completion(.success(true))
+
+                }
+            } else {
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+        }
+    }
+    
     func unseggest(with otherUser: UserNode, completion: @escaping (Result<Bool, Error>) -> Void) {
         
     }

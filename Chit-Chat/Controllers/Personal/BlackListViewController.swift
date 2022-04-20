@@ -110,6 +110,35 @@ extension BlackListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+        let selectedUser = blackList[indexPath.row]
         
+        let alert = UIAlertController(title: "\(selectedUser.firstName) \(selectedUser.lastName)", message: nil, preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Unblock", style: .default, handler: { [weak self] (alert: UIAlertAction) in
+            let confirmAlert = UIAlertController(title: "Do you want to remove this user from black list?", message: nil, preferredStyle: .actionSheet)
+            confirmAlert.addAction(UIAlertAction(title: "Unblock", style: .default, handler: { (alert: UIAlertAction) in
+                guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else { return }
+                let currentSafeEmail = DatabaseManager.safeEmail(emailAddress: currentUserEmail)
+                
+                DatabaseManager.shared.removeFromBlackList(with: currentSafeEmail, otherUser: selectedUser, completion: { [weak self] result in
+                    switch result {
+                    case .success(_):
+                        self?.tableView.reloadData()
+                        self?.fetchBlackList()
+                        break
+                    
+                    case .failure(_):
+                        let failAlert = UIAlertController(title: "Failed", message: "There has been an error! Please try again later", preferredStyle: .alert)
+                        failAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self?.present(failAlert, animated: true)
+                    }
+                })
+            }))
+            confirmAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            
+            self?.present(confirmAlert, animated: true)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        self.present(alert, animated: true)
     } 
 }

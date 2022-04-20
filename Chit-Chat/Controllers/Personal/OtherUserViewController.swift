@@ -596,7 +596,7 @@ class OtherUserViewController: UIViewController {
                 DatabaseManager.shared.addToBlackList(with: otherUserNode, completion: { result in
                     switch result {
                     case .success(_):
-                        self?.initLayout()
+                        self?.dismiss(animated: true)
                         break
 
                     case .failure(let err):
