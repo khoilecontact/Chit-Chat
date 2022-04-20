@@ -156,7 +156,7 @@ extension DatabaseManager {
         let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
         let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
-        database.child("Users/\(mySafeEmail)").observe(.value) { [weak self] snapshot in
+        database.child("Users/\(mySafeEmail)").observeSingleEvent(of: .value) { [weak self] snapshot in
             guard let strongSelf = self else { return }
             
             guard let value = snapshot.value as? [String: Any] else {
@@ -250,7 +250,7 @@ extension DatabaseManager {
         let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
         let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
-        database.child("Users/\(mySafeEmail)").observe(.value) { [weak self] snapshot in
+        database.child("Users/\(mySafeEmail)").observeSingleEvent(of: .value) { [weak self] snapshot in
             guard let strongSelf = self else { return }
             
             guard let value = snapshot.value as? [String: Any] else {
@@ -308,6 +308,8 @@ extension DatabaseManager {
                         })
                     }
                 }
+            } else {
+                completion(.success(false))
             }
         }
     }
@@ -323,7 +325,7 @@ extension DatabaseManager {
         let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
         let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
-        database.child("Users/\(mySafeEmail)").observe(.value) { [weak self] snapshot in
+        database.child("Users/\(mySafeEmail)").observeSingleEvent(of: .value) { [weak self] snapshot in
             guard let strongSelf = self else { return }
             
             guard let value = snapshot.value as? [String: Any] else {
@@ -381,6 +383,8 @@ extension DatabaseManager {
                         })
                     }
                 }
+            } else {
+                completion(.success(false))
             }
         }
     }
@@ -394,7 +398,7 @@ extension DatabaseManager {
         let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
         let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
-        database.child("Users/\(mySafeEmail)").observe(.value) { [weak self] snapshot in
+        database.child("Users/\(mySafeEmail)").observeSingleEvent(of: .value) { [weak self] snapshot in
             guard let strongSelf = self else { return }
             
             guard let value = snapshot.value as? [String: Any] else {
@@ -459,6 +463,8 @@ extension DatabaseManager {
                         })
                     }
                 }
+            } else {
+                completion(.success(false))
             }
         }
     }

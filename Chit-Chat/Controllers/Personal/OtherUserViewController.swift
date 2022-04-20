@@ -189,6 +189,13 @@ class OtherUserViewController: UIViewController {
     }()
     
     // Blocked
+    let blockIcon: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "person.fill.xmark")
+        imageView.tintColor = Appearance.tint
+        return imageView
+    }()
+    
     let blockLabel: UILabel = {
         let label = UILabel()
         label.text = "Current user is not available!"
@@ -279,6 +286,9 @@ class OtherUserViewController: UIViewController {
         scrollView.addSubview(dobLabel)
         scrollView.addSubview(genderIcon)
         scrollView.addSubview(genderLabel)
+        
+        scrollView.addSubview(blockLabel)
+        scrollView.addSubview(blockIcon)
     }
     
     init(otherUser: User) {
@@ -433,7 +443,8 @@ class OtherUserViewController: UIViewController {
             genderIcon.removeFromSuperview()
             genderLabel.removeFromSuperview()
             
-            blockLabel.frame = CGRect(x: 90, y: 280, width: 290, height: 290)
+            blockIcon.frame = CGRect(x: 120, y: 200, width: 200, height: 180)
+            blockLabel.frame = CGRect(x: 60, y: blockIcon.bottom - 100, width: 290, height: 290)
             
             break
             
