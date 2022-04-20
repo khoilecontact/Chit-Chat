@@ -371,7 +371,6 @@ class OtherUserViewController: UIViewController {
                             }
                             
                             // Case: Nobody sent a friend request
-                            print(self?.friendStatus)
                             
                             self?.initLayout()
                             
@@ -577,21 +576,26 @@ class OtherUserViewController: UIViewController {
     @objc func functionButtonTapped() {
         let alert = UIAlertController(title: "Manage", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Block", style: .destructive, handler: { [weak self] (alert: UIAlertAction) in
-            guard self?.otherUser != nil else { return }
-            guard let otherUserNode = self?.otherUser!.toUserNode() as? UserNode else { return }
+            let confirmAlert = UIAlertController(title: "Are you sure you want to block this person?", message: nil, preferredStyle: .actionSheet)
+            confirmAlert.addAction(UIAlertAction(title: "Block", style: .destructive, handler: { [weak self] (alert: UIAlertAction) in
+                guard self?.otherUser != nil else { return }
+                guard let otherUserNode = self?.otherUser!.toUserNode() as? UserNode else { return }
 
-            // insert user into blacklist
-            DatabaseManager.shared.addToBlackList(with: otherUserNode, completion: { result in
-                switch result {
-                case .success(_):
-                    self?.initLayout()
-                    break
+                // insert user into blacklist
+                DatabaseManager.shared.addToBlackList(with: otherUserNode, completion: { result in
+                    switch result {
+                    case .success(_):
+                        self?.initLayout()
+                        break
 
-                case .failure(let err):
-                    print("Error in adding to blacklist \(err)")
-                    break
-                }
-            })
+                    case .failure(let err):
+                        print("Error in adding to blacklist \(err)")
+                        break
+                    }
+                })
+            }))
+            confirmAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self?.present(confirmAlert, animated: true)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         

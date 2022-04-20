@@ -471,13 +471,58 @@ extension DatabaseManager {
         }
         
         let mySafeEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
-        let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
-        database.child("Users/\(mySafeEmail)").observe(.value) { [weak self] snapshot in
+        // Unfriend user
+        DatabaseManager.shared.unfriend(with: otherUser, completion: { [weak self] unfriendResult in
+            DatabaseManager.shared.revokeFriendRequest(with: otherUser, completion: { revokeRequestResult in
+                DatabaseManager.shared.deniesFriendRequest(with: otherUser, completion: { denyRequestResult in
+                    self?.writeToBlackList(with: mySafeEmail, otherUser: otherUser, completion: { writeToBlackListResult in
+                        switch unfriendResult {
+                        case .success(_):
+                            switch revokeRequestResult {
+                            case .success(_):
+                                switch denyRequestResult {
+                                case .success(_):
+                                    switch writeToBlackListResult {
+                                    case .success(_):
+                                        completion(.success(true))
+                                        break
+                                    case .failure(_):
+                                        print("Failed in adding to blacklist")
+                                        completion(.failure(DatabaseError.failedToSave))
+                                        break
+                                    }
+                                case .failure(_):
+                                    print("Failed to deny user")
+                                    completion(.failure(DatabaseError.failedToSave))
+                                    break
+                                }
+                                break
+                            case .failure(_):
+                                print("Failed to revoke friend request of user")
+                                completion(.failure(DatabaseError.failedToSave))
+                                break
+                            }
+                            break
+                        case .failure(_):
+                            print("Failed to unfriend user")
+                            completion(.failure(DatabaseError.failedToSave))
+                            break
+                        }
+                    })
+                })
+            })
+        })
+        
+    }
+    
+    private func writeToBlackList(with safeEmail: String, otherUser: UserNode, completion: @escaping (Result<Bool, Error>) -> Void) {
+        database.child("Users/\(safeEmail)").observeSingleEvent(of: .value) { [weak self] snapshot in
+            let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
             
             if let value = snapshot.value as? [String: Any] {
                 var conversations: [[String: Any]] = value["conversations"] as? [[String: Any]] ?? []
-                
+
                 // Delete conversation of current user
                 for conversationIndex in 0 ..< conversations.count {
                     if conversations[conversationIndex]["other_user_email"] as? String == otherSafeEmail {
@@ -486,6 +531,13 @@ extension DatabaseManager {
                     }
                 }
                 
+                self?.database.child("Users/\(safeEmail)/conversations").setValue(conversations, withCompletionBlock: { error, _ in
+                    guard error == nil else {
+                        completion(.failure(DatabaseError.failedToSave))
+                        return
+                    }
+                })
+
                 // Add other user to black list
                 if var blackList: [[String: Any]] = value["black_list"] as? [[String: Any]] {
                     let newBlackListElement: [String: Any] = [
@@ -499,14 +551,17 @@ extension DatabaseManager {
                         "dob": otherUser.dob,
                         "is_male": otherUser.isMale
                     ]
-                    
+
                     blackList.append(newBlackListElement)
-                    
-                    self?.database.child("Users/\(mySafeEmail)/black_list").setValue(blackList, withCompletionBlock: { error, _ in
-                        if error == nil {
+
+                    self?.database.child("Users/\(safeEmail)/black_list").setValue(blackList, withCompletionBlock: { error, _ in
+                        guard error == nil else {
                             print("Error in adding in existing black list of current user")
+                            return
                         }
                     })
+                    completion(.success(true))
+
                 } else {
                     let newBlackListElement: [String: Any] = [
                         "id": otherUser.id,
@@ -519,114 +574,25 @@ extension DatabaseManager {
                         "dob": otherUser.dob,
                         "is_male": otherUser.isMale
                     ]
-                    
+
                     let newBlackList: [[String: Any]] = [
                         newBlackListElement
                     ]
-                    
-                    self?.database.child("Users/\(mySafeEmail)/black_list").setValue(newBlackList, withCompletionBlock: { error, _ in
-                        if error != nil {
+
+                    self?.database.child("Users/\(safeEmail)/black_list").setValue(newBlackList, withCompletionBlock: { error, _ in
+                        guard error == nil else {
                             print("Error in adding in existing black list of new black list of user")
+                            return
                         }
                     })
+                    completion(.success(true))
+
                 }
-                
-                
-                
-                self?.database.child("Users/\(mySafeEmail)/conversations").setValue(conversations, withCompletionBlock: { error, _ in
-                    guard error == nil else {
-                        completion(.failure(DatabaseError.failedToSave))
-                        return
-                    }
-                })
             } else {
                 completion(.failure(DatabaseError.failedToFetch))
                 return
             }
-            
-            // Unfriend user
-            DatabaseManager.shared.unfriend(with: otherUser, completion: { [weak self] unfriendResult in
-                DatabaseManager.shared.revokeFriendRequest(with: otherUser, completion: { revokeRequestResult in
-                    DatabaseManager.shared.deniesFriendRequest(with: otherUser, completion: { denyRequestResult in
-                        switch unfriendResult {
-                        case .success(_):
-                            switch revokeRequestResult {
-                            case .success(_):
-                                switch denyRequestResult {
-                                case .success(_):
-                                    // Get current user's data
-                                    self?.database.child("Users/\(mySafeEmail)").observe(.value) { snapshot in
-                                        guard let value = snapshot.value as? [String: Any] else {
-                                            completion(.failure(DatabaseError.failedToFetch))
-                                            return
-                                        }
-                                        
-                                        // Delete conversation of current user
-                                        if var conversations = value["conversations"] as? [[String: Any]] {
-                                            for conversationIndex in 0 ..< conversations.count {
-                                                if conversations[conversationIndex]["other_user_email"] as? String == otherSafeEmail {
-                                                    conversations.remove(at: conversationIndex)
-                                                    break
-                                                }
-                                            }
-                                            
-                                            self?.database.child("Users/\(mySafeEmail)/conversations").setValue(conversations, withCompletionBlock: { error, _ in
-                                                guard error == nil else {
-                                                    completion(.failure(DatabaseError.failedToSave))
-                                                    return
-                                                }
-                                            })
-                                        }
-                                        
-                                        // Add other user to blacklist
-                                        if var blackList = value["black_list"] as? [[String: Any]] {
-                                            
-                                            let newBlackListItem: [String: Any] = [
-                                                "email": otherUser.email,
-                                                "first_name": otherUser.firstName,
-                                                "last_name": otherUser.lastName,
-                                                "province": otherUser.province,
-                                                "district": otherUser.district,
-                                                "dob": otherUser.dob,
-                                                "bio": otherUser.bio,
-                                                "id": otherUser.id,
-                                                "is_male": otherUser.isMale
-                                            ]
-                                            
-                                            blackList.append(newBlackListItem)
-                                            
-                                            self?.database.child("Users/\(mySafeEmail)/black_list").setValue(blackList) { error, _ in
-                                                guard error == nil else {
-                                                    completion(.failure(DatabaseError.failedToFetch))
-                                                    return
-                                                }
-                                            }
-                                            
-                                            completion(.success(true))
-                                        }
-                                    }
-                                    break
-                                case .failure(_):
-                                    print("Failed to deny user")
-                                    break
-                                }
-                                break
-                            case .failure(_):
-                                print("Failed to revoke friend request of user")
-                                break
-                            }
-                            break
-                        case .failure(_):
-                            print("Failed to unfriend user")
-                            break
-                        }
-                    })
-                })
-            })
         }
-        
-        
-       
     }
     
     func unseggest(with otherUser: UserNode, completion: @escaping (Result<Bool, Error>) -> Void) {
