@@ -58,7 +58,7 @@ extension DatabaseManager {
         let safeEmail = DatabaseManager.safeEmail(emailAddress: unSafeEmail)
         
         database.child("Users/\(safeEmail)/black_list").observeSingleEvent(of: .value, with: { snapshot in
-            print(snapshot.va)
+//            print(snapshot.val())
             guard let value = snapshot.value as? [[String: Any]] else {
                 completion(.failure(DatabaseError.failedToFetch))
                 return

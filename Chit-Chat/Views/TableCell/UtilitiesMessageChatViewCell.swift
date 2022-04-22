@@ -21,10 +21,20 @@ final class UtilitiesMessageChatViewCell: UITableViewCell {
         switch model.viewModelType {
         case .info:
             self.textLabel?.textAlignment = .left
+            self.textLabel?.textColor = .link
+            self.selectionStyle = .none
+        case .pending:
+            self.textLabel?.textAlignment = .left
+            self.textLabel?.textColor = .gray
             self.selectionStyle = .none
         case .util:
             self.textLabel?.textAlignment = .left
             self.selectionStyle = .none
+        case .back:
+            self.textLabel?.textAlignment = .center
+            self.textLabel?.textColor = .red
+            self.textLabel?.font = .preferredFont(forTextStyle: .title2)
+            self.selectionStyle = .default
         }
     }
 }

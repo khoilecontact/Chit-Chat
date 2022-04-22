@@ -536,7 +536,7 @@ class OtherUserViewController: UIViewController {
                     }
                 }
                 
-                let vc = MessageChatViewController(with: otherSafeEmail, id: conversationId)
+                let vc = MessageChatViewController(with: otherSafeEmail, name: user.firstName + " " + user.lastName, id: conversationId)
                 vc.title = user.firstName + " " + user.lastName
                 vc.navigationItem.largeTitleDisplayMode = .never
                 self?.navigationController?.pushViewController(vc, animated: true)

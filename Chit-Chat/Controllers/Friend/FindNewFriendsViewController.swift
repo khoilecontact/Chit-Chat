@@ -121,7 +121,7 @@ final class FindNewFriendsViewController: UIViewController {
         // open chat space
         let safeEmail = DatabaseManager.safeEmail(emailAddress: model.email)
         
-        let vc = MessageChatViewController(with: safeEmail, id: model.id)
+        let vc = MessageChatViewController(with: safeEmail, name: "\(model.firstName) \(model.lastName)", id: model.id)
         vc.title = "\(model.firstName) \(model.lastName)"
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)

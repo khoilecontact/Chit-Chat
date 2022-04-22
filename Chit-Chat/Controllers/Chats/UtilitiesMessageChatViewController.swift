@@ -12,6 +12,8 @@ import UIKit
 class UtilitiesMessageChatViewController: UIViewController  {
     
     var utils = [UtilitiesMessageChatViewModel]()
+    var otherName: String
+    var otherEmail: String
     
     private let tableView: UITableView = {
         let table = UITableView()
@@ -19,6 +21,16 @@ class UtilitiesMessageChatViewController: UIViewController  {
         
         return table
     }()
+    
+    init(name: String, email: String) {
+        self.otherName = name
+        self.otherEmail = email
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +39,7 @@ class UtilitiesMessageChatViewController: UIViewController  {
         navBar()
         subViews()
         
+        createUtilOptions()
         setupTableView()
         
     }
@@ -57,16 +70,16 @@ class UtilitiesMessageChatViewController: UIViewController  {
                     return nil
                 }
                 
-                let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
-                let filename = safeEmail + "_profile_picture.png"
+                let safeEmail = DatabaseManager.safeEmail(emailAddress: otherEmail)
+                let filename = otherEmail + "_profile_picture.png"
                 let path = "images/" + filename;
                 
                 let headerView = UIView(frame: CGRect(x: 0, y: 0,
                                                       width: view.width,
-                                                      height: 300))
-                headerView.backgroundColor = .link
+                                                      height: 120))
+                headerView.backgroundColor = .systemBackground
                 
-                let imageView = UIImageView(frame: CGRect(x: (headerView.width-150)/2, y: 75, width: 150, height: 150))
+        let imageView = UIImageView(frame: CGRect(x: (headerView.width-80)/2, y: (headerView.height-80)/2, width: 80, height: 80))
                 
                 // styles
                 imageView.backgroundColor = .white
@@ -89,16 +102,28 @@ class UtilitiesMessageChatViewController: UIViewController  {
                 return headerView
     }
     
-    func createUtilsModel() {
+    func createUtilOptions() {
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .info,
-                                                   title: "Name: \(UserDefaults.standard.value(forKey: "name") as? String ?? "No Name")",
+                                                   title: "Name: \(otherName)",
                                                    handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .info,
-                                                   title: "Email: \(UserDefaults.standard.value(forKey: "email") as? String ?? "No email")",
+                                                   title: "Email: \(otherEmail)",
+                                                   handler: nil))
+        utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,
+                                                   title: "Nicknames",
+                                                   handler: nil))
+        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
+                                                   title: "Create chat group",
                                                    handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
                                                    title: "Search message in conversation",
                                                    handler: nil))
+        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
+                                                   title: "Block",
+                                                   handler: nil))
+        utils.append(UtilitiesMessageChatViewModel(viewModelType: .back,
+                                                   title: "Go Back",
+                                                   handler: { [weak self] in self?.dismiss(animated: true) }))
     }
     
     @objc func backBtnTapped() {

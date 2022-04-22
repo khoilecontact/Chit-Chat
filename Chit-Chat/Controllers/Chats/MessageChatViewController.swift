@@ -27,6 +27,7 @@ class MessageChatViewController: MessagesViewController {
     }()
     
     public let otherUserEmail: String
+    public let otherUserName: String
     private var conversationId: String?
     public var isNewConversation = false
     
@@ -93,9 +94,10 @@ class MessageChatViewController: MessagesViewController {
         })
     }
     
-    init(with email: String, id: String?) {
+    init(with email: String, name: String, id: String?) {
         self.conversationId = id
         self.otherUserEmail = email
+        self.otherUserName = name
         super.init(nibName: nil, bundle: nil)
         if let conversationId = self.conversationId {
             listenForMessagees(id: conversationId, shouldScrollToBottom: true)
@@ -160,7 +162,7 @@ class MessageChatViewController: MessagesViewController {
         let btnMenu = UIButton.init(type: .custom)
         let menuIcon = resizeImage(image: (UIImage(systemName: "ellipsis.circle")?.withTintColor(UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1), renderingMode: .alwaysOriginal))!, targetSize: CGSize(width: 22, height: 22))
         btnMenu.setImage(menuIcon, for: .normal)
-        btnMenu.addTarget(self, action: #selector(contactBtnTapped), for: .touchUpInside)
+        btnMenu.addTarget(self, action: #selector(menuBtnTapped), for: .touchUpInside)
         
         let stackview = UIStackView.init(arrangedSubviews: [btnContact, btnMenu])
         stackview.distribution = .equalSpacing
@@ -447,7 +449,11 @@ class MessageChatViewController: MessagesViewController {
     }
     
     @objc func menuBtnTapped() {
+        let vc = UtilitiesMessageChatViewController(name: otherUserName, email: otherUserEmail)
+        vc.modalPresentationStyle = .custom
+        vc.transitioningDelegate = self
         
+        self.present(vc, animated: true, completion: nil)
     }
     
     @objc func backBtnTapped() {
@@ -678,8 +684,10 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         
         let sender = message.sender
+        print("new pharse")
         
         if sender.senderId == selfSender?.senderId {
+            print("index")
             // our image
             if let currentUserImageURL = senderPhotoURL {
                 avatarView.sd_setImage(with: currentUserImageURL, completed: nil)
@@ -712,9 +720,9 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
             }
         }
         else {
+            print("other")
             // other user
             if let otherUserImageURL = otherUserPhotoURL {
-                print("da fetch")
                 avatarView.sd_setImage(with: otherUserImageURL, completed: nil)
                 // otherUserAvatar.sd_setImage(with: otherUserImageURL, placeholderImage: resizeImage(image: UIImage(systemName: "person.crop.circle")!, targetSize: CGSize(width: 30, height: 30)))
                 otherUserAvatar.sd_setImage(with: otherUserImageURL, placeholderImage: nil, context: [.imageTransformer: SDImageResizingTransformer(size: CGSize(width: 30, height: 30), scaleMode: .fill)])
@@ -723,7 +731,6 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
                 // ${safeOtherEmail}_profile_picture.png
                 
                 let email = otherUserEmail
-                print("chua fetch")
                 let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
                 let path = "images/\(safeEmail)_profile_picture.png"
                 
@@ -794,5 +801,16 @@ extension MessageChatViewController: MessageCellDelegate {
         default:
             break
         }
+    }
+}
+
+extension MessageChatViewController: UIViewControllerTransitioningDelegate {
+
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return PresentTransition()
+    }
+
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return DismissTransition()
     }
 }
