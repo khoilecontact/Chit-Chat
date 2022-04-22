@@ -445,7 +445,9 @@ class MessageChatViewController: MessagesViewController {
     }
     
     @objc func contactBtnTapped() {
-        
+        let vc = VideoCallViewController()
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        self.present(vc, animated: true)
     }
     
     @objc func menuBtnTapped() {

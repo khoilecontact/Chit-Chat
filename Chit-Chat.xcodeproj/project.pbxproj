@@ -33,6 +33,7 @@
 		22A456AB2812ABD2009CB4E6 /* RtcBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 22A456AA2812ABD2009CB4E6 /* RtcBasic */; };
 		22A456AD2812ABD2009CB4E6 /* SpatialAudio in Frameworks */ = {isa = PBXBuildFile; productRef = 22A456AC2812ABD2009CB4E6 /* SpatialAudio */; };
 		22A456B02812FB83009CB4E6 /* VoiceCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A456AF2812FB83009CB4E6 /* VoiceCallViewController.swift */; };
+		22A456B22813073C009CB4E6 /* VideoCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A456B12813073C009CB4E6 /* VideoCallViewController.swift */; };
 		22ACD98527FEE102004DD7AC /* BlackListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ACD98427FEE102004DD7AC /* BlackListViewController.swift */; };
 		22CCFE40279FF573009F7C8A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CCFE3F279FF573009F7C8A /* Extensions.swift */; };
 		22CCFE42279FF582009F7C8A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CCFE41279FF582009F7C8A /* StorageManager.swift */; };
@@ -123,6 +124,7 @@
 		22714E8A277D5D510004F942 /* Chit_ChatUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chit_ChatUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		229D21D827EC1AA600537AD6 /* UserAdvancedManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAdvancedManager.swift; sourceTree = "<group>"; };
 		22A456AF2812FB83009CB4E6 /* VoiceCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCallViewController.swift; sourceTree = "<group>"; };
+		22A456B12813073C009CB4E6 /* VideoCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewController.swift; sourceTree = "<group>"; };
 		22ACD98427FEE102004DD7AC /* BlackListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackListViewController.swift; sourceTree = "<group>"; };
 		22CCFE3F279FF573009F7C8A /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		22CCFE41279FF582009F7C8A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				22A456AF2812FB83009CB4E6 /* VoiceCallViewController.swift */,
+				22A456B12813073C009CB4E6 /* VideoCallViewController.swift */,
 			);
 			path = Calls;
 			sourceTree = "<group>";
@@ -743,6 +746,7 @@
 			files = (
 				222411E327B2129100C5E416 /* GithubConstants.swift in Sources */,
 				222411E927BF991400C5E416 /* Appearance.swift in Sources */,
+				22A456B22813073C009CB4E6 /* VideoCallViewController.swift in Sources */,
 				DA25C3C727B252190004FE2B /* FindNewFriendsViewController.swift in Sources */,
 				222411E727B7AB6900C5E416 /* ExternalFunctions.swift in Sources */,
 				DA0D67B427C0C7C20016C4AC /* FriendRequestViewController.swift in Sources */,
