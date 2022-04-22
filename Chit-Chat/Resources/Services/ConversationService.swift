@@ -28,7 +28,7 @@ extension ServiceManager {
         }
     }
     
-    func findTextInConversation(_ query: String) async throws -> [IMessInConversation]? {
+    func findTextInConversation(conversationID: String, query: String) async throws -> [IMessInConversation]? {
         do {
             
             guard let url = ServiceManager.graphRequestClient(endPoint: "conversation") else {
@@ -37,7 +37,8 @@ extension ServiceManager {
             
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            let requestBody = "query=\(query)"
+            let requestBody = "conversationID=\(conversationID)&query=\(query)"
+            // JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) // pass dictionary to data object and set it as request body
             let payload = requestBody.data(using: .utf8)!
             
             let (responseData, _) = try await URLSession.shared.upload(for: request, from: payload)

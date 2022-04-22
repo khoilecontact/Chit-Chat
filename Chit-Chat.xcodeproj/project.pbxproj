@@ -61,6 +61,8 @@
 		DA3056CF28053396001E87DA /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3056CE28053396001E87DA /* SwiftyJSON.swift */; };
 		DA37722F280A9E59003E8B88 /* UtilitiesMessageChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA37722E280A9E59003E8B88 /* UtilitiesMessageChatViewCell.swift */; };
 		DA3B4AD627B3B25C0093E2B3 /* Friends_Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3B4AD527B3B25C0093E2B3 /* Friends_Test.swift */; };
+		DA6238AC281296CA00006F7D /* PresentTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6238AB281296CA00006F7D /* PresentTransition.swift */; };
+		DA6238AE281296DC00006F7D /* DismissTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6238AD281296DC00006F7D /* DismissTransition.swift */; };
 		DA718D4D27A0F6CA0020B0C9 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D4C27A0F6CA0020B0C9 /* Conversation.swift */; };
 		DA718D4F27A0F6E70020B0C9 /* UserNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */; };
 		DA718D5127A0F6F20020B0C9 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA718D5027A0F6F20020B0C9 /* Messages.swift */; };
@@ -154,6 +156,8 @@
 		DA3056CE28053396001E87DA /* SwiftyJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		DA37722E280A9E59003E8B88 /* UtilitiesMessageChatViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilitiesMessageChatViewCell.swift; sourceTree = "<group>"; };
 		DA3B4AD527B3B25C0093E2B3 /* Friends_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friends_Test.swift; sourceTree = "<group>"; };
+		DA6238AB281296CA00006F7D /* PresentTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTransition.swift; sourceTree = "<group>"; };
+		DA6238AD281296DC00006F7D /* DismissTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissTransition.swift; sourceTree = "<group>"; };
 		DA718D4C27A0F6CA0020B0C9 /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNetwork.swift; sourceTree = "<group>"; };
 		DA718D5027A0F6F20020B0C9 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
@@ -361,6 +365,7 @@
 		22CCFE3C279FF50B009F7C8A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DA6238AA2812969E00006F7D /* ViewPresentTransition */,
 				DA0FDCF72802D65000FAB798 /* Services */,
 				229D21DA27EC1AAB00537AD6 /* DatabaseManager */,
 				DA28940327C2728100011900 /* API */,
@@ -452,6 +457,15 @@
 				DA3056CC2805321E001E87DA /* ServicesModel.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		DA6238AA2812969E00006F7D /* ViewPresentTransition */ = {
+			isa = PBXGroup;
+			children = (
+				DA6238AB281296CA00006F7D /* PresentTransition.swift */,
+				DA6238AD281296DC00006F7D /* DismissTransition.swift */,
+			);
+			path = ViewPresentTransition;
 			sourceTree = "<group>";
 		};
 		DAE31CF227B22B2B0035E65B /* TableCell */ = {
@@ -735,6 +749,7 @@
 				222411EC27C1EA8900C5E416 /* PersonalInformationViewController.swift in Sources */,
 				DAE31CF027B227980035E65B /* FriendsViewController.swift in Sources */,
 				22F1999627A0E67A00CAE0D5 /* LoginViewController.swift in Sources */,
+				DA6238AC281296CA00006F7D /* PresentTransition.swift in Sources */,
 				DA1EFD46280AA22600EB6BAD /* UtilitiesMessageChatViewModel.swift in Sources */,
 				DA718D5127A0F6F20020B0C9 /* Messages.swift in Sources */,
 				22CCFE40279FF573009F7C8A /* Extensions.swift in Sources */,
@@ -752,6 +767,7 @@
 				DA28940527C2734F00011900 /* ProvincesVN.swift in Sources */,
 				DA3056CF28053396001E87DA /* SwiftyJSON.swift in Sources */,
 				22CCFE42279FF582009F7C8A /* StorageManager.swift in Sources */,
+				DA6238AE281296DC00006F7D /* DismissTransition.swift in Sources */,
 				22CCFE46279FF59C009F7C8A /* User.swift in Sources */,
 				DA718D4F27A0F6E70020B0C9 /* UserNetwork.swift in Sources */,
 				DA20B66F27E9D63E00F869E6 /* FriendsOfUserDBManager.swift in Sources */,

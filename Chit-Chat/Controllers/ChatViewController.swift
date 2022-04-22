@@ -63,6 +63,22 @@ class ChatViewController: UIViewController {
         screenConversations(false)
         createLoginObserver()
         startListeningForConversations()
+        
+        Task {
+            
+            do {
+                
+                let cons: [IMessInConversation]? = try await ServiceManager.shared.findTextInConversation(conversationID: "conversation_phatnguyen876-gmail,com_19521707-gm,uit,edu,vn_9:50:43 SA GMT+7, ngày 24 thg 3, 2022",query: "Mac+")
+                
+                if cons != nil {
+                    print(cons)
+                }
+                
+            } catch {
+                print("Request failed with error: \(error)")
+            }
+            
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -160,7 +176,7 @@ class ChatViewController: UIViewController {
     
     func openConversation(_ model: MessagesCollection) {
         // open chat space
-        let vc = MessageChatViewController(with: model.otherUserEmail, id: model.id)
+        let vc = MessageChatViewController(with: model.otherUserEmail, name: model.name, id: model.id)
         vc.title = model.name
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
