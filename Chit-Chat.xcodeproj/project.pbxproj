@@ -15,6 +15,7 @@
 		222411F327C3359500C5E416 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411F227C3359500C5E416 /* ChangePasswordViewController.swift */; };
 		222411F827C7345E00C5E416 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411F727C7345D00C5E416 /* ForgotPasswordViewController.swift */; };
 		22353CF128119A9B002CC6FC /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22353CF028119A9B002CC6FC /* Group.swift */; };
+		22353CF328119CF2002CC6FC /* GroupDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22353CF228119CF2002CC6FC /* GroupDBManager.swift */; };
 		225E476127D9E1B000F71938 /* OtherUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E476027D9E1B000F71938 /* OtherUserViewController.swift */; };
 		22714E65277D5D4F0004F942 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E64277D5D4F0004F942 /* AppDelegate.swift */; };
 		22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E66277D5D4F0004F942 /* SceneDelegate.swift */; };
@@ -27,6 +28,11 @@
 		22714E89277D5D510004F942 /* Chit_ChatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E88277D5D510004F942 /* Chit_ChatUITests.swift */; };
 		22714E8B277D5D510004F942 /* Chit_ChatUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E8A277D5D510004F942 /* Chit_ChatUITestsLaunchTests.swift */; };
 		229D21D927EC1AA600537AD6 /* UserAdvancedManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229D21D827EC1AA600537AD6 /* UserAdvancedManager.swift */; };
+		22A456A72812ABD2009CB4E6 /* AINS in Frameworks */ = {isa = PBXBuildFile; productRef = 22A456A62812ABD2009CB4E6 /* AINS */; };
+		22A456A92812ABD2009CB4E6 /* FullAudioFormat in Frameworks */ = {isa = PBXBuildFile; productRef = 22A456A82812ABD2009CB4E6 /* FullAudioFormat */; };
+		22A456AB2812ABD2009CB4E6 /* RtcBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 22A456AA2812ABD2009CB4E6 /* RtcBasic */; };
+		22A456AD2812ABD2009CB4E6 /* SpatialAudio in Frameworks */ = {isa = PBXBuildFile; productRef = 22A456AC2812ABD2009CB4E6 /* SpatialAudio */; };
+		22A456B02812FB83009CB4E6 /* VoiceCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A456AF2812FB83009CB4E6 /* VoiceCallViewController.swift */; };
 		22ACD98527FEE102004DD7AC /* BlackListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ACD98427FEE102004DD7AC /* BlackListViewController.swift */; };
 		22CCFE40279FF573009F7C8A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CCFE3F279FF573009F7C8A /* Extensions.swift */; };
 		22CCFE42279FF582009F7C8A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CCFE41279FF582009F7C8A /* StorageManager.swift */; };
@@ -97,6 +103,7 @@
 		222411F227C3359500C5E416 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		222411F727C7345D00C5E416 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		22353CF028119A9B002CC6FC /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		22353CF228119CF2002CC6FC /* GroupDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDBManager.swift; sourceTree = "<group>"; };
 		225E476027D9E1B000F71938 /* OtherUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserViewController.swift; sourceTree = "<group>"; };
 		22714E61277D5D4F0004F942 /* Chit-Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chit-Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22714E64277D5D4F0004F942 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -113,6 +120,7 @@
 		22714E88277D5D510004F942 /* Chit_ChatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chit_ChatUITests.swift; sourceTree = "<group>"; };
 		22714E8A277D5D510004F942 /* Chit_ChatUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chit_ChatUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		229D21D827EC1AA600537AD6 /* UserAdvancedManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAdvancedManager.swift; sourceTree = "<group>"; };
+		22A456AF2812FB83009CB4E6 /* VoiceCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCallViewController.swift; sourceTree = "<group>"; };
 		22ACD98427FEE102004DD7AC /* BlackListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackListViewController.swift; sourceTree = "<group>"; };
 		22CCFE3F279FF573009F7C8A /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		22CCFE41279FF582009F7C8A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
@@ -169,6 +177,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D82C810661AD985A4461FB9 /* Pods_Chit_Chat.framework in Frameworks */,
+				22A456A72812ABD2009CB4E6 /* AINS in Frameworks */,
+				22A456A92812ABD2009CB4E6 /* FullAudioFormat in Frameworks */,
+				22A456AD2812ABD2009CB4E6 /* SpatialAudio in Frameworks */,
+				22A456AB2812ABD2009CB4E6 /* RtcBasic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,8 +295,17 @@
 				DA20B66C27E9D5EA00F869E6 /* ConversationsDBManager.swift */,
 				DA20B66A27E9D5CA00F869E6 /* UserDBManger.swift */,
 				229D21D827EC1AA600537AD6 /* UserAdvancedManager.swift */,
+				22353CF228119CF2002CC6FC /* GroupDBManager.swift */,
 			);
 			path = DatabaseManager;
+			sourceTree = "<group>";
+		};
+		22A456AE2812FB51009CB4E6 /* Calls */ = {
+			isa = PBXGroup;
+			children = (
+				22A456AF2812FB83009CB4E6 /* VoiceCallViewController.swift */,
+			);
+			path = Calls;
 			sourceTree = "<group>";
 		};
 		22ACD98327FEDCFA004DD7AC /* Chats */ = {
@@ -324,6 +345,7 @@
 		22CCFE3B279FF4FF009F7C8A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				22A456AE2812FB51009CB4E6 /* Calls */,
 				22ACD98327FEDCFA004DD7AC /* Chats */,
 				222411F127C21C6C00C5E416 /* Friend */,
 				222411EA27C1EA7000C5E416 /* Personal */,
@@ -471,6 +493,12 @@
 			dependencies = (
 			);
 			name = "Chit-Chat";
+			packageProductDependencies = (
+				22A456A62812ABD2009CB4E6 /* AINS */,
+				22A456A82812ABD2009CB4E6 /* FullAudioFormat */,
+				22A456AA2812ABD2009CB4E6 /* RtcBasic */,
+				22A456AC2812ABD2009CB4E6 /* SpatialAudio */,
+			);
 			productName = "Chit-Chat";
 			productReference = 22714E61277D5D4F0004F942 /* Chit-Chat.app */;
 			productType = "com.apple.product-type.application";
@@ -546,6 +574,9 @@
 				Base,
 			);
 			mainGroup = 22714E58277D5D4F0004F942;
+			packageReferences = (
+				22A456A52812ABD2009CB4E6 /* XCRemoteSwiftPackageReference "AgoraAudio_iOS" */,
+			);
 			productRefGroup = 22714E62277D5D4F0004F942 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -741,7 +772,9 @@
 				222411F027C1EAA500C5E416 /* DarkModeViewController.swift in Sources */,
 				22CCFE44279FF58C009F7C8A /* DatabaseManager.swift in Sources */,
 				DAD0BD7A280A7AA7003974BF /* UtilitiesMessageChatViewController.swift in Sources */,
+				22353CF328119CF2002CC6FC /* GroupDBManager.swift in Sources */,
 				DA85AF6D27BA585D0005215B /* MessageChatViewController.swift in Sources */,
+				22A456B02812FB83009CB4E6 /* VoiceCallViewController.swift in Sources */,
 				DA20B66D27E9D5EA00F869E6 /* ConversationsDBManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1100,6 +1133,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		22A456A52812ABD2009CB4E6 /* XCRemoteSwiftPackageReference "AgoraAudio_iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AgoraIO/AgoraAudio_iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		22A456A62812ABD2009CB4E6 /* AINS */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 22A456A52812ABD2009CB4E6 /* XCRemoteSwiftPackageReference "AgoraAudio_iOS" */;
+			productName = AINS;
+		};
+		22A456A82812ABD2009CB4E6 /* FullAudioFormat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 22A456A52812ABD2009CB4E6 /* XCRemoteSwiftPackageReference "AgoraAudio_iOS" */;
+			productName = FullAudioFormat;
+		};
+		22A456AA2812ABD2009CB4E6 /* RtcBasic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 22A456A52812ABD2009CB4E6 /* XCRemoteSwiftPackageReference "AgoraAudio_iOS" */;
+			productName = RtcBasic;
+		};
+		22A456AC2812ABD2009CB4E6 /* SpatialAudio */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 22A456A52812ABD2009CB4E6 /* XCRemoteSwiftPackageReference "AgoraAudio_iOS" */;
+			productName = SpatialAudio;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		22714E6D277D5D4F0004F942 /* Chit_Chat.xcdatamodeld */ = {
