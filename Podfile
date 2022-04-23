@@ -22,6 +22,10 @@ pod 'GoogleSignIn'
 pod 'MessageKit'
 pod 'JGProgressHUD'
 pod 'SDWebImage'
+
+# Agora
+pod 'AgoraUIKit_iOS'
+pod ‘AgoraRtm_iOS’
     
 
   target 'Chit-ChatTests' do

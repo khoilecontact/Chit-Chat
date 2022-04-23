@@ -445,7 +445,9 @@ class MessageChatViewController: MessagesViewController {
     }
     
     @objc func contactBtnTapped() {
-        let vc = VideoCallViewController()
+//        let vc = UIStoryboard(name: "VideoCall", bundle: nil).instantiateViewController(withIdentifier: "VideoCall") as! VideoCallViewController
+        let vc = UIStoryboard(name: "VoiceCall", bundle: nil).instantiateViewController(withIdentifier: "VoiceCall") as! VoiceCallViewController
+        vc.otherUserEmail = otherUserEmail
         navigationController?.setNavigationBarHidden(false, animated: true)
         self.present(vc, animated: true)
     }

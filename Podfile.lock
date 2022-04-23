@@ -1,4 +1,14 @@
 PODS:
+  - AgoraRtcEngine_iOS/RtcBasic (3.7.0)
+  - AgoraRtm_iOS (1.4.10)
+  - AgoraRtmControl_iOS (1.8.1):
+    - AgoraRtm_iOS (~> 1.4.10)
+  - AgoraUIKit_iOS (1.8.1):
+    - AgoraRtcEngine_iOS/RtcBasic (~> 3.7.0)
+    - AgoraUIKit_iOS/UIKitFull (= 1.8.1)
+  - AgoraUIKit_iOS/UIKitFull (1.8.1):
+    - AgoraRtcEngine_iOS/RtcBasic (~> 3.7.0)
+    - AgoraRtmControl_iOS (= 1.8.1)
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
     - AppAuth/ExternalUserAgent (= 1.4.0)
@@ -150,6 +160,8 @@ PODS:
   - SDWebImage/Core (5.12.3)
 
 DEPENDENCIES:
+  - AgoraRtm_iOS
+  - AgoraUIKit_iOS
   - FBSDKLoginKit
   - Firebase/Analytics
   - Firebase/Auth
@@ -164,6 +176,10 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AgoraRtcEngine_iOS
+    - AgoraRtm_iOS
+    - AgoraRtmControl_iOS
+    - AgoraUIKit_iOS
     - AppAuth
     - FBAEMKit
     - FBSDKCoreKit
@@ -193,6 +209,10 @@ SPEC REPOS:
     - SDWebImage
 
 SPEC CHECKSUMS:
+  AgoraRtcEngine_iOS: e6bc354af9b8b883926382b5034f18822b5303df
+  AgoraRtm_iOS: 95e7070466f42a6494435a7f39fd2b13fc143cbf
+  AgoraRtmControl_iOS: 54d2e363da74427707529f3aab28bacd01971180
+  AgoraUIKit_iOS: fd262c381eef0a2f8b94553e000ed4226a3d4d8b
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   FBAEMKit: 98e4afc9f867c6db3d1c0e7e3727d94a630b5f59
   FBSDKCoreKit: 4f348872eae956c922aca1a13771b9c2d4602088
@@ -221,6 +241,6 @@ SPEC CHECKSUMS:
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   SDWebImage: 53179a2dba77246efa8a9b85f5c5b21f8f43e38f
 
-PODFILE CHECKSUM: f4635796454abe8eb774a93709484aa7180d19f9
+PODFILE CHECKSUM: 0c800f5c22eb6efcebdc0228d6de0664693c6adf
 
 COCOAPODS: 1.10.2
