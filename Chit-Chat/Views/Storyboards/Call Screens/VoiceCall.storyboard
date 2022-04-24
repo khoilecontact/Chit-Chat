@@ -4,7 +4,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -32,7 +31,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GQg-We-90e">
                                 <rect key="frame" x="129" y="295" width="157" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -46,13 +45,26 @@
                                     <action selector="didClickMuteButton:" destination="iYA-1D-Lti" eventType="touchUpInside" id="4c5-Ln-dk2"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WFT-dJ-zBF">
+                                <rect key="frame" x="269" y="691" width="67" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="speaker">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="small"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="didClickSpeakerButton:" destination="iYA-1D-Lti" eventType="touchUpInside" id="kFv-OL-YL5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="0YB-L4-MPP"/>
-                        <color key="backgroundColor" systemColor="systemCyanColor"/>
+                        <color key="backgroundColor" red="0.55532950160000005" green="0.69038277859999997" blue="0.8312652707" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </view>
                     <connections>
                         <outlet property="micButton" destination="2Cq-oh-meN" id="TdE-Bz-vbW"/>
+                        <outlet property="nameLabel" destination="GQg-We-90e" id="VPP-BP-gJ1"/>
                         <outlet property="otherAvatar" destination="VWN-Mj-4hI" id="b6a-fA-Uls"/>
+                        <outlet property="speakerButton" destination="WFT-dJ-zBF" id="qyR-uc-36f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="650-F9-KZw" sceneMemberID="firstResponder"/>
@@ -66,8 +78,6 @@
         <image name="mic" width="220" height="220"/>
         <image name="mic_pressed" width="220" height="220"/>
         <image name="mute" width="204" height="204"/>
-        <systemColor name="systemCyanColor">
-            <color red="0.19607843137254902" green="0.67843137254901964" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
+        <image name="speaker" width="50" height="50"/>
     </resources>
 </document>

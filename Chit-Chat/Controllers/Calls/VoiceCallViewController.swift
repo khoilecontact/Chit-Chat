@@ -13,9 +13,26 @@ import AgoraRtmKit
 class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
     var agoraKit: AgoraRtcEngineKit!
     var otherUserEmail: String?
+    var otherUserName: String?
     
     @IBOutlet var otherAvatar: UIImageView!
+    @IBOutlet var nameLabel: UILabel!
     @IBOutlet var micButton: UIButton!
+    @IBOutlet var speakerButton: UIButton!
+    
+    @IBAction func didClickSpeakerButton(_ sender: UIButton) {
+        if sender.isSelected {
+            SetSessionPlayerOn()
+            speakerButton.setImage(UIImage(named: "speaker"), for: .normal)
+        } else {
+            SetSessionPlayerOff()
+            speakerButton.setImage(UIImage(named: "speakerSmall"), for: .normal)
+        }
+        
+        sender.isSelected.toggle()
+        
+    }
+    
     @IBAction func didClickMuteButton(_ sender: UIButton) {
         sender.isSelected.toggle()
         self.agoraKit.muteLocalAudioStream(sender.isSelected)
@@ -27,6 +44,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
         if sender.isSelected {
             agoraKit.leaveChannel(nil)
             UIApplication.shared.isIdleTimerDisabled = false
+            self.dismiss(animated: true)
         } else {
             initializeAndJoinChannel()
         }
@@ -66,6 +84,12 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
                     self?.otherAvatar.sd_setImage(with: url, completed: nil)
                 }
             })
+            
+            if otherUserName == nil {
+                nameLabel.text = "Unknown User"
+            } else {
+                nameLabel.text = self.otherUserName
+            }
         }
         
         otherAvatar.image?.withTintColor(Appearance.tint)
@@ -75,6 +99,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
         otherAvatar.layer.cornerRadius = otherAvatar.frame.height / 2
         otherAvatar.layer.borderWidth = 0
         otherAvatar.clipsToBounds = true
+        
         
     }
 
@@ -95,6 +120,30 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
          agoraKit?.joinChannel(byToken: "006cf8f308e1fb3430e8dd8a4bbf0dcbf6eIABjNdqResWhwqnusa2+oNX4o84cyO5uB2IqFLvl43LEZ5pjTicAAAAAEAB1KdkmBh5kYgEAAQAGHmRi", channelId: "Testing", info: nil, uid: 0, joinSuccess: { (channel, uid, elapsed) in
          })
      }
+    
+    func SetSessionPlayerOn()
+    {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord)
+        } catch _ {
+        }
+        do {
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch _ {
+        }
+        do {
+            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+        } catch _ {
+        }
+    }
+    
+    func SetSessionPlayerOff()
+    {
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch _ {
+        }
+    }
 
 }
 
