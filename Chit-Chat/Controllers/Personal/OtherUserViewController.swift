@@ -301,98 +301,100 @@ class OtherUserViewController: UIViewController {
         
         let safeEmail = DatabaseManager.safeEmail(emailAddress: otherUser.email)
         
-        // Get list data of user
-        UserAdvancedManager.shared.getAllFriendOfUser(with: otherUser.email, completion: { friendList in
-            UserAdvancedManager.shared.getAllFriendRequestOfUser(with: otherUser.email, completion: { friendRequest in
-                UserAdvancedManager.shared.getAllSentFriendRequestOfUser(with: otherUser.email, completion: { sentRequest in
-                    UserAdvancedManager.shared.getAllBlacklistOfUser(with: otherUser.email, completion: { [weak self] blacklist in
-                        UserAdvancedManager.shared.getAllBlacklistOfUser(with: currentUserEmail, completion: { currentBlackList in
-                            self?.otherUser?.friendList = friendList
-                            self?.otherUser?.friendRequestList = friendRequest
-                            self?.otherUser?.sentfriendRequestList = sentRequest
-                            self?.otherUser?.blackList = blacklist
-                            
-                            guard let pageUser = self?.otherUser else {
-                                return
-                            }
-                            
-                            for user in currentBlackList {
-                                if user.email == pageUser.email {
-                                    self?.friendStatus = "Blocked"
-                                    break
+        DispatchQueue.global(qos: .background).async {
+            // Get list data of user
+            UserAdvancedManager.shared.getAllFriendOfUser(with: otherUser.email, completion: { friendList in
+                UserAdvancedManager.shared.getAllFriendRequestOfUser(with: otherUser.email, completion: { friendRequest in
+                    UserAdvancedManager.shared.getAllSentFriendRequestOfUser(with: otherUser.email, completion: { sentRequest in
+                        UserAdvancedManager.shared.getAllBlacklistOfUser(with: otherUser.email, completion: { [weak self] blacklist in
+                            UserAdvancedManager.shared.getAllBlacklistOfUser(with: currentUserEmail, completion: { currentBlackList in
+                                self?.otherUser?.friendList = friendList
+                                self?.otherUser?.friendRequestList = friendRequest
+                                self?.otherUser?.sentfriendRequestList = sentRequest
+                                self?.otherUser?.blackList = blacklist
+                                
+                                guard let pageUser = self?.otherUser else {
+                                    return
                                 }
-                            }
-                            
-                            // Loading user's image
-                            let fileName = safeEmail + "_profile_picture.png"
-                            let path = "images/" + fileName
-                            
-                            StorageManager.shared.downloadUrl(for: path, completion: { [weak self] result in
-                                switch result {
-                                case .failure(let error):
-                                    print("Failed to download image URL: \(error)")
-                                    self?.imageView.image = UIImage(systemName: "person.circle")?.withTintColor(Appearance.tint)
-                                    
-                                    break
-                                    
-                                case .success(let url):
-                                    self?.imageView.sd_setImage(with: url, completed: nil)
+                                
+                                for user in currentBlackList {
+                                    if user.email == pageUser.email {
+                                        self?.friendStatus = "Blocked"
+                                        break
+                                    }
                                 }
+                                
+                                // Loading user's image
+                                let fileName = safeEmail + "_profile_picture.png"
+                                let path = "images/" + fileName
+                                
+                                StorageManager.shared.downloadUrl(for: path, completion: { [weak self] result in
+                                    switch result {
+                                    case .failure(let error):
+                                        print("Failed to download image URL: \(error)")
+                                        self?.imageView.image = UIImage(systemName: "person.circle")?.withTintColor(Appearance.tint)
+                                        
+                                        break
+                                        
+                                    case .success(let url):
+                                        self?.imageView.sd_setImage(with: url, completed: nil)
+                                    }
+                                })
+                                
+                                self?.title = otherUser.firstName + " " + otherUser.lastName
+                                
+                                self?.nameLabel.text = otherUser.firstName + " " + otherUser.lastName
+                                
+                                self?.bioLabel.text = (otherUser.bio == "") ? "This user has no bio yet" : otherUser.bio
+                                
+                                self?.dobLabel.text = otherUser.dob
+                                
+                                self?.genderLabel.text = otherUser.isMale ? "Male" : "Female"
+                                // Check for friend status
+                                // Case: They sent you a sent request
+                                for user in pageUser.sentfriendRequestList {
+                                    if user.email == currentUserEmail {
+                                        self?.friendStatus = "Received"
+                                        break
+                                    }
+                                }
+                                // Case: You have sent them a friend request
+                                for user in pageUser.friendRequestList {
+                                    if user.email == currentUserEmail {
+                                        self?.friendStatus = "Sent"
+                                        break
+                                    }
+                                }
+                                // Case: You're friends
+                                for user in pageUser.friendList {
+                                    if user.email == currentUserEmail {
+                                        self?.friendStatus = "Added"
+                                        break
+                                    }
+                                }
+                                // Case: You or they block each other
+                                // other user's blacklist
+                                for user in pageUser.blackList {
+                                    if user.email == currentUserEmail {
+                                        self?.friendStatus = "Blocked"
+                                        break
+                                    }
+                                }
+                                
+                                // Case: Nobody sent a friend request
+                                
+                                self?.initLayout()
+                                
+                                DispatchQueue.main.async {
+                                    self?.spinner.dismiss()
+                                }
+                        
                             })
-                            
-                            self?.title = otherUser.firstName + " " + otherUser.lastName
-                            
-                            self?.nameLabel.text = otherUser.firstName + " " + otherUser.lastName
-                            
-                            self?.bioLabel.text = (otherUser.bio == "") ? "This user has no bio yet" : otherUser.bio
-                            
-                            self?.dobLabel.text = otherUser.dob
-                            
-                            self?.genderLabel.text = otherUser.isMale ? "Male" : "Female"
-                            // Check for friend status
-                            // Case: They sent you a sent request
-                            for user in pageUser.sentfriendRequestList {
-                                if user.email == currentUserEmail {
-                                    self?.friendStatus = "Received"
-                                    break
-                                }
-                            }
-                            // Case: You have sent them a friend request
-                            for user in pageUser.friendRequestList {
-                                if user.email == currentUserEmail {
-                                    self?.friendStatus = "Sent"
-                                    break
-                                }
-                            }
-                            // Case: You're friends
-                            for user in pageUser.friendList {
-                                if user.email == currentUserEmail {
-                                    self?.friendStatus = "Added"
-                                    break
-                                }
-                            }
-                            // Case: You or they block each other
-                            // other user's blacklist
-                            for user in pageUser.blackList {
-                                if user.email == currentUserEmail {
-                                    self?.friendStatus = "Blocked"
-                                    break
-                                }
-                            }
-                            
-                            // Case: Nobody sent a friend request
-                            
-                            self?.initLayout()
-                            
-                            DispatchQueue.main.async {
-                                self?.spinner.dismiss()
-                            }
-                    
                         })
                     })
                 })
             })
-        })
+        }
     }
     
     required init?(coder: NSCoder) {

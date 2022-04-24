@@ -68,7 +68,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
         if otherUserEmail == nil {
             otherAvatar.image = UIImage(systemName: "person.circle")
         } else {
-            let safeEmail = DatabaseManager.safeEmail(emailAddress: self.otherUserEmail as! String)
+            let safeEmail = DatabaseManager.safeEmail(emailAddress: self.otherUserEmail!)
             let fileName = safeEmail + "_profile_picture.png"
             let path = "images/" + fileName
             
