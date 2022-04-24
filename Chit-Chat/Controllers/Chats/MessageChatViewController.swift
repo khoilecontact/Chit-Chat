@@ -79,11 +79,6 @@ class MessageChatViewController: MessagesViewController {
 //                        strongSelf.messagesCollectionView.scrollToItem(at: IndexPath(item: 0, section: 4) , at: .centeredVertically, animated: true)
                     }
                     
-                    // find a messages
-                    else {
-                        
-                    }
-                    
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -99,9 +94,6 @@ class MessageChatViewController: MessagesViewController {
         self.otherUserEmail = email
         self.otherUserName = name
         super.init(nibName: nil, bundle: nil)
-        if let conversationId = self.conversationId {
-            listenForMessagees(id: conversationId, shouldScrollToBottom: true)
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -684,10 +676,8 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         
         let sender = message.sender
-        print("new pharse")
         
         if sender.senderId == selfSender?.senderId {
-            print("index")
             // our image
             if let currentUserImageURL = senderPhotoURL {
                 avatarView.sd_setImage(with: currentUserImageURL, completed: nil)
@@ -720,7 +710,6 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
             }
         }
         else {
-            print("other")
             // other user
             if let otherUserImageURL = otherUserPhotoURL {
                 avatarView.sd_setImage(with: otherUserImageURL, completed: nil)
