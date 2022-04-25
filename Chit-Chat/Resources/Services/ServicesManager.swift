@@ -9,6 +9,7 @@ import Foundation
 
 public enum serviceError: Error {
     case invalidURL
+    case invalidArguments
     case failedToConnect
     case failedToGetData
     case failedToUpload
@@ -54,7 +55,7 @@ final public class ServiceManager {
      
      do {
          
-         let cons: [IMess]? = try await ServiceManager.shared.findTextInConversation("abc")
+         let cons: [IMessInConversation]? = try await ServiceManager.shared.findTextInConversation(conversationID: "conversation_phatnguyen876-gmail,com_19521707-gm,uit,edu,vn_9:50:43 SA GMT+7, ngày 24 thg 3, 2022",query: "Mac+")
          
          if cons != nil {
              print(cons)

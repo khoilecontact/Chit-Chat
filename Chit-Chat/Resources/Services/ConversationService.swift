@@ -35,9 +35,11 @@ extension ServiceManager {
                 throw serviceError.invalidURL
             }
             
+            let escapedConversationID = conversationID.replacingOccurrences(of: "+", with: "%2B")
+            
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            let requestBody = "conversationID=\(conversationID)&query=\(query)"
+            let requestBody = "conversationID=\(escapedConversationID)&query=\(query)"
             // JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) // pass dictionary to data object and set it as request body
             let payload = requestBody.data(using: .utf8)!
             

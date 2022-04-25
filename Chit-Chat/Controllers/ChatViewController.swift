@@ -63,22 +63,6 @@ class ChatViewController: UIViewController {
         screenConversations(false)
         createLoginObserver()
         startListeningForConversations()
-        
-        Task {
-            
-            do {
-                
-                let cons: [IMessInConversation]? = try await ServiceManager.shared.findTextInConversation(conversationID: "conversation_phatnguyen876-gmail,com_19521707-gm,uit,edu,vn_9:50:43 SA GMT+7, ngày 24 thg 3, 2022",query: "Mac+")
-                
-                if cons != nil {
-                    print(cons)
-                }
-                
-            } catch {
-                print("Request failed with error: \(error)")
-            }
-            
-        }
     }
     
     override func viewDidLayoutSubviews() {
