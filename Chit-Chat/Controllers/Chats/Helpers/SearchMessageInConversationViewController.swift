@@ -78,7 +78,7 @@ final class SearchMessageInConversationViewController: UIViewController {
     }
     
     func showConversation() {
-        let vc = MessageChatViewController(with: self.otherUserEmail, name: self.otherUserName, id: self.conversationId)
+        let vc = MessageChatViewController(with: self.otherUserEmail, name: self.otherUserName, id: self.conversationId, messagePosition: 5)
         vc.title = self.otherUserName
         self.navigationController?.pushViewController(vc, animated: true)
     }
