@@ -34,6 +34,7 @@ class MessageChatViewController: MessagesViewController {
     private var conversationId: String?
     public var isNewConversation = false
     
+    var messagePosition: Int?
     private var messages = [Message]()
     
     private var selfSender: Sender? {
@@ -83,9 +84,11 @@ class MessageChatViewController: MessagesViewController {
                     strongSelf.messagesCollectionView.reloadDataAndKeepOffset()
                     
                     // open conversastion
-                    if shouldScrollToBottom {
+                    if self?.messagePosition != nil, let position = self?.messagePosition {
+                        strongSelf.messagesCollectionView.scrollToItem(at: IndexPath(item: 0, section: position) , at: .centeredVertically, animated: true)
+                    }
+                    else if shouldScrollToBottom {
                         strongSelf.messagesCollectionView.scrollToLastItem()
-//                        strongSelf.messagesCollectionView.scrollToItem(at: IndexPath(item: 0, section: 4) , at: .centeredVertically, animated: true)
                     }
                     
                 }
@@ -99,10 +102,11 @@ class MessageChatViewController: MessagesViewController {
         })
     }
     
-    init(with email: String, name: String, id: String?) {
+    init(with email: String, name: String, id: String?, messagePosition: Int? = nil) {
         self.conversationId = id
         self.otherUserEmail = email
         self.otherUserName = name
+        self.messagePosition = messagePosition
         super.init(nibName: nil, bundle: nil)
     }
     

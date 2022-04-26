@@ -20,8 +20,8 @@ final public class ServiceManager {
     
     public static let shared = ServiceManager()
     
-//    let serviceURLString = "https://chit-chat-services.herokuapp.com"
-    let serviceURLString = "http://localhost:3000"
+    //    let serviceURLString = "https://chit-chat-services.herokuapp.com"
+    let serviceURLString = "https://chit-chat-services.herokuapp.com"
     
     static func graphRequestClient(endPoint: String) -> URL? {
         
