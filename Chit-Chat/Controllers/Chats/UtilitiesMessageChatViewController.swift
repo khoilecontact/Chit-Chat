@@ -14,6 +14,7 @@ class UtilitiesMessageChatViewController: UIViewController  {
     var utils = [UtilitiesMessageChatViewModel]()
     var otherName: String
     var otherEmail: String
+    var conversationId: String
     
     private let tableView: UITableView = {
         let table = UITableView()
@@ -22,9 +23,10 @@ class UtilitiesMessageChatViewController: UIViewController  {
         return table
     }()
     
-    init(name: String, email: String) {
+    init(name: String, email: String, conversationId: String) {
         self.otherName = name
         self.otherEmail = email
+        self.conversationId = conversationId
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -66,9 +68,6 @@ class UtilitiesMessageChatViewController: UIViewController  {
     }
     
     func createTableHeader() -> UIView? {
-        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
-            return nil
-        }
         
         let safeEmail = DatabaseManager.safeEmail(emailAddress: otherEmail)
         let filename = otherEmail + "_profile_picture.png"
@@ -118,9 +117,10 @@ class UtilitiesMessageChatViewController: UIViewController  {
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
                                                    title: "Search message in conversation",
                                                    handler: { [weak self] in
-            let vc = SearchMessageInConversationViewController()
+            guard let strongSelf = self else { return }
+            
+            let vc = SearchMessageInConversationViewController(email: strongSelf.otherEmail, name: strongSelf.otherName, conversationId: strongSelf.conversationId)
             let nav = UINavigationController(rootViewController: vc)
-            nav.modalPresentationStyle = .fullScreen
             self?.present(nav, animated: true)
             
         }))

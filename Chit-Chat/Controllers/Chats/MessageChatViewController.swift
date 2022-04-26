@@ -456,11 +456,13 @@ class MessageChatViewController: MessagesViewController {
     }
     
     @objc func menuBtnTapped() {
-        let vc = UtilitiesMessageChatViewController(name: otherUserName, email: otherUserEmail)
-        vc.modalPresentationStyle = .custom
-        vc.transitioningDelegate = self
-        
-        self.present(vc, animated: true, completion: nil)
+        if conversationId != nil {
+            let vc = UtilitiesMessageChatViewController(name: otherUserName, email: otherUserEmail, conversationId: conversationId!)
+            vc.modalPresentationStyle = .custom
+            vc.transitioningDelegate = self
+            
+            self.present(vc, animated: true, completion: nil)
+        }
     }
     
     @objc func backBtnTapped() {

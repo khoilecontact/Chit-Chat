@@ -12,6 +12,10 @@ final class SearchMessageInConversationViewController: UIViewController {
     
     private let data: IMessInConversationResponse? = nil
     
+    public let otherUserEmail: String
+    public let otherUserName: String
+    private var conversationId: String
+    
     private let tableView: UITableView = {
         let table = UITableView()
         table.isHidden = true
@@ -28,6 +32,17 @@ final class SearchMessageInConversationViewController: UIViewController {
         return label
     }()
     
+    init(email: String, name: String, conversationId: String) {
+        self.conversationId = conversationId
+        self.otherUserName = name
+        self.otherUserEmail = email
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -38,7 +53,7 @@ final class SearchMessageInConversationViewController: UIViewController {
     }
     
     func navBar() {
-        navigationItem.hidesBackButton = false
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(dismissSelf))
     }
     
     func subViews() {
@@ -53,12 +68,19 @@ final class SearchMessageInConversationViewController: UIViewController {
             textField.becomeFirstResponder()
         }
         
-        alert.addAction(UIAlertAction(title: "Search", style: .default, handler: { [weak alert] (_) in
+        alert.addAction(UIAlertAction(title: "Find", style: .default, handler: { [weak alert] (_) in
             guard let textField = alert?.textFields?[0], let queryText = textField.text else { return }
             print("text: \(queryText)")
+            self.showConversation()
         }))
         
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func showConversation() {
+        let vc = MessageChatViewController(with: self.otherUserEmail, name: self.otherUserName, id: self.conversationId)
+        vc.title = self.otherUserName
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func screenState(with notEmpty: Bool) {
@@ -72,5 +94,7 @@ final class SearchMessageInConversationViewController: UIViewController {
         }
     }
     
-
+    @objc func dismissSelf() {
+        dismiss(animated: true, completion: nil)
+    }
 }
