@@ -23,6 +23,8 @@ struct IMess: Codable, Hashable {
 
 struct IMessInConversationResponse: Codable {
     let result: [IMessInConversation]
+    let total: Int
+    let page: Int
 }
 
 struct IMessInConversation: Codable, Hashable {

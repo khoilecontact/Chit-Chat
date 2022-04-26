@@ -110,7 +110,7 @@ class UtilitiesMessageChatViewController: UIViewController  {
                                                    title: "Email: \(otherEmail)",
                                                    handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,
-                                                   title: "Nicknames",
+                                                   title: "Nicknames -- In Beta, coming soon!",
                                                    handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
                                                    title: "Create chat group",

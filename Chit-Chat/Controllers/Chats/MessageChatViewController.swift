@@ -12,8 +12,11 @@ import CoreLocation
 import AVFoundation
 import AVKit
 import InputBarAccessoryView
+import JGProgressHUD
 
 class MessageChatViewController: MessagesViewController {
+    
+    private let spinner = JGProgressHUD(style: .dark)
     
     private var senderPhotoURL: URL?
     private var otherUserPhotoURL: URL?
@@ -59,6 +62,9 @@ class MessageChatViewController: MessagesViewController {
     }()
     
     private func listenForMessagees(id: String, shouldScrollToBottom: Bool) {
+        
+        self.spinner.show(in: view)
+        
         DatabaseManager.shared.getAllMessagesForConversation(with: id, completion: { [weak self] result in
             guard let strongSelf = self else {return}
             
@@ -71,6 +77,9 @@ class MessageChatViewController: MessagesViewController {
                 strongSelf.messages = messages
                 
                 DispatchQueue.main.async {
+                    
+                    self?.spinner.dismiss()
+                    
                     strongSelf.messagesCollectionView.reloadDataAndKeepOffset()
                     
                     // open conversastion
@@ -82,6 +91,7 @@ class MessageChatViewController: MessagesViewController {
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
+                    self?.spinner.dismiss()
                     self?.isNewConversation = true
                 }
                 print("Failed to load messages for conversation: \(error)")
