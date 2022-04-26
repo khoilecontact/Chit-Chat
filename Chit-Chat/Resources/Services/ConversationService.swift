@@ -28,7 +28,7 @@ extension ServiceManager {
         }
     }
     
-    func findTextInConversation(conversationID: String, query: String) async throws -> [IMessInConversation]? {
+    func findTextInConversation(conversationID: String, query: String) async throws -> IMessInConversationResponse? {
         do {
             
             guard let url = ServiceManager.graphRequestClient(endPoint: "conversation") else {
@@ -47,7 +47,7 @@ extension ServiceManager {
             
             let data = try JSONDecoder().decode(IMessInConversationResponse.self, from: responseData)
             
-            return data.result
+            return data
             
         } catch {
             

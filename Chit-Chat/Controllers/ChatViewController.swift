@@ -60,9 +60,9 @@ class ChatViewController: UIViewController {
         validateAuth()
         
         // start
-        screenConversations(false)
         createLoginObserver()
         startListeningForConversations()
+        // screenConversations(false)
     }
     
     override func viewDidLayoutSubviews() {
@@ -87,6 +87,9 @@ class ChatViewController: UIViewController {
     }
     
     private func startListeningForConversations() {
+        
+        self.spinner.show(in: view)
+        
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
         
         if let observer = loginObserver {
@@ -110,9 +113,13 @@ class ChatViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     strongSelf.tableView.reloadData()
+                    strongSelf.spinner.dismiss()
                 }
             case .failure(let error):
                 strongSelf.screenConversations(false)
+                DispatchQueue.main.async {
+                    self?.spinner.dismiss()
+                }
                 print("Failed to get conversations: \(error)")
             }
         }

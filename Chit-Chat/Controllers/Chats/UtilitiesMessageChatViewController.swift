@@ -14,6 +14,7 @@ class UtilitiesMessageChatViewController: UIViewController  {
     var utils = [UtilitiesMessageChatViewModel]()
     var otherName: String
     var otherEmail: String
+    var conversationId: String
     
     private let tableView: UITableView = {
         let table = UITableView()
@@ -22,9 +23,10 @@ class UtilitiesMessageChatViewController: UIViewController  {
         return table
     }()
     
-    init(name: String, email: String) {
+    init(name: String, email: String, conversationId: String) {
         self.otherName = name
         self.otherEmail = email
+        self.conversationId = conversationId
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -66,40 +68,37 @@ class UtilitiesMessageChatViewController: UIViewController  {
     }
     
     func createTableHeader() -> UIView? {
-        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
-                    return nil
-                }
-                
-                let safeEmail = DatabaseManager.safeEmail(emailAddress: otherEmail)
-                let filename = otherEmail + "_profile_picture.png"
-                let path = "images/" + filename;
-                
-                let headerView = UIView(frame: CGRect(x: 0, y: 0,
-                                                      width: view.width,
-                                                      height: 120))
-                headerView.backgroundColor = .systemBackground
+        
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: otherEmail)
+        let filename = otherEmail + "_profile_picture.png"
+        let path = "images/" + filename;
+        
+        let headerView = UIView(frame: CGRect(x: 0, y: 0,
+                                              width: view.width,
+                                              height: 120))
+        headerView.backgroundColor = .systemBackground
                 
         let imageView = UIImageView(frame: CGRect(x: (headerView.width-80)/2, y: (headerView.height-80)/2, width: 80, height: 80))
                 
-                // styles
-                imageView.backgroundColor = .white
-                imageView.contentMode = .scaleAspectFill
-                imageView.layer.borderColor = UIColor.white.cgColor
-                imageView.layer.borderWidth = 3
-                imageView.layer.masksToBounds = true
-                imageView.layer.cornerRadius = imageView.width/2
-                headerView.addSubview(imageView)
-                
-                StorageManager.shared.downloadUrl(for: path, completion: { result in
-                    switch result {
-                    case .success(let url):
-                        imageView.sd_setImage(with: url, completed: nil)
-                    case .failure(let error):
-                        print("Failed to get download url with error: \(error)")
-                    }
-                })
-                
-                return headerView
+        // styles
+        imageView.backgroundColor = .white
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderWidth = 3
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = imageView.width/2
+        headerView.addSubview(imageView)
+        
+        StorageManager.shared.downloadUrl(for: path, completion: { result in
+            switch result {
+            case .success(let url):
+                imageView.sd_setImage(with: url, completed: nil)
+            case .failure(let error):
+                print("Failed to get download url with error: \(error)")
+            }
+        })
+        
+        return headerView
     }
     
     func createUtilOptions() {
@@ -110,14 +109,21 @@ class UtilitiesMessageChatViewController: UIViewController  {
                                                    title: "Email: \(otherEmail)",
                                                    handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,
-                                                   title: "Nicknames",
+                                                   title: "Nicknames -- In Beta, coming soon!",
                                                    handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
                                                    title: "Create chat group",
                                                    handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
                                                    title: "Search message in conversation",
-                                                   handler: nil))
+                                                   handler: { [weak self] in
+            guard let strongSelf = self else { return }
+            
+            let vc = SearchMessageInConversationViewController(email: strongSelf.otherEmail, name: strongSelf.otherName, conversationId: strongSelf.conversationId)
+            let nav = UINavigationController(rootViewController: vc)
+            self?.present(nav, animated: true)
+            
+        }))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
                                                    title: "Block",
                                                    handler: nil))
