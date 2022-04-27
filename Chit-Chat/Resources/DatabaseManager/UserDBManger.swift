@@ -93,7 +93,7 @@ extension DatabaseManager {
                         "id" : user.id,
                         "first_name": user.firstName,
                         "last_name" : user.lastName,
-                        "email": user.safeEmail,
+                        "email": user.email,
                         "bio" : user.bio,
                         "dob" : user.dob,
                         "is_male" : user.isMale,
