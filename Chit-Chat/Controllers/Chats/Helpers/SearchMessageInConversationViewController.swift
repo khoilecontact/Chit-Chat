@@ -10,7 +10,9 @@ import JGProgressHUD
 
 final class SearchMessageInConversationViewController: UIViewController {
     
-    private let data: IMessInConversationResponse? = nil
+    private let spinner = JGProgressHUD(style: .dark)
+    
+    private var data: IMessInConversationResponse? = nil
     
     public let otherUserEmail: String
     public let otherUserName: String
@@ -18,6 +20,8 @@ final class SearchMessageInConversationViewController: UIViewController {
     
     private let tableView: UITableView = {
         let table = UITableView()
+        table.register(TextInConversationViewCell.self, forCellReuseIdentifier: TextInConversationViewCell.identifier)
+        table.rowHeight = 80
         table.isHidden = true
         return table
     }()
@@ -49,7 +53,18 @@ final class SearchMessageInConversationViewController: UIViewController {
         self.title = "Search in conversation"
 
         navBar()
+        subViews()
+        tableDelegate()
         showInputDialog()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
+        noResultLabel.frame = CGRect(x: 10,
+                                           y: (view.height-100)/2,
+                                           width: view.width-20,
+                                           height: 100)
     }
     
     func navBar() {
@@ -61,6 +76,11 @@ final class SearchMessageInConversationViewController: UIViewController {
         view.addSubview(noResultLabel)
     }
     
+    func tableDelegate() {
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
     func showInputDialog() {
         let alert = UIAlertController(title: "Enter message", message: nil, preferredStyle: .alert)
         alert.addTextField { textField in
@@ -70,14 +90,46 @@ final class SearchMessageInConversationViewController: UIViewController {
         
         alert.addAction(UIAlertAction(title: "Find", style: .default, handler: { [weak alert] (_) in
             guard let textField = alert?.textFields?[0], let queryText = textField.text else { return }
-            print("text: \(queryText)")
-            self.showConversation()
+            self.fetchTextInConversation(query: queryText)
+            // self.showConversation()
         }))
         
         self.present(alert, animated: true, completion: nil)
     }
     
-    func showConversation() {
+    func fetchTextInConversation(query: String) {
+        
+        self.spinner.show(in: view)
+        
+        Task {
+            
+            do {
+                
+                let textInConversation: IMessInConversationResponse? = try await ServiceManager.shared.findTextInConversation(conversationID: conversationId, query: query)
+                
+                if textInConversation?.total != 0 {
+                    self.spinner.dismiss()
+                    // recall to show conversation
+                    self.data = textInConversation
+                    self.screenState(with: true)
+                    tableView.reloadData()
+                }
+                else {
+                    self.screenState(with: false)
+                }
+                
+                self.spinner.dismiss()
+                
+            } catch {
+                self.spinner.dismiss()
+                self.screenState(with: false)
+                print("Request failed with error: \(error)")
+            }
+            
+        }
+    }
+    
+    func showConversation(position: Int?) {
         let vc = MessageChatViewController(with: self.otherUserEmail, name: self.otherUserName, id: self.conversationId, messagePosition: 5)
         vc.title = self.otherUserName
         self.navigationController?.pushViewController(vc, animated: true)
@@ -96,5 +148,19 @@ final class SearchMessageInConversationViewController: UIViewController {
     
     @objc func dismissSelf() {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+extension SearchMessageInConversationViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return data?.total ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let model: IMessInConversation = (data?.result[indexPath.row])!
+        let cell = tableView.dequeueReusableCell(withIdentifier: TextInConversationViewCell.identifier, for: indexPath) as! TextInConversationViewCell
+        // config cell
+        cell.configure(with: model)
+        return cell
     }
 }
