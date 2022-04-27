@@ -112,7 +112,7 @@ final class SearchMessageInConversationViewController: UIViewController {
                     // recall to show conversation
                     self.data = textInConversation
                     self.screenState(with: true)
-                    tableView.reloadData()
+                    self.configureTableView(query: query, total: textInConversation!.total)
                 }
                 else {
                     self.screenState(with: false)
@@ -129,10 +129,36 @@ final class SearchMessageInConversationViewController: UIViewController {
         }
     }
     
+    func createTableHeader(query: String, total: Int) -> UIView? {
+        
+        let headerView = UIView(frame: CGRect(x: 0, y: 0,
+                                              width: view.width,
+                                              height: 120))
+        headerView.backgroundColor = .systemBackground
+                
+        let titleView = UILabel(frame: CGRect(x: (headerView.width-80)/2, y: (headerView.height-80)/2, width: headerView.width - 20, height: 30))
+        titleView.text = "Result for \"\(query)\""
+        
+        let totalView = UILabel(frame: CGRect(x: headerView.left+30, y: titleView.bottom+10, width: headerView.width - 20, height: 30))
+        totalView.text = "\(total)"
+                
+        // styles
+        
+        headerView.addSubview(titleView)
+        headerView.addSubview(totalView)
+        
+        return headerView
+    }
+    
     func showInConversation(position: Int?) {
         let vc = MessageChatViewController(with: self.otherUserEmail, name: self.otherUserName, id: self.conversationId, messagePosition: position)
         vc.title = self.otherUserName
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func configureTableView(query: String, total: Int) {
+        tableView.tableHeaderView = createTableHeader(query: query, total: total)
+        tableView.reloadData()
     }
     
     func screenState(with notEmpty: Bool) {
