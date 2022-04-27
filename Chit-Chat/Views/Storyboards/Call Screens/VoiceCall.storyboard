@@ -49,7 +49,7 @@
                                 <rect key="frame" x="269" y="691" width="67" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="speaker">
+                                <buttonConfiguration key="configuration" style="plain" image="speakerSmall">
                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="small"/>
                                 </buttonConfiguration>
                                 <connections>
@@ -78,6 +78,6 @@
         <image name="mic" width="220" height="220"/>
         <image name="mic_pressed" width="220" height="220"/>
         <image name="mute" width="204" height="204"/>
-        <image name="speaker" width="50" height="50"/>
+        <image name="speakerSmall" width="50" height="50"/>
     </resources>
 </document>

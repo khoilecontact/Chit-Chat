@@ -22,11 +22,11 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
     
     @IBAction func didClickSpeakerButton(_ sender: UIButton) {
         if sender.isSelected {
-            SetSessionPlayerOn()
-            speakerButton.setImage(UIImage(named: "speaker"), for: .normal)
-        } else {
             SetSessionPlayerOff()
             speakerButton.setImage(UIImage(named: "speakerSmall"), for: .normal)
+        } else {
+            SetSessionPlayerOn()
+            speakerButton.setImage(UIImage(named: "speaker"), for: .normal)
         }
         
         sender.isSelected.toggle()

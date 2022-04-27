@@ -505,9 +505,9 @@ class OtherUserViewController: UIViewController {
         guard let user = self.otherUser else { return }
         let userNode: UserNode = user.toUserNode()
         
-        let alert = UIAlertController()
-        alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: {_ in
-            DatabaseManager.shared.deniesFriendRequest(with: userNode, completion: { result in
+        let alert = UIAlertController(title: "Revoke request?", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Confirm", style: .destructive, handler: {_ in
+            DatabaseManager.shared.revokeFriendRequest(with: userNode, completion: { result in
                 switch result {
                 case .failure( _):
                     let secondAlert = UIAlertController(title: "Failed", message: "Failed to revoke request", preferredStyle: .alert)
@@ -531,6 +531,8 @@ class OtherUserViewController: UIViewController {
                 }
             })
         }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        self.present(alert, animated: true)
     }
     
     @objc func friendStatusButtonTapped() {
@@ -599,6 +601,7 @@ class OtherUserViewController: UIViewController {
                     switch result {
                     case .success(_):
                         self?.dismiss(animated: true)
+                        self?.initLayout()
                         break
 
                     case .failure(let err):
