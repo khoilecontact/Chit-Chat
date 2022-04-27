@@ -129,8 +129,8 @@ final class SearchMessageInConversationViewController: UIViewController {
         }
     }
     
-    func showConversation(position: Int?) {
-        let vc = MessageChatViewController(with: self.otherUserEmail, name: self.otherUserName, id: self.conversationId, messagePosition: 5)
+    func showInConversation(position: Int?) {
+        let vc = MessageChatViewController(with: self.otherUserEmail, name: self.otherUserName, id: self.conversationId, messagePosition: position)
         vc.title = self.otherUserName
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -162,5 +162,9 @@ extension SearchMessageInConversationViewController: UITableViewDelegate, UITabl
         // config cell
         cell.configure(with: model)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        showInConversation(position: data?.result[indexPath.row].position)
     }
 }
