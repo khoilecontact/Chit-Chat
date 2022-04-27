@@ -206,7 +206,7 @@ extension DatabaseManager {
                 }
                 
                 // request sender
-                strongSelf.database.child("Users/\(otherSafeEmail)").observe(.value) { otherSnapshot in
+                strongSelf.database.child("Users/\(otherSafeEmail)").observeSingleEvent(of: .value) { otherSnapshot in
                     // request sender
                     guard let otherValue = otherSnapshot.value as? [String: Any] else {
                         print("Failed to fetch sender profile")
@@ -290,7 +290,7 @@ extension DatabaseManager {
                 })
                 
                 // request sender
-                strongSelf.database.child("Users/\(otherSafeEmail)").observe(.value) { snapshot in
+                strongSelf.database.child("Users/\(otherSafeEmail)").observeSingleEvent(of: .value) { snapshot in
                     // request sender
                     guard let otherValue = snapshot.value as? [String: Any] else {
                         print("Failed to fetch sender profile")
@@ -365,7 +365,7 @@ extension DatabaseManager {
                 })
                 
                 // request sender
-                strongSelf.database.child("Users/\(otherSafeEmail)").observe(.value) { snapshot in
+                strongSelf.database.child("Users/\(otherSafeEmail)").observeSingleEvent(of: .value) { snapshot in
                     // request sender
                     guard let otherValue = snapshot.value as? [String: Any] else {
                         print("Failed to fetch sender profile")
@@ -440,7 +440,7 @@ extension DatabaseManager {
                 })
                 
                 // other person
-                strongSelf.database.child("Users/\(otherSafeEmail)").observe(.value) { snapshot in
+                strongSelf.database.child("Users/\(otherSafeEmail)").observeSingleEvent(of: .value) { snapshot in
                     // request sender
                     guard let otherValue = snapshot.value as? [String: Any] else {
                         print("Failed to fetch sender profile")
@@ -458,7 +458,7 @@ extension DatabaseManager {
                         })
                         
                         for index in 0 ..< otherFriendRequestList.count {
-                            if otherFriendRequestList.count > 0 && index <= otherFriendRequestList.count && otherRequest.count > 0 {
+                            if otherFriendRequestList.count > 0 && index < otherFriendRequestList.count && otherRequest.count > 0 {
                                 if otherRequest[0] as NSDictionary == otherFriendRequestList[index] as NSDictionary {
                                     otherFriendRequestList.remove(at: index)
                                 }

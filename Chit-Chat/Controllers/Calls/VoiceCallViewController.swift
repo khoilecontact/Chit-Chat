@@ -105,20 +105,32 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
 
     func initializeAndJoinChannel() {
          // Pass in your App ID here
-         agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: "cf8f308e1fb3430e8dd8a4bbf0dcbf6e", delegate: self)
+        agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: API.appID, delegate: self)
+        
+        let agora = AgoraChannel()
+        
+        let joinChannel = JoinChannel(self.agoraKit, agoraChannel: agora, completion: {})
 
         let email = UserDefaults.standard.value(forKey: "email")
-        let agoraRTM = AgoraRtmKit(appId: "cf8f308e1fb3430e8dd8a4bbf0dcbf6e", delegate: self)
+        let agoraRTM = AgoraRtmKit(appId: AgoraChannel.appID, delegate: self)
         
-        agoraRTM?.login(byToken: "c5165f9e86314a33bc5c3ce976472c81", user: email as! String, completion: { err in
+        agoraRTM?.login(byToken: AgoraChannel.token, user: email as! String, completion: { err in
             
         })
         
-        let lobbyChannel = agoraRTM?.createChannel(withId: "lobby", delegate: nil)
-        
-         // Join the channel with a token. Pass in your token and channel name here
-         agoraKit?.joinChannel(byToken: "006cf8f308e1fb3430e8dd8a4bbf0dcbf6eIABjNdqResWhwqnusa2+oNX4o84cyO5uB2IqFLvl43LEZ5pjTicAAAAAEAB1KdkmBh5kYgEAAQAGHmRi", channelId: "Testing", info: nil, uid: 0, joinSuccess: { (channel, uid, elapsed) in
-         })
+        AgoraChannel.shared.createChannel(completion: { result in
+            switch result {
+            case .failure(_):
+                print("Error in creating new channel")
+                break
+            
+            case .success(_):
+                DispatchQueue.main.async {
+                    joinChannel.connect()
+                }
+            }
+        })
+       
      }
     
     func SetSessionPlayerOn()

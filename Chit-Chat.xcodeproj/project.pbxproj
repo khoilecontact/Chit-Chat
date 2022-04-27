@@ -14,6 +14,7 @@
 		222411F027C1EAA500C5E416 /* DarkModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411EF27C1EAA500C5E416 /* DarkModeViewController.swift */; };
 		222411F327C3359500C5E416 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411F227C3359500C5E416 /* ChangePasswordViewController.swift */; };
 		222411F827C7345E00C5E416 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411F727C7345D00C5E416 /* ForgotPasswordViewController.swift */; };
+		22256D4E281904F900F2F001 /* ChannelToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22256D4D281904F900F2F001 /* ChannelToken.swift */; };
 		22353CF128119A9B002CC6FC /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22353CF028119A9B002CC6FC /* Group.swift */; };
 		22353CF328119CF2002CC6FC /* GroupDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22353CF228119CF2002CC6FC /* GroupDBManager.swift */; };
 		225E476127D9E1B000F71938 /* OtherUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E476027D9E1B000F71938 /* OtherUserViewController.swift */; };
@@ -113,6 +114,7 @@
 		222411EF27C1EAA500C5E416 /* DarkModeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeViewController.swift; sourceTree = "<group>"; };
 		222411F227C3359500C5E416 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		222411F727C7345D00C5E416 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
+		22256D4D281904F900F2F001 /* ChannelToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelToken.swift; sourceTree = "<group>"; };
 		22353CF028119A9B002CC6FC /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		22353CF228119CF2002CC6FC /* GroupDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDBManager.swift; sourceTree = "<group>"; };
 		225E476027D9E1B000F71938 /* OtherUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserViewController.swift; sourceTree = "<group>"; };
@@ -509,6 +511,7 @@
 			isa = PBXGroup;
 			children = (
 				DA28940427C2734F00011900 /* ProvincesVN.swift */,
+				22256D4D281904F900F2F001 /* ChannelToken.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -830,6 +833,7 @@
 				22714E6F277D5D4F0004F942 /* Chit_Chat.xcdatamodeld in Sources */,
 				DAE31CF127B22AD40035E65B /* FriendsCell.swift in Sources */,
 				DA8C20F827B258EE00C1F35F /* NewFriendsViewCell.swift in Sources */,
+				22256D4E281904F900F2F001 /* ChannelToken.swift in Sources */,
 				DA0FDCF92802D79900FAB798 /* ServicesManager.swift in Sources */,
 				DAEE3D5D27BC0A6F00334E06 /* LocationPickerViewController.swift in Sources */,
 				DA8C20F627B258A400C1F35F /* FriendsModel.swift in Sources */,
