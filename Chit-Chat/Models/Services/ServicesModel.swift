@@ -29,5 +29,19 @@ struct IMessInConversationResponse: Codable {
 
 struct IMessInConversation: Codable, Hashable {
     let position: Int
+    let sender: ISender
     let message: IMess
+}
+
+struct ISender: Codable, Hashable {
+    // extends from UserNode by key
+    let id: String
+    let first_name: String
+    let last_name: String
+    let province: String
+    let district: String
+    let bio: String
+    let email: String
+    let dob: String
+    let is_male: Bool
 }

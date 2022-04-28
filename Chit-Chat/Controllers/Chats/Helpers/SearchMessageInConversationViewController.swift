@@ -7,6 +7,7 @@
 
 import UIKit
 import JGProgressHUD
+import Toast_Swift
 
 final class SearchMessageInConversationViewController: UIViewController {
     
@@ -90,6 +91,10 @@ final class SearchMessageInConversationViewController: UIViewController {
         
         alert.addAction(UIAlertAction(title: "Find", style: .default, handler: { [weak alert] (_) in
             guard let textField = alert?.textFields?[0], let queryText = textField.text else { return }
+            guard queryText != "" else {
+                self.view.makeToast("Please input message")
+                return self.showInputDialog()
+            }
             self.fetchTextInConversation(query: queryText)
             // self.showConversation()
         }))
@@ -131,20 +136,16 @@ final class SearchMessageInConversationViewController: UIViewController {
     
     func createTableHeader(query: String, total: Int) -> UIView? {
         
+        title = "Result for \"\(query)\""
+        
         let headerView = UIView(frame: CGRect(x: 0, y: 0,
                                               width: view.width,
-                                              height: 120))
-        headerView.backgroundColor = .systemBackground
-                
-        let titleView = UILabel(frame: CGRect(x: (headerView.width-80)/2, y: (headerView.height-80)/2, width: headerView.width - 20, height: 30))
-        titleView.text = "Result for \"\(query)\""
+                                              height: 48))
+        headerView.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 0.5)
         
-        let totalView = UILabel(frame: CGRect(x: headerView.left+30, y: titleView.bottom+10, width: headerView.width - 20, height: 30))
-        totalView.text = "\(total)"
-                
-        // styles
+        let totalView = UILabel(frame: CGRect(x: headerView.left+20, y: 10, width: headerView.width - 20, height: 30))
+        totalView.text = "\(total) \(total > 1 ? "messages" : "message")"
         
-        headerView.addSubview(titleView)
         headerView.addSubview(totalView)
         
         return headerView
