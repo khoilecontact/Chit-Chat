@@ -69,7 +69,7 @@ class UtilitiesMessageChatViewController: UIViewController  {
     
     func createTableHeader() -> UIView? {
         
-        let safeEmail = DatabaseManager.safeEmail(emailAddress: otherEmail)
+        //        let safeEmail = DatabaseManager.safeEmail(emailAddress: otherEmail)
         let filename = otherEmail + "_profile_picture.png"
         let path = "images/" + filename;
         

@@ -13,13 +13,13 @@ class TextInConversationViewCell: UITableViewCell {
     
     private let userNameLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 21, weight: .semibold)
+        label.font = .systemFont(ofSize: 18, weight: .semibold)
         return label
     }()
     
     private let userMessageLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 19, weight: .regular)
+        label.font = .systemFont(ofSize: 16, weight: .regular)
         label.numberOfLines = 0
         return label
     }()
@@ -39,12 +39,12 @@ class TextInConversationViewCell: UITableViewCell {
         
         userNameLabel.frame = CGRect(x: contentView.left + 20,
                                      y: 10,
-                                     width: contentView.width - 20,
+                                     width: contentView.width - 40,
                                      height: (contentView.height - 20)/2)
         
         userMessageLabel.frame = CGRect(x: contentView.left + 20,
-                                        y: userNameLabel.bottom + 10,
-                                        width: contentView.width - 20,
+                                        y: userNameLabel.bottom + 5,
+                                        width: contentView.width - 40,
                                         height: (contentView.height - 20)/2)
     }
     
