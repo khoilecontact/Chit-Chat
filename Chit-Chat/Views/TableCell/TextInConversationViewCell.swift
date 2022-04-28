@@ -51,7 +51,7 @@ class TextInConversationViewCell: UITableViewCell {
     // MARK: - Configure Conversations
     public func configure(with model: IMessInConversation) {
         
-        userNameLabel.text = "Sender: "
+        userNameLabel.text = "Sender: \(model.sender.first_name) \(model.sender.last_name)"
         userMessageLabel.text = model.message.content
         
         //        let url = URL(string: "https://github.com/khoilecontact.png?size=400")
