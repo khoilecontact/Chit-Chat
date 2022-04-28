@@ -22,6 +22,7 @@ pod 'GoogleSignIn'
 pod 'MessageKit'
 pod 'JGProgressHUD'
 pod 'SDWebImage'
+pod 'Toast-Swift', '~> 5.0.1'
 
 # Agora
 pod 'AgoraUIKit_iOS'
