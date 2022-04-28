@@ -10,6 +10,7 @@ import Firebase
 import FirebaseAuth
 import JGProgressHUD
 
+
 class ChatViewController: UIViewController {
     
     private var conversations = [MessagesCollection]()
@@ -45,6 +46,7 @@ class ChatViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        
         navBar()
         
         // subviews

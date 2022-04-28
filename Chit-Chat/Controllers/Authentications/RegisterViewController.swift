@@ -33,7 +33,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person.circle")
         imageView.tintColor = Appearance.tint
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
         return imageView

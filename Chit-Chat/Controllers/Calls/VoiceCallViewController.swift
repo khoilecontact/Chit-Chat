@@ -54,6 +54,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
         super.viewDidLoad()
         configView()
         initializeAndJoinChannel()
+        SetSessionPlayerOff()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -105,7 +106,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
 
     func initializeAndJoinChannel() {
          // Pass in your App ID here
-        agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: API.appID, delegate: self)
+        agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: AgoraChannel.appID, delegate: self)
         
         let agora = AgoraChannel()
         
@@ -113,6 +114,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
 
         let email = UserDefaults.standard.value(forKey: "email")
         let agoraRTM = AgoraRtmKit(appId: AgoraChannel.appID, delegate: self)
+        
         
         agoraRTM?.login(byToken: AgoraChannel.token, user: email as! String, completion: { err in
             
