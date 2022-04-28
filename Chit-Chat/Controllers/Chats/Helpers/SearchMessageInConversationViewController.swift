@@ -136,12 +136,12 @@ final class SearchMessageInConversationViewController: UIViewController {
     
     func createTableHeader(query: String, total: Int) -> UIView? {
         
+        title = "Result for \"\(query)\""
+        
         let headerView = UIView(frame: CGRect(x: 0, y: 0,
                                               width: view.width,
-                                              height: 45))
+                                              height: 48))
         headerView.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 0.5)
-                
-        title = "Result for \"\(query)\""
         
         let totalView = UILabel(frame: CGRect(x: headerView.left+20, y: 10, width: headerView.width - 20, height: 30))
         totalView.text = "\(total) \(total > 1 ? "messages" : "message")"
