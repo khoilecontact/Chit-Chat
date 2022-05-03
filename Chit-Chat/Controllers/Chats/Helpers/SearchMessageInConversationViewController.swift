@@ -141,10 +141,10 @@ final class SearchMessageInConversationViewController: UIViewController {
         let headerView = UIView(frame: CGRect(x: 0, y: 0,
                                               width: view.width,
                                               height: 48))
-        headerView.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 0.5)
+        headerView.backgroundColor = GeneralSettings.primaryColor
         
         let totalView = UILabel(frame: CGRect(x: headerView.left+20, y: 10, width: headerView.width - 20, height: 30))
-        totalView.text = "\(total) \(total > 1 ? "messages" : "message")"
+        totalView.text = (total > 1) ? "\(total) messages" : "\(total) message"
         
         headerView.addSubview(totalView)
         

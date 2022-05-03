@@ -13,6 +13,7 @@ import FirebaseDatabase
 class FriendsViewController: UIViewController {
     
     private var friends = [UserNode]()
+    private var results = [UserNode]()
     
     private let tabNumber: Bool = false
     
@@ -29,6 +30,16 @@ class FriendsViewController: UIViewController {
         table.isHidden = false
         table.register(FriendsCell.self, forCellReuseIdentifier: FriendsCell.identifier)
         return table
+    }()
+    
+    private let noResultsLabel: UILabel = {
+        let label = UILabel()
+        label.isHidden = true
+        label.text = "No Results"
+        label.textColor = .green
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 21, weight: .medium)
+        return label
     }()
     
     override func viewDidLoad() {
@@ -50,6 +61,10 @@ class FriendsViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
+        noResultsLabel.frame = CGRect(x: view.width/4,
+                                      y: (view.height-200)/2,
+                                      width: view.width/2,
+                                      height: 200)
     }
     
     func navigationBar() {
@@ -96,21 +111,36 @@ class FriendsViewController: UIViewController {
         }
     }
     
+    func subLayouts() {
+        view.addSubview(tableView)
+        view.addSubview(noResultsLabel)
+    }
+    
     func setupSearchBar() {
         searchBar.delegate = self
         // searchBar.becomeFirstResponder()
     }
     
     func setupTableView() {
-        view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    func screenState(with notEmpty: Bool) {
+        if notEmpty {
+            tableView.isHidden = false
+            noResultsLabel.isHidden = true
+        }
+        else {
+            tableView.isHidden = true
+            noResultsLabel.isHidden = false
+        }
     }
     
     func openConversation(_ model: UserNode) {
         // open chat space
         var conversationId = ""
-        let database = Database.database(url: "https://chit-chat-fc877-default-rtdb.asia-southeast1.firebasedatabase.app").reference()
+        let database = Database.database(url: GeneralSettings.databaseUrl).reference()
         
         let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: model.email)
         guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else {
@@ -168,6 +198,8 @@ class FriendsViewController: UIViewController {
                             dob: dob ?? "",
                             isMale: isMale)
         }
+        
+        results = friends
     }
     
     @objc func findNewFriend() {
@@ -187,7 +219,7 @@ class FriendsViewController: UIViewController {
 // MARK: - Config TableView
 extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return friends.count
+        return results.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -209,7 +241,6 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         convertUserNodeToUser(with: self.friends[indexPath.row] , completion: { user in
-            // KhoiLe fixed - not Phat
             let vc = OtherUserViewController(otherUser: user)
             self.navigationController?.pushViewController(vc, animated: true)
         })
@@ -278,5 +309,69 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: - Config SeachBar
 extension FriendsViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let text = searchBar.text, !text.replacingOccurrences(of: " ", with: "").isEmpty else {
+            return
+        }
+        
+        searchBar.resignFirstResponder()
+        
+        spinner.show(in: view)
+        
+        searchUser(query: text)
+        
+        spinner.dismiss()
+    }
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text, !text.replacingOccurrences(of: " ", with: "").isEmpty else {
+            return
+        }
+        
+        searchBar.resignFirstResponder()
+        
+        spinner.show(in: view)
+        
+        searchUser(query: text)
+        
+        spinner.dismiss()
+    }
+    
+    func searchUser(query: String) {
+        
+        filterUsers(with: query)
+        
+        // update UI
+    }
+    
+    func filterUsers(with term: String) {
+        // need to test
+        
+        guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            return
+        }
+        
+        self.results = friends.filter({
+            guard let email = ($0.email as? String)?.lowercased(), email != currentUserEmail else {
+                return false
+            }
+            
+            guard let name = "\($0.firstName.lowercased()) \($0.lastName.lowercased())" as? String else {
+                return false
+            }
+            
+            return name.hasPrefix(term.lowercased()) || email.hasPrefix(term.lowercased())
+        })
+
+        updateUI()
+    }
+    
+    func updateUI() {
+        if friends.isEmpty {
+            screenState(with: false)
+        } else {
+            screenState(with: true)
+            tableView.reloadData()
+        }
+    }
 }

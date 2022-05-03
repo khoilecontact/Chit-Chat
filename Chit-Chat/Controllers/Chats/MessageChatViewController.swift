@@ -150,7 +150,7 @@ class MessageChatViewController: MessagesViewController {
     
     func addLeftBarButtonItems() {
         
-        let backItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")?.withTintColor(UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(backBtnTapped))
+        let backItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")?.withTintColor(GeneralSettings.primaryColor, renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(backBtnTapped))
         
         // let otherBtn = UIBarButtonItem(image: otherUserAvatar.image, style: .plain, target: nil, action: nil)
         let otherBtn = UIBarButtonItem(customView: otherUserAvatar)
@@ -161,12 +161,12 @@ class MessageChatViewController: MessagesViewController {
     func addRightBarButtonItems()
     {
         let btnContact = UIButton.init(type: .custom)
-        let contactIcon = resizeImage(image: (UIImage(systemName: "phone.fill")?.withTintColor(UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1), renderingMode: .alwaysOriginal))!, targetSize: CGSize(width: 22, height: 22))
+        let contactIcon = resizeImage(image: (UIImage(systemName: "phone.fill")?.withTintColor(GeneralSettings.primaryColor, renderingMode: .alwaysOriginal))!, targetSize: CGSize(width: 22, height: 22))
         btnContact.setImage(contactIcon, for: .normal)
         btnContact.addTarget(self, action: #selector(contactBtnTapped), for: .touchUpInside)
         
         let btnMenu = UIButton.init(type: .custom)
-        let menuIcon = resizeImage(image: (UIImage(systemName: "ellipsis.circle")?.withTintColor(UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1), renderingMode: .alwaysOriginal))!, targetSize: CGSize(width: 22, height: 22))
+        let menuIcon = resizeImage(image: (UIImage(systemName: "ellipsis.circle")?.withTintColor(GeneralSettings.primaryColor, renderingMode: .alwaysOriginal))!, targetSize: CGSize(width: 22, height: 22))
         btnMenu.setImage(menuIcon, for: .normal)
         btnMenu.addTarget(self, action: #selector(menuBtnTapped), for: .touchUpInside)
         
@@ -230,7 +230,7 @@ class MessageChatViewController: MessagesViewController {
          messageInputBar.isTranslucent = false
          messageInputBar.separatorLine.isHidden = true
          messageInputBar.inputTextView.tintColor = .black
-         messageInputBar.inputTextView.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 0.5)
+         messageInputBar.inputTextView.backgroundColor = GeneralSettings.primaryColor
          // messageInputBar.inputTextView.placeholderTextColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
          messageInputBar.inputTextView.textContainerInset = UIEdgeInsets(top: 8, left: 16, bottom: 0, right: 36)
          messageInputBar.inputTextView.placeholderLabelInsets = UIEdgeInsets(top: 8, left: 20, bottom: 0, right: 36)
@@ -296,7 +296,7 @@ class MessageChatViewController: MessagesViewController {
         messageInputBar.inputTextView.placeholder = "Type messages ..."
         messageInputBar.inputTextView.placeholderTextColor = .black
         
-        messageInputBar.backgroundView.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
+        messageInputBar.backgroundView.backgroundColor = GeneralSettings.primaryColor
         
         messageInputBar.backgroundView.layer.cornerRadius = 16
         

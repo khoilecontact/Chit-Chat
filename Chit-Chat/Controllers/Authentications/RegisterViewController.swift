@@ -507,7 +507,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
                     })
                     
                     // Remove user from Database
-                    Database.database(url: "https://chit-chat-fc877-default-rtdb.asia-southeast1.firebasedatabase.app").reference()
+                    Database.database(url: GeneralSettings.databaseUrl).reference()
                         .child("Unverified_users")
                         .child(DatabaseManager.safeEmail(emailAddress: email)).removeValue()
                     

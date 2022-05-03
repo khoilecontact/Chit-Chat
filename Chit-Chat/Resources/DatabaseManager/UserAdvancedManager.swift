@@ -17,7 +17,7 @@ final class UserAdvancedManager {
     //force to use this init
     private init() {}
     
-    private let database = Database.database(url: "https://chit-chat-fc877-default-rtdb.asia-southeast1.firebasedatabase.app").reference()
+    private let database = Database.database(url: GeneralSettings.databaseUrl).reference()
     
     static func safeEmail(emailAddress: String) -> String {
         var safeEmail = emailAddress.replacingOccurrences(of: ".", with: ",")

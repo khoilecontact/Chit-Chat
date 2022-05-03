@@ -227,7 +227,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         let seeProfileAction = UIContextualAction(style: .destructive, title: "See Profile") { action, view, handler in
             // code
         }
-        seeProfileAction.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
+        seeProfileAction.backgroundColor = GeneralSettings.primaryColor
         
         let configuration = UISwipeActionsConfiguration(actions: [seeProfileAction])
         configuration.performsFirstActionWithFullSwipe = true

@@ -64,6 +64,7 @@
 		DA20B66D27E9D5EA00F869E6 /* ConversationsDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA20B66C27E9D5EA00F869E6 /* ConversationsDBManager.swift */; };
 		DA20B66F27E9D63E00F869E6 /* FriendsOfUserDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA20B66E27E9D63E00F869E6 /* FriendsOfUserDBManager.swift */; };
 		DA25C3C727B252190004FE2B /* FindNewFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA25C3C627B252190004FE2B /* FindNewFriendsViewController.swift */; };
+		DA2861862820CFBD003A0FCA /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2861852820CFBD003A0FCA /* GeneralSettings.swift */; };
 		DA28940527C2734F00011900 /* ProvincesVN.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA28940427C2734F00011900 /* ProvincesVN.swift */; };
 		DA3056CD2805321E001E87DA /* ServicesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3056CC2805321E001E87DA /* ServicesModel.swift */; };
 		DA3056CF28053396001E87DA /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3056CE28053396001E87DA /* SwiftyJSON.swift */; };
@@ -173,6 +174,7 @@
 		DA20B66C27E9D5EA00F869E6 /* ConversationsDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsDBManager.swift; sourceTree = "<group>"; };
 		DA20B66E27E9D63E00F869E6 /* FriendsOfUserDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsOfUserDBManager.swift; sourceTree = "<group>"; };
 		DA25C3C627B252190004FE2B /* FindNewFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNewFriendsViewController.swift; sourceTree = "<group>"; };
+		DA2861852820CFBD003A0FCA /* GeneralSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettings.swift; sourceTree = "<group>"; };
 		DA28940427C2734F00011900 /* ProvincesVN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvincesVN.swift; sourceTree = "<group>"; };
 		DA3056CC2805321E001E87DA /* ServicesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesModel.swift; sourceTree = "<group>"; };
 		DA3056CE28053396001E87DA /* SwiftyJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
@@ -428,6 +430,7 @@
 		22CCFE3C279FF50B009F7C8A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DA2861842820CF5C003A0FCA /* GeneralSettings */,
 				22A456E12813FEDE009CB4E6 /* Extensions */,
 				DA6238AA2812969E00006F7D /* ViewPresentTransition */,
 				DA0FDCF72802D65000FAB798 /* Services */,
@@ -505,6 +508,14 @@
 				DA1EFD45280AA22600EB6BAD /* UtilitiesMessageChatViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		DA2861842820CF5C003A0FCA /* GeneralSettings */ = {
+			isa = PBXGroup;
+			children = (
+				DA2861852820CFBD003A0FCA /* GeneralSettings.swift */,
+			);
+			path = GeneralSettings;
 			sourceTree = "<group>";
 		};
 		DA28940327C2728100011900 /* API */ = {
@@ -853,6 +864,7 @@
 				DAEE3D5F27BC0AC900334E06 /* PhotoViewerViewController.swift in Sources */,
 				22A4570D281406D4009CB4E6 /* AppID.swift in Sources */,
 				22A4570C281406D4009CB4E6 /* ProgressIndicator.swift in Sources */,
+				DA2861862820CFBD003A0FCA /* GeneralSettings.swift in Sources */,
 				DA85AF6F27BA5B430005215B /* MeViewController.swift in Sources */,
 				22A456E32813FEED009CB4E6 /* extensionUIView.swift in Sources */,
 				22ACD98527FEE102004DD7AC /* BlackListViewController.swift in Sources */,
