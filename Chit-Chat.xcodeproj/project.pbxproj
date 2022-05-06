@@ -187,6 +187,7 @@
 		DA718D5027A0F6F20020B0C9 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		DA718D5227A127670020B0C9 /* Model_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model_Test.swift; sourceTree = "<group>"; };
 		DA74E6682817A7CB00D4AA30 /* SearchMessageInConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMessageInConversationViewController.swift; sourceTree = "<group>"; };
+		DA7C89CC2824D08A002CDF75 /* Chit-Chat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Chit-Chat.entitlements"; sourceTree = "<group>"; };
 		DA85AF6C27BA585D0005215B /* MessageChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageChatViewController.swift; sourceTree = "<group>"; };
 		DA85AF6E27BA5B430005215B /* MeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeViewController.swift; sourceTree = "<group>"; };
 		DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFriendsViewCell.swift; sourceTree = "<group>"; };
@@ -283,6 +284,7 @@
 		22714E63277D5D4F0004F942 /* Chit-Chat */ = {
 			isa = PBXGroup;
 			children = (
+				DA7C89CC2824D08A002CDF75 /* Chit-Chat.entitlements */,
 				DA1EFD44280AA21000EB6BAD /* ViewModels */,
 				22CCFE3C279FF50B009F7C8A /* Resources */,
 				22CCFE3B279FF4FF009F7C8A /* Controllers */,
@@ -1066,6 +1068,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Chit-Chat/Chit-Chat.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8YHCBYDS83;
@@ -1100,6 +1103,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Chit-Chat/Chit-Chat.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8YHCBYDS83;
