@@ -545,7 +545,7 @@ class OtherUserViewController: UIViewController {
     @objc func messageButtonTapped() {
         guard let user = self.otherUser else { return }
         var conversationId = ""
-        let database = Database.database(url: "https://chit-chat-fc877-default-rtdb.asia-southeast1.firebasedatabase.app").reference()
+        let database = Database.database(url: GeneralSettings.databaseUrl).reference()
         
         let otherSafeEmail = DatabaseManager.safeEmail(emailAddress: user.email)
         guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else {

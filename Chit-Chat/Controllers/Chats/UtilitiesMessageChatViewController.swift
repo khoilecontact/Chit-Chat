@@ -52,7 +52,7 @@ class UtilitiesMessageChatViewController: UIViewController  {
     }
     
     func navBar() {
-        let backItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")?.withTintColor(UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(backBtnTapped))
+        let backItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")?.withTintColor(GeneralSettings.primaryColor, renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(backBtnTapped))
 
         navigationItem.leftBarButtonItem = backItem
     }

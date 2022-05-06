@@ -178,7 +178,7 @@ extension FindNewFriendsViewController: UITableViewDataSource, UITableViewDelega
     //
     //            strongSelf.openConversation(strongSelf.results[indexPath.row])
     //        }
-    //        openConversationAction.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
+    //        openConversationAction.backgroundColor = GeneralSettings.primaryColor
     //
     //        let configuration = UISwipeActionsConfiguration(actions: [openConversationAction])
     //        configuration.performsFirstActionWithFullSwipe = true

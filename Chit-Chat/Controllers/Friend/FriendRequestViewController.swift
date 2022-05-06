@@ -255,7 +255,7 @@ extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegat
     //        let openConversationAction = UIContextualAction(style: .destructive, title: "Chat with") { [weak self] action, view, handler in
     //
     //        }
-    //        openConversationAction.backgroundColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
+    //        openConversationAction.backgroundColor = GeneralSettings.primaryColor
     //
     //        let configuration = UISwipeActionsConfiguration(actions: [openConversationAction])
     //        configuration.performsFirstActionWithFullSwipe = true
