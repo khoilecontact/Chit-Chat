@@ -36,11 +36,14 @@
 		22A45703281406A9009CB4E6 /* SetupVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A45702281406A9009CB4E6 /* SetupVideo.swift */; };
 		22A4570B281406D4009CB4E6 /* JoinChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A45706281406D4009CB4E6 /* JoinChannel.swift */; };
 		22A4570C281406D4009CB4E6 /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A45707281406D4009CB4E6 /* ProgressIndicator.swift */; };
-		22A4570D281406D4009CB4E6 /* AppID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A45708281406D4009CB4E6 /* AppID.swift */; };
 		22A4570E281406D4009CB4E6 /* VideoCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A45709281406D4009CB4E6 /* VideoCallViewController.swift */; };
 		22A4570F281406D4009CB4E6 /* VoiceCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4570A281406D4009CB4E6 /* VoiceCallViewController.swift */; };
 		22A4571A281408D0009CB4E6 /* VideoCall.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A45719281408D0009CB4E6 /* VideoCall.storyboard */; };
 		22A4571C28143CD0009CB4E6 /* VoiceCall.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A4571B28143CD0009CB4E6 /* VoiceCall.storyboard */; };
+		22A905BF282374C300E3DD19 /* AgoraRtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A905BE282374C300E3DD19 /* AgoraRtm.swift */; };
+		22A905C2282374FD00E3DD19 /* AGEError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A905C1282374FD00E3DD19 /* AGEError.swift */; };
+		22A905C42823756200E3DD19 /* CallCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A905C32823756200E3DD19 /* CallCenter.swift */; };
+		22A905C82823828C00E3DD19 /* HungUpReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A905C72823828C00E3DD19 /* HungUpReason.swift */; };
 		22ACD98527FEE102004DD7AC /* BlackListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ACD98427FEE102004DD7AC /* BlackListViewController.swift */; };
 		22CCFE40279FF573009F7C8A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CCFE3F279FF573009F7C8A /* Extensions.swift */; };
 		22CCFE42279FF582009F7C8A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CCFE41279FF582009F7C8A /* StorageManager.swift */; };
@@ -140,11 +143,14 @@
 		22A45702281406A9009CB4E6 /* SetupVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupVideo.swift; sourceTree = "<group>"; };
 		22A45706281406D4009CB4E6 /* JoinChannel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinChannel.swift; sourceTree = "<group>"; };
 		22A45707281406D4009CB4E6 /* ProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
-		22A45708281406D4009CB4E6 /* AppID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppID.swift; sourceTree = "<group>"; };
 		22A45709281406D4009CB4E6 /* VideoCallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallViewController.swift; sourceTree = "<group>"; };
 		22A4570A281406D4009CB4E6 /* VoiceCallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoiceCallViewController.swift; sourceTree = "<group>"; };
 		22A45719281408D0009CB4E6 /* VideoCall.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VideoCall.storyboard; sourceTree = "<group>"; };
 		22A4571B28143CD0009CB4E6 /* VoiceCall.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = VoiceCall.storyboard; sourceTree = "<group>"; };
+		22A905BE282374C300E3DD19 /* AgoraRtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraRtm.swift; sourceTree = "<group>"; };
+		22A905C1282374FD00E3DD19 /* AGEError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AGEError.swift; sourceTree = "<group>"; };
+		22A905C32823756200E3DD19 /* CallCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallCenter.swift; sourceTree = "<group>"; };
+		22A905C72823828C00E3DD19 /* HungUpReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HungUpReason.swift; sourceTree = "<group>"; };
 		22ACD98427FEE102004DD7AC /* BlackListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackListViewController.swift; sourceTree = "<group>"; };
 		22CCFE3F279FF573009F7C8A /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		22CCFE41279FF582009F7C8A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
@@ -359,7 +365,8 @@
 			children = (
 				22A45706281406D4009CB4E6 /* JoinChannel.swift */,
 				22A45707281406D4009CB4E6 /* ProgressIndicator.swift */,
-				22A45708281406D4009CB4E6 /* AppID.swift */,
+				22A905BE282374C300E3DD19 /* AgoraRtm.swift */,
+				22A905C32823756200E3DD19 /* CallCenter.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -372,6 +379,15 @@
 				22A456FB28140699009CB4E6 /* LocalVideoView.swift */,
 			);
 			path = Videos;
+			sourceTree = "<group>";
+		};
+		22A905C0282374EF00E3DD19 /* CallModel */ = {
+			isa = PBXGroup;
+			children = (
+				22A905C1282374FD00E3DD19 /* AGEError.swift */,
+				22A905C72823828C00E3DD19 /* HungUpReason.swift */,
+			);
+			path = CallModel;
 			sourceTree = "<group>";
 		};
 		22ACD98327FEDCFA004DD7AC /* Chats */ = {
@@ -519,6 +535,7 @@
 		DA3056CB280531F7001E87DA /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				22A905C0282374EF00E3DD19 /* CallModel */,
 				DA3056CC2805321E001E87DA /* ServicesModel.swift */,
 			);
 			path = Services;
@@ -818,6 +835,7 @@
 				222411E727B7AB6900C5E416 /* ExternalFunctions.swift in Sources */,
 				DA0D67B427C0C7C20016C4AC /* FriendRequestViewController.swift in Sources */,
 				222411EC27C1EA8900C5E416 /* PersonalInformationViewController.swift in Sources */,
+				22A905BF282374C300E3DD19 /* AgoraRtm.swift in Sources */,
 				DAE31CF027B227980035E65B /* FriendsViewController.swift in Sources */,
 				22F1999627A0E67A00CAE0D5 /* LoginViewController.swift in Sources */,
 				DA6238AC281296CA00006F7D /* PresentTransition.swift in Sources */,
@@ -851,10 +869,10 @@
 				229D21D927EC1AA600537AD6 /* UserAdvancedManager.swift in Sources */,
 				225E476127D9E1B000F71938 /* OtherUserViewController.swift in Sources */,
 				DAEE3D5F27BC0AC900334E06 /* PhotoViewerViewController.swift in Sources */,
-				22A4570D281406D4009CB4E6 /* AppID.swift in Sources */,
 				22A4570C281406D4009CB4E6 /* ProgressIndicator.swift in Sources */,
 				DA85AF6F27BA5B430005215B /* MeViewController.swift in Sources */,
 				22A456E32813FEED009CB4E6 /* extensionUIView.swift in Sources */,
+				22A905C42823756200E3DD19 /* CallCenter.swift in Sources */,
 				22ACD98527FEE102004DD7AC /* BlackListViewController.swift in Sources */,
 				22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */,
 				22A4570F281406D4009CB4E6 /* VoiceCallViewController.swift in Sources */,
@@ -864,6 +882,8 @@
 				DA20B66B27E9D5CA00F869E6 /* UserDBManger.swift in Sources */,
 				DA0D67B627C0C7DF0016C4AC /* FriendRequestViewCell.swift in Sources */,
 				DA37722F280A9E59003E8B88 /* UtilitiesMessageChatViewCell.swift in Sources */,
+				22A905C2282374FD00E3DD19 /* AGEError.swift in Sources */,
+				22A905C82823828C00E3DD19 /* HungUpReason.swift in Sources */,
 				DA718D4D27A0F6CA0020B0C9 /* Conversation.swift in Sources */,
 				222411F027C1EAA500C5E416 /* DarkModeViewController.swift in Sources */,
 				22A4570E281406D4009CB4E6 /* VideoCallViewController.swift in Sources */,
@@ -1059,6 +1079,8 @@
 				DEVELOPMENT_TEAM = 8YHCBYDS83;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Chit-Chat/Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow to take a profile picture";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow access to select a profile picture";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -1093,6 +1115,8 @@
 				DEVELOPMENT_TEAM = 8YHCBYDS83;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Chit-Chat/Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow to take a profile picture";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow access to select a profile picture";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
