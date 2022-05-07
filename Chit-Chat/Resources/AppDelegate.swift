@@ -13,6 +13,11 @@ import GoogleSignIn
 import PushKit
 import UserNotifications
 
+enum Identifiers {
+  static let viewAction = "VIEW_IDENTIFIER"
+  static let newsCategory = "NEWS_CATEGORY"
+}
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -37,8 +42,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #endif
         
         // Pushkit
+        UNUserNotificationCenter.current().delegate = self
+        
         self.registerForPushNotifications()
         self.voipRegistration()
+
         
         return true
     }
@@ -150,23 +158,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         voipRegistry.desiredPushTypes = [PKPushType.voIP]
     }
     
-    // Push notification setting
-    func getNotificationSettings() {
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().getNotificationSettings { settings in
-                UNUserNotificationCenter.current().delegate = self
-                guard settings.authorizationStatus == .authorized else { return }
-                DispatchQueue.main.async {
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-            }
-        } else {
-            let settings = UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil)
-            UIApplication.shared.registerUserNotificationSettings(settings)
-            UIApplication.shared.registerForRemoteNotifications()
-        }
-    }
-    
     // Register push notification
     func registerForPushNotifications() {
         UNUserNotificationCenter.current()
@@ -174,7 +165,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 [weak self] granted, error in
                 guard let _ = self else {return}
                 guard granted else { return }
+                
+                // Create a new notification action
+                let viewAction = UNNotificationAction(
+                  identifier: Identifiers.viewAction,
+                  title: "View",
+                  options: [.foreground])
+
+                // 2
+                let newsCategory = UNNotificationCategory(
+                  identifier: Identifiers.newsCategory,
+                  actions: [viewAction],
+                  intentIdentifiers: [],
+                  options: [])
+
+                // 3
+                UNUserNotificationCenter.current().setNotificationCategories([newsCategory])
+
+                
                 self?.getNotificationSettings()
+        }
+    }
+    
+    // Push notification setting
+    func getNotificationSettings() {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+          print("Notification settings: \(settings)")
+          guard settings.authorizationStatus == .authorized else { return }
+          DispatchQueue.main.async {
+            UIApplication.shared.registerForRemoteNotifications()
+          }
         }
     }
 
@@ -182,14 +202,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 // MARK: UNUserNotificationCenterDelegate
 extension AppDelegate : UNUserNotificationCenterDelegate {
-    
+    /// Handle notification when app is not onscreen
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
         let userInfo = response.notification.request.content.userInfo
         print("didReceive ======", userInfo)
+        
         completionHandler()
     }
-
+    
+    /// Handle notification when app is onscreen
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
         let userInfo = notification.request.content.userInfo
@@ -237,4 +259,14 @@ extension AppDelegate : PKPushRegistryDelegate {
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
          }
     }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        
+      guard let aps = userInfo["aps"] as? [String: AnyObject] else {
+        completionHandler(.failed)
+        return
+      }
+      
+    }
+
 }
