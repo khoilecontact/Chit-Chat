@@ -54,6 +54,7 @@ class FriendsViewController: UIViewController {
         // start
         fetchFriendList()
         navigationBar()
+        subLayouts()
         setupSearchBar()
         setupTableView()
     }
@@ -73,21 +74,6 @@ class FriendsViewController: UIViewController {
         let findNewFriends = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(findNewFriend))
         let friendRequest = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle.badge.plus"), style: .plain, target: self, action: #selector(friendRequest))
         navigationItem.rightBarButtonItems = [findNewFriends, friendRequest]
-    }
-    
-    func fakeData() {
-        // fake data
-//        let node = UserNode(id: "hash123",
-//                            firstName: "Khoi",
-//                            lastName: "Le",
-//                            bio: "This is my bio",
-//                            email: "uit@gm.uit.edu.vn",
-//                            dob: "",
-//                            isMale: true)
-//        
-//        friends.append(node)
-        
-        // --- ---
     }
     
     func fetchFriendList() {
@@ -231,7 +217,7 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let model = friends[indexPath.row]
+        let model = results[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: FriendsCell.identifier, for: indexPath) as! FriendsCell
         cell.configure(with: model)
         return cell
@@ -240,7 +226,7 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        convertUserNodeToUser(with: self.friends[indexPath.row] , completion: { user in
+        convertUserNodeToUser(with: self.results[indexPath.row] , completion: { user in
             let vc = OtherUserViewController(otherUser: user)
             self.navigationController?.pushViewController(vc, animated: true)
         })
@@ -252,7 +238,7 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
             // code
             guard let strongSelf = self else { return }
             
-            strongSelf.openConversation(strongSelf.friends[indexPath.row])
+            strongSelf.openConversation(strongSelf.results[indexPath.row])
         }
         // RGB: 6, 214, 159
         openConversationAction.backgroundColor = UIColor(red: 6/255, green: 214/255, blue: 159/255, alpha: 1)
@@ -268,14 +254,15 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
         let unfriendAction = UIContextualAction(style: .destructive, title: "Unfriend") { [weak self] action, view, handler in
             guard let strongSelf = self else { return }
             
-            DatabaseManager.shared.unfriend(with: strongSelf.friends[indexPath.row]) { [weak self] result in
+            DatabaseManager.shared.unfriend(with: strongSelf.results[indexPath.row]) { [weak self] result in
                 switch result {
                 case .success(let isDone):
                     if isDone {
                         // begin delete
                         tableView.beginUpdates()
                         /// Not put 2 line below in closure bc it will crash by startListenConversations will call 2 times.
-                        strongSelf.friends.remove(at: indexPath.row)
+                        strongSelf.friends.removeAll(where: { $0.id == strongSelf.results[indexPath.row].id })
+                        strongSelf.results.remove(at: indexPath.row)
                         tableView.deleteRows(at: [indexPath], with: .left)
                         
                         tableView.endUpdates()
@@ -311,61 +298,62 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
 extension FriendsViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let text = searchBar.text, !text.replacingOccurrences(of: " ", with: "").isEmpty else {
+            resetFriendList()
             return
         }
-        
-        searchBar.resignFirstResponder()
-        
+
+//        searchBar.resignFirstResponder()
+
         spinner.show(in: view)
-        
+
         searchUser(query: text)
-        
+
         spinner.dismiss()
     }
-    
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text, !text.replacingOccurrences(of: " ", with: "").isEmpty else {
             return
         }
-        
+
         searchBar.resignFirstResponder()
-        
+
         spinner.show(in: view)
-        
+
         searchUser(query: text)
-        
+
         spinner.dismiss()
     }
-    
+
     func searchUser(query: String) {
-        
+
         filterUsers(with: query)
-        
+
         // update UI
     }
-    
+
     func filterUsers(with term: String) {
         // need to test
-        
+
         guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else {
             return
         }
-        
-        self.results = friends.filter({
-            guard let email = ($0.email as? String)?.lowercased(), email != currentUserEmail else {
-                return false
-            }
-            
-            guard let name = "\($0.firstName.lowercased()) \($0.lastName.lowercased())" as? String else {
-                return false
-            }
-            
-            return name.hasPrefix(term.lowercased()) || email.hasPrefix(term.lowercased())
-        })
+
+        self.results = self.friends.filter({
+                guard let email = ($0.email as? String)?.lowercased(), email != currentUserEmail else {
+                    return false
+                }
+
+                guard let name = "\($0.firstName.lowercased()) \($0.lastName.lowercased())" as? String else {
+                    return false
+                }
+
+                return name.hasPrefix(term.lowercased()) || email.hasPrefix(term.lowercased())
+            })
 
         updateUI()
     }
-    
+
     func updateUI() {
         if friends.isEmpty {
             screenState(with: false)
@@ -373,5 +361,10 @@ extension FriendsViewController: UISearchBarDelegate {
             screenState(with: true)
             tableView.reloadData()
         }
+    }
+    
+    func resetFriendList() {
+        self.results = self.friends
+        updateUI()
     }
 }

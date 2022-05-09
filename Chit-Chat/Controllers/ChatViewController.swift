@@ -62,8 +62,8 @@ class ChatViewController: UIViewController {
         validateAuth()
         
         // start
-        createLoginObserver()
         startListeningForConversations()
+        createLoginObserver()
         // screenConversations(false)
     }
     
