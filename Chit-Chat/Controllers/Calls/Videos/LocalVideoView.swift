@@ -1,8 +1,10 @@
 import UIKit
 import AgoraRtcKit
+import NVActivityIndicatorView
 
 class LocalVideoView: UIView {
-        
+    let activityIndicatorView = NVActivityIndicatorView(frame: CGRect(x: 40, y: 80, width: 30, height: 30), type: .circleStrokeSpin, color: .white, padding: 0)
+    
     fileprivate func extractedFunc() {
         if TARGET_IPHONE_SIMULATOR == 1 {
             UIView.animate(withDuration: 2.0, animations: {
@@ -35,10 +37,10 @@ class LocalVideoView: UIView {
             height: UIScreen.main.bounds.height / 4.75)
         super.init(frame: framee ?? defaultFrame)
                 
-        self.backgroundColor = #colorLiteral(red: 0.5268502831, green: 0.474650979, blue: 0.5886558294, alpha: 1)
+        self.backgroundColor = UIColor.lightGray
         
-        let progressIndicator = ProgressIndicator(frame: self.bounds)
-        self.addSubview(progressIndicator)
+        self.addSubview(activityIndicatorView)
+        activityIndicatorView.startAnimating()
     }
     
     required init?(coder aDecoder: NSCoder) {

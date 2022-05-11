@@ -117,8 +117,9 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
         
         
         agoraRTM?.login(byToken: AgoraChannel.token, user: email as! String, completion: { err in
-            
+            print("RTM login failed: \(err)")
         })
+
         
         AgoraChannel.shared.createChannel(completion: { result in
             switch result {
@@ -162,8 +163,8 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
 }
 
 
-
 extension VoiceCallViewController: AgoraRtcEngineDelegate {
      func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
      }
- }
+}
+

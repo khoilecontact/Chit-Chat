@@ -1,25 +1,26 @@
 import UIKit
+import NVActivityIndicatorView
 
 class RemoteVideoView: UIView {
     
-    fileprivate var progressIndicator: ProgressIndicator!
+    let activityIndicatorView = NVActivityIndicatorView(frame: CGRect(x: 180, y: 370, width: 40, height: 40), type: .circleStrokeSpin, color: .white, padding: 0)
     
     public var isRemoteVideoRender: Bool = true {
         didSet {
             self.isHidden = !isRemoteVideoRender
-            self.progressIndicator.isHidden = !isRemoteVideoRender
+            activityIndicatorView.stopAnimating()
+            self.activityIndicatorView.isHidden = !isRemoteVideoRender
         }
     }
                     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = #colorLiteral(red: 0.2890075445, green: 0.2517263889, blue: 0.352177918, alpha: 1)
+        self.backgroundColor = .init(red: CGFloat(108) / 255.0, green: CGFloat(164) / 255.0, blue: CGFloat(212) / 255.0, alpha: 1.0)
         self.layer.zPosition = -1
         self.isUserInteractionEnabled = false
         
-        self.progressIndicator = ProgressIndicator(frame: self.frame)
-        self.progressIndicator.layer.zPosition = layer.zPosition - 1
-        self.addSubview(progressIndicator)
+        self.addSubview(activityIndicatorView)
+        activityIndicatorView.startAnimating()
     }
     
     required init?(coder aDecoder: NSCoder) {

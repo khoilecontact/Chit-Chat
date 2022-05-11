@@ -64,14 +64,12 @@
 			</array>
 		</dict>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>Please allow to take a profile picture</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Please allow access to select a profile picture</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Please allow access to use microphone to film a video</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>fetch</string>
+		<string>location</string>
+		<string>processing</string>
+		<string>remote-notification</string>
 		<string>voip</string>
 	</array>
 </dict>

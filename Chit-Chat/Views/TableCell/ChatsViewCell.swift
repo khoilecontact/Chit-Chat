@@ -67,9 +67,6 @@ final class ChatsViewCell: UITableViewCell {
         userNameLabel.text = model.name
         userMessageLabel.text = model.latestMessage.text
         
-        //        let url = URL(string: "https://github.com/khoilecontact.png?size=400")
-        //        userImageView.sd_setImage(with: url, completed: nil)
-        
         let path = "images/\(model.otherUserEmail)_profile_picture.png"
         // call to Storage manager to take img
         StorageManager.shared.downloadUrl(for: path) { [weak self] result in

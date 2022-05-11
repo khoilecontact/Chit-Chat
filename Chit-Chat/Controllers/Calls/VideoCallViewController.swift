@@ -27,6 +27,7 @@ class VideoCallViewController: UIViewController, AgoraRtcEngineDelegate {
         if sender.isSelected {
             agoraKit.leaveChannel(nil)
             UIApplication.shared.isIdleTimerDisabled = false
+            self.dismiss(animated: true)
         } else {
             self.joinChannel.connect()
         }

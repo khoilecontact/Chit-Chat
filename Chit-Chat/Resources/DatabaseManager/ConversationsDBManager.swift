@@ -257,6 +257,7 @@ extension DatabaseManager {
                           return nil
                       }
                 
+                // Handle message type
                 var kind: MessageKind?
                 if type == "photo" {
                     

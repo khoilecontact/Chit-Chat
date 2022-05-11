@@ -27,6 +27,9 @@ pod 'Toast-Swift', '~> 5.0.1'
 # Agora
 pod 'AgoraUIKit_iOS'
 pod ‘AgoraRtm_iOS’
+
+# Spinner
+pod 'NVActivityIndicatorView'
     
 
   target 'Chit-ChatTests' do
