@@ -15,7 +15,6 @@
 		222411F327C3359500C5E416 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411F227C3359500C5E416 /* ChangePasswordViewController.swift */; };
 		222411F827C7345E00C5E416 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222411F727C7345D00C5E416 /* ForgotPasswordViewController.swift */; };
 		22256D4E281904F900F2F001 /* ChannelToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22256D4D281904F900F2F001 /* ChannelToken.swift */; };
-		22353CF128119A9B002CC6FC /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22353CF028119A9B002CC6FC /* Group.swift */; };
 		22353CF328119CF2002CC6FC /* GroupDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22353CF228119CF2002CC6FC /* GroupDBManager.swift */; };
 		22434823282AA2D50027DE7A /* SelectCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22434822282AA2D50027DE7A /* SelectCallViewController.swift */; };
 		22434825282B50A50027DE7A /* AgoraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22434824282B50A50027DE7A /* AgoraService.swift */; };
@@ -97,6 +96,8 @@
 		DAFFEC73282B5C9B00A99629 /* GroupConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFFEC72282B5C9B00A99629 /* GroupConversationViewController.swift */; };
 		DAFFEC75282B5CBE00A99629 /* GroupChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFFEC74282B5CBE00A99629 /* GroupChatViewController.swift */; };
 		DAFFEC77282B5CE500A99629 /* GroupUtilitiesChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFFEC76282B5CE500A99629 /* GroupUtilitiesChatViewController.swift */; };
+		DAFFEC79282B766600A99629 /* GroupChatsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFFEC78282B766600A99629 /* GroupChatsViewCell.swift */; };
+		DAFFEC7B282B78A200A99629 /* GroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFFEC7A282B78A200A99629 /* GroupModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,7 +126,6 @@
 		222411F227C3359500C5E416 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		222411F727C7345D00C5E416 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		22256D4D281904F900F2F001 /* ChannelToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelToken.swift; sourceTree = "<group>"; };
-		22353CF028119A9B002CC6FC /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		22353CF228119CF2002CC6FC /* GroupDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDBManager.swift; sourceTree = "<group>"; };
 		22434822282AA2D50027DE7A /* SelectCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCallViewController.swift; sourceTree = "<group>"; };
 		22434824282B50A50027DE7A /* AgoraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraService.swift; sourceTree = "<group>"; };
@@ -217,6 +217,8 @@
 		DAFFEC72282B5C9B00A99629 /* GroupConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupConversationViewController.swift; sourceTree = "<group>"; };
 		DAFFEC74282B5CBE00A99629 /* GroupChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatViewController.swift; sourceTree = "<group>"; };
 		DAFFEC76282B5CE500A99629 /* GroupUtilitiesChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupUtilitiesChatViewController.swift; sourceTree = "<group>"; };
+		DAFFEC78282B766600A99629 /* GroupChatsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatsViewCell.swift; sourceTree = "<group>"; };
+		DAFFEC7A282B78A200A99629 /* GroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupModel.swift; sourceTree = "<group>"; };
 		FFA53E9545E7381D535EF4AF /* Pods_Chit_Chat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chit_Chat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -427,7 +429,7 @@
 				DA718D4E27A0F6E70020B0C9 /* UserNetwork.swift */,
 				DA718D5027A0F6F20020B0C9 /* Messages.swift */,
 				DA9AD85A27AC187200221E16 /* FriendsModel.swift */,
-				22353CF028119A9B002CC6FC /* Group.swift */,
+				DAFFEC7A282B78A200A99629 /* GroupModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -596,6 +598,7 @@
 				DA0D67B527C0C7DF0016C4AC /* FriendRequestViewCell.swift */,
 				DA37722E280A9E59003E8B88 /* UtilitiesMessageChatViewCell.swift */,
 				DAD25F0C281936970078021F /* TextInConversationViewCell.swift */,
+				DAFFEC78282B766600A99629 /* GroupChatsViewCell.swift */,
 			);
 			path = TableCell;
 			sourceTree = "<group>";
@@ -869,7 +872,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				222411E327B2129100C5E416 /* GithubConstants.swift in Sources */,
+				DAFFEC7B282B78A200A99629 /* GroupModel.swift in Sources */,
 				222411E927BF991400C5E416 /* Appearance.swift in Sources */,
+				DAFFEC79282B766600A99629 /* GroupChatsViewCell.swift in Sources */,
 				DA25C3C727B252190004FE2B /* FindNewFriendsViewController.swift in Sources */,
 				222411E727B7AB6900C5E416 /* ExternalFunctions.swift in Sources */,
 				DA0D67B427C0C7C20016C4AC /* FriendRequestViewController.swift in Sources */,
@@ -884,11 +889,11 @@
 				DAE95C5127B6493700B19445 /* ChatsViewCell.swift in Sources */,
 				DA3056CD2805321E001E87DA /* ServicesModel.swift in Sources */,
 				22714E69277D5D4F0004F942 /* ChatViewController.swift in Sources */,
-				22353CF128119A9B002CC6FC /* Group.swift in Sources */,
 				22A456FC28140699009CB4E6 /* LocalVideoView.swift in Sources */,
 				DA74E6692817A7CB00D4AA30 /* SearchMessageInConversationViewController.swift in Sources */,
 				22434825282B50A50027DE7A /* AgoraService.swift in Sources */,
 				DAFFEC70282B532900A99629 /* ViewAnimationExtension.swift in Sources */,
+				22434825282B50A50027DE7A /* AgoraService.swift in Sources */,
 				22714E6F277D5D4F0004F942 /* Chit_Chat.xcdatamodeld in Sources */,
 				DAE31CF127B22AD40035E65B /* FriendsCell.swift in Sources */,
 				DA8C20F827B258EE00C1F35F /* NewFriendsViewCell.swift in Sources */,
