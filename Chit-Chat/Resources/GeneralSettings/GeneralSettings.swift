@@ -15,7 +15,7 @@ final class GeneralSettings {
 
 // MARK: - Color
 extension GeneralSettings {
-    public static let primaryColor: UIColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 0.5)
+    public static let primaryColor: UIColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 1)
     public static let secondaryColor: UIColor = UIColor(red: 108/255, green: 164/255, blue: 212/255, alpha: 0.5)
 }
 

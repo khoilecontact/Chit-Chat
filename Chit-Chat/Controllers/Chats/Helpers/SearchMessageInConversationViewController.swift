@@ -89,6 +89,11 @@ final class SearchMessageInConversationViewController: UIViewController {
             textField.becomeFirstResponder()
         }
         
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive) { _ in
+            self.dismissSelf()
+        }
+        alert.addAction(cancelAction)
+        
         alert.addAction(UIAlertAction(title: "Find", style: .default, handler: { [weak alert] (_) in
             guard let textField = alert?.textFields?[0], let queryText = textField.text else { return }
             guard queryText != "" else {
