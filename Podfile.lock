@@ -154,6 +154,9 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - NVActivityIndicatorView (5.1.1):
+    - NVActivityIndicatorView/Base (= 5.1.1)
+  - NVActivityIndicatorView/Base (5.1.1)
   - PromisesObjC (2.0.0)
   - SDWebImage (5.12.3):
     - SDWebImage/Core (= 5.12.3)
@@ -173,6 +176,7 @@ DEPENDENCIES:
   - GoogleSignIn
   - JGProgressHUD
   - MessageKit
+  - NVActivityIndicatorView
   - SDWebImage
   - Toast-Swift (~> 5.0.1)
 
@@ -207,6 +211,7 @@ SPEC REPOS:
     - leveldb-library
     - MessageKit
     - nanopb
+    - NVActivityIndicatorView
     - PromisesObjC
     - SDWebImage
     - Toast-Swift
@@ -241,10 +246,11 @@ SPEC CHECKSUMS:
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   MessageKit: 8e76dd8d65ad44b49e1651c673497146416461e9
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   SDWebImage: 53179a2dba77246efa8a9b85f5c5b21f8f43e38f
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: 0ab800746f0184d514cc0ab1d2e2fbc5e6a9c0f1
+PODFILE CHECKSUM: c71791a4440c607b66e2f2fcc04b27d2b0193712
 
 COCOAPODS: 1.10.2

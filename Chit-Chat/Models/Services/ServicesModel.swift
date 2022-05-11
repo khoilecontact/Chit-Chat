@@ -45,3 +45,7 @@ struct ISender: Codable, Hashable {
     let dob: String
     let is_male: Bool
 }
+
+struct IToken: Codable, Hashable {
+    let token: String
+}

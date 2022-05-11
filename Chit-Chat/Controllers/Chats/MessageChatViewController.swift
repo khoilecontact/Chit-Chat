@@ -452,9 +452,17 @@ class MessageChatViewController: MessagesViewController {
     
     @objc func contactBtnTapped() {
 //        let vc = UIStoryboard(name: "VideoCall", bundle: nil).instantiateViewController(withIdentifier: "VideoCall") as! VideoCallViewController
-        let vc = UIStoryboard(name: "VoiceCall", bundle: nil).instantiateViewController(withIdentifier: "VoiceCall") as! VoiceCallViewController
-        vc.otherUserEmail = otherUserEmail
-        vc.otherUserName = otherUserName
+//        let vc = UIStoryboard(name: "VoiceCall", bundle: nil).instantiateViewController(withIdentifier: "VoiceCall") as! VoiceCallViewController
+//        vc.otherUserEmail = otherUserEmail
+//        vc.otherUserName = otherUserName
+        
+        let vc = SelectCallViewController(otherUserName: otherUserName, otherUserEmail: otherUserEmail)
+        vc.definesPresentationContext = true
+//        vc.modalPresentationStyle = .popover
+//        vc.modalTransitionStyle = .crossDissolve
+        let screenWidth = UIScreen.main.bounds.width - 10
+        let screenHeight = UIScreen.main.bounds.height / 4
+        vc.view.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
         navigationController?.setNavigationBarHidden(false, animated: true)
         self.present(vc, animated: true)
     }

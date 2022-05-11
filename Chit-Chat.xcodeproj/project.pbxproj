@@ -17,6 +17,8 @@
 		22256D4E281904F900F2F001 /* ChannelToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22256D4D281904F900F2F001 /* ChannelToken.swift */; };
 		22353CF128119A9B002CC6FC /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22353CF028119A9B002CC6FC /* Group.swift */; };
 		22353CF328119CF2002CC6FC /* GroupDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22353CF228119CF2002CC6FC /* GroupDBManager.swift */; };
+		22434823282AA2D50027DE7A /* SelectCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22434822282AA2D50027DE7A /* SelectCallViewController.swift */; };
+		22434825282B50A50027DE7A /* AgoraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22434824282B50A50027DE7A /* AgoraService.swift */; };
 		225E476127D9E1B000F71938 /* OtherUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E476027D9E1B000F71938 /* OtherUserViewController.swift */; };
 		22714E65277D5D4F0004F942 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E64277D5D4F0004F942 /* AppDelegate.swift */; };
 		22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E66277D5D4F0004F942 /* SceneDelegate.swift */; };
@@ -121,6 +123,8 @@
 		22256D4D281904F900F2F001 /* ChannelToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelToken.swift; sourceTree = "<group>"; };
 		22353CF028119A9B002CC6FC /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		22353CF228119CF2002CC6FC /* GroupDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDBManager.swift; sourceTree = "<group>"; };
+		22434822282AA2D50027DE7A /* SelectCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCallViewController.swift; sourceTree = "<group>"; };
+		22434824282B50A50027DE7A /* AgoraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraService.swift; sourceTree = "<group>"; };
 		225E476027D9E1B000F71938 /* OtherUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserViewController.swift; sourceTree = "<group>"; };
 		22714E61277D5D4F0004F942 /* Chit-Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chit-Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22714E64277D5D4F0004F942 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -360,6 +364,7 @@
 				22A45705281406D4009CB4E6 /* Helpers */,
 				22A45709281406D4009CB4E6 /* VideoCallViewController.swift */,
 				22A4570A281406D4009CB4E6 /* VoiceCallViewController.swift */,
+				22434822282AA2D50027DE7A /* SelectCallViewController.swift */,
 			);
 			path = Calls;
 			sourceTree = "<group>";
@@ -516,6 +521,7 @@
 				DA0FDCF82802D79900FAB798 /* ServicesManager.swift */,
 				DA3056CE28053396001E87DA /* SwiftyJSON.swift */,
 				DA044E9D28057E0B00927062 /* ConversationService.swift */,
+				22434824282B50A50027DE7A /* AgoraService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -861,6 +867,7 @@
 				22353CF128119A9B002CC6FC /* Group.swift in Sources */,
 				22A456FC28140699009CB4E6 /* LocalVideoView.swift in Sources */,
 				DA74E6692817A7CB00D4AA30 /* SearchMessageInConversationViewController.swift in Sources */,
+				22434825282B50A50027DE7A /* AgoraService.swift in Sources */,
 				22714E6F277D5D4F0004F942 /* Chit_Chat.xcdatamodeld in Sources */,
 				DAE31CF127B22AD40035E65B /* FriendsCell.swift in Sources */,
 				DA8C20F827B258EE00C1F35F /* NewFriendsViewCell.swift in Sources */,
@@ -870,6 +877,7 @@
 				DA8C20F627B258A400C1F35F /* FriendsModel.swift in Sources */,
 				222411F327C3359500C5E416 /* ChangePasswordViewController.swift in Sources */,
 				22A4570B281406D4009CB4E6 /* JoinChannel.swift in Sources */,
+				22434823282AA2D50027DE7A /* SelectCallViewController.swift in Sources */,
 				DA28940527C2734F00011900 /* ProvincesVN.swift in Sources */,
 				DA3056CF28053396001E87DA /* SwiftyJSON.swift in Sources */,
 				DAD25F0D281936970078021F /* TextInConversationViewCell.swift in Sources */,

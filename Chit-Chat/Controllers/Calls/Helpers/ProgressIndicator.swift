@@ -10,7 +10,7 @@ class ProgressIndicator: UIView {
         track.lineCap = .round
         track.lineWidth = 2
         track.fillColor = .none
-        track.strokeColor = #colorLiteral(red: 0.3363491595, green: 0.2730357051, blue: 0.4258503616, alpha: 1)
+        track.strokeColor = UIColor.black.cgColor
         track.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         track.path = UIBezierPath(arcCenter: .zero,
                                   radius: self.radius,

@@ -172,7 +172,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                   title: "View",
                   options: [.foreground])
 
-                // 2
+                // Define a new category
                 let newsCategory = UNNotificationCategory(
                   identifier: Identifiers.newsCategory,
                   actions: [viewAction],
