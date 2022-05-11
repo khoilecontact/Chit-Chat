@@ -230,7 +230,7 @@ class MessageChatViewController: MessagesViewController {
          messageInputBar.isTranslucent = false
          messageInputBar.separatorLine.isHidden = true
          messageInputBar.inputTextView.tintColor = .black
-         messageInputBar.inputTextView.backgroundColor = GeneralSettings.primaryColor
+        messageInputBar.inputTextView.backgroundColor = GeneralSettings.primaryColor
          // messageInputBar.inputTextView.placeholderTextColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
          messageInputBar.inputTextView.textContainerInset = UIEdgeInsets(top: 8, left: 16, bottom: 0, right: 36)
          messageInputBar.inputTextView.placeholderLabelInsets = UIEdgeInsets(top: 8, left: 20, bottom: 0, right: 36)
@@ -470,10 +470,9 @@ class MessageChatViewController: MessagesViewController {
     @objc func menuBtnTapped() {
         if conversationId != nil {
             let vc = UtilitiesMessageChatViewController(name: otherUserName, email: otherUserEmail, conversationId: conversationId!)
-            vc.modalPresentationStyle = .custom
-            vc.transitioningDelegate = self
             
-            self.present(vc, animated: true, completion: nil)
+            navigationController?.pushViewController(vc, animated: true)
+            
         }
     }
     
@@ -822,13 +821,13 @@ extension MessageChatViewController: MessageCellDelegate {
     }
 }
 
-extension MessageChatViewController: UIViewControllerTransitioningDelegate {
-
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return PresentTransition()
-    }
-
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return DismissTransition()
-    }
-}
+//extension MessageChatViewController: UIViewControllerTransitioningDelegate {
+//
+//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        return PresentTransition()
+//    }
+//
+//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        return DismissTransition()
+//    }
+//}
