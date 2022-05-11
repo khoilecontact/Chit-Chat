@@ -462,10 +462,9 @@ class MessageChatViewController: MessagesViewController {
     @objc func menuBtnTapped() {
         if conversationId != nil {
             let vc = UtilitiesMessageChatViewController(name: otherUserName, email: otherUserEmail, conversationId: conversationId!)
-            vc.modalPresentationStyle = .custom
-            vc.transitioningDelegate = self
             
-            self.present(vc, animated: true, completion: nil)
+            navigationController?.pushViewController(vc, animated: true)
+            
         }
     }
     
@@ -814,13 +813,13 @@ extension MessageChatViewController: MessageCellDelegate {
     }
 }
 
-extension MessageChatViewController: UIViewControllerTransitioningDelegate {
-
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return PresentTransition()
-    }
-
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return DismissTransition()
-    }
-}
+//extension MessageChatViewController: UIViewControllerTransitioningDelegate {
+//
+//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        return PresentTransition()
+//    }
+//
+//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        return DismissTransition()
+//    }
+//}
