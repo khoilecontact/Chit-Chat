@@ -145,6 +145,8 @@ class ChatViewController: UIViewController {
     func navBar() {
         navigationController?.navigationBar.topItem?.titleView = searchBar
         // rightBarButton
+        let groupConversations = UIBarButtonItem(image: UIImage(systemName: "person.2.circle"), style: .plain, target: self, action: #selector(groupConversationTapped))
+        navigationItem.rightBarButtonItem = groupConversations
     }
     
     func configSearchBar() {
@@ -197,6 +199,12 @@ class ChatViewController: UIViewController {
                 noConversationLabel.isHidden = false
                 tableView.isHidden = true
             }
+    }
+    
+    @objc func groupConversationTapped() {
+        let vc = GroupConversationViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        present(navVC, animated: true)
     }
 }
 
