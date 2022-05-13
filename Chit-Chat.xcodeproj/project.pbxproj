@@ -18,6 +18,7 @@
 		22353CF328119CF2002CC6FC /* GroupDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22353CF228119CF2002CC6FC /* GroupDBManager.swift */; };
 		22434823282AA2D50027DE7A /* SelectCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22434822282AA2D50027DE7A /* SelectCallViewController.swift */; };
 		22434825282B50A50027DE7A /* AgoraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22434824282B50A50027DE7A /* AgoraService.swift */; };
+		22434828282D50F80027DE7A /* CallNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22434827282D50F80027DE7A /* CallNotificationCenter.swift */; };
 		225E476127D9E1B000F71938 /* OtherUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E476027D9E1B000F71938 /* OtherUserViewController.swift */; };
 		22714E65277D5D4F0004F942 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E64277D5D4F0004F942 /* AppDelegate.swift */; };
 		22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E66277D5D4F0004F942 /* SceneDelegate.swift */; };
@@ -129,6 +130,7 @@
 		22353CF228119CF2002CC6FC /* GroupDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDBManager.swift; sourceTree = "<group>"; };
 		22434822282AA2D50027DE7A /* SelectCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCallViewController.swift; sourceTree = "<group>"; };
 		22434824282B50A50027DE7A /* AgoraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraService.swift; sourceTree = "<group>"; };
+		22434827282D50F80027DE7A /* CallNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallNotificationCenter.swift; sourceTree = "<group>"; };
 		225E476027D9E1B000F71938 /* OtherUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserViewController.swift; sourceTree = "<group>"; };
 		22714E61277D5D4F0004F942 /* Chit-Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chit-Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22714E64277D5D4F0004F942 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -277,6 +279,14 @@
 				DA0D67B327C0C7C20016C4AC /* FriendRequestViewController.swift */,
 			);
 			path = Friend;
+			sourceTree = "<group>";
+		};
+		22434826282D50E40027DE7A /* CallNotification */ = {
+			isa = PBXGroup;
+			children = (
+				22434827282D50F80027DE7A /* CallNotificationCenter.swift */,
+			);
+			path = CallNotification;
 			sourceTree = "<group>";
 		};
 		22714E58277D5D4F0004F942 = {
@@ -464,6 +474,7 @@
 		22CCFE3C279FF50B009F7C8A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				22434826282D50E40027DE7A /* CallNotification */,
 				DA2861842820CF5C003A0FCA /* GeneralSettings */,
 				22A456E12813FEDE009CB4E6 /* Extensions */,
 				DA6238AA2812969E00006F7D /* ViewPresentTransition */,
@@ -886,6 +897,7 @@
 				DA1EFD46280AA22600EB6BAD /* UtilitiesMessageChatViewModel.swift in Sources */,
 				DA718D5127A0F6F20020B0C9 /* Messages.swift in Sources */,
 				22CCFE40279FF573009F7C8A /* Extensions.swift in Sources */,
+				22434828282D50F80027DE7A /* CallNotificationCenter.swift in Sources */,
 				DAE95C5127B6493700B19445 /* ChatsViewCell.swift in Sources */,
 				DA3056CD2805321E001E87DA /* ServicesModel.swift in Sources */,
 				22714E69277D5D4F0004F942 /* ChatViewController.swift in Sources */,
@@ -1129,7 +1141,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8YHCBYDS83;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Chit-Chat/Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow to take a profile picture";
@@ -1168,7 +1180,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8YHCBYDS83;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Chit-Chat/Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow to take a profile picture";

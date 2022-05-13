@@ -46,7 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.registerForPushNotifications()
         self.voipRegistration()
-
         
         return true
     }
