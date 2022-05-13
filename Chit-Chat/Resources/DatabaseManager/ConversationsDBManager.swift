@@ -387,7 +387,7 @@ extension DatabaseManager {
                 let location = locationData.location
                 message = "\(location.coordinate.longitude),\(location.coordinate.latitude)"
                 break
-            case .emoji(let emojiString):
+            case .emoji(_):
                 break
             case .audio(_):
                 break

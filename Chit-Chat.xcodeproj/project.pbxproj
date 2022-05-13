@@ -20,6 +20,7 @@
 		22434825282B50A50027DE7A /* AgoraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22434824282B50A50027DE7A /* AgoraService.swift */; };
 		22434828282D50F80027DE7A /* CallNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22434827282D50F80027DE7A /* CallNotificationCenter.swift */; };
 		225E476127D9E1B000F71938 /* OtherUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E476027D9E1B000F71938 /* OtherUserViewController.swift */; };
+		22639882282EBB890052B354 /* IncomingCall.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22639881282EBB890052B354 /* IncomingCall.storyboard */; };
 		22714E65277D5D4F0004F942 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E64277D5D4F0004F942 /* AppDelegate.swift */; };
 		22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E66277D5D4F0004F942 /* SceneDelegate.swift */; };
 		22714E69277D5D4F0004F942 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E68277D5D4F0004F942 /* ChatViewController.swift */; };
@@ -132,6 +133,7 @@
 		22434824282B50A50027DE7A /* AgoraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraService.swift; sourceTree = "<group>"; };
 		22434827282D50F80027DE7A /* CallNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallNotificationCenter.swift; sourceTree = "<group>"; };
 		225E476027D9E1B000F71938 /* OtherUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserViewController.swift; sourceTree = "<group>"; };
+		22639881282EBB890052B354 /* IncomingCall.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = IncomingCall.storyboard; sourceTree = "<group>"; };
 		22714E61277D5D4F0004F942 /* Chit-Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chit-Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22714E64277D5D4F0004F942 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22714E66277D5D4F0004F942 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -373,6 +375,7 @@
 			children = (
 				22A45719281408D0009CB4E6 /* VideoCall.storyboard */,
 				22A4571B28143CD0009CB4E6 /* VoiceCall.storyboard */,
+				22639881282EBB890052B354 /* IncomingCall.storyboard */,
 			);
 			path = "Call Screens";
 			sourceTree = "<group>";
@@ -752,6 +755,7 @@
 				22714E71277D5D510004F942 /* Assets.xcassets in Resources */,
 				22CCFE48279FF5DB009F7C8A /* Chat.storyboard in Resources */,
 				22714E6C277D5D4F0004F942 /* Main.storyboard in Resources */,
+				22639882282EBB890052B354 /* IncomingCall.storyboard in Resources */,
 				22A4571C28143CD0009CB4E6 /* VoiceCall.storyboard in Resources */,
 				22A4571A281408D0009CB4E6 /* VideoCall.storyboard in Resources */,
 				22F1998F27A0E14100CAE0D5 /* GoogleService-Info.plist in Resources */,
