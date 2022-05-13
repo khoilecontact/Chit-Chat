@@ -293,7 +293,7 @@ class MessageChatViewController: MessagesViewController {
     private func stylingpInputBar() {
         //        messageInputBar.inputTextView.becomeFirstResponder()
         
-        messageInputBar.inputTextView.placeholder = "Type messages ..."
+        messageInputBar.inputTextView.placeholder = "  Type messages ..."
         messageInputBar.inputTextView.placeholderTextColor = .black
         
         messageInputBar.backgroundView.backgroundColor = GeneralSettings.primaryColor
