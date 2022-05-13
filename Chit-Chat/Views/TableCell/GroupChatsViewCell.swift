@@ -63,14 +63,14 @@ final class GroupChatsViewCell: UITableViewCell {
     }
     
     // MARK: - Configure Conversations
-    public func configure(with model: MessagesCollection) {
+    public func configure(with model: GroupMessagesCollection) {
         groupNameLabel.text = model.name
         groupMessageLabel.text = model.latestMessage.text
         
         //        let url = URL(string: "https://github.com/khoilecontact.png?size=400")
         //        groupImageView.sd_setImage(with: url, completed: nil)
         
-        let path = "images/\(model.otherUserEmail)_group_picture.png"
+        let path = "images/\(model.id)_group_picture.png"
         // call to Storage manager to take img
         StorageManager.shared.downloadUrl(for: path) { [weak self] result in
             guard let strongSelf = self else { return }
