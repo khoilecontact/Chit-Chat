@@ -30,6 +30,10 @@ final class UtilitiesMessageChatViewCell: UITableViewCell {
         case .util:
             self.textLabel?.textAlignment = .left
             self.selectionStyle = .none
+        case .dangerous:
+            self.textLabel?.textAlignment = .left
+            self.textLabel?.textColor = .red
+            self.selectionStyle = .none
         case .back:
             self.textLabel?.textAlignment = .center
             self.textLabel?.textColor = .red

@@ -39,12 +39,6 @@ extension DatabaseManager {
         })
     }
     
-    public enum DatabaseError: Error {
-        case failedToFetch
-        case failedToFind
-        case failedToSave
-    }
-    
     /*
      users: [
         [

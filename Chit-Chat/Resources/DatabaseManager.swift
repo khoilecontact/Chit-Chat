@@ -42,6 +42,12 @@ extension DatabaseManager {
     }
 }
 
+public enum DatabaseError: Error {
+    case failedToFetch
+    case failedToFind
+    case failedToSave
+}
+
 // MARK: -Sending messages / conversations
 
 //struct ChatAppUser {
