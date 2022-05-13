@@ -12,7 +12,7 @@ import JGProgressHUD
 
 class GroupConversationViewController: UIViewController {
 
-    private var conversations = [MessagesCollection]()
+    private var conversations = [GroupMessagesCollection]()
         
         private let spinner = JGProgressHUD(style: .dark)
         
@@ -36,11 +36,9 @@ class GroupConversationViewController: UIViewController {
             let table = UITableView()
             table.isHidden = true
             // register
-            table.register(ChatsViewCell.self, forCellReuseIdentifier: ChatsViewCell.identifier)
+            table.register(GroupChatsViewCell.self, forCellReuseIdentifier: GroupChatsViewCell.identifier)
             return table
         }()
-        
-        private var loginObserver: NSObjectProtocol?
         
         override func viewDidLoad() {
             super.viewDidLoad()
@@ -50,6 +48,7 @@ class GroupConversationViewController: UIViewController {
             
             // subviews
             subViews()
+            fakeData()
             
             // config
             configTableView()
@@ -60,8 +59,7 @@ class GroupConversationViewController: UIViewController {
             validateAuth()
             
             // start
-            startListeningForConversations()
-            createLoginObserver()
+            // startListeningForConversations()
             // screenConversations(false)
         }
         
@@ -88,41 +86,36 @@ class GroupConversationViewController: UIViewController {
         
         private func startListeningForConversations() {
             
-            self.spinner.show(in: view)
-            
-            guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
-            
-            if let observer = loginObserver {
-                // Listen for login => after login has been listen, remove observer
-                NotificationCenter.default.removeObserver(observer)
-            }
-            
-            let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
-            
-            DatabaseManager.shared.getAllConversation(for: safeEmail) { [weak self] result in
-                guard let strongSelf = self else { return }
-                
-                switch result {
-                case .success(let messagesCollection):
-                    guard !messagesCollection.isEmpty else {
-                        strongSelf.screenConversations(false)
-                        return
-                    }
-                    strongSelf.screenConversations(true)
-                    strongSelf.conversations = messagesCollection
-                    
-                    DispatchQueue.main.async {
-                        strongSelf.tableView.reloadData()
-                        strongSelf.spinner.dismiss()
-                    }
-                case .failure(let error):
-                    strongSelf.screenConversations(false)
-                    DispatchQueue.main.async {
-                        self?.spinner.dismiss()
-                    }
-                    print("Failed to get conversations: \(error)")
-                }
-            }
+//            self.spinner.show(in: view)
+//
+//            guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
+//
+//            let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+//
+//            DatabaseManager.shared.getAllConversation(for: safeEmail) { [weak self] result in
+//                guard let strongSelf = self else { return }
+//
+//                switch result {
+//                case .success(let messagesCollection):
+//                    guard !messagesCollection.isEmpty else {
+//                        strongSelf.screenConversations(false)
+//                        return
+//                    }
+//                    strongSelf.screenConversations(true)
+//                    strongSelf.conversations = messagesCollection
+//
+//                    DispatchQueue.main.async {
+//                        strongSelf.tableView.reloadData()
+//                        strongSelf.spinner.dismiss()
+//                    }
+//                case .failure(let error):
+//                    strongSelf.screenConversations(false)
+//                    DispatchQueue.main.async {
+//                        self?.spinner.dismiss()
+//                    }
+//                    print("Failed to get conversations: \(error)")
+//                }
+//            }
         }
         
         func subViews() {
@@ -134,8 +127,10 @@ class GroupConversationViewController: UIViewController {
         func fakeData() {
             let latestMessage = LatestMessage(date: "20/12/2009", text: "Hello World", isRead: false)
             
-            conversations.append(MessagesCollection(id: "fir5tM3ss4g35", name: "Doctor", otherUserEmail: "yds@gm.yds.edu.vn", latestMessage: latestMessage))
-            conversations.append(MessagesCollection(id: "s3c0ndM3ss4g35", name: "IT", otherUserEmail: "uit@gm.uit.edu.vn", latestMessage: latestMessage))
+            conversations.append(GroupMessagesCollection(id: "fir5tM3ss4g35", name: "Doctor", latestMessage: latestMessage))
+            conversations.append(GroupMessagesCollection(id: "s3c0ndM3ss4g35", name: "IT", latestMessage: latestMessage))
+            
+            screenConversations(true)
             
         }
         // --- ---
@@ -151,19 +146,9 @@ class GroupConversationViewController: UIViewController {
             tableView.dataSource = self
         }
         
-        func createLoginObserver() {
-            loginObserver = NotificationCenter.default.addObserver(forName: .didLogInNotification, object: nil, queue: .main, using: {
-                [weak self] notification in
-                
-                guard let strongSelf = self else { return }
-                
-                strongSelf.startListeningForConversations()
-            })
-        }
-        
-        func openConversation(_ model: MessagesCollection) {
+        func openConversation(_ model: GroupMessagesCollection) {
             // open chat space
-            let vc = MessageChatViewController(with: model.otherUserEmail, name: model.name, id: model.id)
+            let vc = GroupChatViewController(with: model.id, name: model.name)
             vc.title = model.name
             vc.navigationItem.largeTitleDisplayMode = .never
             navigationController?.pushViewController(vc, animated: true)
@@ -200,15 +185,15 @@ class GroupConversationViewController: UIViewController {
         }
         
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let model: MessagesCollection = conversations[indexPath.row]
-            let cell = tableView.dequeueReusableCell(withIdentifier: ChatsViewCell.identifier, for: indexPath) as! ChatsViewCell
+            let model: GroupMessagesCollection = conversations[indexPath.row]
+            let cell = tableView.dequeueReusableCell(withIdentifier: GroupChatsViewCell.identifier, for: indexPath) as! GroupChatsViewCell
             // config cell
             cell.configure(with: model)
             return cell
         }
         
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            let model: MessagesCollection = conversations[indexPath.row]
+            let model: GroupMessagesCollection = conversations[indexPath.row]
             openConversation(model)
         }
         
