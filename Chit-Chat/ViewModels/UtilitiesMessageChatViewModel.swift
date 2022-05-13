@@ -1,7 +1,7 @@
 import Foundation
 
 enum UtilitiesMessageChatViewModelType {
-    case info, util, pending, back
+    case info, util, dangerous, pending, back
 }
 
 struct UtilitiesMessageChatViewModel {
