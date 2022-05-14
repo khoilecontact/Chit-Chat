@@ -18,6 +18,7 @@ class UtilitiesMessageChatViewController: UIViewController  {
     
     private let tableView: UITableView = {
         let table = UITableView()
+        //        table.separatorColor = .systemBackground
         table.register(UtilitiesMessageChatViewCell.self, forCellReuseIdentifier: UtilitiesMessageChatViewCell.identifier)
         
         return table
@@ -78,7 +79,7 @@ class UtilitiesMessageChatViewController: UIViewController  {
                                               height: 120))
         headerView.backgroundColor = .systemBackground
                 
-        let imageView = UIImageView(frame: CGRect(x: (headerView.width-80)/2, y: (headerView.height-80)/2, width: 80, height: 80))
+        let imageView = UIImageView(frame: CGRect(x: (headerView.width-100)/2, y: (headerView.height-100)/2, width: 100, height: 100))
                 
         // styles
         imageView.backgroundColor = .white
@@ -124,12 +125,12 @@ class UtilitiesMessageChatViewController: UIViewController  {
             self?.present(nav, animated: true)
             
         }))
-        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
+        utils.append(UtilitiesMessageChatViewModel(viewModelType: .dangerous,
                                                    title: "Block",
                                                    handler: nil))
-        utils.append(UtilitiesMessageChatViewModel(viewModelType: .back,
-                                                   title: "Go Back",
-                                                   handler: { [weak self] in self?.dismiss(animated: true) }))
+        //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .back,
+        //                                                   title: "Go Back",
+        //                                                   handler: { [weak self] in self?.dismiss(animated: true) }))
     }
     
     @objc func backBtnTapped() {

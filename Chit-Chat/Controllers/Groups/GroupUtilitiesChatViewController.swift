@@ -16,8 +16,8 @@ class GroupUtilitiesChatViewController: UIViewController {
     
     private let tableView: UITableView = {
         let table = UITableView()
+        table.separatorColor = .systemBackground
         table.register(UtilitiesMessageChatViewCell.self, forCellReuseIdentifier: UtilitiesMessageChatViewCell.identifier)
-        
         return table
     }()
     
