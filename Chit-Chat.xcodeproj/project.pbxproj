@@ -21,6 +21,7 @@
 		22434828282D50F80027DE7A /* CallNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22434827282D50F80027DE7A /* CallNotificationCenter.swift */; };
 		225E476127D9E1B000F71938 /* OtherUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E476027D9E1B000F71938 /* OtherUserViewController.swift */; };
 		22639882282EBB890052B354 /* IncomingCall.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22639881282EBB890052B354 /* IncomingCall.storyboard */; };
+		22639884282F874E0052B354 /* IncomingCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22639883282F874E0052B354 /* IncomingCallViewController.swift */; };
 		22714E65277D5D4F0004F942 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E64277D5D4F0004F942 /* AppDelegate.swift */; };
 		22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E66277D5D4F0004F942 /* SceneDelegate.swift */; };
 		22714E69277D5D4F0004F942 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E68277D5D4F0004F942 /* ChatViewController.swift */; };
@@ -134,6 +135,7 @@
 		22434827282D50F80027DE7A /* CallNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallNotificationCenter.swift; sourceTree = "<group>"; };
 		225E476027D9E1B000F71938 /* OtherUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserViewController.swift; sourceTree = "<group>"; };
 		22639881282EBB890052B354 /* IncomingCall.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = IncomingCall.storyboard; sourceTree = "<group>"; };
+		22639883282F874E0052B354 /* IncomingCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingCallViewController.swift; sourceTree = "<group>"; };
 		22714E61277D5D4F0004F942 /* Chit-Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chit-Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22714E64277D5D4F0004F942 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22714E66277D5D4F0004F942 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 				22A45709281406D4009CB4E6 /* VideoCallViewController.swift */,
 				22A4570A281406D4009CB4E6 /* VoiceCallViewController.swift */,
 				22434822282AA2D50027DE7A /* SelectCallViewController.swift */,
+				22639883282F874E0052B354 /* IncomingCallViewController.swift */,
 			);
 			path = Calls;
 			sourceTree = "<group>";
@@ -887,6 +890,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				222411E327B2129100C5E416 /* GithubConstants.swift in Sources */,
+				22639884282F874E0052B354 /* IncomingCallViewController.swift in Sources */,
 				DAFFEC7B282B78A200A99629 /* GroupModel.swift in Sources */,
 				222411E927BF991400C5E416 /* Appearance.swift in Sources */,
 				DAFFEC79282B766600A99629 /* GroupChatsViewCell.swift in Sources */,

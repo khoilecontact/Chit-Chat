@@ -29,7 +29,7 @@ class CallNotificationCenter {
     }()
     
     public enum CallError: Error {
-        case failedToConnectToUser
+        case failedToConnectToServer
         case userIsInAnotherCall
     }
 }
@@ -57,7 +57,7 @@ extension CallNotificationCenter {
         guard
             let selfSender = selfSender,
             let messageId = createMessageId() else {
-            completion(.failure(CallError.failedToConnectToUser))
+            completion(.failure(CallError.failedToConnectToServer))
             return
         }
         
@@ -75,7 +75,7 @@ extension CallNotificationCenter {
                         completion(.success(true))
                     }
                     else {
-                        completion(.failure(CallError.failedToConnectToUser))
+                        completion(.failure(CallError.failedToConnectToServer))
                     }
                 })
                 break
@@ -85,7 +85,7 @@ extension CallNotificationCenter {
                     if success {
                         completion(.success(true))
                     } else {
-                        completion(.failure(CallError.failedToConnectToUser))
+                        completion(.failure(CallError.failedToConnectToServer))
                     }
                 })
                 break
@@ -123,6 +123,16 @@ extension CallNotificationCenter {
         })
     }
     
+    public func observeCallEndedCallee(of callee: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        let calleeSafeEmail = DatabaseManager.safeEmail(emailAddress: callee)
+        
+        database.child("Calls/\(calleeSafeEmail)").observe(.value, with: { snapshot in
+            if snapshot.value == nil {
+                completion(.success(true))
+            }
+        })
+    }
+    
     private func createMessageId() -> String? {
         // date, otherEmail, senderEmail, randomInt
         guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else {return nil}
@@ -138,22 +148,49 @@ extension CallNotificationCenter {
 
 // CALLEE
 extension CallNotificationCenter {
-    public func listenForIncomingCall() {
-        guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String,
-              let currentName = UserDefaults.standard.value(forKey: "name") as? String else {
+    public func listenForIncomingCall(completion: @escaping (Result<[String: Any], Error>) -> Void) {
+        guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String else {
                   return
               }
+        
         let safeEmail = DatabaseManager.safeEmail(emailAddress: currentEmail)
         database.child("Calls/\(safeEmail)").observe(.value, with: { snapshot in
             if let data = snapshot.value as? [String: Any] {
-                // Is in another call
+                // Only one incoming call
+                // Return the call notification
                 if data.count == 1 {
                     // Display the incoming call screen
-                } else if data.count > 1 {
+                    guard
+                    let otherUserEmail = data["email"] as? String,
+                    let otherUserName = data["name"] as? String else {
+                        completion(.failure(CallError.failedToConnectToServer))
+                        return
+                    }
+                    
+                    completion(.success(["email": otherUserEmail,
+                                         "name": otherUserName]))
                     
                 }
             }
         })
         
     }
+    
+    public func denyIncomingCall(completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else {return }
+        
+        let safeCurrentEmail = DatabaseManager.safeEmail(emailAddress: currentUserEmail)
+        
+        database.child("Calls/\(safeCurrentEmail)").observe(.value, with: { [weak self] snapshot in
+            if snapshot.value != nil {
+                completion(.success(true))
+            } else {
+                self?.database.child("Calls/\(safeCurrentEmail)").removeValue()
+                completion(.success(true))
+            }
+        })
+        
+    }
+    
+    
 }
