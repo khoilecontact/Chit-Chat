@@ -107,14 +107,20 @@ class UtilitiesMessageChatViewController: UIViewController  {
                                                    title: "Name: \(otherName)",
                                                    handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .info,
-                                                   title: "Email: \(otherEmail)",
+                                                   title: "Email: \(DatabaseManager.revertEmail(safeEmailAddress: otherEmail))",
                                                    handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,
                                                    title: "Nicknames -- In Beta, coming soon!",
                                                    handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
                                                    title: "Create chat group",
-                                                   handler: nil))
+                                                   handler: { [weak self] in
+            guard let strongSelf = self else { return }
+            
+            let vc = CreateGroupViewController()
+            strongSelf.navigationController?.pushViewController(vc, animated: true)
+            
+        }))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
                                                    title: "Search message in conversation",
                                                    handler: { [weak self] in
@@ -122,7 +128,7 @@ class UtilitiesMessageChatViewController: UIViewController  {
             
             let vc = SearchMessageInConversationViewController(email: strongSelf.otherEmail, name: strongSelf.otherName, conversationId: strongSelf.conversationId)
             let nav = UINavigationController(rootViewController: vc)
-            self?.present(nav, animated: true)
+            strongSelf.present(nav, animated: true)
             
         }))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .dangerous,

@@ -10,7 +10,7 @@ import JGProgressHUD
 
 class CreateGroupViewController: UIViewController {
     
-    private let spinner = JGProgressHUD(style: .dark)
+    private let spinner = JGProgressHUD(style: .light)
     
     private var peopleInFriendList = [UserNode]()
     private var results = [UserNode]()
@@ -19,12 +19,15 @@ class CreateGroupViewController: UIViewController {
     
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
+        searchBar.backgroundColor = .secondarySystemBackground
         searchBar.placeholder = "Find someone ..."
         return searchBar
     }()
     
     private let peopleCollection: UICollectionView = {
-        let collection = UICollectionView()
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.isHidden = true
         collection.register(CreateGroupCollectionViewCell.self, forCellWithReuseIdentifier: CreateGroupCollectionViewCell.identifier)
         return collection
@@ -42,16 +45,28 @@ class CreateGroupViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         navBar()
         
         fakeData()
         
         subViews()
         configCollection()
+        screenState(with: true)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        searchBar.frame = CGRect(x: 20, y: view.top + 100 + 40, width: (view.width-40), height: 30)
+        peopleCollection.frame = CGRect(x: 20, y: searchBar.bottom + 40, width: (view.width-40), height: (view.height-100))
+        noPeopleInListLabel.frame = CGRect(x: 20,
+                                           y: (view.height-100)/2,
+                                           width: view.width-20,
+                                           height: 100)
     }
     
     func navBar() {
-        
+        title = "Create New Group"
     }
     
     func configCollection() {
@@ -66,7 +81,24 @@ class CreateGroupViewController: UIViewController {
     }
     
     func fakeData() {
-        
+        peopleInFriendList.append(UserNode(id: "id",
+                                           firstName: "firstName",
+                                           lastName: "lastName",
+                                           province: "province",
+                                           district: "district",
+                                           bio: "",
+                                           email: "19521707@gm.uit.edu.vn",
+                                           dob: "",
+                                           isMale: true))
+        peopleInFriendList.append(UserNode(id: "id-2",
+                                           firstName: "Phat",
+                                           lastName: "Nguyen",
+                                           province: "province",
+                                           district: "district",
+                                           bio: "",
+                                           email: "19521707@gm.uit.edu.vn",
+                                           dob: "",
+                                           isMale: true))
     }
     
 }
@@ -115,9 +147,9 @@ extension CreateGroupViewController {
     }
 }
 
-extension CreateGroupViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension CreateGroupViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return peopleInFriendList.count ?? 0
+        return peopleInFriendList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -125,7 +157,12 @@ extension CreateGroupViewController: UICollectionViewDelegate, UICollectionViewD
             fatalError("Can't dequeue PersonCell.")
         }
         
+        cell.configure(with: peopleInFriendList[indexPath.item])
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: (view.width-50)/2, height: (view.width-50)*0.8/2)
     }
     
 }
@@ -137,8 +174,6 @@ extension CreateGroupViewController: UISearchBarDelegate {
             resetFriendList()
             return
         }
-
-//        searchBar.resignFirstResponder()
 
         spinner.show(in: view)
 
