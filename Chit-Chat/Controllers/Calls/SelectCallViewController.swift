@@ -10,6 +10,7 @@ import UIKit
 class SelectCallViewController: UIViewController {
     var otherUserName: String?
     var otherUserEmail: String?
+    var type: String?
     
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()

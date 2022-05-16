@@ -36,7 +36,7 @@ class CallNotificationCenter {
 
 // CALLER
 extension CallNotificationCenter {
-    public func sendCallNotification(to callee: String, calleeName: String, conversationId: String,completion: @escaping (Result<Bool, Error>) -> Void) {
+    public func sendCallNotification(to callee: String, calleeName: String, conversationId: String, isAudio: Bool, completion: @escaping (Result<Bool, Error>) -> Void) {
         guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String,
               let currentName = UserDefaults.standard.value(forKey: "name") as? String else {
                   return
@@ -99,7 +99,8 @@ extension CallNotificationCenter {
             } else {
                 let newCallData = [
                     "caller": currentName,
-                    "caller_email": currentEmail
+                    "caller_email": currentEmail,
+                    "type": isAudio ? "Audio" : "Video"
                 ]
                 
                 self?.database.child("Calls/\(calleeSafeEmail)").setValue(newCallData)
@@ -162,13 +163,15 @@ extension CallNotificationCenter {
                     // Display the incoming call screen
                     guard
                     let otherUserEmail = data["email"] as? String,
-                    let otherUserName = data["name"] as? String else {
+                    let otherUserName = data["name"] as? String,
+                    let type = data["type"] else {
                         completion(.failure(CallError.failedToConnectToServer))
                         return
                     }
                     
                     completion(.success(["email": otherUserEmail,
-                                         "name": otherUserName]))
+                                         "name": otherUserName,
+                                         "type": type]))
                     
                 }
             }
