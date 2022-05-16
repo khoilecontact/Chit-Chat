@@ -185,7 +185,8 @@ class MessageChatViewController: MessagesViewController {
     func configurateAvatarUserOnNavBar() {
         otherUserAvatar.frame = CGRect(origin: .zero, size: CGSize(width: 30, height: 30))
         
-        let gradient = UIImage.gradientImage(bounds: otherUserAvatar.bounds, colors: [.systemBlue, .systemRed])
+        // bright purple: 191, 64, 191
+        let gradient = UIImage.gradientImage(bounds: otherUserAvatar.bounds, colors: [.systemPink, .systemYellow, .systemYellow, UIColor(red: 191/255, green: 64/255, blue: 191/255, alpha: 1), .systemPurple, .purple])
         let gradientColor = UIColor(patternImage: gradient)
         otherUserAvatar.layer.borderWidth = 2.5
         otherUserAvatar.layer.borderColor = gradientColor.cgColor

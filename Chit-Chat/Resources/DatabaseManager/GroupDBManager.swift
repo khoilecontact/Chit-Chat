@@ -18,7 +18,7 @@ extension DatabaseManager {
         
     }
     
-    public func insertGroup(with user: User, completion: @escaping (Bool) -> Void) {
+    public func insertGroup(with user: [User], completion: @escaping (Bool) -> Void) {
         
     }
     
