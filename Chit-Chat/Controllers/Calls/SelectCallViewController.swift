@@ -10,6 +10,7 @@ import UIKit
 class SelectCallViewController: UIViewController {
     var otherUserName: String?
     var otherUserEmail: String?
+    var conversationId: String?
     var type: String?
     
     let scrollView: UIScrollView = {
@@ -90,10 +91,11 @@ class SelectCallViewController: UIViewController {
         videoButton.frame = CGRect(x: voiceButton.right + 40, y: 30, width: size, height: size)
     }
     
-    init(otherUserName: String, otherUserEmail: String) {
+    init(otherUserName: String, otherUserEmail: String, conversationId: String) {
         super.init(nibName: nil, bundle: nil)
         self.otherUserName = otherUserName
         self.otherUserEmail = otherUserEmail
+        self.conversationId = conversationId
     }
     
     required init?(coder: NSCoder) {
@@ -101,17 +103,75 @@ class SelectCallViewController: UIViewController {
     }
     
     @objc func voiceCallTapped() {
-        let vc = UIStoryboard(name: "VoiceCall", bundle: nil).instantiateViewController(withIdentifier: "VoiceCall") as! VoiceCallViewController
-        vc.otherUserEmail = self.otherUserEmail
-        vc.otherUserName = self.otherUserName
+        guard let otherUserName = self.otherUserName,
+        let otherUserEmail = self.otherUserEmail,
+        let conversationId = self.conversationId
+        else {
+            let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+            self.present(alert, animated: true)
+            
+            return
+        }
         
-        self.present(vc, animated: true)
+        CallNotificationCenter.shared.sendCallNotification(to: otherUserEmail, calleeName: otherUserName, conversationId: conversationId, isAudio: true, completion: { [weak self] result in
+            switch result {
+            case .success(_):
+                let vc = UIStoryboard(name: "VoiceCall", bundle: nil).instantiateViewController(withIdentifier: "VoiceCall") as! VoiceCallViewController
+                vc.otherUserEmail = self?.otherUserEmail
+                vc.otherUserName = self?.otherUserName
+                
+                self?.present(vc, animated: true)
+                
+                break
+                
+            case .failure(let error):
+                if error as! CallNotificationCenter.CallError == CallNotificationCenter.CallError.userIsInAnotherCall {
+                    let alert = UIAlertController(title: "Busy", message: "\(otherUserName) is in another call", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                    self?.present(alert, animated: true)
+                } else {
+                    let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                    self?.present(alert, animated: true)
+                }
+                                
+                break
+            }
+        })
+        
     }
     
     @objc func videoCallTapped() {
-        let vc = UIStoryboard(name: "VideoCall", bundle: nil).instantiateViewController(withIdentifier: "VideoCall") as! VideoCallViewController
+        guard let otherUserName = self.otherUserName,
+        let otherUserEmail = self.otherUserEmail,
+        let conversationId = self.conversationId
+        else {
+            let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+            self.present(alert, animated: true)
+            
+            return
+        }
         
-        self.present(vc, animated: true)
+        CallNotificationCenter.shared.sendCallNotification(to: otherUserEmail, calleeName: otherUserName, conversationId: conversationId, isAudio: false, completion: { [weak self] result in
+            switch result {
+            case .success(_):
+                let vc = UIStoryboard(name: "VideoCall", bundle: nil).instantiateViewController(withIdentifier: "VideoCall") as! VideoCallViewController
+                vc.otherUserEmail = self?.otherUserEmail
+                
+                self?.present(vc, animated: true)
+                
+                break
+                
+            case .failure(_):
+                let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                self?.present(alert, animated: true)
+                
+                break
+            }
+        })
     }
    
 

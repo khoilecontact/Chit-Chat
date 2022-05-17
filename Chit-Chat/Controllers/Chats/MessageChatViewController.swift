@@ -457,7 +457,7 @@ class MessageChatViewController: MessagesViewController {
 //        vc.otherUserEmail = otherUserEmail
 //        vc.otherUserName = otherUserName
         
-        let vc = SelectCallViewController(otherUserName: otherUserName, otherUserEmail: otherUserEmail)
+        let vc = SelectCallViewController(otherUserName: otherUserName, otherUserEmail: otherUserEmail, conversationId: conversationId!)
         vc.definesPresentationContext = true
 //        vc.modalPresentationStyle = .popover
 //        vc.modalTransitionStyle = .crossDissolve

@@ -42,9 +42,25 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
         sender.isSelected.toggle()
         micButton.isHidden.toggle()
         if sender.isSelected {
-            agoraKit.leaveChannel(nil)
-            UIApplication.shared.isIdleTimerDisabled = false
-            self.dismiss(animated: true)
+            CallNotificationCenter.shared.endCallCaller(to: self.otherUserEmail!, completion: { [weak self] result in
+                switch result {
+                case .success(_):
+                    self?.agoraKit.leaveChannel(nil)
+                    UIApplication.shared.isIdleTimerDisabled = false
+                    self?.dismiss(animated: true)
+                    
+                    break
+                    
+                case .failure(_):
+                    let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                    self?.present(alert, animated: true)
+                    
+                    break
+                }
+            })
+            
+            
         } else {
             initializeAndJoinChannel()
         }

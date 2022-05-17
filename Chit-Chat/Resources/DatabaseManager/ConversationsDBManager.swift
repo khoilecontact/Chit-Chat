@@ -341,6 +341,95 @@ extension DatabaseManager {
         })
     }
     
+    public func getAllMessagesForConversationSingleObserve(with id: String, completion: @escaping (Result<[Message], Error>) -> Void) {
+        database.child("Conversations/\(id)/messages").observeSingleEvent(of: .value, with: { snapshot in
+            guard let value = snapshot.value as? [[String: Any]] else {
+                print("Failed to load getAllMess snapshot")
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            
+            let messages: [Message] = value.compactMap({ dictionary in
+                guard let name = dictionary["name"] as? String,
+                      let isRead = dictionary["is_read"] as? Bool,
+                      let messageID = dictionary["id"] as? String,
+                      let content = dictionary["content"] as? String,
+                      let senderEmail = dictionary["sender_email"] as? String,
+                      let type = dictionary["type"] as? String,
+                      let dateString = dictionary["date"] as? String,
+                      let date = dateFormatter.date(from: dateString) else {
+                          print("A value is wrong")
+                          return nil
+                      }
+                
+                // Handle message type
+                var kind: MessageKind?
+                if type == "photo" {
+                    
+                    // photo
+                    guard let imageUrl = URL(string: content),
+                          let placeholder = UIImage(systemName: "plus") else {
+                              return nil
+                          }
+                    
+                    let media = Media(url: imageUrl,
+                                      image: nil,
+                                      placeholderImage: placeholder,
+                                      size: CGSize(width: 300, height: 300))
+                    
+                    kind = .photo(media)
+                    
+                }
+                else if type == "video" {
+                    
+                    // photo
+                    guard let videoUrl = URL(string: content),
+                          let placeholder = UIImage(named: "video_placeholder") else {
+                              return nil
+                          }
+                    
+                    let media = Media(url: videoUrl,
+                                      image: nil,
+                                      placeholderImage: placeholder,
+                                      size: CGSize(width: 300, height: 300))
+                    
+                    kind = .video(media)
+                    
+                }
+                else if type == "location" {
+                    let locationComponents = content.components(separatedBy: ",")
+                    guard let longitude = Double(locationComponents[0]),
+                          let latitude = Double(locationComponents[1]) else {
+                              return nil
+                          }
+                    
+                    let location = Location(location: CLLocation(latitude: latitude, longitude: longitude),
+                                            size: CGSize(width: 300, height: 300))
+                    
+                    kind = .location(location)
+                }
+                else {
+                    kind = .text(content)
+                }
+                
+                guard let finalKind = kind else {
+                    return nil
+                }
+                
+                let sender = Sender(photo: "",
+                                    senderId: senderEmail,
+                                    displayName: name)
+                
+                return Message(sender: sender,
+                               messageId: messageID,
+                               sentDate: date,
+                               kind: finalKind)
+            })
+            
+            completion(.success(messages))
+        })
+    }
+    
     public func sendMessage(to conversation: String, otherUserEmail: String, name: String, newMessage: Message, completion: @escaping (Bool) -> Void) {
         // add new message to messages
         // update latest message of current user

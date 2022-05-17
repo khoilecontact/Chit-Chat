@@ -79,12 +79,15 @@
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="GQg-We-90e" secondAttribute="trailing" constant="99" id="3Eq-Wd-0wp"/>
                             <constraint firstItem="WFT-dJ-zBF" firstAttribute="leading" secondItem="Cv5-7c-nAe" secondAttribute="trailing" constant="27" id="4zL-fd-aih"/>
+                            <constraint firstItem="VWN-Mj-4hI" firstAttribute="leading" secondItem="0YB-L4-MPP" secondAttribute="leading" constant="100" id="6vu-b3-tEc"/>
                             <constraint firstItem="0YB-L4-MPP" firstAttribute="trailing" secondItem="VWN-Mj-4hI" secondAttribute="trailing" constant="100" id="6wW-2F-lTS"/>
                             <constraint firstItem="0YB-L4-MPP" firstAttribute="bottom" secondItem="2Cq-oh-meN" secondAttribute="bottom" constant="127" id="9cV-E3-ERh"/>
                             <constraint firstItem="0YB-L4-MPP" firstAttribute="bottom" secondItem="Cv5-7c-nAe" secondAttribute="bottom" constant="119" id="EmN-lF-QmK"/>
                             <constraint firstAttribute="bottomMargin" secondItem="WFT-dJ-zBF" secondAttribute="bottom" constant="127" id="FnB-hA-xa8"/>
                             <constraint firstItem="VWN-Mj-4hI" firstAttribute="leading" secondItem="0YB-L4-MPP" secondAttribute="leading" constant="100" id="Jwv-1p-O19"/>
+                            <constraint firstItem="GQg-We-90e" firstAttribute="top" secondItem="VWN-Mj-4hI" secondAttribute="bottom" constant="24" id="SXV-SR-qyV"/>
                             <constraint firstAttribute="trailingMargin" secondItem="GQg-We-90e" secondAttribute="trailing" constant="118" id="Syv-aw-CsO"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="VWN-Mj-4hI" secondAttribute="trailing" constant="80" id="TmI-GH-8A0"/>
                             <constraint firstItem="VWN-Mj-4hI" firstAttribute="top" secondItem="0YB-L4-MPP" secondAttribute="top" constant="97" id="YYp-rp-Xuj"/>
                             <constraint firstItem="Cv5-7c-nAe" firstAttribute="leading" secondItem="2Cq-oh-meN" secondAttribute="trailing" constant="23" id="ZAO-rZ-4hd"/>
                             <constraint firstAttribute="trailingMargin" secondItem="WFT-dJ-zBF" secondAttribute="trailing" constant="65" id="iS6-RT-ZFv"/>

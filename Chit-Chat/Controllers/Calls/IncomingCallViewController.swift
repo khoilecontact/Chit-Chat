@@ -26,7 +26,8 @@ class IncomingCallViewController: UIViewController {
     
     func configUI() {
         guard let otherUserName = otherUserName,
-              let otherUserEmail = otherUserEmail
+              let otherUserEmail = otherUserEmail,
+              let callType = callType
         else {
             return
         }
@@ -45,11 +46,19 @@ class IncomingCallViewController: UIViewController {
                     strongSelf.callerImage.sd_setImage(with: url, completed: nil)
                 }
             case .failure(let error):
-                print("Failed to fetch avatar with error: \(error)")
+                print("Failed to fetch avatar with error: \(error) call")
             }
         })
         
-        self.callerName.text = otherUserName
+        callerImage.image?.withTintColor(Appearance.tint)
+        callerImage.contentMode = .scaleAspectFill
+//        imageView.contentMode = .scaleToFill
+        callerImage.layer.masksToBounds = true
+        callerImage.layer.cornerRadius = callerImage.frame.height / 2
+        callerImage.layer.borderWidth = 0
+        callerImage.clipsToBounds = true
+        
+        self.callerName.text = "\(otherUserName) is making a \(callType)"
     }
     
     @IBAction func acceptCallTapped(_ sender: Any) {
@@ -94,7 +103,7 @@ class IncomingCallViewController: UIViewController {
                 
             case .failure(_):
                 let alert = UIAlertController(title: "Error", message: "There has been an error", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak self] _ in 
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak self] _ in
                     self?.dismiss(animated: true)
                 }))
                 

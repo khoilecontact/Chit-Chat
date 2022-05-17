@@ -54,6 +54,7 @@ extension CallNotificationCenter {
                            displayName: "Me")
             
         }
+        
         guard
             let selfSender = selfSender,
             let messageId = createMessageId() else {
@@ -66,7 +67,7 @@ extension CallNotificationCenter {
                               sentDate: Date(),
                               kind: .custom("\(currentName) has called you"))
         
-        DatabaseManager.shared.getAllMessagesForConversation(with: conversationId, completion: { result in
+        DatabaseManager.shared.getAllMessagesForConversationSingleObserve(with: conversationId, completion: { result in
             switch result {
             // Existed conversation
             case .success(_):
@@ -94,7 +95,8 @@ extension CallNotificationCenter {
         
         ref.observeSingleEvent(of: .value, with: { [weak self] snapshot in
             // Callee is in another call
-            if snapshot.value != nil {
+            print(snapshot.value!)
+            if !(snapshot.value is NSNull) {
                 completion(.failure(CallError.userIsInAnotherCall))
             } else {
                 let newCallData = [
@@ -114,13 +116,13 @@ extension CallNotificationCenter {
         let ref = database.child("Calls/\(calleeSafeEmail)")
         
         ref.observeSingleEvent(of: .value, with: { [weak self] snapshot in
-            // Callee is in another call
-            if snapshot.value != nil {
+            if snapshot.value is NSNull {
                 completion(.success(true))
             } else {
                 self?.database.child("Calls/\(calleeSafeEmail)").removeValue()
                 completion(.success(true))
             }
+            
         })
     }
     
@@ -159,11 +161,11 @@ extension CallNotificationCenter {
             if let data = snapshot.value as? [String: Any] {
                 // Only one incoming call
                 // Return the call notification
-                if data.count == 1 {
+                if data.count == 3 {
                     // Display the incoming call screen
                     guard
-                    let otherUserEmail = data["email"] as? String,
-                    let otherUserName = data["name"] as? String,
+                    let otherUserEmail = data["caller_email"] as? String,
+                    let otherUserName = data["caller"] as? String,
                     let type = data["type"] else {
                         completion(.failure(CallError.failedToConnectToServer))
                         return
@@ -174,7 +176,10 @@ extension CallNotificationCenter {
                                          "type": type]))
                     
                 }
+                
             }
+            
+            completion(.failure(CallError.failedToConnectToServer))
         })
         
     }
