@@ -33,7 +33,7 @@ extension GeneralSettings {
 
 // MARK: - Style Values
 extension GeneralSettings {
-    public static let borderRadiusButton: Int = 15
-    public static let borderRadiusLabel: Int = 15
-    public static let borderRadiusImage: Int = 15
+    public static let borderRadiusButton: Float = 15
+    public static let borderRadiusLabel: Float = 15
+    public static let borderRadiusImage: Float = 15
 }
