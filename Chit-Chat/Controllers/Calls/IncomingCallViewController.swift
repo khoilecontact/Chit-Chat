@@ -24,6 +24,16 @@ class IncomingCallViewController: UIViewController {
         configUI()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        CallNotificationCenter.shared.listenCanceledCallCallee(completion: { [weak self] isEnded in
+            if isEnded {
+                self?.dismiss(animated: true)
+            }
+        })
+    }
+    
     func configUI() {
         guard let otherUserName = otherUserName,
               let otherUserEmail = otherUserEmail,
@@ -58,7 +68,7 @@ class IncomingCallViewController: UIViewController {
         callerImage.layer.borderWidth = 0
         callerImage.clipsToBounds = true
         
-        self.callerName.text = "\(otherUserName) is making a \(callType)"
+        self.callerName.text = "\(otherUserName) is making a \(callType) call"
     }
     
     @IBAction func acceptCallTapped(_ sender: Any) {
@@ -71,6 +81,7 @@ class IncomingCallViewController: UIViewController {
             let vc = UIStoryboard(name: "VoiceCall", bundle: nil).instantiateViewController(withIdentifier: "VoiceCall") as! VoiceCallViewController
             vc.otherUserEmail = self.otherUserEmail
             vc.otherUserName = self.otherUserName
+            vc.isCalled = true
             
             self.present(vc, animated: true)
             
@@ -78,6 +89,8 @@ class IncomingCallViewController: UIViewController {
             
         case "Video":
             let vc = UIStoryboard(name: "VideoCall", bundle: nil).instantiateViewController(withIdentifier: "VideoCall") as! VideoCallViewController
+            vc.otherUserEmail = self.otherUserEmail
+            vc.isCalled = true
             
             self.present(vc, animated: true)
             

@@ -14,6 +14,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
     var agoraKit: AgoraRtcEngineKit!
     var otherUserEmail: String?
     var otherUserName: String?
+    var isCalled: Bool? = nil
     
     @IBOutlet var otherAvatar: UIImageView!
     @IBOutlet var nameLabel: UILabel!
@@ -42,23 +43,45 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
         sender.isSelected.toggle()
         micButton.isHidden.toggle()
         if sender.isSelected {
-            CallNotificationCenter.shared.endCallCaller(to: self.otherUserEmail!, completion: { [weak self] result in
-                switch result {
-                case .success(_):
-                    self?.agoraKit.leaveChannel(nil)
-                    UIApplication.shared.isIdleTimerDisabled = false
-                    self?.dismiss(animated: true)
-                    
-                    break
-                    
-                case .failure(_):
-                    let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
-                    self?.present(alert, animated: true)
-                    
-                    break
-                }
-            })
+            if isCalled == nil {
+                CallNotificationCenter.shared.endCallCaller(to: self.otherUserEmail!, completion: { [weak self] result in
+                    switch result {
+                    case .success(_):
+                        self?.agoraKit.leaveChannel(nil)
+                        UIApplication.shared.isIdleTimerDisabled = false
+                        //self?.dismiss(animated: true)
+                        self?.view.window?.rootViewController?.dismiss(animated: true)
+                        
+                        break
+                        
+                    case .failure(_):
+                        let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                        self?.present(alert, animated: true)
+                        
+                        break
+                    }
+                })
+            } else {
+                CallNotificationCenter.shared.endCallCallee(completion: { [weak self] result in
+                    switch result {
+                    case .success(_):
+                        self?.agoraKit.leaveChannel(nil)
+                        UIApplication.shared.isIdleTimerDisabled = false
+                        //self?.dismiss(animated: true)
+                        self?.view.window?.rootViewController?.dismiss(animated: true)
+                        
+                        break
+                        
+                    case .failure(_):
+                        let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                        self?.present(alert, animated: true)
+                        
+                        break
+                    }
+                })
+            }
             
             
         } else {
@@ -71,6 +94,12 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
         configView()
         initializeAndJoinChannel()
         SetSessionPlayerOff()
+        
+        if isCalled != nil {
+            listenEndedCallCallee()
+        } else {
+            listenEndedCallCaller()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -151,6 +180,22 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
         })
        
      }
+    
+    func listenEndedCallCallee() {
+        CallNotificationCenter.shared.listenCanceledCallCallee(completion: { [weak self] isEnded in
+            if isEnded {
+                self?.view.window?.rootViewController?.dismiss(animated: true)
+            }
+        })
+    }
+    
+    func listenEndedCallCaller() {
+        CallNotificationCenter.shared.listenCallEndedCaller(of: self.otherUserEmail!, completion: { [weak self] isEnded in
+            if isEnded {
+                self?.view.window?.rootViewController?.dismiss(animated: true)
+            }
+        })
+    }
     
     func SetSessionPlayerOn()
     {

@@ -11,6 +11,7 @@ import AgoraUIKit
 
 class VideoCallViewController: UIViewController, AgoraRtcEngineDelegate {
     var otherUserEmail: String?
+    var isCalled: Bool? = nil
     
     @IBOutlet var micButton: UIButton!
     @IBOutlet var cameraButton: UIButton!
@@ -27,23 +28,45 @@ class VideoCallViewController: UIViewController, AgoraRtcEngineDelegate {
         micButton.isHidden.toggle()
         cameraButton.isHidden.toggle()
         if sender.isSelected {
-            CallNotificationCenter.shared.endCallCaller(to: self.otherUserEmail!, completion: { [weak self] result in
-                switch result {
-                case .success(_):
-                    self?.agoraKit.leaveChannel(nil)
-                    UIApplication.shared.isIdleTimerDisabled = false
-                    self?.dismiss(animated: true)
-                    
-                    break
-                    
-                case .failure(_):
-                    let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
-                    self?.present(alert, animated: true)
-                    
-                    break
-                }
-            })
+            if isCalled == nil {
+                CallNotificationCenter.shared.endCallCaller(to: self.otherUserEmail!, completion: { [weak self] result in
+                    switch result {
+                    case .success(_):
+                        self?.agoraKit.leaveChannel(nil)
+                        UIApplication.shared.isIdleTimerDisabled = false
+                        //self?.dismiss(animated: true)
+                        self?.view.window?.rootViewController?.dismiss(animated: true)
+                        
+                        break
+                        
+                    case .failure(_):
+                        let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                        self?.present(alert, animated: true)
+                        
+                        break
+                    }
+                })
+            } else {
+                CallNotificationCenter.shared.endCallCallee(completion: { [weak self] result in
+                    switch result {
+                    case .success(_):
+                        self?.agoraKit.leaveChannel(nil)
+                        UIApplication.shared.isIdleTimerDisabled = false
+                        //self?.dismiss(animated: true)
+                        self?.view.window?.rootViewController?.dismiss(animated: true)
+                        
+                        break
+                        
+                    case .failure(_):
+                        let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                        self?.present(alert, animated: true)
+                        
+                        break
+                    }
+                })
+            }
             
             self.dismiss(animated: true)
         } else {
@@ -75,6 +98,12 @@ class VideoCallViewController: UIViewController, AgoraRtcEngineDelegate {
                                                     action: #selector(self.touched(_:))))
             self.localVideo.setupLocalVideo(self.agoraKit, self.remoteVideo)
         })
+        
+        if isCalled != nil {
+            listenEndedCallCallee()
+        } else {
+            listenEndedCallCaller()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -82,5 +111,21 @@ class VideoCallViewController: UIViewController, AgoraRtcEngineDelegate {
                agoraKit?.leaveChannel(nil)
                AgoraRtcEngineKit.destroy()
          }
+    
+    func listenEndedCallCallee() {
+        CallNotificationCenter.shared.listenCanceledCallCallee(completion: { [weak self] isEnded in
+            if isEnded {
+                self?.view.window?.rootViewController?.dismiss(animated: true)
+            }
+        })
+    }
+    
+    func listenEndedCallCaller() {
+        CallNotificationCenter.shared.listenCallEndedCaller(of: self.otherUserEmail!, completion: { [weak self] isEnded in
+            if isEnded {
+                self?.view.window?.rootViewController?.dismiss(animated: true)
+            }
+        })
+    }
 }
 

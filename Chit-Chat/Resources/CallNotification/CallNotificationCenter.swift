@@ -126,13 +126,15 @@ extension CallNotificationCenter {
         })
     }
     
-    public func observeCallEndedCallee(of callee: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+    public func listenCallEndedCaller(of callee: String, completion: @escaping (Bool) -> Void) {
         let calleeSafeEmail = DatabaseManager.safeEmail(emailAddress: callee)
         
         database.child("Calls/\(calleeSafeEmail)").observe(.value, with: { snapshot in
-            if snapshot.value == nil {
-                completion(.success(true))
+            if snapshot.value is NSNull {
+                completion(true)
             }
+            
+            completion(false)
         })
     }
     
@@ -184,13 +186,45 @@ extension CallNotificationCenter {
         
     }
     
+    public func listenCanceledCallCallee(completion: @escaping (Bool) -> Void) {
+        guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+                  return
+              }
+        
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: currentEmail)
+        database.child("Calls/\(safeEmail)").observe(.value, with: { snapshot in
+            if snapshot.value is NSNull {
+                completion(true)
+            }
+            
+            completion(false)
+        })
+        
+    }
+    
     public func denyIncomingCall(completion: @escaping (Result<Bool, Error>) -> Void) {
         guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else {return }
         
         let safeCurrentEmail = DatabaseManager.safeEmail(emailAddress: currentUserEmail)
         
         database.child("Calls/\(safeCurrentEmail)").observe(.value, with: { [weak self] snapshot in
-            if snapshot.value != nil {
+            if snapshot.value is NSNull {
+                completion(.success(true))
+            } else {
+                self?.database.child("Calls/\(safeCurrentEmail)").removeValue()
+                completion(.success(true))
+            }
+        })
+        
+    }
+    
+    public func endCallCallee(completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else {return }
+        
+        let safeCurrentEmail = DatabaseManager.safeEmail(emailAddress: currentUserEmail)
+        
+        database.child("Calls/\(safeCurrentEmail)").observe(.value, with: { [weak self] snapshot in
+            if snapshot.value is NSNull {
                 completion(.success(true))
             } else {
                 self?.database.child("Calls/\(safeCurrentEmail)").removeValue()
