@@ -13,7 +13,7 @@ final class AgoraChannel {
     static var appID: String = "cf8f308e1fb3430e8dd8a4bbf0dcbf6e"
     static var channelId: String = "chitchat"
     
-    static var token = "006cf8f308e1fb3430e8dd8a4bbf0dcbf6eIACFGKafJvbyJjTngetBb8NdIuan9o+XVPkjioh9UmU/6JhPb+QAAAAAEADv6QW6mKxrYgEAAQCXrGti"
+    static var token = "006cf8f308e1fb3430e8dd8a4bbf0dcbf6eIACYvJbS8hw9EFILInW+MSoxxf0fPxMZz6OdNq/8CghqcJhPb+QAAAAAEACjPQT8nv+QYgEAAQCe/5Bi"
     private let url = URL(string: "https://chit-chat-token-server.herokuapp.com/access_token?channel=chitchat&uid=1234")
 }
 
@@ -57,6 +57,7 @@ extension AgoraChannel {
                     completion(.success(true))
                 } else {
                     completion(.failure(APIError.failedToReceive))
+                    throw(APIError.failedToReceive)
                 }
                 
             } catch {

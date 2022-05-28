@@ -63,7 +63,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
                     }
                 })
             } else {
-                CallNotificationCenter.shared.endCallCallee(completion: { [weak self] result in
+                CallNotificationCenter.shared.endCallCallee( completion: { [weak self] result in
                     switch result {
                     case .success(_):
                         self?.agoraKit.leaveChannel(nil)
@@ -93,7 +93,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
         super.viewDidLoad()
         configView()
         initializeAndJoinChannel()
-        SetSessionPlayerOff()
+//        SetSessionPlayerOn()
         
         if isCalled != nil {
             listenEndedCallCallee()
@@ -150,7 +150,6 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
     }
 
     func initializeAndJoinChannel() {
-         // Pass in your App ID here
         agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: AgoraChannel.appID, delegate: self)
         
         let agora = AgoraChannel()

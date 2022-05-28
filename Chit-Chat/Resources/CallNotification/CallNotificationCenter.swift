@@ -207,7 +207,7 @@ extension CallNotificationCenter {
         
         let safeCurrentEmail = DatabaseManager.safeEmail(emailAddress: currentUserEmail)
         
-        database.child("Calls/\(safeCurrentEmail)").observe(.value, with: { [weak self] snapshot in
+        database.child("Calls/\(safeCurrentEmail)").observeSingleEvent(of: .value, with: { [weak self] snapshot in
             if snapshot.value is NSNull {
                 completion(.success(true))
             } else {
@@ -223,7 +223,7 @@ extension CallNotificationCenter {
         
         let safeCurrentEmail = DatabaseManager.safeEmail(emailAddress: currentUserEmail)
         
-        database.child("Calls/\(safeCurrentEmail)").observe(.value, with: { [weak self] snapshot in
+        database.child("Calls/\(safeCurrentEmail)").observeSingleEvent(of: .value, with: { [weak self] snapshot in
             if snapshot.value is NSNull {
                 completion(.success(true))
             } else {

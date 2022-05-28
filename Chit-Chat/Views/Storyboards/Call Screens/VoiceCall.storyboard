@@ -10,7 +10,7 @@
         <!--Voice Call View Controller-->
         <scene sceneID="aqJ-0d-bF6">
             <objects>
-                <viewController storyboardIdentifier="VoiceCall" id="iYA-1D-Lti" customClass="VoiceCallViewController" customModule="Chit_Chat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VoiceCall" useStoryboardIdentifierAsRestorationIdentifier="YES" id="iYA-1D-Lti" customClass="VoiceCallViewController" customModule="Chit_Chat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" id="bSB-3q-MPF">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -30,7 +30,7 @@
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VWN-Mj-4hI">
-                                <rect key="frame" x="100" y="141" width="214" height="200"/>
+                                <rect key="frame" x="100" y="141" width="200" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="1nW-kU-Udy"/>
                                     <constraint firstAttribute="height" constant="200" id="ycM-Lu-Gdu"/>
@@ -98,10 +98,10 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="micButton" destination="2Cq-oh-meN" id="TdE-Bz-vbW"/>
-                        <outlet property="nameLabel" destination="GQg-We-90e" id="VPP-BP-gJ1"/>
-                        <outlet property="otherAvatar" destination="VWN-Mj-4hI" id="b6a-fA-Uls"/>
-                        <outlet property="speakerButton" destination="WFT-dJ-zBF" id="qyR-uc-36f"/>
+                        <outlet property="micButton" destination="2Cq-oh-meN" id="tp0-gd-TYG"/>
+                        <outlet property="nameLabel" destination="GQg-We-90e" id="NsV-uY-H2a"/>
+                        <outlet property="otherAvatar" destination="VWN-Mj-4hI" id="Yc6-Ad-oom"/>
+                        <outlet property="speakerButton" destination="WFT-dJ-zBF" id="qDh-W7-maO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="650-F9-KZw" sceneMemberID="firstResponder"/>

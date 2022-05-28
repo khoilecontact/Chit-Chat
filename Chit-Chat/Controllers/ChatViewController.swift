@@ -9,7 +9,9 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import JGProgressHUD
-
+import FBSDKLoginKit
+import GoogleSignIn
+import SDWebImage
 
 class ChatViewController: UIViewController {
     
@@ -46,7 +48,7 @@ class ChatViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        
+    
         navBar()
         
         // subviews
