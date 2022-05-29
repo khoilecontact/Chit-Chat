@@ -18,9 +18,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cv5-7c-nAe" userLabel="hangUpButton">
                                 <rect key="frame" x="163" y="673" width="70" height="70"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="Mwm-dk-sxy"/>
                                     <constraint firstAttribute="height" constant="70" id="ZVJ-Xb-r78"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="aoY-u6-g13"/>
                                     <constraint firstAttribute="width" constant="70" id="mRr-fs-hL3"/>
                                 </constraints>
                                 <state key="normal" title="Hang Up" image="end"/>
@@ -78,7 +76,6 @@
                         <color key="backgroundColor" red="0.55532950160000005" green="0.69038277859999997" blue="0.8312652707" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="GQg-We-90e" secondAttribute="trailing" constant="99" id="3Eq-Wd-0wp"/>
-                            <constraint firstItem="WFT-dJ-zBF" firstAttribute="leading" secondItem="Cv5-7c-nAe" secondAttribute="trailing" constant="27" id="4zL-fd-aih"/>
                             <constraint firstItem="VWN-Mj-4hI" firstAttribute="leading" secondItem="0YB-L4-MPP" secondAttribute="leading" constant="100" id="6vu-b3-tEc"/>
                             <constraint firstItem="0YB-L4-MPP" firstAttribute="trailing" secondItem="VWN-Mj-4hI" secondAttribute="trailing" constant="100" id="6wW-2F-lTS"/>
                             <constraint firstItem="0YB-L4-MPP" firstAttribute="bottom" secondItem="2Cq-oh-meN" secondAttribute="bottom" constant="127" id="9cV-E3-ERh"/>

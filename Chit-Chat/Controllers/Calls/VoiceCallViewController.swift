@@ -49,7 +49,6 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
                     case .success(_):
                         self?.agoraKit.leaveChannel(nil)
                         UIApplication.shared.isIdleTimerDisabled = false
-                        //self?.dismiss(animated: true)
                         self?.view.window?.rootViewController?.dismiss(animated: true)
                         
                         break
@@ -68,7 +67,6 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
                     case .success(_):
                         self?.agoraKit.leaveChannel(nil)
                         UIApplication.shared.isIdleTimerDisabled = false
-                        //self?.dismiss(animated: true)
                         self?.view.window?.rootViewController?.dismiss(animated: true)
                         
                         break
@@ -93,7 +91,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
         super.viewDidLoad()
         configView()
         initializeAndJoinChannel()
-//        SetSessionPlayerOn()
+        SetSessionPlayerOn()
         
         if isCalled != nil {
             listenEndedCallCallee()
@@ -140,7 +138,6 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
         
         otherAvatar.image?.withTintColor(Appearance.tint)
         otherAvatar.contentMode = .scaleAspectFill
-//        imageView.contentMode = .scaleToFill
         otherAvatar.layer.masksToBounds = true
         otherAvatar.layer.cornerRadius = otherAvatar.frame.height / 2
         otherAvatar.layer.borderWidth = 0

@@ -87,7 +87,7 @@ class VideoCallViewController: UIViewController, AgoraRtcEngineDelegate {
         _ = SetupVideo(agoraKit: self.agoraKit)
         
         let agora = AgoraChannel()
-        
+
         self.joinChannel = JoinChannel(self.agoraKit, agoraChannel: agora, completion: {
             self.remoteVideo = RemoteVideoView(frame: self.view.frame)
             self.localVideo = LocalVideoView()

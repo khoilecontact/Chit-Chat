@@ -452,11 +452,6 @@ class MessageChatViewController: MessagesViewController {
     }
     
     @objc func contactBtnTapped() {
-//        let vc = UIStoryboard(name: "VideoCall", bundle: nil).instantiateViewController(withIdentifier: "VideoCall") as! VideoCallViewController
-//        let vc = UIStoryboard(name: "VoiceCall", bundle: nil).instantiateViewController(withIdentifier: "VoiceCall") as! VoiceCallViewController
-//        vc.otherUserEmail = otherUserEmail
-//        vc.otherUserName = otherUserName
-        
         let vc = SelectCallViewController(otherUserName: otherUserName, otherUserEmail: otherUserEmail, conversationId: conversationId!)
         vc.definesPresentationContext = true
 //        vc.modalPresentationStyle = .popover
@@ -690,6 +685,8 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
             break
         }
     }
+    
+    
     
     func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
         let sender = message.sender
