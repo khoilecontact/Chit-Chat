@@ -13,7 +13,7 @@ final class AgoraChannel {
     static var appID: String = "cf8f308e1fb3430e8dd8a4bbf0dcbf6e"
     static var channelId: String = "chitchat"
     
-    static var token = "006cf8f308e1fb3430e8dd8a4bbf0dcbf6eIACYvJbS8hw9EFILInW+MSoxxf0fPxMZz6OdNq/8CghqcJhPb+QAAAAAEACjPQT8nv+QYgEAAQCe/5Bi"
+    static var token = "006cf8f308e1fb3430e8dd8a4bbf0dcbf6eIADxM5h1ML1MAiuSweQ73Fq/Xq7r+doE0HYev+9HRJVkcZhPb+QAAAAAEABdi2YtizeXYgEAAQCLN5di"
     private let url = URL(string: "https://chit-chat-token-server.herokuapp.com/access_token?channel=chitchat&uid=1234")
 }
 

@@ -37,6 +37,10 @@ extension MessageKind {
             return "contact"
         case .linkPreview(_):
             return "link_preview"
+        case .audioCall(_):
+            return "audio_call"
+        case .videoCall(_):
+            return "video_call"
         case .custom(_):
             return "custom"
         }

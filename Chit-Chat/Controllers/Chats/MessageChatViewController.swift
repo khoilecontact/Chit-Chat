@@ -817,6 +817,82 @@ extension MessageChatViewController: MessageCellDelegate {
             break
         }
     }
+    
+    func didTapCalling(in cell: MessageCollectionViewCell) {
+        guard let indexPath = messagesCollectionView.indexPath(for: cell) else { return }
+        
+        let message = messages[indexPath.section]
+        
+        switch message.kind {
+        case .photo(_):
+            guard let conversationId = self.conversationId
+            else {
+                let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                self.present(alert, animated: true)
+                
+                return
+            }
+            
+            CallNotificationCenter.shared.sendCallNotification(to: otherUserEmail, calleeName: otherUserName, conversationId: conversationId, isAudio: true, completion: { [weak self] result in
+                switch result {
+                case .success(_):
+                    let vc = UIStoryboard(name: "VoiceCall", bundle: nil).instantiateViewController(withIdentifier: "VoiceCall") as! VoiceCallViewController
+                    vc.otherUserEmail = self?.otherUserEmail
+                    vc.otherUserName = self?.otherUserName
+                    
+                    self?.present(vc, animated: true)
+                    
+                    break
+                    
+                case .failure(let error):
+                    if error as! CallNotificationCenter.CallError == CallNotificationCenter.CallError.userIsInAnotherCall {
+                        let alert = UIAlertController(title: "Busy", message: "\(String(describing: self?.otherUserName)) is in another call", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                        self?.present(alert, animated: true)
+                    } else {
+                        let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                        self?.present(alert, animated: true)
+                    }
+                                    
+                    break
+                }
+            })
+            break
+        case .videoCall(_):
+            guard let conversationId = self.conversationId
+            else {
+                let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                self.present(alert, animated: true)
+                
+                return
+            }
+            
+            CallNotificationCenter.shared.sendCallNotification(to: otherUserEmail, calleeName: otherUserName, conversationId: conversationId, isAudio: false, completion: { [weak self] result in
+                switch result {
+                case .success(_):
+                    let vc = UIStoryboard(name: "VideoCall", bundle: nil).instantiateViewController(withIdentifier: "VideoCall") as! VideoCallViewController
+                    vc.otherUserEmail = self?.otherUserEmail
+                    
+                    self?.present(vc, animated: true)
+                    
+                    break
+                    
+                case .failure(_):
+                    let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                    self?.present(alert, animated: true)
+                    
+                    break
+                }
+            })
+            break
+        default:
+            break
+        }
+    }
 }
 
 //extension MessageChatViewController: UIViewControllerTransitioningDelegate {

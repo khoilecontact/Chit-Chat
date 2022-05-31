@@ -61,11 +61,11 @@ extension CallNotificationCenter {
             completion(.failure(CallError.failedToConnectToServer))
             return
         }
-        
+
         let calleeMessage = Message(sender: selfSender,
                               messageId: messageId,
                               sentDate: Date(),
-                              kind: .custom("\(currentName) has called you"))
+                                    kind: isAudio ? .audioCall("\(currentName)") : .videoCall(currentName))
         
         DatabaseManager.shared.getAllMessagesForConversationSingleObserve(with: conversationId, completion: { result in
             switch result {

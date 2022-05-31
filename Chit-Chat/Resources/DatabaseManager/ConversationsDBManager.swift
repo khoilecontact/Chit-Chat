@@ -62,6 +62,10 @@ extension DatabaseManager {
                 break
             case .linkPreview(_):
                 break
+            case .audioCall(let callMessage):
+                message = callMessage
+            case .videoCall(let callMessage):
+                message = callMessage
             case .custom(_):
                 break
             }
@@ -176,6 +180,12 @@ extension DatabaseManager {
         case .contact(_):
             break
         case .linkPreview(_):
+            break
+        case .audioCall(let callMessage):
+            message = callMessage
+            break
+        case .videoCall(let callMessage):
+            message = callMessage
             break
         case .custom(_):
             break
@@ -318,6 +328,10 @@ extension DatabaseManager {
                                             size: CGSize(width: 300, height: 300))
                     
                     kind = .location(location)
+                } else if type == "audio_call" {
+                    kind = .audioCall(content)
+                } else if type == "video_call" {
+                    kind = .videoCall(content)
                 }
                 else {
                     kind = .text(content)
@@ -483,6 +497,12 @@ extension DatabaseManager {
             case .contact(_):
                 break
             case .linkPreview(_):
+                break
+            case .audioCall(let callMessage):
+                message = callMessage
+                break
+            case .videoCall(let callMessage):
+                message = callMessage
                 break
             case .custom(_):
                 break
