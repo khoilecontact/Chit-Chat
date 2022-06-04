@@ -291,12 +291,12 @@
 			path = Friend;
 			sourceTree = "<group>";
 		};
-		22434826282D50E40027DE7A /* CallNotification */ = {
+		22434826282D50E40027DE7A /* NotificationCenter */ = {
 			isa = PBXGroup;
 			children = (
 				22434827282D50F80027DE7A /* CallNotificationCenter.swift */,
 			);
-			path = CallNotification;
+			path = NotificationCenter;
 			sourceTree = "<group>";
 		};
 		22714E58277D5D4F0004F942 = {
@@ -488,7 +488,7 @@
 		22CCFE3C279FF50B009F7C8A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				22434826282D50E40027DE7A /* CallNotification */,
+				22434826282D50E40027DE7A /* NotificationCenter */,
 				DA2861842820CF5C003A0FCA /* GeneralSettings */,
 				22A456E12813FEDE009CB4E6 /* Extensions */,
 				DA6238AA2812969E00006F7D /* ViewPresentTransition */,

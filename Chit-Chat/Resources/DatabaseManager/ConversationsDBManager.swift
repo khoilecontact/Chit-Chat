@@ -556,8 +556,19 @@ extension DatabaseManager {
                         }
                         
                         if var targetConversation = targetConversation {
+                            // Set the lastest value
                             targetConversation["latest_message"] = updatedValue
-                            currentUserConversations[position] = targetConversation
+                            
+                            if position != 0 {
+                                // Push the lastest message
+                                for index in stride(from: 1, to: position + 1, by: 1).reversed() {
+                                    currentUserConversations[index] = currentUserConversations[index - 1]
+                                }
+                                
+                                currentUserConversations[0] = targetConversation
+                            }
+                            
+                            // Set the value back to the global variable
                             databaseEntryConversations = currentUserConversations
                         }
                         else {
@@ -620,7 +631,16 @@ extension DatabaseManager {
                                 
                                 if var targetConversation = targetConversation {
                                     targetConversation["latest_message"] = updatedValue
-                                    otherUserConversations[position] = targetConversation
+                                    
+                                    if position != 0 {
+                                        // Push the lastest message
+                                        for index in stride(from: 1, to: position + 1, by: 1).reversed() {
+                                            otherUserConversations[index] = otherUserConversations[index - 1]
+                                        }
+                                        
+                                        otherUserConversations[0] = targetConversation
+                                    }
+                                    
                                     databaseEntryConversations = otherUserConversations
                                 }
                                 else {
