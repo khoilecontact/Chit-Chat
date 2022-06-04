@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import MessageKit
+import ChatMessageKit
 import SDWebImage
 import CoreLocation
 import AVFoundation

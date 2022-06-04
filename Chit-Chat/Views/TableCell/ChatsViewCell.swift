@@ -67,6 +67,11 @@ final class ChatsViewCell: UITableViewCell {
         userNameLabel.text = model.name
         userMessageLabel.text = model.latestMessage.text
         
+        // Bold lastest message if is not red
+//        if !model.latestMessage.isRead {
+//            userMessageLabel.font = UIFont.boldSystemFont(ofSize: 22)
+//        }
+//        
         let path = "images/\(model.otherUserEmail)_profile_picture.png"
         // call to Storage manager to take img
         StorageManager.shared.downloadUrl(for: path) { [weak self] result in

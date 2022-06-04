@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseDatabase
 import FirebaseAuth
-import MessageKit
+import ChatMessageKit
 import CoreLocation
 
 final class UserAdvancedManager {

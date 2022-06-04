@@ -19,7 +19,7 @@ pod 'FBSDKLoginKit'
 #Google Pods
 pod 'GoogleSignIn'
 
-pod 'MessageKit'
+pod 'ChatMessageKit'
 pod 'JGProgressHUD'
 pod 'SDWebImage'
 pod 'Toast-Swift', '~> 5.0.1'

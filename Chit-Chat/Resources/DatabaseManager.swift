@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseDatabase
 import FirebaseAuth
-import MessageKit
+import ChatMessageKit
 import CoreLocation
 
 /// Manager object to read and write to real time database in Firebase

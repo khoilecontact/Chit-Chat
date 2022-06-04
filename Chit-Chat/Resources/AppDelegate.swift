@@ -214,9 +214,9 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     /// Handle notification when app is onscreen
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
-        let userInfo = notification.request.content.userInfo
+        let userInfo = notification.request.content
         print("willPresent ======", userInfo)
-        completionHandler([.sound, .badge])
+        completionHandler([.alert, .sound, .badge])
     }
 }
 
@@ -253,7 +253,9 @@ extension AppDelegate : PKPushRegistryDelegate {
             content.body = message
             content.badge = 0
             content.sound = UNNotificationSound.default
-                
+            
+            content.setValue("YES", forKeyPath: "shouldAlwaysAlertWhileAppIsForeground")
+            
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
             let request = UNNotificationRequest(identifier: "VoIPDemoIdentifier", content: content, trigger: trigger)
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
