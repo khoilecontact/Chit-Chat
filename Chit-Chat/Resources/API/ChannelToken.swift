@@ -11,9 +11,9 @@ final class AgoraChannel {
     public static let shared = AgoraChannel()
     
     static var appID: String = "cf8f308e1fb3430e8dd8a4bbf0dcbf6e"
-    static var channelId: String = "testing"
+    static var channelId: String = "chitchat"
     
-    static var token = "006cf8f308e1fb3430e8dd8a4bbf0dcbf6eIAD+XIb5YFxyeep0jZhXLJlqr4J4VKQgVcqiCDY5/yeYkgZa8+gAAAAAEABdi2Yt9HubYgEAAQD0e5ti"
+    static var token = "006cf8f308e1fb3430e8dd8a4bbf0dcbf6eIAAdKlvx+emF+NkFahEF2PniLwYbAgESigvDxLbpO6VZiphPb+QAAAAAEABdi2YtAhKcYgEAAQACEpxi"
     private let url = URL(string: "https://chit-chat-token-server.herokuapp.com/access_token?channel=chitchat&uid=1234")
 }
 

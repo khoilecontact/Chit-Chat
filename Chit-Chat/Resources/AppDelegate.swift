@@ -48,19 +48,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.voipRegistration()
         
         
-        // Generate token for Agora
-        AgoraChannel.shared.createChannel(completion: { result in
-            switch result {
-            case .success(_):
-                
-                break
-                
-            case .failure(_):
-                
-                break
-            }
-        })
-        
         return true
     }
     
@@ -229,7 +216,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         let userInfo = notification.request.content.userInfo
         print("willPresent ======", userInfo)
-        completionHandler([.alert, .sound, .badge])
+        completionHandler([.sound, .badge])
     }
 }
 

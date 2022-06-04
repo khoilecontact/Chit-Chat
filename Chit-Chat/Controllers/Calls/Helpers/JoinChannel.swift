@@ -8,8 +8,7 @@ class JoinChannel {
         self.agoraKit.setDefaultAudioRouteToSpeakerphone(true)
         
         self.agoraKit.joinChannel(
-            byToken: "006cf8f308e1fb3430e8dd8a4bbf0dcbf6eIABoi0qhKrLA92sMFawdGW1KU01K8qZajudxD22SSNCKkJhPb+QAAAAAEACjPQT8J3aTYgEAAQAmdpNi",
-//            byToken: AgoraChannel.token,
+            byToken: AgoraChannel.token,
             channelId: AgoraChannel.channelId,
             info: nil,
             uid: 0

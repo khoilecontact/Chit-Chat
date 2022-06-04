@@ -91,7 +91,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
         super.viewDidLoad()
         configView()
         initializeAndJoinChannel()
-        SetSessionPlayerOn()
+        SetSessionPlayerOff()
         
         if isCalled != nil {
             listenEndedCallCallee()
@@ -125,7 +125,10 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
                     break
                 
                 case .success(let url):
-                    self?.otherAvatar.sd_setImage(with: url, completed: nil)
+                    DispatchQueue.main.async {
+                        self?.otherAvatar.sd_setImage(with: url, completed: nil)
+                    }
+                    
                 }
             })
             
