@@ -11,9 +11,9 @@ final class AgoraChannel {
     public static let shared = AgoraChannel()
     
     static var appID: String = "cf8f308e1fb3430e8dd8a4bbf0dcbf6e"
-    static var channelId: String = "chitchat"
+    static var channelId: String = "testing"
     
-    static var token = "006cf8f308e1fb3430e8dd8a4bbf0dcbf6eIADxM5h1ML1MAiuSweQ73Fq/Xq7r+doE0HYev+9HRJVkcZhPb+QAAAAAEABdi2YtizeXYgEAAQCLN5di"
+    static var token = "006cf8f308e1fb3430e8dd8a4bbf0dcbf6eIAD+XIb5YFxyeep0jZhXLJlqr4J4VKQgVcqiCDY5/yeYkgZa8+gAAAAAEABdi2Yt9HubYgEAAQD0e5ti"
     private let url = URL(string: "https://chit-chat-token-server.herokuapp.com/access_token?channel=chitchat&uid=1234")
 }
 
@@ -53,7 +53,7 @@ extension AgoraChannel {
                 let res: String? = try await ServiceManager.shared.getAgoraToken()
                 
                 if let token = res {
-                    AgoraChannel.token = token
+                    //AgoraChannel.token = token
                     completion(.success(true))
                 } else {
                     completion(.failure(APIError.failedToReceive))
