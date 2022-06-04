@@ -25,4 +25,21 @@ public class Appearance {
                 return UIColor.black
             }
     }()
+    
+    public static var system: UIColor = {
+        if #available(iOS 13, *) {
+                return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
+                    if UITraitCollection.userInterfaceStyle == .dark {
+                        /// Return the color for Dark Mode
+                        return UIColor.black
+                    } else {
+                        /// Return the color for Light Mode
+                        return UIColor.white
+                    }
+                }
+            } else {
+                /// Return a fallback color for iOS 12 and lower.
+                return UIColor.black
+            }
+    }()
 }

@@ -19,8 +19,12 @@ class CreateGroupViewController: UIViewController {
     
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        searchBar.backgroundColor = .secondarySystemBackground
+        searchBar.backgroundColor = .systemBackground
         searchBar.placeholder = "Find someone ..."
+        searchBar.layer.cornerRadius = 40
+        searchBar.layer.masksToBounds = true
+        searchBar.layer.borderColor = Appearance.system.cgColor
+        searchBar.layer.borderWidth = 1
         return searchBar
     }()
     
@@ -57,8 +61,8 @@ class CreateGroupViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        searchBar.frame = CGRect(x: 20, y: view.top + 100 + 40, width: (view.width-40), height: 30)
-        peopleCollection.frame = CGRect(x: 20, y: searchBar.bottom + 40, width: (view.width-40), height: (view.height-100))
+        searchBar.frame = CGRect(x: 10, y: view.top + 100, width: (view.width-20), height: 60)
+        peopleCollection.frame = CGRect(x: 20, y: searchBar.bottom + 30, width: (view.width-40), height: (view.height-100))
         noPeopleInListLabel.frame = CGRect(x: 20,
                                            y: (view.height-100)/2,
                                            width: view.width-20,

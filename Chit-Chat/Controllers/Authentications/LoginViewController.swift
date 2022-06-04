@@ -292,7 +292,6 @@ class LoginViewController: UIViewController {
         button.backgroundColor = .init(red: CGFloat(108) / 255.0, green: CGFloat(164) / 255.0, blue: CGFloat(212) / 255.0, alpha: 1.0)
         button.setTitleColor(.black, for: .normal)
         button.layer.cornerRadius = 12
-        button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         
         // Add shadow
