@@ -98,7 +98,8 @@ extension DatabaseManager {
             self?.database.child("Users/\(otherUserEmail)/conversations").observeSingleEvent(of: .value, with: { [weak self] snapshot in
                 if var conversations = snapshot.value as? [[String: Any]] {
                     // append
-                    conversations.append(recipient_newConversationData)
+                    conversations.insert(recipient_newConversationData, at: 0)
+                    
                     self?.database.child("Users/\(otherUserEmail)/conversations").setValue(conversationId)
                 }
                 else {
@@ -111,7 +112,7 @@ extension DatabaseManager {
             if var conversations = userNode["conversations"] as? [[String: Any]] {
                 // append it
                 
-                conversations.append(newConversationData)
+                conversations.insert(newConversationData, at: 0)
                 userNode["conversations"] = conversations
                 
                 ref.setValue(userNode, withCompletionBlock: { [weak self] error, _ in
@@ -580,7 +581,7 @@ extension DatabaseManager {
                                 "latest_message": updatedValue
                             ]
                             
-                            currentUserConversations.append(newConversationData)
+                            currentUserConversations.insert(newConversationData, at: 0)
                             databaseEntryConversations = currentUserConversations
                         }
                     }
@@ -653,7 +654,7 @@ extension DatabaseManager {
                                         "latest_message": updatedValue
                                     ]
                                     
-                                    otherUserConversations.append(newConversationData)
+                                    otherUserConversations.insert(newConversationData, at: 0)
                                     databaseEntryConversations = otherUserConversations
                                 }
                                 
