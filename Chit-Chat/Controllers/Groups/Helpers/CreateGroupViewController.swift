@@ -54,15 +54,13 @@ class CreateGroupViewController: UIViewController {
     }()
     
     private let avatarStack: UIStackView = {
-        let stackview = UIStackView()
-        stackview.distribution = .equalSpacing
-        stackview.axis = .horizontal
-        stackview.alignment = .fill
-        // stackview.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
-        // stackview.isLayoutMarginsRelativeArrangement = true
-        stackview.spacing = 0
-        stackview.backgroundColor = .red
-        return stackview
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .equalCentering
+        stackView.alignment = .center
+        stackView.spacing = 0
+        stackView.backgroundColor = .red
+        return stackView
     }()
     
     private let circleView: UIView = {
@@ -134,7 +132,7 @@ class CreateGroupViewController: UIViewController {
         
         // circleview
         groupNameLabel.frame = CGRect(x: 20, y: 10, width: (circleView.width - 40 - 40), height: 20)
-        avatarStack.frame = CGRect(x: 20, y: groupNameLabel.bottom + 20, width: (circleView.width - 40), height: (100 - groupNameLabel.height - 20 - 20))
+        avatarStack.frame = CGRect(x: 20, y: groupNameLabel.bottom + 20, width: (circleView.width - 200), height: (100 - groupNameLabel.height - 20 - 20))
     }
     
     func navBar() {
