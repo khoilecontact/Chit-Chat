@@ -1178,6 +1178,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8YHCBYDS83;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Chit-Chat/Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow to take a profile picture";

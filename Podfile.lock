@@ -14,6 +14,8 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - ChatMessageKit (0.1.3):
+    - InputBarAccessoryView (~> 5.5.0)
   - FBAEMKit (12.3.1):
     - FBSDKCoreKit_Basics (= 12.3.1)
   - FBSDKCoreKit (12.3.1):
@@ -142,13 +144,11 @@ PODS:
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.7.0)
-  - InputBarAccessoryView (5.4.0):
-    - InputBarAccessoryView/Core (= 5.4.0)
-  - InputBarAccessoryView/Core (5.4.0)
+  - InputBarAccessoryView (5.5.0):
+    - InputBarAccessoryView/Core (= 5.5.0)
+  - InputBarAccessoryView/Core (5.5.0)
   - JGProgressHUD (2.2)
   - leveldb-library (1.22.1)
-  - MessageKit (3.7.0):
-    - InputBarAccessoryView (~> 5.4.0)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
@@ -166,6 +166,7 @@ PODS:
 DEPENDENCIES:
   - AgoraRtm_iOS
   - AgoraUIKit_iOS
+  - ChatMessageKit
   - FBSDKLoginKit
   - Firebase/Analytics
   - Firebase/Auth
@@ -175,7 +176,6 @@ DEPENDENCIES:
   - Firebase/Storage
   - GoogleSignIn
   - JGProgressHUD
-  - MessageKit
   - NVActivityIndicatorView
   - SDWebImage
   - Toast-Swift (~> 5.0.1)
@@ -187,6 +187,7 @@ SPEC REPOS:
     - AgoraRtmControl_iOS
     - AgoraUIKit_iOS
     - AppAuth
+    - ChatMessageKit
     - FBAEMKit
     - FBSDKCoreKit
     - FBSDKCoreKit_Basics
@@ -209,7 +210,6 @@ SPEC REPOS:
     - InputBarAccessoryView
     - JGProgressHUD
     - leveldb-library
-    - MessageKit
     - nanopb
     - NVActivityIndicatorView
     - PromisesObjC
@@ -222,6 +222,7 @@ SPEC CHECKSUMS:
   AgoraRtmControl_iOS: 54d2e363da74427707529f3aab28bacd01971180
   AgoraUIKit_iOS: fd262c381eef0a2f8b94553e000ed4226a3d4d8b
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  ChatMessageKit: 0fbbfca050d541d33bd5257cd2faec4d3875cebd
   FBAEMKit: 98e4afc9f867c6db3d1c0e7e3727d94a630b5f59
   FBSDKCoreKit: 4f348872eae956c922aca1a13771b9c2d4602088
   FBSDKCoreKit_Basics: b832439de7a8262ee17495889264e75785af54de
@@ -241,16 +242,15 @@ SPEC CHECKSUMS:
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
-  InputBarAccessoryView: 74d471ab1fa1736806be50328df79257e52865a9
+  InputBarAccessoryView: 1d7b0a672b36e370f01f264b3907ef39d03328e3
   JGProgressHUD: d83d7a981b85d11205e19ff8ad5bb9c40571c847
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
-  MessageKit: 8e76dd8d65ad44b49e1651c673497146416461e9
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   SDWebImage: 53179a2dba77246efa8a9b85f5c5b21f8f43e38f
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: c71791a4440c607b66e2f2fcc04b27d2b0193712
+PODFILE CHECKSUM: 3f0f54b93064304e51132f5576b538c7d467ff5d
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.11.3

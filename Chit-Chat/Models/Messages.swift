@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MessageKit
+import ChatMessageKit
 import CoreLocation
 
 struct Message: MessageType {
