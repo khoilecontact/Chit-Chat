@@ -17,6 +17,67 @@ class CreateGroupViewController: UIViewController {
     
     public var completion: ((UserNode) -> Void)?
     
+    public var groupName: String = "" {
+        didSet {
+            groupNameLabel.text = "Name: \(groupName)"
+        }
+    }
+    
+    private let circleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Create your circle"
+        return label
+    }()
+    
+    private let groupNameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Name: " + UUID().uuidString
+        return label
+    }()
+    
+    private let testImage: UIImageView = {
+        let img = UIImageView()
+        img.image = UIImage(systemName: "pencil.circle.fill")!
+        return img
+    }()
+    
+    private let testImage2: UIImageView = {
+        let img = UIImageView()
+        img.image = UIImage(systemName: "pencil.circle.fill")!
+        return img
+    }()
+    
+    private let testImage3: UIImageView = {
+        let img = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        img.image = UIImage(systemName: "pencil.circle.fill")!
+        return img
+    }()
+    
+    private let avatarStack: UIStackView = {
+        let stackview = UIStackView()
+        stackview.distribution = .equalSpacing
+        stackview.axis = .horizontal
+        stackview.alignment = .fill
+        // stackview.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
+        // stackview.isLayoutMarginsRelativeArrangement = true
+        stackview.spacing = 0
+        stackview.backgroundColor = .red
+        return stackview
+    }()
+    
+    private let circleView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        view.layer.cornerRadius = 15
+        return view
+    }()
+    
+    private let collectionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Contacts"
+        return label
+    }()
+    
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.backgroundColor = .systemBackground
@@ -63,12 +124,17 @@ class CreateGroupViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        searchBar.frame = CGRect(x: 10, y: view.top + 100, width: (view.width-20), height: 70)
-        peopleCollection.frame = CGRect(x: 20, y: searchBar.bottom + 30, width: (view.width-40), height: (view.height-100))
-        noPeopleInListLabel.frame = CGRect(x: 20,
-                                           y: (view.height-100)/2,
-                                           width: view.width-20,
-                                           height: 100)
+        circleLabel.frame = CGRect(x: 20, y: view.top + 100, width: (view.width-40), height: 20)
+        circleView.frame = CGRect(x: 20, y: circleLabel.bottom + 10, width: (view.width-40), height: 100)
+        collectionLabel.frame = CGRect(x: 20, y: circleView.bottom + 40, width: (view.width-40), height: 20)
+        //        searchBar.frame = CGRect(x: 20, y: collectionLabel.bottom + 20, width: (view.width-40), height: 30)
+        searchBar.frame = CGRect(x: 10, y: collectionLabel.bottom, width: (view.width-20), height: 70)
+        peopleCollection.frame = CGRect(x: 20, y: searchBar.bottom, width: (view.width-40), height: (view.height-100))
+        noPeopleInListLabel.frame = CGRect(x: 20, y: (view.height-100)/2, width: view.width-20, height: 100)
+        
+        // circleview
+        groupNameLabel.frame = CGRect(x: 20, y: 10, width: (circleView.width - 40 - 40), height: 20)
+        avatarStack.frame = CGRect(x: 20, y: groupNameLabel.bottom + 20, width: (circleView.width - 40), height: (100 - groupNameLabel.height - 20 - 20))
     }
     
     func navBar() {
@@ -81,9 +147,21 @@ class CreateGroupViewController: UIViewController {
     }
     
     func subViews() {
+        view.addSubview(circleLabel)
+        view.addSubview(circleView)
+        view.addSubview(collectionLabel)
         view.addSubview(searchBar)
         view.addSubview(peopleCollection)
         view.addSubview(noPeopleInListLabel)
+        circleSubViews()
+    }
+    
+    func circleSubViews() {
+        circleView.addSubview(groupNameLabel)
+        circleView.addSubview(avatarStack)
+        avatarStack.addArrangedSubview(testImage)
+        avatarStack.addArrangedSubview(testImage2)
+        avatarStack.addArrangedSubview(testImage3)
     }
     
     func fakeData() {
@@ -180,57 +258,56 @@ extension CreateGroupViewController: UISearchBarDelegate {
             resetFriendList()
             return
         }
-
+        
         spinner.show(in: view)
-
+        
         searchUser(query: text)
-
+        
         spinner.dismiss()
     }
-
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text, !text.replacingOccurrences(of: " ", with: "").isEmpty else {
             return
         }
-
+        
         searchBar.resignFirstResponder()
-
+        
         spinner.show(in: view)
-
+        
         searchUser(query: text)
-
+        
         spinner.dismiss()
     }
-
+    
     func searchUser(query: String) {
-
+        
         filterUsers(with: query)
-
+        
         // update UI
     }
-
+    
     func filterUsers(with term: String) {
         // need to test
-
         guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else {
             return
         }
-
+        
         self.results = self.peopleInFriendList.filter({
-                guard let email = ($0.email as? String)?.lowercased(), email != currentUserEmail else {
-                    return false
-                }
-
-                guard let name = "\($0.firstName.lowercased()) \($0.lastName.lowercased())" as? String else {
-                    return false
-                }
-
-                return name.hasPrefix(term.lowercased()) || email.hasPrefix(term.lowercased())
-            })
-
+            guard let email = ($0.email as? String)?.lowercased(), email != currentUserEmail else {
+                return false
+            }
+            
+            guard let name = "\($0.firstName.lowercased()) \($0.lastName.lowercased())" as? String else {
+                return false
+            }
+            
+            return name.hasPrefix(term.lowercased()) || email.hasPrefix(term.lowercased())
+        })
+        
         updateUI()
     }
-
+    
     func updateUI() {
         if peopleInFriendList.isEmpty {
             screenState(with: false)
