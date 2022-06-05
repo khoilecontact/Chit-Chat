@@ -59,7 +59,7 @@ class FriendsViewController: UIViewController {
         setupTableView()
         
         // Listen for new messages
-        MessageNotificationCenter.shared.listenForNewMessage()
+        MessageNotificationCenter.shared.notifyNewMessage()
         
         // Listening for calls
         CallNotificationCenter.shared.listenForIncomingCall(completion: {

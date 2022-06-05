@@ -22,7 +22,7 @@ class MessageNotificationCenter {
 }
 
 extension MessageNotificationCenter {
-    public func listenForNewMessage() {
+    public func notifyNewMessage() {
         guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String else {
                   return
               }
@@ -50,6 +50,15 @@ extension MessageNotificationCenter {
                 
                 guard let senderEmail = latestMessage["sender_email"] as? String else {
                     return
+                }
+                
+                // Not notify user when in that chat
+                if let tabBar = UIApplication.shared.delegate?.window??.rootViewController as? UITabBarController,
+                   let nav = tabBar.selectedViewController as? UINavigationController,
+                let messageChatVC = nav.visibleViewController as? MessageChatViewController {
+                    if messageChatVC.conversationId == conversationId {
+                        return
+                    }
                 }
 
                 if senderEmail != safeEmail && senderEmail != currentEmail {

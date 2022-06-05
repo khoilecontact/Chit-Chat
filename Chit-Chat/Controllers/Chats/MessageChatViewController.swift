@@ -31,7 +31,7 @@ class MessageChatViewController: MessagesViewController {
     
     public let otherUserEmail: String
     public let otherUserName: String
-    private var conversationId: String?
+    public var conversationId: String?
     public var isNewConversation = false
     
     var messagePosition: Int?
