@@ -19,6 +19,7 @@ pod 'FBSDKLoginKit'
 #Google Pods
 pod 'GoogleSignIn'
 
+pod 'ChatMessageKit'
 pod 'JGProgressHUD'
 pod 'SDWebImage'
 pod 'Toast-Swift', '~> 5.0.1'
@@ -26,8 +27,6 @@ pod 'Toast-Swift', '~> 5.0.1'
 # Agora
 pod 'AgoraUIKit_iOS'
 pod ‘AgoraRtm_iOS’
-
-pod 'ChatMessageKit'
 
 # Spinner
 pod 'NVActivityIndicatorView'

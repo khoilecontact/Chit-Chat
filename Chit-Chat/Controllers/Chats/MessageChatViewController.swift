@@ -200,18 +200,18 @@ class MessageChatViewController: MessagesViewController {
         messageInputBar.delegate = self
     }
     
-    func fakeData() {
-        var otherSender = Sender(photo: "", senderId: "other", displayName: "Swift")
-        messages.append(Message(sender: selfSender!,
-                                messageId: "1",
-                                sentDate: Date(),
-                                kind: .text("Hello World")))
-        
-        messages.append(Message(sender: otherSender,
-                                messageId: "2",
-                                sentDate: Date(),
-                                kind: .text("This is a conversation from someone who dont like coding")))
-    }
+//    func fakeData() {
+//        var otherSender = Sender(photo: "", senderId: "other", displayName: "Swift")
+//        messages.append(Message(sender: selfSender!,
+//                                messageId: "1",
+//                                sentDate: Date(),
+//                                kind: .text("Hello World")))
+//
+//        messages.append(Message(sender: otherSender,
+//                                messageId: "2",
+//                                sentDate: Date(),
+//                                kind: .text("This is a conversation from someone who dont like coding")))
+//    }
     
     private func setupInputButton() {
         let button = InputBarButtonItem()
@@ -824,7 +824,7 @@ extension MessageChatViewController: MessageCellDelegate {
         let message = messages[indexPath.section]
         
         switch message.kind {
-        case .photo(_):
+        case .audioCall(_):
             guard let conversationId = self.conversationId
             else {
                 let alert = UIAlertController(title: "Error", message: "There has been an error with the service! Please try again later", preferredStyle: .alert)

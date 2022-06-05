@@ -58,6 +58,30 @@ class MeViewController: UIViewController {
                 }
             }
         })
+        
+        // Listening for calls
+        CallNotificationCenter.shared.listenForIncomingCall(completion: {
+            [weak self] result in
+            switch result {
+            case .success(let data):
+                guard let otherUserEmail = data["email"] as? String,
+                      let otherUserName = data["name"] as? String,
+                      let type = data["type"] as? String else { return }
+                
+                let vc = UIStoryboard(name: "IncomingCall", bundle: nil).instantiateViewController(withIdentifier: "IncomingCall") as! IncomingCallViewController
+                vc.otherUserEmail = otherUserEmail
+                vc.otherUserName = otherUserName
+                vc.callType = type
+                
+                self?.present(vc, animated: true)
+                
+                break
+                
+            case .failure(_):
+                
+                break
+            }
+        })
     }
     
     // Handle dark mode appearance

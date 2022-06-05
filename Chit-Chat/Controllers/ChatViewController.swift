@@ -12,6 +12,7 @@ import JGProgressHUD
 import FBSDKLoginKit
 import GoogleSignIn
 import SDWebImage
+import UserNotifications
 
 class ChatViewController: UIViewController {
     
@@ -57,6 +58,8 @@ class ChatViewController: UIViewController {
         // config
         configSearchBar()
         configTableView()
+        
+        sendNotification()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -232,6 +235,35 @@ class ChatViewController: UIViewController {
         let navVC = UINavigationController(rootViewController: vc)
         present(navVC, animated: true)
     }
+    
+//    func sendNotification() {
+//        let notificationContent = UNMutableNotificationContent()
+//        notificationContent.title = "Test"
+////        notificationContent.subtitle = "Subtitle"
+//        notificationContent.body = "Test body"
+//        notificationContent.badge = NSNumber(value: 1)
+//        
+//        if let url = Bundle.main.url(forResource: "dune",
+//                                    withExtension: "png") {
+//            if let attachment = try? UNNotificationAttachment(identifier: "dune",
+//                                                            url: url,
+//                                                            options: nil) {
+//                notificationContent.attachments = [attachment]
+//            }
+//        }
+//
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1,
+//                                                        repeats: false)
+//        let request = UNNotificationRequest(identifier: "testNotification",
+//                                            content: notificationContent,
+//                                            trigger: trigger)
+//
+//        UNUserNotificationCenter.current().add(request) { (error) in
+//            if let error = error {
+//                print("Notification Error: ", error)
+//            }
+//        }
+//    }
 }
 
 extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
