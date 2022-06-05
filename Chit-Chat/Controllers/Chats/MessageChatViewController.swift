@@ -78,6 +78,7 @@ class MessageChatViewController: MessagesViewController {
                 strongSelf.messages = messages
                 
                 DispatchQueue.main.async {
+                    self?.isNewConversation = false
                     
                     self?.spinner.dismiss()
                     
@@ -134,6 +135,8 @@ class MessageChatViewController: MessagesViewController {
         super.viewDidAppear(animated)
         if let conversationId = conversationId {
             listenForMessagees(id: conversationId, shouldScrollToBottom: true)
+        } else {
+            self.isNewConversation = true
         }
     }
     

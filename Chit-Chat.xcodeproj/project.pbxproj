@@ -32,6 +32,7 @@
 		22714E7F277D5D510004F942 /* Chit_ChatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E7E277D5D510004F942 /* Chit_ChatTests.swift */; };
 		22714E89277D5D510004F942 /* Chit_ChatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E88277D5D510004F942 /* Chit_ChatUITests.swift */; };
 		22714E8B277D5D510004F942 /* Chit_ChatUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22714E8A277D5D510004F942 /* Chit_ChatUITestsLaunchTests.swift */; };
+		227DCF18284CC13600F1C3B0 /* MessageNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DCF17284CC13600F1C3B0 /* MessageNotificationCenter.swift */; };
 		229D21D927EC1AA600537AD6 /* UserAdvancedManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229D21D827EC1AA600537AD6 /* UserAdvancedManager.swift */; };
 		22A456E32813FEED009CB4E6 /* extensionUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A456E22813FEED009CB4E6 /* extensionUIView.swift */; };
 		22A456E52813FEF4009CB4E6 /* extensionVideoChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A456E42813FEF4009CB4E6 /* extensionVideoChatViewController.swift */; };
@@ -153,6 +154,7 @@
 		22714E84277D5D510004F942 /* Chit-ChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Chit-ChatUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22714E88277D5D510004F942 /* Chit_ChatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chit_ChatUITests.swift; sourceTree = "<group>"; };
 		22714E8A277D5D510004F942 /* Chit_ChatUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chit_ChatUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		227DCF17284CC13600F1C3B0 /* MessageNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageNotificationCenter.swift; sourceTree = "<group>"; };
 		229D21D827EC1AA600537AD6 /* UserAdvancedManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAdvancedManager.swift; sourceTree = "<group>"; };
 		22A456E22813FEED009CB4E6 /* extensionUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = extensionUIView.swift; sourceTree = "<group>"; };
 		22A456E42813FEF4009CB4E6 /* extensionVideoChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = extensionVideoChatViewController.swift; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 			isa = PBXGroup;
 			children = (
 				22434827282D50F80027DE7A /* CallNotificationCenter.swift */,
+				227DCF17284CC13600F1C3B0 /* MessageNotificationCenter.swift */,
 			);
 			path = NotificationCenter;
 			sourceTree = "<group>";
@@ -984,6 +987,7 @@
 				22A905C2282374FD00E3DD19 /* AGEError.swift in Sources */,
 				22A905C82823828C00E3DD19 /* HungUpReason.swift in Sources */,
 				DA718D4D27A0F6CA0020B0C9 /* Conversation.swift in Sources */,
+				227DCF18284CC13600F1C3B0 /* MessageNotificationCenter.swift in Sources */,
 				222411F027C1EAA500C5E416 /* DarkModeViewController.swift in Sources */,
 				22A4570E281406D4009CB4E6 /* VideoCallViewController.swift in Sources */,
 				22CCFE44279FF58C009F7C8A /* DatabaseManager.swift in Sources */,

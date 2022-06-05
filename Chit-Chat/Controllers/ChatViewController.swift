@@ -58,8 +58,6 @@ class ChatViewController: UIViewController {
         // config
         configSearchBar()
         configTableView()
-        
-        sendNotification()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -70,6 +68,9 @@ class ChatViewController: UIViewController {
         startListeningForConversations()
         createLoginObserver()
         // screenConversations(false)
+        
+        // Listen for new messages
+        MessageNotificationCenter.shared.listenForNewMessage()
         
         // Listening for calls
         CallNotificationCenter.shared.listenForIncomingCall(completion: {

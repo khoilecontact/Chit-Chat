@@ -569,6 +569,11 @@ class OtherUserViewController: UIViewController {
                 vc.navigationItem.largeTitleDisplayMode = .never
                 self?.navigationController?.pushViewController(vc, animated: true)
                 
+            } else {
+                let vc = MessageChatViewController(with: otherSafeEmail, name: user.firstName + " " + user.lastName, id: nil)
+                vc.title = user.firstName + " " + user.lastName
+                vc.navigationItem.largeTitleDisplayMode = .never
+                self?.navigationController?.pushViewController(vc, animated: true)
             }
         }
         
