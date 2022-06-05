@@ -59,7 +59,7 @@ class ChatViewController: UIViewController {
         configSearchBar()
         configTableView()
         
-        sendNotification()
+        // sendNotification()
     }
     
     override func viewDidAppear(_ animated: Bool) {
