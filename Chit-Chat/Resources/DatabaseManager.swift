@@ -27,7 +27,6 @@ final class DatabaseManager {
         return safeEmail
     }
     
-    
     static func revertEmail(safeEmailAddress: String) -> String {
         var email = safeEmailAddress.replacingOccurrences(of: ",", with: ".")
         email = email.replacingOccurrences(of: "-", with: "@")

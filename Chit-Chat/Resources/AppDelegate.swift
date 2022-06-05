@@ -21,7 +21,7 @@ enum Identifiers {
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    let window = UIWindow(frame: UIScreen.main.bounds)
+    var window: UIWindow?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         ApplicationDelegate.shared.application(
@@ -205,8 +205,19 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     /// Handle notification when app is not onscreen
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
-        let userInfo = response.notification.request.content.userInfo
-        print("didReceive ======", userInfo)
+        if let userInfo = response.notification.request.content.userInfo as? [String: Any] {
+            if let otherSafeEmail = userInfo["otherSafeEmail"] as? String,
+               let conversationId = userInfo["conversationId"] as? String,
+               let otherUserName = userInfo["name"] as? String {
+                let tabBar = self.window?.rootViewController as? UITabBarController
+                let nav = tabBar?.selectedViewController as? UINavigationController
+                
+                let vc = MessageChatViewController(with: otherSafeEmail, name: otherUserName, id: conversationId)
+                vc.title = otherUserName
+                
+                nav?.pushViewController(vc, animated: true)
+            }
+        }
         
         completionHandler()
     }
@@ -215,7 +226,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
         let userInfo = notification.request.content
-        print("willPresent ======", userInfo)
+        //print("willPresent ======", userInfo)
         completionHandler([.alert, .sound, .badge])
     }
 }
@@ -245,7 +256,7 @@ extension AppDelegate : PKPushRegistryDelegate {
             DispatchQueue.main.async() {
                let alert = UIAlertController(title: "VoIP Demo", message: message, preferredStyle: .alert)
                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-               self.window.rootViewController?.present(alert, animated: true, completion: nil)
+               self.window?.rootViewController?.present(alert, animated: true, completion: nil)
             }
          } else {
             let content = UNMutableNotificationContent()

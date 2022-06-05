@@ -58,6 +58,9 @@ class FriendsViewController: UIViewController {
         setupSearchBar()
         setupTableView()
         
+        // Listen for new messages
+        MessageNotificationCenter.shared.listenForNewMessage()
+        
         // Listening for calls
         CallNotificationCenter.shared.listenForIncomingCall(completion: {
             [weak self] result in

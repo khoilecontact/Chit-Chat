@@ -21,6 +21,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 print(response.notification.request.content.userInfo)
            }
         
+        // configure window for AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.window = self.window
+        
         // Set appearance for the application
         if let selectedAppearance = UserDefaults.standard.value(forKey: "appearance") as? String {
             switch selectedAppearance {

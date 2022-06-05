@@ -565,8 +565,9 @@ extension DatabaseManager {
                                     currentUserConversations[index] = currentUserConversations[index - 1]
                                 }
                                 
-                                currentUserConversations[0] = targetConversation
                             }
+                            
+                            currentUserConversations[0] = targetConversation
                             
                             // Set the value back to the global variable
                             databaseEntryConversations = currentUserConversations
@@ -637,9 +638,9 @@ extension DatabaseManager {
                                         for index in stride(from: 1, to: position + 1, by: 1).reversed() {
                                             otherUserConversations[index] = otherUserConversations[index - 1]
                                         }
-                                        
-                                        otherUserConversations[0] = targetConversation
                                     }
+                                    
+                                    otherUserConversations[0] = targetConversation
                                     
                                     databaseEntryConversations = otherUserConversations
                                 }

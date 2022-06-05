@@ -31,26 +31,49 @@ extension MessageNotificationCenter {
         
         database.child("Users/\(safeEmail)/conversations").observe(.childChanged, with: { [weak self] snapshot in
             // Check existed values
-            guard let data = snapshot.value as? [[String: Any]],
-                  let latestMessage = data[0]["latest_message"] as? [String: Any],
+            guard let data = snapshot.value as? [String: Any],
+                  let latestMessage = data["latest_message"] as? [String: Any],
                   let latestMessageContent  = latestMessage["message"] as? String,
-                  let senderEmail = data[0]["other_user_email"] as? String,
-                  let senderName = data[0]["name"] as? String
+//                  let otherUserSafeEmail = data["other_user_email"] as? String,
+                  let senderName = data["name"] as? String,
+                  let conversationId = data["id"] as? String
             else {
                 return
             }
             
-            if senderEmail != safeEmail && senderEmail != currentEmail {
-                self?.sendNotification(title: senderName, body: latestMessageContent)
-            }
+            self?.database.child("Conversations/\(conversationId)/messages").queryLimited(toLast: 1).observeSingleEvent(of: .value, with: { conversationsSnapshot in
+                guard let messageDic = conversationsSnapshot.value as? NSDictionary,
+                      let latestMessage = messageDic.allValues[0] as? [String: Any]
+                else {
+                    return
+                }
+                
+                guard let senderEmail = latestMessage["sender_email"] as? String else {
+                    return
+                }
+
+                if senderEmail != safeEmail && senderEmail != currentEmail {
+                    DispatchQueue.main.async {
+                        self?.sendNotification(title: senderName, body: latestMessageContent, otherSafeEmail: senderEmail, conversationId: conversationId)
+                    }
+                }
+                
+            })
+            
+
         })
     }
     
-    private func sendNotification(title: String, body: String) {
+    private func sendNotification(title: String, body: String, otherSafeEmail: String, conversationId: String) {
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = title
         //        notificationContent.subtitle = "Subtitle"
         notificationContent.body = body
+        notificationContent.userInfo = [
+            "conversationId": conversationId,
+            "otherSafeEmail": otherSafeEmail,
+            "name": title
+        ]
         notificationContent.badge = NSNumber(value: 1)
         
         if let url = Bundle.main.url(forResource: "dune",
