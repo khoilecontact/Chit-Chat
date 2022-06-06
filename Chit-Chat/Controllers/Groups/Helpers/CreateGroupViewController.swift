@@ -9,8 +9,11 @@ import UIKit
 import JGProgressHUD
 import SDWebImage
 
-class CreateGroupViewController: UIViewController {
-    public static var shared = CreateGroupViewController()
+public protocol GroupActionDelegate {
+    func addMemberToGroup()
+}
+
+class CreateGroupViewController: UIViewController, GroupActionDelegate {
     
     private let spinner = JGProgressHUD(style: .light)
     
@@ -70,6 +73,17 @@ class CreateGroupViewController: UIViewController {
         imageView.layer.masksToBounds = true
         // imageView.image = ()
         return imageView
+    }()
+    
+    private let addToGroupBtn: UIButton = {
+        let button = UIButton()
+        button.setTitle("Add", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.borderWidth = 0
+        button.layer.borderColor = UIColor.black.cgColor
+        button.layer.cornerRadius = 15
+        button.backgroundColor = .black
+        return button
     }()
     
     //    private let avatarStack: UIStackView = {
@@ -165,6 +179,9 @@ class CreateGroupViewController: UIViewController {
         usersSlot2nd.frame = CGRect(x: usersSlot1st.right, y: 0, width: 40, height: 40)
         usersSlot3rd.frame = CGRect(x: usersSlot2nd.right, y: 0, width: 40, height: 40)
         
+        addToGroupBtn.frame = CGRect(x: 50, y: view.top + 100, width: (view.width-100), height: 20)
+        addToGroupBtn.addTarget(self, action: #selector(callback), for: .touchUpInside)
+        
     }
     
     func navBar() {
@@ -183,6 +200,7 @@ class CreateGroupViewController: UIViewController {
         view.addSubview(searchBar)
         view.addSubview(peopleCollection)
         view.addSubview(noPeopleInListLabel)
+        view.addSubview(addToGroupBtn)
         circleSubViews()
     }
     
@@ -228,32 +246,16 @@ class CreateGroupViewController: UIViewController {
         }
     }
     
-    public func addPersonToGroup() {
-        // with newPerson: UserNode
-        /**
-         * Check members.count:
-         * - case 1: add to array
-         * - case 2: add to array x2
-         * - case 3: add 3 people
-         * - case 4: add x3 and show +(members.count - 3)
-         */
-//        groupMembers.append(newPerson)
+//    @objc func addMemberToGroup() {
+//        print("data")
+//            self.usersSlot1st.sd_setImage(with: URL(string: "https://img5.thuthuatphanmem.vn/uploads/2021/12/08/anh-nen-anime-dep-yen-tinh_101044752.jpg"))
+//            self.usersSlot2nd.sd_setImage(with: URL(string: "https://img5.thuthuatphanmem.vn/uploads/2021/12/08/anh-nen-anime-dep-yen-tinh_101044752.jpg"))
+//            self.usersSlot3rd.sd_setImage(with: URL(string: "https://img5.thuthuatphanmem.vn/uploads/2021/12/08/anh-nen-anime-dep-yen-tinh_101044752.jpg"))
 //
-//        if (groupMembers.count > 3) {
-//
-//        }
-        
-//        for user in peopleInFriendList {
-//            let user =
-//            user.frame = CGRect(x: prefixQueuedAvatar.right + 5, y: 0, width: 40, height: 40)
-//            queuedAvatar.addSubview(user)
-//            user.sd_setImage(with: URL(string: "https://avatars.githubusercontent.com/u/69576826?v=4"))
-//        }
-        
-//        usersSlot1st.sd_setImage(with: URL(string: "https://img5.thuthuatphanmem.vn/uploads/2021/12/08/anh-nen-anime-dep-yen-tinh_101044752.jpg"), placeholderImage: UIImage(systemName: "person.crop.circle.badge.plus")?.withTintColor(.gray, renderingMode: .alwaysOriginal), options: .refreshCached)
-//        usersSlot2nd.sd_setImage(with: URL(string: "https://img5.thuthuatphanmem.vn/uploads/2021/12/08/anh-nen-anime-dep-yen-tinh_101044752.jpg"), placeholderImage: UIImage(systemName: "person.crop.circle.badge.plus")?.withTintColor(.gray, renderingMode: .alwaysOriginal), options: .refreshCached)
-//        usersSlot3rd.sd_setImage(with: URL(string: "https://img5.thuthuatphanmem.vn/uploads/2021/12/08/anh-nen-anime-dep-yen-tinh_101044752.jpg"), placeholderImage: UIImage(systemName: "person.crop.circle.badge.plus")?.withTintColor(.gray, renderingMode: .alwaysOriginal), options: .refreshCached)
+//    }
     
+    @objc func callback() {
+        addMemberToGroup()
     }
     
 }
@@ -303,6 +305,14 @@ extension CreateGroupViewController {
 }
 
 extension CreateGroupViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func addMemberToGroup() {
+        print("data")
+        self.usersSlot1st.sd_setImage(with: URL(string: "https://img5.thuthuatphanmem.vn/uploads/2021/12/08/anh-nen-anime-dep-yen-tinh_101044752.jpg"))
+        self.usersSlot2nd.sd_setImage(with: URL(string: "https://img5.thuthuatphanmem.vn/uploads/2021/12/08/anh-nen-anime-dep-yen-tinh_101044752.jpg"))
+        self.usersSlot3rd.sd_setImage(with: URL(string: "https://img5.thuthuatphanmem.vn/uploads/2021/12/08/anh-nen-anime-dep-yen-tinh_101044752.jpg"))
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return peopleInFriendList.count
     }
