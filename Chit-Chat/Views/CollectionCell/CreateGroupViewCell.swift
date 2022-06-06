@@ -11,6 +11,8 @@ import UIKit
 class CreateGroupCollectionViewCell: UICollectionViewCell {
     static let identifier: String = "CreateGroupViewCell"
     
+    public var completion: ((UserNode) -> Void)?
+    
     private let userImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -43,6 +45,7 @@ class CreateGroupCollectionViewCell: UICollectionViewCell {
     }()
     
     override init(frame: CGRect) {
+        
         super.init(frame: frame)
         
         contentView.backgroundColor = .systemBackground
@@ -104,6 +107,10 @@ class CreateGroupCollectionViewCell: UICollectionViewCell {
                 print("Failed to get image url: \(error)")
             }
         }
+    }
+    
+    @objc func callback() {
+        
     }
     
 }
