@@ -172,7 +172,6 @@ class MeViewController: UIViewController {
         bioLabel.textAlignment = .center
         bioLabel.layer.borderWidth = 0
         bioLabel.layer.borderColor = Appearance.tint.cgColor
-        bioLabel.layer.cornerRadius = 12
         bioLabel.layer.backgroundColor = UIColor.systemBackground.cgColor
         
         personalInfoButton.layer.cornerRadius = 12

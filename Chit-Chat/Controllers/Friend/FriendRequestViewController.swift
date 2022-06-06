@@ -230,6 +230,10 @@ extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegat
         let model = results[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: FriendRequestViewCell.identifier, for: indexPath) as! FriendRequestViewCell
         cell.configure(with: model)
+        
+        // Hide divider in talbe
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+        
         return cell
     }
     
@@ -243,7 +247,7 @@ extension FriendRequestViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 100
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

@@ -54,17 +54,17 @@ class FriendsCell: UITableViewCell {
         contentView.layer.borderColor = UIColor.systemGray4.cgColor
         
         userImageView.frame = CGRect(x: 10,
-                                     y: 7,
+                                     y: 5,
                                      width: 80,
                                      height: 80)
         
-        userNameLabel.frame = CGRect(x: userImageView.right + 20,
+        userNameLabel.frame = CGRect(x: userImageView.right + 25,
                                      y: 10,
                                      width: contentView.width - 20 - userImageView.width,
                                      height: (contentView.height - 20)/2)
         
-        userEmailLabel.frame = CGRect(x: userImageView.right + 20,
-                                        y: userNameLabel.bottom + 5,
+        userEmailLabel.frame = CGRect(x: userImageView.right + 25,
+                                        y: userNameLabel.bottom,
                                      width: contentView.width - 20 - userImageView.width,
                                      height: (contentView.height - 20)/2)
     }

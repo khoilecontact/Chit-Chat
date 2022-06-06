@@ -151,6 +151,10 @@ extension FindNewFriendsViewController: UITableViewDataSource, UITableViewDelega
         let model = results[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: NewFriendsViewCell.identifier, for: indexPath) as! NewFriendsViewCell
         cell.configure(with: model)
+        
+        // Hide divider in talbe
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+        
         return cell
     }
     
@@ -164,7 +168,7 @@ extension FindNewFriendsViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 100
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

@@ -225,7 +225,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     /// Handle notification when app is onscreen
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
-        let userInfo = notification.request.content
+        //let userInfo = notification.request.content
         //print("willPresent ======", userInfo)
         completionHandler([.alert, .sound, .badge])
     }

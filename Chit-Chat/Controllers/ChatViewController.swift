@@ -77,6 +77,7 @@ class ChatViewController: UIViewController {
         // Listening for calls
         CallNotificationCenter.shared.listenForIncomingCall(completion: {
             [weak self] result in
+            
             switch result {
             case .success(let data):
                 guard let otherUserEmail = data["email"] as? String,
@@ -124,7 +125,33 @@ class ChatViewController: UIViewController {
         
         self.spinner.show(in: view)
         
-        guard let email = UserDefaults.standard.value(forKey: "email") as? String else { return }
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
+            
+            UserDefaults.standard.setValue(nil, forKey: "email")
+            UserDefaults.standard.setValue(nil, forKey: "name")
+            
+            // Log out Facebook
+            FBSDKLoginKit.LoginManager().logOut()
+            
+            //Log out Google
+            GIDSignIn.sharedInstance.signOut()
+            
+            do {
+                try FirebaseAuth.Auth.auth().signOut()
+                
+                let vc = LoginViewController()
+                // Create a navigation controller
+                let nav = UINavigationController(rootViewController: vc)
+                nav.modalPresentationStyle = .fullScreen
+
+                self.present(nav, animated: true)
+            } catch {
+                print("Error in signing out")
+            }
+            
+            return
+            
+        }
         
         if let observer = loginObserver {
             // Listen for login => after login has been listen, remove observer
