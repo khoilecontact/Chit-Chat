@@ -42,4 +42,6 @@ public class Appearance {
                 return UIColor.black
             }
     }()
+    
+    public static var appColor: UIColor = .init(red: CGFloat(108) / 255.0, green: CGFloat(164) / 255.0, blue: CGFloat(212) / 255.0, alpha: 1.0)
 }

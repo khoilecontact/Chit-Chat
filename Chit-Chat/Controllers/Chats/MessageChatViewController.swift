@@ -695,11 +695,11 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
         let sender = message.sender
         if sender.senderId == selfSender?.senderId {
             // our message that we've sent
-            return .systemGreen
+            return Appearance.appColor
         }
         
         // anything else
-        return .lightGray
+        return .systemGray5
     }
     
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
