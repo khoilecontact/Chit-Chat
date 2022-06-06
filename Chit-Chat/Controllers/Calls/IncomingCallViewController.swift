@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 class IncomingCallViewController: UIViewController {
     @IBOutlet var callerImage: UIImageView!
@@ -22,6 +23,7 @@ class IncomingCallViewController: UIViewController {
         super.viewDidLoad()
         
         configUI()
+        AudioServicesPlayAlertSoundWithCompletion(SystemSoundID(kSystemSoundID_Vibrate)) { }
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -130,20 +130,13 @@
                                                 </constraints>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" imagePadding="15">
+                                                <buttonConfiguration key="configuration" style="plain" title="Log Out" imagePadding="15">
                                                     <imageReference key="image" image="rectangle.portrait.and.arrow.right" catalog="system" symbolScale="large"/>
                                                     <backgroundConfiguration key="background">
                                                         <color key="backgroundColor" red="0.93333333333333335" green="0.42352941176470588" blue="0.30196078431372547" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </backgroundConfiguration>
-                                                    <attributedString key="attributedTitle">
-                                                        <fragment content="Log Out">
-                                                            <attributes>
-                                                                <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                <font key="NSFont" size="20" name="TrebuchetMS-Bold"/>
-                                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                            </attributes>
-                                                        </fragment>
-                                                    </attributedString>
+                                                    <fontDescription key="titleFontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </buttonConfiguration>
                                             </button>
                                         </subviews>

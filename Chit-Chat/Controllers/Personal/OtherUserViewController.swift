@@ -418,9 +418,9 @@ class OtherUserViewController: UIViewController {
         case "Sent":
             bioLabel.frame = CGRect(x: 20, y: nameLabel.bottom, width: scrollView.width - 40, height: 30)
             
-            requestSentButton.frame = CGRect(x: 80, y: bioLabel.bottom + 20, width: scrollView.width - 160, height: 40)
+            requestSentButton.frame = CGRect(x: 80, y: bioLabel.bottom + 10, width: scrollView.width - 160, height: 40)
             
-            functionsButton.frame = CGRect(x: scrollView.right - 40, y: bioLabel.bottom + 20, width: 40, height: 52)
+            functionsButton.frame = CGRect(x: scrollView.right - 40, y: bioLabel.bottom + 10, width: 40, height: 52)
             
             break
             
@@ -466,6 +466,8 @@ class OtherUserViewController: UIViewController {
             bioLabel.frame = CGRect(x: 20, y: nameLabel.bottom, width: scrollView.width - 40, height: 30)
             
             addFriendButton.frame = CGRect(x: 80, y: bioLabel.bottom + 10, width: scrollView.width - 160, height: 40)
+            
+            functionsButton.frame = CGRect(x: scrollView.right - 40, y: bioLabel.bottom + 10, width: 40, height: 52)
             break
         }
         
@@ -488,27 +490,31 @@ class OtherUserViewController: UIViewController {
             switch result {
             case .failure(let error):
                 print("Error in sending friend request: \(error)")
+                
+                let ac = UIAlertController(title: "Send Friend Request Failed", message: "There has been a error! Please try again later", preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self?.present(ac, animated: true, completion: nil)
+                
                 break
                 
             case .success( _):
                 let ac = UIAlertController(title: "Friend Request Sent", message: "Yout friend request has been sent", preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(ac, animated: true, completion: nil)
+                
+                // Update the button
+                DispatchQueue.main.async {
+                    self?.friendStatus = "Sent"
+                    self?.addFriendButton.isHidden = true
+                    //self?.addFriendButton.removeFromSuperview()
+                    
+                    self?.requestSentButton.isHidden = false
+                    self?.initLayout()
+                }
+                
                 break
             }
         })
-        
-        // Update the button
-        DispatchQueue.main.async {
-            self.friendStatus = "Sent"
-            self.addFriendButton.isHidden = true
-            self.addFriendButton.removeFromSuperview()
-            
-            self.requestSentButton.isHidden = false
-            self.requestSentButton.frame = CGRect(x: 80, y: self.nameLabel.bottom + 10, width: self.scrollView.width - 160, height: 40)
-            
-            self.bioLabel.frame = CGRect(x: 20, y: self.requestSentButton.bottom + 30, width: self.scrollView.width - 40, height: 52)
-        }
         
     }
     
@@ -518,30 +524,30 @@ class OtherUserViewController: UIViewController {
         
         let alert = UIAlertController(title: "Revoke request?", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Confirm", style: .destructive, handler: {_ in
-            DatabaseManager.shared.revokeFriendRequest(with: userNode, completion: { result in
+            DatabaseManager.shared.revokeFriendRequest(with: userNode, completion: { [weak self] result in
                 switch result {
                 case .failure( _):
                     let secondAlert = UIAlertController(title: "Failed", message: "Failed to revoke request", preferredStyle: .alert)
                     secondAlert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                    self?.present(secondAlert, animated: true)
                     break
                     
                 case .success(let success):
                     if success {
                         DispatchQueue.main.async {
-                            self.friendStatus = "Stranger"
-                            self.requestSentButton.isHidden = true
-                            self.requestSentButton.removeFromSuperview()
+                            self?.friendStatus = "Stranger"
+                            self?.requestSentButton.isHidden = true
+                            //self?.requestSentButton.removeFromSuperview()
                             
-                            self.addFriendButton.isHidden = false
-                            self.addFriendButton.frame = CGRect(x: 80, y: self.nameLabel.bottom + 10, width: self.scrollView.width - 160, height: 40)
-                            
-                            self.bioLabel.frame = CGRect(x: 20, y: self.addFriendButton.bottom + 30, width: self.scrollView.width - 40, height: 52)
+                            self?.addFriendButton.isHidden = false
+                            self?.initLayout()
                         }
                     }
                     break
                 }
             })
         }))
+        
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         self.present(alert, animated: true)
     }
@@ -669,8 +675,10 @@ extension OtherUserViewController {
                             }
                             
                             self?.friendStatus = "Stranger"
-                            self?.confirmButton.removeFromSuperview()
-                            self?.cancelButton.removeFromSuperview()
+                            self?.confirmButton.isHidden = true
+                            self?.cancelButton.isHidden = true
+                            
+                            self?.addFriendButton.isHidden = false
                             
                             self?.initLayout()
                         }
@@ -710,8 +718,8 @@ extension OtherUserViewController {
                     }
                     
                     self?.friendStatus = "Added"
-                    self?.confirmButton.removeFromSuperview()
-                    self?.cancelButton.removeFromSuperview()
+                    self?.confirmButton.isHidden = true
+                    self?.cancelButton.isHidden = true
                     
                     self?.initLayout()
                 }
@@ -750,10 +758,10 @@ extension OtherUserViewController {
                     case .success(_):
                         self?.friendStatus = "Stranger"
                         self?.friendStatusButton.isHidden = true
-                        self?.friendStatusButton.removeFromSuperview()
+                        //self?.friendStatusButton.removeFromSuperview()
                         
                         self?.messageButton.isHidden = true
-                        self?.messageButton.removeFromSuperview()
+                        //self?.messageButton.removeFromSuperview()
                         
                         self?.initLayout()
                         break

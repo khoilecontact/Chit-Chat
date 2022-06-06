@@ -728,11 +728,6 @@ class LoginViewController: UIViewController {
 
                             }
                         })
-                    } else {
-                        let alert = UIAlertController(title: "User existed", message: "Email of user existed! Please try another account", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
-                        self?.present(alert, animated: true)
-                        return
                     }
                 })
 
@@ -744,6 +739,11 @@ class LoginViewController: UIViewController {
                     guard authResult != nil, error == nil else {
                         print("Facebook log in fail, MFA maybe needed")
                         print(error ?? "Not error")
+                        
+                        let alert = UIAlertController(title: "User existed", message: "Email of user existed! Please try another account", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                        self?.present(alert, animated: true)
+                        
                         return
                     }
 
