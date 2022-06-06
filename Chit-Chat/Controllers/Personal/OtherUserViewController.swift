@@ -32,7 +32,7 @@ class OtherUserViewController: UIViewController {
         imageView.tintColor = Appearance.tint
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 1
+        imageView.layer.borderWidth = 0
         return imageView
     }()
     
@@ -40,7 +40,7 @@ class OtherUserViewController: UIViewController {
         let label = UILabel()
         label.textColor = Appearance.tint
         label.textAlignment = .center
-        label.font.withSize(20)
+        label.font = UIFont(name: "Trebuchet MS Bold", size: 20)
         return label
     }()
     
@@ -150,6 +150,7 @@ class OtherUserViewController: UIViewController {
         button.layer.cornerRadius = 20
         
         button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.systemGray2.cgColor
         button.titleLabel?.textAlignment = .center
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
         button.setImage(UIImage(systemName: "person.fill.checkmark"), for: .normal)
@@ -168,15 +169,15 @@ class OtherUserViewController: UIViewController {
     let messageButton: UIButton = {
         let button = UIButton()
         button.setTitle("Message", for: .normal)
-        button.backgroundColor = .systemGreen
-        button.setTitleColor(Appearance.tint, for: .normal)
+        button.backgroundColor = Appearance.appColor
+        //button.setTitleColor(UIColor.white, for: .normal)
         button.layer.cornerRadius = 20
         
         button.layer.borderWidth = 0
         button.titleLabel?.textAlignment = .center
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
         button.setImage(UIImage(systemName: "message"), for: .normal)
-        button.imageView?.tintColor = Appearance.tint
+        button.imageView?.tintColor = UIColor.white
         
         // Add shadow
         button.layer.shadowColor = UIColor.gray.cgColor
@@ -209,7 +210,7 @@ class OtherUserViewController: UIViewController {
     
     let functionsButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "ellipsis.circle")?.sd_resizedImage(with: CGSize(width: 30, height: 30), scaleMode: .aspectFit), for: .normal)
+        button.setImage(UIImage(systemName: "ellipsis.circle.fill")?.sd_resizedImage(with: CGSize(width: 35, height: 35), scaleMode: .aspectFit)?.withTintColor(UIColor.systemGray2), for: .normal)
         
         return button
     }()
@@ -220,7 +221,7 @@ class OtherUserViewController: UIViewController {
         label.textAlignment = .center
         label.font = label.font.withSize(14)
         label.layer.borderColor = Appearance.tint.cgColor
-        label.layer.borderWidth = 1
+        label.layer.borderWidth = 0
         label.layer.cornerRadius = 12
         label.layer.backgroundColor = UIColor.systemBackground.cgColor
         
@@ -338,6 +339,7 @@ class OtherUserViewController: UIViewController {
                                         
                                     case .success(let url):
                                         self?.imageView.sd_setImage(with: url, completed: nil)
+                                        self?.imageView.backgroundColor = .white
                                     }
                                 })
                                 
@@ -405,34 +407,43 @@ class OtherUserViewController: UIViewController {
         scrollView.frame = view.bounds
         
         let size = scrollView.width / 3
+        var bottomDynamicUI = 0
+        
         imageView.frame = CGRect(x: size, y: 20, width: size, height: size)
         imageView.layer.cornerRadius = imageView.width / 2.0
         
         nameLabel.frame = CGRect(x: 40, y: imageView.bottom + 5, width: scrollView.width - 80, height: 52)
         
-        functionsButton.frame = CGRect(x: scrollView.right - 40, y: nameLabel.bottom + 10, width: 40, height: 52)
-        
         switch friendStatus {
         case "Sent":
-            requestSentButton.frame = CGRect(x: 80, y: nameLabel.bottom + 10, width: scrollView.width - 160, height: 40)
+            bioLabel.frame = CGRect(x: 20, y: nameLabel.bottom, width: scrollView.width - 40, height: 30)
             
-            bioLabel.frame = CGRect(x: 20, y: requestSentButton.bottom + 30, width: scrollView.width - 40, height: 52)
+            requestSentButton.frame = CGRect(x: 80, y: bioLabel.bottom + 20, width: scrollView.width - 160, height: 40)
+            
+            functionsButton.frame = CGRect(x: scrollView.right - 40, y: bioLabel.bottom + 20, width: 40, height: 52)
+            
             break
             
         case "Added":
-            friendStatusButton.frame = CGRect(x: 50, y: nameLabel.bottom + 10, width: 130, height: 40)
+            bioLabel.frame = CGRect(x: 20, y: nameLabel.bottom, width: scrollView.width - 40, height: 30)
             
-            messageButton.frame = CGRect(x: friendStatusButton.right + 20, y: nameLabel.bottom + 10, width: 130, height: 40)
+            friendStatusButton.frame = CGRect(x: 50, y: bioLabel.bottom + 10, width: 130, height: 40)
             
-            bioLabel.frame = CGRect(x: 20, y: friendStatusButton.bottom + 30, width: scrollView.width - 40, height: 52)
+            messageButton.frame = CGRect(x: friendStatusButton.right + 20, y: bioLabel.bottom + 10, width: 130, height: 40)
+            
+            functionsButton.frame = CGRect(x: scrollView.right - 40, y: bioLabel.bottom + 10, width: 40, height: 52)
+            
             break
             
         case "Received":
-            confirmButton.frame = CGRect(x: 50, y: nameLabel.bottom + 10, width: 130, height: 40)
+            bioLabel.frame = CGRect(x: 20, y: nameLabel.bottom, width: scrollView.width - 40, height: 30)
             
-            cancelButton.frame = CGRect(x: confirmButton.right + 20, y: nameLabel.bottom + 10, width: 130, height: 40)
+            confirmButton.frame = CGRect(x: 50, y: bioLabel.bottom + 10, width: 130, height: 40)
             
-            bioLabel.frame = CGRect(x: 20, y: confirmButton.bottom + 30, width: scrollView.width - 40, height: 52)
+            cancelButton.frame = CGRect(x: confirmButton.right + 20, y: bioLabel.bottom + 10, width: 130, height: 40)
+            
+            functionsButton.frame = CGRect(x: scrollView.right - 40, y: bioLabel.bottom + 10, width: 40, height: 52)
+            
             break
             
         case "Blocked":
@@ -452,15 +463,15 @@ class OtherUserViewController: UIViewController {
             
         default:
             // Stranger
-            addFriendButton.frame = CGRect(x: 80, y: nameLabel.bottom + 10, width: scrollView.width - 160, height: 40)
+            bioLabel.frame = CGRect(x: 20, y: nameLabel.bottom, width: scrollView.width - 40, height: 30)
             
-            bioLabel.frame = CGRect(x: 20, y: addFriendButton.bottom + 30, width: scrollView.width - 40, height: 52)
+            addFriendButton.frame = CGRect(x: 80, y: bioLabel.bottom + 10, width: scrollView.width - 160, height: 40)
             break
         }
         
-        dobIcon.frame = CGRect(x: 20, y: bioLabel.bottom + 40, width: 30, height: 52)
+        dobIcon.frame = CGRect(x: 20, y: functionsButton.bottom + 20, width: 30, height: 52)
         
-        dobLabel.frame = CGRect(x: dobIcon.right + 20, y: bioLabel.bottom + 40, width: scrollView.width - 70, height: 52)
+        dobLabel.frame = CGRect(x: dobIcon.right + 20, y: functionsButton.bottom + 20, width: scrollView.width - 70, height: 52)
         
         genderIcon.frame = CGRect(x: 20, y: dobIcon.bottom + 30, width: 30, height: 40)
         

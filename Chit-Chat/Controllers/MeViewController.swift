@@ -170,7 +170,7 @@ class MeViewController: UIViewController {
         bioLabel.text = (user.bio == "") ? "This is your bio" : user.bio
         bioLabel.textColor = Appearance.tint
         bioLabel.textAlignment = .center
-        bioLabel.layer.borderWidth = 1
+        bioLabel.layer.borderWidth = 0
         bioLabel.layer.borderColor = Appearance.tint.cgColor
         bioLabel.layer.cornerRadius = 12
         bioLabel.layer.backgroundColor = UIColor.systemBackground.cgColor
