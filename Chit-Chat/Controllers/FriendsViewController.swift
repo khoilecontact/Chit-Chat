@@ -333,13 +333,8 @@ extension FriendsViewController: UISearchBarDelegate {
             return
         }
 
-//        searchBar.resignFirstResponder()
-
-        spinner.show(in: view)
-
         searchUser(query: text)
 
-        spinner.dismiss()
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -349,11 +344,8 @@ extension FriendsViewController: UISearchBarDelegate {
 
         searchBar.resignFirstResponder()
 
-        spinner.show(in: view)
-
         searchUser(query: text)
 
-        spinner.dismiss()
     }
 
     func searchUser(query: String) {

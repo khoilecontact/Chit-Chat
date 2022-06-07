@@ -12,8 +12,6 @@ class CreateGroupCollectionViewCell: UICollectionViewCell {
     
     static let identifier: String = "CreateGroupViewCell"
     
-    public var delegate: GroupActionDelegate?
-    
     public var completion: ((UserNode) -> Void)?
     
     private let userImageView: UIImageView = {
@@ -36,7 +34,7 @@ class CreateGroupCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let addToGroupBtn: UIButton = {
+    public let addToGroupBtn: UIButton = {
         let button = UIButton()
         button.setTitle("Add", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -50,8 +48,6 @@ class CreateGroupCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         
         super.init(frame: frame)
-        
-        setupAction()
         
         contentView.backgroundColor = .systemBackground
         
@@ -79,7 +75,6 @@ class CreateGroupCollectionViewCell: UICollectionViewCell {
                                      height: 50)
         
         addToGroupBtn.frame = CGRect(x: contentView.right - 20 - 60, y: (10 + (userImageView.height/2) - 15), width: 60, height: 30)
-        addToGroupBtn.addTarget(self, action: #selector(callback), for: .touchUpInside)
         
         userNameLabel.frame = CGRect(x: 20,
                                      y: userImageView.bottom + 10,
@@ -90,10 +85,6 @@ class CreateGroupCollectionViewCell: UICollectionViewCell {
                                      y: userNameLabel.bottom + 5,
                                      width: contentView.width - 40,
                                      height: (contentView.height - 20 - 15 - (userImageView.height))/2)
-    }
-    
-    func setupAction() {
-        self.delegate = CreateGroupViewController()
     }
     
     // MARK: - Configure User in List
@@ -117,9 +108,5 @@ class CreateGroupCollectionViewCell: UICollectionViewCell {
                 print("Failed to get image url: \(error)")
             }
         }
-    }
-    
-    @objc func callback() {
-        self.delegate?.addMemberToGroup()
     }
 }
