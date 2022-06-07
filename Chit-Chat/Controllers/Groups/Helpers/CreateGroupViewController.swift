@@ -130,11 +130,11 @@ class CreateGroupViewController: UIViewController {
         let searchBar = UISearchBar()
         searchBar.backgroundColor = .systemBackground
         searchBar.placeholder = "Find someone ..."
+        searchBar.searchTextField.font = .systemFont(ofSize: 14, weight: .regular)
         searchBar.searchTextField.layer.cornerRadius = 18
         searchBar.searchTextField.layer.masksToBounds = true
         searchBar.clipsToBounds = true
-        // searchBar.layer.borderColor = Appearance.system.cgColor
-        searchBar.layer.borderWidth = 0
+        searchBar.layer.borderWidth = 1
         
         return searchBar
     }()
@@ -163,7 +163,8 @@ class CreateGroupViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navBar()
         
-        // fakeData()
+        //        fakeData()
+        //        screenState(with: true)
         
         subViews()
         configCollection()
@@ -171,6 +172,10 @@ class CreateGroupViewController: UIViewController {
         
         // fetch friends of user and update UI
         fetchAllFriendInList()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        updateSearchBarBorderColorWhenThemeChanged()
     }
     
     override func viewDidLayoutSubviews() {
@@ -186,7 +191,7 @@ class CreateGroupViewController: UIViewController {
         // circleview
         groupNameLabel.frame = CGRect(x: 20, y: 10, width: (circleView.width - 40 - 50), height: 30)
         adjustGroupNameBtn.frame = CGRect(x: circleView.right-20-20-30, y: 10, width: 30, height: 30)
-        queuedAvatar.frame = CGRect(x: 20, y: groupNameLabel.bottom + 10, width: (circleView.width - 40), height: (100 - groupNameLabel.height - 20 - 20))
+        queuedAvatar.frame = CGRect(x: 20, y: groupNameLabel.bottom + 5, width: (circleView.width - 40), height: (100 - groupNameLabel.height - 20 - 20))
         
         prefixQueuedAvatar.frame = CGRect(x: 0, y: 0, width: 45, height: 40)
         usersSlot1st.frame = CGRect(x: prefixQueuedAvatar.right + 5, y: 0, width: 40, height: 40)
@@ -198,6 +203,7 @@ class CreateGroupViewController: UIViewController {
     
     func navBar() {
         title = "Create New Group"
+        rightButtonBar()
     }
     
     func rightButtonBar() {
@@ -213,7 +219,11 @@ class CreateGroupViewController: UIViewController {
     
     func configSearchBar() {
         searchBar.delegate = self
-        // searchBar.becomeFirstResponder()
+        updateSearchBarBorderColorWhenThemeChanged()
+    }
+    
+    func updateSearchBarBorderColorWhenThemeChanged() {
+        searchBar.layer.borderColor = UIColor.systemBackground.cgColor
     }
     
     func subViews() {
@@ -239,7 +249,7 @@ class CreateGroupViewController: UIViewController {
     }
     
     func fakeData() {
-        peopleInFriendList.append(UserNode(id: "id",
+        results.append(UserNode(id: "id",
                                            firstName: "firstName",
                                            lastName: "lastName",
                                            province: "province",
@@ -248,8 +258,44 @@ class CreateGroupViewController: UIViewController {
                                            email: "19521707@gm.uit.edu.vn",
                                            dob: "",
                                            isMale: true))
-        peopleInFriendList.append(UserNode(id: "id-2",
+        results.append(UserNode(id: "id-2",
                                            firstName: "Phat",
+                                           lastName: "Nguyen",
+                                           province: "province",
+                                           district: "district",
+                                           bio: "",
+                                           email: "phatnguyen876@gmail.com",
+                                           dob: "",
+                                           isMale: true))
+        results.append(UserNode(id: "id-2",
+                                           firstName: "Phat",
+                                           lastName: "T",
+                                           province: "province",
+                                           district: "district",
+                                           bio: "",
+                                           email: "19521707@gm.uit.edu.vn",
+                                           dob: "",
+                                           isMale: true))
+        results.append(UserNode(id: "id-2",
+                                           firstName: "Phat",
+                                           lastName: "Lee",
+                                           province: "province",
+                                           district: "district",
+                                           bio: "",
+                                           email: "phatnguyen876@gmail.com",
+                                           dob: "",
+                                           isMale: true))
+        results.append(UserNode(id: "id-2",
+                                           firstName: "John",
+                                           lastName: "Nguyen",
+                                           province: "province",
+                                           district: "district",
+                                           bio: "",
+                                           email: "19521707@gm.uit.edu.vn",
+                                           dob: "",
+                                           isMale: true))
+        results.append(UserNode(id: "id-2",
+                                           firstName: "Simon",
                                            lastName: "Nguyen",
                                            province: "province",
                                            district: "district",
@@ -324,12 +370,41 @@ class CreateGroupViewController: UIViewController {
         }
     }
     
+    public func updateAddedStatus(_ isAdded: Bool, senderTag: Int) {
+        // find tag and update status
+        let cell = (peopleCollection.cellForItem(at: IndexPath(item: senderTag, section: 0) ) as! CreateGroupCollectionViewCell)
+        
+        if isAdded {
+            cell.addedToGroupBtn.isHidden = false
+            cell.addToGroupBtn.isHidden = true
+        }
+        else {
+            cell.addedToGroupBtn.isHidden = true
+            cell.addToGroupBtn.isHidden = false
+        }
+    }
+    
     @objc func addMemberToGroup(sender: UIButton) {
         print("People in collection: \(sender.tag)")
         
-        let newPerson = peopleInFriendList[sender.tag]
+        let newPerson = results[sender.tag]
         
         queueGroupMembers.append(newPerson)
+        
+        updateAddedStatus(true, senderTag: sender.tag)
+        
+        // ---
+        //                for cell in peopleCollection.visibleCells {
+        //                    let indexPath = peopleCollection.indexPath(for: cell)
+        //                    print((cell as! CreateGroupCollectionViewCell).userNameLabel.text)
+        //                    print((peopleCollection.cellForItem(at: indexPath!) as! CreateGroupCollectionViewCell).userNameLabel.text)
+        //                    print(indexPath)
+        //                    print(indexPath?.row)
+        //                    print(indexPath?.section)
+        //                    print(indexPath?.item)
+        //
+        //                }
+        // ---
         
         switch queueGroupMembers.count {
         case let people where people <= 4:
@@ -342,6 +417,16 @@ class CreateGroupViewController: UIViewController {
             print("Out of range")
         }
         
+    }
+    
+    @objc func removeMemberFromGroup(sender: UIButton) {
+        print("People in collection: \(sender.tag)")
+        
+        let newPerson = results[sender.tag]
+        
+        queueGroupMembers.removeAll(where: { $0.email == newPerson.email })
+        
+        updateAddedStatus(false, senderTag: sender.tag)
     }
     
     @objc func adjustGroupNameTapped() {
@@ -426,8 +511,10 @@ extension CreateGroupViewController: UICollectionViewDelegate, UICollectionViewD
         cell.configure(with: results[indexPath.item])
         
         // Setup Add Button
-        cell.addToGroupBtn.tag = indexPath.row
+        cell.addToGroupBtn.tag = indexPath.item
+        cell.addedToGroupBtn.tag = indexPath.item
         cell.addToGroupBtn.addTarget(self, action: #selector(addMemberToGroup), for: .touchUpInside)
+        cell.addedToGroupBtn.addTarget(self, action: #selector(removeMemberFromGroup), for: .touchUpInside)
         return cell
     }
     
@@ -491,12 +578,41 @@ extension CreateGroupViewController: UISearchBarDelegate {
             screenState(with: false)
         } else {
             screenState(with: true)
-            peopleCollection.reloadData()
+            resetUI()
+        }
+    }
+    
+    func resetUI() {
+        peopleCollection.reloadData()
+        peopleCollection.performBatchUpdates(nil, completion: {
+            result in
+            self.resetAddBtn()
+        })
+    }
+    
+    func resetAddBtn() {
+        // refresh data after reset search results
+        print(peopleCollection.visibleCells)
+        // loop throw all CollectionCell
+        for cell in peopleCollection.visibleCells {
+            // the queue need to notEmpty, if not /stop/
+            guard !queueGroupMembers.isEmpty else { return }
+            
+            // renew array addBtn status
+            (cell as! CreateGroupCollectionViewCell).addToGroupBtn.isHidden = false
+            (cell as! CreateGroupCollectionViewCell).addedToGroupBtn.isHidden = true
+            
+            // loop over the queue and switch addBtn status node's cell
+            if queueGroupMembers.contains(where: { $0.email == (cell as! CreateGroupCollectionViewCell).userInfoLabel.text! }) {
+                // switch addBtn status
+                (cell as! CreateGroupCollectionViewCell).addToGroupBtn.isHidden = true
+                (cell as! CreateGroupCollectionViewCell).addedToGroupBtn.isHidden = false
+            }
         }
     }
     
     func resetFriendList() {
         self.results = self.peopleInFriendList
-        updateUI()
+        resetUI()
     }
 }

@@ -306,6 +306,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ChatsViewCell.identifier, for: indexPath) as! ChatsViewCell
         // config cell
         cell.configure(with: model)
+        
         return cell
     }
     
