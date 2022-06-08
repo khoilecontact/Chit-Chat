@@ -18,8 +18,9 @@ class NewFriendsViewCell: UITableViewCell {
     private let userImageView: UIImageView = {
         let imgView = UIImageView()
         imgView.contentMode = .scaleAspectFill
-        imgView.layer.cornerRadius = 40
-        imgView.layer.masksToBounds = true
+        imgView.layer.cornerRadius = 30
+        imgView.layer.masksToBounds = false
+        imgView.clipsToBounds = true
         return imgView
     }()
     
@@ -52,20 +53,27 @@ class NewFriendsViewCell: UITableViewCell {
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10))
         contentView.layer.cornerRadius = 12
         contentView.backgroundColor = Appearance.system
-        contentView.layer.borderWidth = 1
+        contentView.layer.borderWidth = 0
         contentView.layer.borderColor = UIColor.systemGray4.cgColor
+        
+        // Shadow
+        contentView.layer.shadowColor = UIColor.gray.cgColor
+        contentView.layer.shadowRadius = 4.0
+        contentView.layer.shadowOpacity = 0.2
+        contentView.layer.shadowOffset = CGSize(width: 0, height: 3)
+        contentView.layer.masksToBounds = false
         
         userImageView.frame = CGRect(x: 10,
                                      y: 5,
-                                     width: 80,
-                                     height: 80)
+                                     width: 60,
+                                     height: 60)
         
-        userNameLabel.frame = CGRect(x: userImageView.right + 25,
+        userNameLabel.frame = CGRect(x: userImageView.right + 20,
                                      y: 10,
                                      width: contentView.width - 20 - userImageView.width,
                                      height: (contentView.height - 20)/2)
         
-        userEmailLabel.frame = CGRect(x: userImageView.right + 25,
+        userEmailLabel.frame = CGRect(x: userImageView.right + 20,
                                         y: userNameLabel.bottom,
                                      width: contentView.width - 20 - userImageView.width,
                                      height: (contentView.height - 20)/2)

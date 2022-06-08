@@ -23,6 +23,8 @@ class DarkModeViewController: UIViewController, UITableViewDataSource, UITableVi
         tableView.backgroundColor = .systemBackground
         tableView.layer.borderWidth = 1
         tableView.layer.cornerRadius = 15
+        tableView.layer.borderColor = UIColor.systemGray3.cgColor
+        
         return tableView
     }()
     
@@ -41,7 +43,7 @@ class DarkModeViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         scrollView.frame = view.bounds
-        tableView.frame = CGRect(x: 20, y: 20, width: scrollView.frame.width - 40, height: 156)
+        tableView.frame = CGRect(x: 20, y: 30, width: scrollView.frame.width - 40, height: 156)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -36,6 +36,8 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 1
+        imageView.layer.borderColor = UIColor.systemGray2.cgColor
+        
         return imageView
     }()
     
@@ -47,7 +49,7 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         field.returnKeyType = .continue
         field.layer.cornerRadius = 12
         field.layer.borderWidth = 1
-        field.layer.borderColor = Appearance.tint.cgColor
+        field.layer.borderColor = UIColor.systemGray2.cgColor
         field.placeholder = "First Name..."
         
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
@@ -66,7 +68,7 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         field.returnKeyType = .continue
         field.layer.cornerRadius = 12
         field.layer.borderWidth = 1
-        field.layer.borderColor = Appearance.tint.cgColor
+        field.layer.borderColor = UIColor.systemGray2.cgColor
         field.placeholder = "Last Name..."
         
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
@@ -86,7 +88,7 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         field.returnKeyType = .continue
         field.layer.cornerRadius = 12
         field.layer.borderWidth = 1
-        field.layer.borderColor = Appearance.tint.cgColor
+        field.layer.borderColor = UIColor.systemGray2.cgColor
         field.placeholder = "Enter your bio"
         
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
@@ -140,7 +142,7 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
 
         button.layer.cornerRadius = 12
         button.layer.borderWidth = 1
-        button.layer.borderColor = Appearance.tint.cgColor
+        button.layer.borderColor = UIColor.systemGray2.cgColor
         button.backgroundColor = .systemBackground
         
         return button
@@ -161,7 +163,7 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
 
         button.layer.cornerRadius = 12
         button.layer.borderWidth = 1
-        button.layer.borderColor = Appearance.tint.cgColor
+        button.layer.borderColor = UIColor.systemGray2.cgColor
         button.backgroundColor = .systemBackground
         return button
     }()
@@ -189,7 +191,7 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         let button = UIButton()
         button.setTitle("Save", for: .normal)
         button.backgroundColor = .systemGreen
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
