@@ -280,7 +280,9 @@ extension DatabaseManager {
                     return email.hasPrefix(otherUser.email)
                 })
                 
-                friendRequestList.removeAll(where: { request[0] as NSDictionary == $0 as NSDictionary })
+                if !friendRequestList.isEmpty {
+                    friendRequestList.removeAll(where: { request[0] as NSDictionary == $0 as NSDictionary })
+                }
                 
                 strongSelf.database.child("Users/\(mySafeEmail)/friend_request_list").setValue(friendRequestList, withCompletionBlock: { error, _ in
                     guard error == nil else {

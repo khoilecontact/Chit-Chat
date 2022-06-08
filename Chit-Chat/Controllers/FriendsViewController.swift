@@ -117,6 +117,7 @@ class FriendsViewController: UIViewController {
                 }
             case .failure(_):
                 self?.friends = []
+                self?.results = []
                 DispatchQueue.main.async {
                     strongSelf.tableView.reloadData()
                 }

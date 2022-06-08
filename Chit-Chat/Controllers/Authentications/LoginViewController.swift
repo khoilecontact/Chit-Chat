@@ -82,7 +82,7 @@ class LoginViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Sign In", for: .normal)
         button.backgroundColor = .systemGreen
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(Appearance.system, for: .normal)
         button.layer.cornerRadius = 12
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         
@@ -289,7 +289,7 @@ class LoginViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Sign Up", for: .normal)
         button.backgroundColor = .init(red: CGFloat(108) / 255.0, green: CGFloat(164) / 255.0, blue: CGFloat(212) / 255.0, alpha: 1.0)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(Appearance.system, for: .normal)
         button.layer.cornerRadius = 12
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         
