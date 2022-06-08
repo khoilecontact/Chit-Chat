@@ -12,8 +12,6 @@ class CreateGroupCollectionViewCell: UICollectionViewCell {
     
     static let identifier: String = "CreateGroupViewCell"
     
-    public var delegate: GroupActionDelegate?
-    
     public var completion: ((UserNode) -> Void)?
     
     private let userImageView: UIImageView = {
@@ -24,34 +22,47 @@ class CreateGroupCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let userNameLabel: UILabel = {
+    public let userNameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .semibold)
         return label
     }()
     
-    private let userInfoLabel: UILabel = {
+    public let userInfoLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 10, weight: .regular)
         return label
     }()
     
-    private let addToGroupBtn: UIButton = {
+    public let addToGroupBtn: UIButton = {
         let button = UIButton()
         button.setTitle("Add", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
         button.setTitleColor(.white, for: .normal)
         button.layer.borderWidth = 0
         button.layer.borderColor = UIColor.black.cgColor
         button.layer.cornerRadius = 15
         button.backgroundColor = .black
+        button.isHidden = false
+        return button
+    }()
+    
+    public let addedToGroupBtn: UIButton = {
+        let button = UIButton()
+        button.setTitle("Added", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
+        button.setTitleColor(.black, for: .normal)
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.black.cgColor
+        button.layer.cornerRadius = 15
+        button.backgroundColor = .white
+        button.isHidden = true
         return button
     }()
     
     override init(frame: CGRect) {
         
         super.init(frame: frame)
-        
-        setupAction()
         
         contentView.backgroundColor = .systemBackground
         
@@ -64,6 +75,7 @@ class CreateGroupCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(userNameLabel)
         contentView.addSubview(userInfoLabel)
         contentView.addSubview(addToGroupBtn)
+        contentView.addSubview(addedToGroupBtn)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -74,26 +86,23 @@ class CreateGroupCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
         
         userImageView.frame = CGRect(x: 20,
-                                     y: 10,
+                                     y: 20,
                                      width: 50,
                                      height: 50)
         
-        addToGroupBtn.frame = CGRect(x: contentView.right - 20 - 60, y: (10 + (userImageView.height/2) - 15), width: 60, height: 30)
-        addToGroupBtn.addTarget(self, action: #selector(callback), for: .touchUpInside)
+        addToGroupBtn.frame = CGRect(x: contentView.right - 20 - 60, y: (20 + (userImageView.height/2) - 15), width: 60, height: 30)
+        
+        addedToGroupBtn.frame = CGRect(x: contentView.right - 20 - 60, y: (20 + (userImageView.height/2) - 15), width: 60, height: 30)
         
         userNameLabel.frame = CGRect(x: 20,
-                                     y: userImageView.bottom + 10,
+                                     y: userImageView.bottom + 15,
                                      width: contentView.width - 40,
-                                     height: (contentView.height - 20 - 15 - (userImageView.height))/2)
+                                     height: (contentView.height - 40 - 20 - (userImageView.height))/2)
         
         userInfoLabel.frame = CGRect(x: 20,
                                      y: userNameLabel.bottom + 5,
                                      width: contentView.width - 40,
-                                     height: (contentView.height - 20 - 15 - (userImageView.height))/2)
-    }
-    
-    func setupAction() {
-        self.delegate = CreateGroupViewController()
+                                     height: (contentView.height - 40 - 20 - (userImageView.height))/2)
     }
     
     // MARK: - Configure User in List
@@ -117,9 +126,5 @@ class CreateGroupCollectionViewCell: UICollectionViewCell {
                 print("Failed to get image url: \(error)")
             }
         }
-    }
-    
-    @objc func callback() {
-        self.delegate?.addMemberToGroup()
     }
 }
