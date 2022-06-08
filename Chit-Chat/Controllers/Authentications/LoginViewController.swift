@@ -555,6 +555,11 @@ class LoginViewController: UIViewController {
             FirebaseAuth.Auth.auth().signIn(with: credential, completion: { authResult, error in
                 guard authResult != nil, error == nil else {
                     print("Something is wrong when sign in Google")
+                    
+                    let alert = UIAlertController(title: "User existed", message: "Email of user existed! Please try another account", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                    self?.present(alert, animated: true)
+                    
                     return
                 }
 
@@ -628,7 +633,13 @@ class LoginViewController: UIViewController {
                     })
                     
                     
-                    guard (authResult!.credential as? OAuthCredential) != nil else { return }
+                    guard (authResult!.credential as? OAuthCredential) != nil else {
+                        let alert = UIAlertController(title: "User existed", message: "Email of user existed! Please try another account", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                        self.present(alert, animated: true)
+                        
+                        return
+                    }
                     // GitHub OAuth access token can also be retrieved by:
                     // oauthCredential.accessToken
                     // GitHub OAuth ID token can be retrieved by calling:
