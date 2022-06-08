@@ -552,7 +552,7 @@ class LoginViewController: UIViewController {
             let credential = GoogleAuthProvider.credential(withIDToken: idToken,
                                                            accessToken: authentication.accessToken)
 
-            FirebaseAuth.Auth.auth().signIn(with: credential, completion: { authResult, error in
+            FirebaseAuth.Auth.auth().signIn(with: credential, completion: { [weak self] authResult, error in
                 guard authResult != nil, error == nil else {
                     print("Something is wrong when sign in Google")
                     
