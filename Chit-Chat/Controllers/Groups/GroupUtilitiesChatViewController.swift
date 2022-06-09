@@ -10,20 +10,20 @@ import UIKit
 class GroupUtilitiesChatViewController: UIViewController {
 
     var utils = [UtilitiesMessageChatViewModel]()
-    var otherName: String
-    var otherEmail: String
+    var groupName: String
+    var groupId: String
     var conversationId: String
     
     private let tableView: UITableView = {
         let table = UITableView()
         table.separatorColor = .systemBackground
-        table.register(UtilitiesMessageChatViewCell.self, forCellReuseIdentifier: UtilitiesMessageChatViewCell.identifier)
+        table.register(GroupUtilitiesMessageChatViewCell.self, forCellReuseIdentifier: GroupUtilitiesMessageChatViewCell.identifier)
         return table
     }()
     
-    init(name: String, email: String, conversationId: String) {
-        self.otherName = name
-        self.otherEmail = email
+    init(name: String, groupId: String, conversationId: String) {
+        self.groupName = name
+        self.groupId = groupId
         self.conversationId = conversationId
         super.init(nibName: nil, bundle: nil)
     }
@@ -68,12 +68,12 @@ class GroupUtilitiesChatViewController: UIViewController {
     func createTableHeader() -> UIView? {
         
         //        let safeEmail = DatabaseManager.safeEmail(emailAddress: otherEmail)
-        let filename = otherEmail + "_profile_picture.png"
-        let path = "images/" + filename;
+        let filename = "\(groupId)_group_picture.png"
+        let path = "group_images/" + filename;
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0,
                                               width: view.width,
-                                              height: 120))
+                                              height: 100))
         headerView.backgroundColor = .systemBackground
                 
         let imageView = UIImageView(frame: CGRect(x: (headerView.width-80)/2, y: (headerView.height-80)/2, width: 80, height: 80))
@@ -101,33 +101,48 @@ class GroupUtilitiesChatViewController: UIViewController {
     
     func createUtilOptions() {
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .info,
-                                                   title: "Name: \(otherName)",
-                                                   handler: nil))
-        utils.append(UtilitiesMessageChatViewModel(viewModelType: .info,
-                                                   title: "Email: \(otherEmail)",
-                                                   handler: nil))
-        utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,
-                                                   title: "Nicknames -- In Beta, coming soon!",
+                                                   title: "\(groupName)",
                                                    handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
-                                                   title: "Create chat group",
+                                                   title: "Members",
                                                    handler: nil))
+        //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,
+        //                                                   title: "Reminder",
+        //                                                   handler: nil))
+        //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,
+        //                                                   title: "Assign Task",
+        //                                                   handler: nil))
+        //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,
+        //                                                   title: "Git",
+        //                                                   handler: nil))
+        //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,
+        //                                                   title: "Todo List",
+        //                                                   handler: nil))
+        //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
+        //                                                   title: "Add member",
+        //                                                   handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
                                                    title: "Search message in conversation",
                                                    handler: { [weak self] in
             guard let strongSelf = self else { return }
             
-            let vc = SearchMessageInConversationViewController(email: strongSelf.otherEmail, name: strongSelf.otherName, conversationId: strongSelf.conversationId)
+            let vc = SearchMessageInGroupConversationViewController(groupId: strongSelf.groupId, name: strongSelf.groupName, conversationId: strongSelf.conversationId)
             let nav = UINavigationController(rootViewController: vc)
             self?.present(nav, animated: true)
             
         }))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
-                                                   title: "Block",
+                                                   title: "Notification",
                                                    handler: nil))
-        utils.append(UtilitiesMessageChatViewModel(viewModelType: .back,
-                                                   title: "Go Back",
-                                                   handler: { [weak self] in self?.dismiss(animated: true) }))
+        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
+                                                   title: "Report",
+                                                   handler: nil))
+        utils.append(UtilitiesMessageChatViewModel(viewModelType: .dangerous,
+                                                   title: "Delete group",
+                                                   handler: nil))
+        utils.append(UtilitiesMessageChatViewModel(viewModelType: .dangerous,
+                                                   title: "Leave group",
+                                                   handler: nil))
     }
     
     @objc func backBtnTapped() {
@@ -142,7 +157,7 @@ extension GroupUtilitiesChatViewController: UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let viewModel = utils[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: UtilitiesMessageChatViewCell.identifier, for: indexPath) as! UtilitiesMessageChatViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: GroupUtilitiesMessageChatViewCell.identifier, for: indexPath) as! GroupUtilitiesMessageChatViewCell
         
         cell.createTableCellValue(with: viewModel)
         return cell

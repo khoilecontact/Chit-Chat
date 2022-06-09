@@ -461,9 +461,9 @@ class GroupChatViewController: MessagesViewController {
     
     @objc func menuBtnTapped() {
         if conversationId != nil {
-//            let vc = GroupUtilitiesChatViewController(name: otherUserName, email: otherUserEmail, conversationId: conversationId!)
+            let vc = GroupUtilitiesChatViewController(name: groupName, groupId: groupId, conversationId: conversationId!)
             
-//            navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
             
         }
     }
@@ -732,35 +732,29 @@ extension GroupChatViewController: MessagesLayoutDelegate, MessagesDataSource, M
         }
         else {
             // other user
-            if let otherUserImageURL = otherUserPhotoURL {
-                avatarView.sd_setImage(with: otherUserImageURL, completed: nil)
-                // otherUserAvatar.sd_setImage(with: otherUserImageURL, placeholderImage: resizeImage(image: UIImage(systemName: "person.crop.circle")!, targetSize: CGSize(width: 30, height: 30)))
-                otherUserAvatar.sd_setImage(with: otherUserImageURL, placeholderImage: nil, context: [.imageTransformer: SDImageResizingTransformer(size: CGSize(width: 30, height: 30), scaleMode: .fill)])
-            }
-            else {
-                // ${safeOtherEmail}_profile_picture.png
+            // ${safeOtherEmail}_profile_picture.png
+            
+            //                let email = otherUserEmail
+            let safeEmail = DatabaseManager.safeEmail(emailAddress: sender.senderId)
+            let path = "images/\(safeEmail)_profile_picture.png"
+            
+            // fetch from DB
+            StorageManager.shared.downloadUrl(for: path, completion: { [weak self] result in
+                guard let strongSelf = self else {return}
                 
-//                let email = otherUserEmail
-                let safeEmail = DatabaseManager.safeEmail(emailAddress: sender.senderId)
-                let path = "images/\(safeEmail)_profile_picture.png"
-                
-                // fetch from DB
-                StorageManager.shared.downloadUrl(for: path, completion: { [weak self] result in
-                    guard let strongSelf = self else {return}
-                    
-                    switch result {
-                    case .success(let url):
-                        strongSelf.otherUserPhotoURL = url
-                        DispatchQueue.main.async {
-                            avatarView.sd_setImage(with: url, completed: nil)
-                            // strongSelf.otherUserAvatar.sd_setImage(with: url, placeholderImage: resizeImage(image: UIImage(systemName: "person.crop.circle")!, targetSize: CGSize(width: 30, height: 30)))
-                            strongSelf.otherUserAvatar.sd_setImage(with: url, placeholderImage: nil, context: [.imageTransformer: SDImageResizingTransformer(size: CGSize(width: 30, height: 30), scaleMode: .fill)])
-                        }
-                    case .failure(let error):
-                        print("Failed to fetch avatar with error: \(error)")
+                switch result {
+                case .success(let url):
+                    strongSelf.otherUserPhotoURL = url
+                    DispatchQueue.main.async {
+                        avatarView.sd_setImage(with: url, completed: nil)
+                        // strongSelf.otherUserAvatar.sd_setImage(with: url, placeholderImage: resizeImage(image: UIImage(systemName: "person.crop.circle")!, targetSize: CGSize(width: 30, height: 30)))
+                        strongSelf.otherUserAvatar.sd_setImage(with: url, placeholderImage: nil, context: [.imageTransformer: SDImageResizingTransformer(size: CGSize(width: 30, height: 30), scaleMode: .fill)])
                     }
-                })
-            }
+                case .failure(let error):
+                    print("Failed to fetch avatar with error: \(error)")
+                }
+            })
+            
         }
         
     }
