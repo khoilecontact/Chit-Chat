@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct GroupMessagesCollection {
+public struct GroupMessagesCollection {
     let id: String
     let name: String
-    //    let otherUserEmail: String
+    let groupId: String
     let latestMessage: LatestMessage
 }
 
 public struct Group {
     let id: String
     let name: String
-    var members: [String]
-    var conversations: [GroupMessagesCollection]
+    var members: [UserNode]
+    // var conversations: [GroupMessagesCollection]
 }

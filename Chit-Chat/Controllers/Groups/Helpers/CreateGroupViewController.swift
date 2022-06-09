@@ -8,6 +8,7 @@
 import UIKit
 import JGProgressHUD
 import SDWebImage
+import Toast_Swift
 
 class CreateGroupViewController: UIViewController {
     
@@ -323,6 +324,7 @@ class CreateGroupViewController: UIViewController {
                 }
             case .failure(let error):
                 self?.peopleInFriendList = []
+                self?.results = []
                 DispatchQueue.main.async {
                     strongSelf.peopleCollection.reloadData()
                     strongSelf.spinner.dismiss()
@@ -417,6 +419,18 @@ class CreateGroupViewController: UIViewController {
         usersSlot2nd.isHidden = true
         usersSlot3rd.isHidden = true
         usersSlot4th.isHidden = true
+    }
+    
+    func createGroupNewConversation(result: Group) {
+        let vc = GroupChatViewController(with: nil, groupid: result.id, name: result.name, messagePosition: nil)
+        vc.title = result.name
+        vc.isNewConversation = true
+        // vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func openConversationChat() {
+        navigationController?.popToRootViewController(animated: true)
     }
     
     public func updateAddedStatus(_ isAdded: Bool, senderTag: Int) {
@@ -527,6 +541,44 @@ class CreateGroupViewController: UIViewController {
     
     @objc func createGroupTapped() {
         // create group api
+        
+        guard queueGroupMembers.count > 1 else {
+            view.makeToast("Members in group must more than 2 people")
+            return
+        }
+        
+        if groupName.isEmpty {
+            let start = groupNameLabel.text!.index(groupNameLabel.text!.startIndex, offsetBy: 6)
+            let end = groupNameLabel.text!.index(groupNameLabel.text!.endIndex, offsetBy: 0)
+            let range = start..<end
+            
+            groupName = String(groupNameLabel.text![range])
+        }
+        
+        let newGroup = Group(id: UUID().uuidString, name: groupName, members: queueGroupMembers)
+        
+        DatabaseManager.shared.insertGroup(with: newGroup, users: queueGroupMembers) { [weak self] success in
+            if success {
+                // upload image
+                guard let image = UIImage(systemName: "person.2.circle.fill"), let data = image.pngData() else {return}
+                
+                let fileName = "\(newGroup.id)_group_picture.png"
+                StorageManager.shared.uploadGroupPicture(with: data, fileName: fileName, completion: { [weak self] result in
+                    switch result {
+                    case .success(let downloadUrl):
+                        self?.view.makeToast("Upload successfully")
+                    case .failure(let error):
+                        self?.view.makeToast("Failed to upload group picture")
+                        print("Failed to upload with error: \(error)")
+                    }
+                })
+                
+                self?.createGroupNewConversation(result: newGroup)
+                
+                // done
+                // self?.openConversationChat()
+            }
+        }
     }
 }
 

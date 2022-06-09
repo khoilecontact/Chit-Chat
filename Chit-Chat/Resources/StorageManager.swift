@@ -108,5 +108,27 @@ final class StorageManager {
             completion(.success(url))
         })
     }
+    
+    public func uploadGroupPicture(with data: Data, fileName: String, completion: @escaping UploadPictureCompletion) {
+        storage.child("group_images/\(fileName)").putData(data, metadata: nil, completion: { [weak self] metadata, error in
+            guard error == nil else {
+                print("Failed to upload group picture")
+                completion(.failure(storageError.failedToUpload))
+                return
+            }
+            
+            self?.storage.child("group_images/\(fileName)").downloadURL(completion: { url, error in
+                guard let url = url, error == nil else {
+                    print("Failed to get download URL")
+                    completion(.failure(storageError.failedToDownloadURL))
+                    return
+                }
+                
+                let urlString = url.absoluteString
+                print("Download URL returned: \(urlString)")
+                completion(.success(urlString))
+            })
+        })
+    }
 }
 

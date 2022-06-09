@@ -75,6 +75,31 @@ class ChatViewController: UIViewController {
         MessageNotificationCenter.shared.notifyNewMessage()
         
         // Listening for calls
+        listeningForCalls()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
+        noConversationLabel.frame = CGRect(x: 10,
+                                           y: (view.height-100)/2,
+                                           width: view.width-20,
+                                           height: 100)
+    }
+    
+    private func validateAuth() {
+        if FirebaseAuth.Auth.auth().currentUser == nil {
+            let loginVC = LoginViewController()
+            // Create a navigation controller
+            let nav = UINavigationController(rootViewController: loginVC)
+            nav.modalPresentationStyle = .fullScreen
+            
+            present(nav, animated: true)
+        }
+        
+    }
+    
+    func listeningForCalls() {
         CallNotificationCenter.shared.listenForIncomingCall(completion: {
             [weak self] result in
             
@@ -98,27 +123,6 @@ class ChatViewController: UIViewController {
                 break
             }
         })
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
-        noConversationLabel.frame = CGRect(x: 10,
-                                           y: (view.height-100)/2,
-                                           width: view.width-20,
-                                           height: 100)
-    }
-    
-    private func validateAuth() {
-        if FirebaseAuth.Auth.auth().currentUser == nil {
-            let loginVC = LoginViewController()
-            // Create a navigation controller
-            let nav = UINavigationController(rootViewController: loginVC)
-            nav.modalPresentationStyle = .fullScreen
-            
-            present(nav, animated: true)
-        }
-        
     }
     
     private func startListeningForConversations() {
