@@ -696,6 +696,7 @@ extension GroupChatViewController: MessagesLayoutDelegate, MessagesDataSource, M
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         
         let sender = message.sender
+        print(sender)
         
         if sender.senderId == selfSender?.senderId {
             // our image
@@ -740,7 +741,7 @@ extension GroupChatViewController: MessagesLayoutDelegate, MessagesDataSource, M
                 // ${safeOtherEmail}_profile_picture.png
                 
 //                let email = otherUserEmail
-                let safeEmail = DatabaseManager.safeEmail(emailAddress: "")
+                let safeEmail = DatabaseManager.safeEmail(emailAddress: sender.senderId)
                 let path = "images/\(safeEmail)_profile_picture.png"
                 
                 // fetch from DB
