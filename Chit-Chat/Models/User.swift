@@ -35,6 +35,7 @@ public struct User {
     var friendList: [UserNode]
     var blackList: [UserNode]
     var conversations: [MessagesCollection]
+    var groupConversations: [GroupMessagesCollection]
     
     var safeEmail: String
     
@@ -59,6 +60,7 @@ public struct User {
         self.friendList = []
         self.blackList = []
         self.conversations = []
+        self.groupConversations = []
         self.safeEmail = safeEmailGenerate
         self.profilePictureFileName = { () -> String in
             return "\(safeEmailGenerate)_profile_picture.png"
@@ -84,6 +86,7 @@ public struct User {
         self.friendList = []
         self.blackList = []
         self.conversations = []
+        self.groupConversations = []
         self.safeEmail = safeEmailGenerate
         self.profilePictureFileName = { () -> String in
             return "\(safeEmailGenerate)_profile_picture.png"

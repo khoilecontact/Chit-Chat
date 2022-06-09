@@ -8,6 +8,7 @@
 import UIKit
 import JGProgressHUD
 import SDWebImage
+import Toast_Swift
 
 class CreateGroupViewController: UIViewController {
     
@@ -323,6 +324,7 @@ class CreateGroupViewController: UIViewController {
                 }
             case .failure(let error):
                 self?.peopleInFriendList = []
+                self?.results = []
                 DispatchQueue.main.async {
                     strongSelf.peopleCollection.reloadData()
                     strongSelf.spinner.dismiss()
@@ -368,6 +370,67 @@ class CreateGroupViewController: UIViewController {
                 print("Failed to get image url: \(error)")
             }
         }
+    }
+    
+    func reloadSignleAvatarToQueue(with model: UserNode, position: Int) {
+        
+        guard position >= 0 else { return }
+        
+        let safeEmail = DatabaseManager.safeEmail(emailAddress: model.email)
+        
+        let path = "images/\(safeEmail)_profile_picture.png"
+        // call to Storage manager to take img
+        StorageManager.shared.downloadUrl(for: path) { [weak self] result in
+            guard let strongSelf = self else { return }
+            
+            switch result {
+            case .success(let url):
+                DispatchQueue.main.async {
+                    strongSelf.renewAvatarQueue()
+                    switch position {
+                    case 0:
+                        strongSelf.usersSlot1st.isHidden = false
+                        strongSelf.usersSlot1st.sd_setImage(with: url)
+                        break
+                    case 1:
+                        strongSelf.usersSlot2nd.isHidden = false
+                        strongSelf.usersSlot2nd.sd_setImage(with: url)
+                        break
+                    case 2:
+                        strongSelf.usersSlot3rd.isHidden = false
+                        strongSelf.usersSlot3rd.sd_setImage(with: url)
+                        break
+                    case 3:
+                        strongSelf.usersSlot4th.isHidden = false
+                        strongSelf.usersSlot4th.sd_setImage(with: url)
+                        break
+                    default:
+                        print("Out of range")
+                    }
+                }
+            case .failure(let error):
+                print("Failed to get image url: \(error)")
+            }
+        }
+    }
+    
+    func renewAvatarQueue() {
+        usersSlot1st.isHidden = true
+        usersSlot2nd.isHidden = true
+        usersSlot3rd.isHidden = true
+        usersSlot4th.isHidden = true
+    }
+    
+    func createGroupNewConversation(result: Group) {
+        let vc = GroupChatViewController(with: nil, groupid: result.id, name: result.name, messagePosition: nil)
+        vc.title = result.name
+        vc.isNewConversation = true
+        // vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func openConversationChat() {
+        navigationController?.popToRootViewController(animated: true)
     }
     
     public func updateAddedStatus(_ isAdded: Bool, senderTag: Int) {
@@ -427,6 +490,34 @@ class CreateGroupViewController: UIViewController {
         queueGroupMembers.removeAll(where: { $0.email == newPerson.email })
         
         updateAddedStatus(false, senderTag: sender.tag)
+        
+        if queueGroupMembers.isEmpty {
+            renewAvatarQueue()
+        }
+        
+        // readd image queue
+        for (index, people) in queueGroupMembers.enumerated() {
+            switch index {
+            case 0:
+                reloadSignleAvatarToQueue(with: people, position: 0)
+                break
+            case 1:
+                reloadSignleAvatarToQueue(with: people, position: 1)
+                break
+            case 2:
+                reloadSignleAvatarToQueue(with: people, position: 2)
+                break
+            case 3:
+                reloadSignleAvatarToQueue(with: people, position: 3)
+                break
+            case let people where people > 3:
+                moreMemberInQueue = queueGroupMembers.count - 4
+                suffixQueuedAvatar.isHidden = false
+                return
+            default:
+                print("Out of range")
+            }
+        }
     }
     
     @objc func adjustGroupNameTapped() {
@@ -450,6 +541,44 @@ class CreateGroupViewController: UIViewController {
     
     @objc func createGroupTapped() {
         // create group api
+        
+        guard queueGroupMembers.count > 1 else {
+            view.makeToast("Members in group must more than 2 people")
+            return
+        }
+        
+        if groupName.isEmpty {
+            let start = groupNameLabel.text!.index(groupNameLabel.text!.startIndex, offsetBy: 6)
+            let end = groupNameLabel.text!.index(groupNameLabel.text!.endIndex, offsetBy: 0)
+            let range = start..<end
+            
+            groupName = String(groupNameLabel.text![range])
+        }
+        
+        let newGroup = Group(id: UUID().uuidString, name: groupName, members: queueGroupMembers)
+        
+        DatabaseManager.shared.insertGroup(with: newGroup, users: queueGroupMembers) { [weak self] success in
+            if success {
+                // upload image
+                guard let image = UIImage(systemName: "person.2.circle.fill"), let data = image.pngData() else {return}
+                
+                let fileName = "\(newGroup.id)_group_picture.png"
+                StorageManager.shared.uploadGroupPicture(with: data, fileName: fileName, completion: { [weak self] result in
+                    switch result {
+                    case .success(let downloadUrl):
+                        self?.view.makeToast("Upload successfully")
+                    case .failure(let error):
+                        self?.view.makeToast("Failed to upload group picture")
+                        print("Failed to upload with error: \(error)")
+                    }
+                })
+                
+                self?.createGroupNewConversation(result: newGroup)
+                
+                // done
+                // self?.openConversationChat()
+            }
+        }
     }
 }
 
@@ -591,20 +720,20 @@ extension CreateGroupViewController: UISearchBarDelegate {
     }
     
     func resetAddBtn() {
-        // refresh data after reset search results
-        print(peopleCollection.visibleCells)
-        // loop throw all CollectionCell
+        /// refresh data after reset search results
+        // print(peopleCollection.visibleCells)
+        /// loop throw all CollectionCell
         for cell in peopleCollection.visibleCells {
-            // the queue need to notEmpty, if not /stop/
-            guard !queueGroupMembers.isEmpty else { return }
+            /// the queue need to notEmpty, if not /stop/
+            // guard !queueGroupMembers.isEmpty else { return }
             
-            // renew array addBtn status
+            /// renew array addBtn status
             (cell as! CreateGroupCollectionViewCell).addToGroupBtn.isHidden = false
             (cell as! CreateGroupCollectionViewCell).addedToGroupBtn.isHidden = true
             
-            // loop over the queue and switch addBtn status node's cell
+            /// loop over the queue and switch addBtn status node's cell
             if queueGroupMembers.contains(where: { $0.email == (cell as! CreateGroupCollectionViewCell).userInfoLabel.text! }) {
-                // switch addBtn status
+                /// switch addBtn status
                 (cell as! CreateGroupCollectionViewCell).addToGroupBtn.isHidden = true
                 (cell as! CreateGroupCollectionViewCell).addedToGroupBtn.isHidden = false
             }

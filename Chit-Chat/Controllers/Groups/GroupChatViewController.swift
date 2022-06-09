@@ -29,7 +29,8 @@ class GroupChatViewController: MessagesViewController {
         return formatter
     }()
     
-    public let otherUserName: String
+    public let groupId: String
+    public let groupName: String
     private var conversationId: String?
     public var isNewConversation = false
     
@@ -65,7 +66,7 @@ class GroupChatViewController: MessagesViewController {
         
         self.spinner.show(in: view)
         
-        DatabaseManager.shared.getAllMessagesForConversation(with: id, completion: { [weak self] result in
+        DatabaseManager.shared.getAllMessagesForGroupConversation(with: id, completion: { [weak self] result in
             guard let strongSelf = self else {return}
             
             switch result {
@@ -101,9 +102,10 @@ class GroupChatViewController: MessagesViewController {
         })
     }
     
-    init(with id: String, name: String, messagePosition: Int? = nil) {
+    init(with id: String?, groupid: String, name: String, messagePosition: Int? = nil) {
         self.conversationId = id
-        self.otherUserName = name
+        self.groupId = groupid
+        self.groupName = name
         self.messagePosition = messagePosition
         super.init(nibName: nil, bundle: nil)
     }
@@ -153,7 +155,7 @@ class GroupChatViewController: MessagesViewController {
         // let otherBtn = UIBarButtonItem(image: otherUserAvatar.image, style: .plain, target: nil, action: nil)
         let otherBtn = UIBarButtonItem(customView: otherUserAvatar)
         
-        navigationItem.leftBarButtonItems = [backItem, otherBtn]
+        navigationItem.leftBarButtonItems = [backItem]
     }
     
     func addRightBarButtonItems()
@@ -372,14 +374,14 @@ class GroupChatViewController: MessagesViewController {
                                   sentDate: Date(),
                                   kind: .location(location))
             
-//            DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: strongSelf.otherUserEmail, name: name, newMessage: message, completion: { success in
-//                if success {
-//                    print("sent location message")
-//                }
-//                else {
-//                    print("failed to send location message")
-//                }
-//            })
+            DatabaseManager.shared.sendMessageGroup(to: conversationId, id: strongSelf.groupId, name: strongSelf.groupName, newMessage: message, completion: { success in
+                if success {
+                    print("sent location message")
+                }
+                else {
+                    print("failed to send location message")
+                }
+            })
         })
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -449,12 +451,12 @@ class GroupChatViewController: MessagesViewController {
     }
     
     @objc func contactBtnTapped() {
-//        let vc = UIStoryboard(name: "VideoCall", bundle: nil).instantiateViewController(withIdentifier: "VideoCall") as! VideoCallViewController
-        let vc = UIStoryboard(name: "VoiceCall", bundle: nil).instantiateViewController(withIdentifier: "VoiceCall") as! VoiceCallViewController
-//        vc.otherUserEmail = otherUserEmail
-        vc.otherUserName = otherUserName
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        self.present(vc, animated: true)
+////        let vc = UIStoryboard(name: "VideoCall", bundle: nil).instantiateViewController(withIdentifier: "VideoCall") as! VideoCallViewController
+//        let vc = UIStoryboard(name: "VoiceCall", bundle: nil).instantiateViewController(withIdentifier: "VoiceCall") as! VoiceCallViewController
+////        vc.otherUserEmail = otherUserEmail
+//        vc.otherUserName = otherUserName
+//        navigationController?.setNavigationBarHidden(false, animated: true)
+//        self.present(vc, animated: true)
     }
     
     @objc func menuBtnTapped() {
@@ -515,16 +517,16 @@ extension GroupChatViewController: UIImagePickerControllerDelegate, UINavigation
                                           sentDate: Date(),
                                           kind: .photo(media))
                     
-//                    DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: strongSelf.otherUserEmail, name: name, newMessage: message, completion: { success in
-//
-//                        if success {
-//                            print("sent photo message")
-//                        }
-//                        else {
-//                            print("failed to send photo message")
-//                        }
-//
-//                    })
+                    DatabaseManager.shared.sendMessageGroup(to: conversationId, id: strongSelf.groupId, name: strongSelf.groupName, newMessage: message, completion: { success in
+
+                        if success {
+                            print("sent photo message")
+                        }
+                        else {
+                            print("failed to send photo message")
+                        }
+
+                    })
                 case .failure(let error):
                     print("message photo upload error: \(error)")
                 }
@@ -559,16 +561,16 @@ extension GroupChatViewController: UIImagePickerControllerDelegate, UINavigation
                                           sentDate: Date(),
                                           kind: .video(media))
                     
-//                    DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: strongSelf.otherUserEmail, name: name, newMessage: message, completion: { success in
-//
-//                        if success {
-//                            print("sent photo message")
-//                        }
-//                        else {
-//                            print("failed to send photo message")
-//                        }
-//
-//                    })
+                    DatabaseManager.shared.sendMessageGroup(to: conversationId, id: strongSelf.groupId, name: strongSelf.groupName, newMessage: message, completion: { success in
+
+                        if success {
+                            print("sent photo message")
+                        }
+                        else {
+                            print("failed to send photo message")
+                        }
+
+                    })
                 case .failure(let error):
                     print("message video upload error: \(error)")
                 }
@@ -597,40 +599,40 @@ extension GroupChatViewController: InputBarAccessoryViewDelegate {
                               kind: .text(text))
         
         if isNewConversation {
-//            DatabaseManager.shared.createNewConversation(with: otherUserEmail, name: title ?? "User", firstMessage: message, completion: { [weak self] success in
-//
-//                guard let strongSelf = self else {return}
-//
-//                if success {
-//                    print("Message sent")
-//                    strongSelf.isNewConversation = false
-//                    let newConversationId = "conversation_\(message.messageId)"
-//                    strongSelf.conversationId = newConversationId
-//                    strongSelf.listenForMessagees(id: newConversationId, shouldScrollToBottom: true)
-//                    strongSelf.messageInputBar.inputTextView.text = nil
-//                }
-//                else {
-//                    print("Failed to send")
-//                }
-//            })
+            DatabaseManager.shared.createNewGroupConversation(with: groupId, name: groupName, firstMessage: message, completion: { [weak self] success in
+
+                guard let strongSelf = self else {return}
+
+                if success {
+                    print("Message sent")
+                    strongSelf.isNewConversation = false
+                    let newConversationId = "group_conversation_\(message.messageId)"
+                    strongSelf.conversationId = newConversationId
+                    strongSelf.listenForMessagees(id: newConversationId, shouldScrollToBottom: true)
+                    strongSelf.messageInputBar.inputTextView.text = nil
+                }
+                else {
+                    print("Failed to send")
+                }
+            })
         }
         else {
             guard let conversationId = conversationId,
                   let name = title else {
                       return
                   }
-//            DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: otherUserEmail, name: name, newMessage: message, completion: { [weak self] success in
-//
-//                guard let strongSelf = self else {return}
-//
-//                if success {
-//                    strongSelf.messageInputBar.inputTextView.text = nil
-//                    print("message sent")
-//                }
-//                else {
-//                    print("Failed to send")
-//                }
-//            })
+            DatabaseManager.shared.sendMessageGroup(to: conversationId, id: groupId, name: groupName, newMessage: message, completion: { [weak self] success in
+
+                guard let strongSelf = self else {return}
+
+                if success {
+                    strongSelf.messageInputBar.inputTextView.text = nil
+                    print("message sent")
+                }
+                else {
+                    print("Failed to send")
+                }
+            })
         }
     }
     
@@ -641,7 +643,7 @@ extension GroupChatViewController: InputBarAccessoryViewDelegate {
         let safeCurrentEmail = DatabaseManager.safeEmail(emailAddress: currentUserEmail)
         
         let dateString = Self.dateFormatter.string(from: Date())
-        let newIdentifier = "\("otherUserEmail")_\(safeCurrentEmail)_\(dateString)"
+        let newIdentifier = "\(safeCurrentEmail)_\(dateString)"
         
         return newIdentifier
     }
@@ -694,6 +696,7 @@ extension GroupChatViewController: MessagesLayoutDelegate, MessagesDataSource, M
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         
         let sender = message.sender
+        print(sender)
         
         if sender.senderId == selfSender?.senderId {
             // our image
@@ -738,7 +741,7 @@ extension GroupChatViewController: MessagesLayoutDelegate, MessagesDataSource, M
                 // ${safeOtherEmail}_profile_picture.png
                 
 //                let email = otherUserEmail
-                let safeEmail = DatabaseManager.safeEmail(emailAddress: "")
+                let safeEmail = DatabaseManager.safeEmail(emailAddress: sender.senderId)
                 let path = "images/\(safeEmail)_profile_picture.png"
                 
                 // fetch from DB
