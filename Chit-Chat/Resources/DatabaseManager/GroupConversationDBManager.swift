@@ -86,13 +86,13 @@ extension DatabaseManager {
             
             // goto group record and send for all user
             self?.database.child("Groups/\(id)/members").observeSingleEvent(of: .value, with: { [weak self] snapshot in
-                if var members = snapshot.value as? [UserNode] {
+                if var members = snapshot.value as? [[String: Any]] {
                     
                     for member in members {
                         
-                        if member.email == currentEmail { break }
+                        if member["email"] as! String == currentEmail { continue }
                         
-                        let safeOtherEmail = DatabaseManager.safeEmail(emailAddress: member.email)
+                        let safeOtherEmail = DatabaseManager.safeEmail(emailAddress: member["email"] as! String)
                         
                         self?.database.child("Users/\(safeOtherEmail)/group_conversations").observeSingleEvent(of: .value, with: { [weak self] snapshot in
                             if var conversations = snapshot.value as? [[String: Any]] {
@@ -514,12 +514,12 @@ extension DatabaseManager {
                     /// loop for every members and setValue
                     strongSelf.database.child("Groups/\(id)/members").observeSingleEvent(of: .value, with: { [weak self] snapshot in
                         
-                        if var members = snapshot.value as? [UserNode] {
+                        if var members = snapshot.value as? [[String: Any]] {
                             for member in members {
                                 
-                                if member.email == currentEmail {continue}
+                                if member["email"] as! String == currentEmail {continue}
                                 
-                                let safeOtherEmail = DatabaseManager.safeEmail(emailAddress: member.email)
+                                let safeOtherEmail = DatabaseManager.safeEmail(emailAddress: member["email"] as! String)
                                 
                                 strongSelf.database.child("Users/\(safeOtherEmail)/group_conversations").setValue(databaseEntryConversations, withCompletionBlock: { error, _ in
                                     guard error == nil else {
