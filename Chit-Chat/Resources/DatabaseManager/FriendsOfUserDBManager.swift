@@ -357,7 +357,9 @@ extension DatabaseManager {
                     return email.hasPrefix(otherUser.email)
                 })
                 
-                sentFriendRequestList.removeAll(where: { request[0] as NSDictionary == $0 as NSDictionary })
+                if !sentFriendRequestList.isEmpty {
+                    sentFriendRequestList.removeAll(where: { request[0] as NSDictionary == $0 as NSDictionary })
+                }
                 
                 strongSelf.database.child("Users/\(mySafeEmail)/sent_friend_request").setValue(sentFriendRequestList, withCompletionBlock: { error, _ in
                     guard error == nil else {

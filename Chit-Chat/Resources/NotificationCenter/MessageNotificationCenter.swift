@@ -64,6 +64,7 @@ extension MessageNotificationCenter {
                 if senderEmail != safeEmail && senderEmail != currentEmail {
                     DispatchQueue.main.async {
                         self?.sendNotification(title: senderName, body: latestMessageContent, otherSafeEmail: senderEmail, conversationId: conversationId)
+                        UIDevice.vibrate()
                     }
                 }
                 

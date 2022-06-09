@@ -18,12 +18,12 @@ class IncomingCallViewController: UIViewController {
     var otherUserEmail: String?
     var callType: String?
     private var senderPhotoURL: URL?
+    var isVibrate = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configUI()
-        AudioServicesPlayAlertSoundWithCompletion(SystemSoundID(kSystemSoundID_Vibrate)) { }
     }
     
     override func viewDidAppear(_ animated: Bool) {
