@@ -100,6 +100,8 @@
 		DAE95C5127B6493700B19445 /* ChatsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE95C5027B6493700B19445 /* ChatsViewCell.swift */; };
 		DAEE3D5D27BC0A6F00334E06 /* LocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEE3D5C27BC0A6F00334E06 /* LocationPickerViewController.swift */; };
 		DAEE3D5F27BC0AC900334E06 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEE3D5E27BC0AC900334E06 /* PhotoViewerViewController.swift */; };
+		DAF82FCB28523FBA0097A454 /* GroupMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF82FCA28523FBA0097A454 /* GroupMemberViewController.swift */; };
+		DAF82FCD2852412E0097A454 /* GroupMemberViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF82FCC2852412E0097A454 /* GroupMemberViewCell.swift */; };
 		DAFFEC70282B532900A99629 /* ViewAnimationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFFEC6F282B532900A99629 /* ViewAnimationExtension.swift */; };
 		DAFFEC73282B5C9B00A99629 /* GroupConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFFEC72282B5C9B00A99629 /* GroupConversationViewController.swift */; };
 		DAFFEC75282B5CBE00A99629 /* GroupChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFFEC74282B5CBE00A99629 /* GroupChatViewController.swift */; };
@@ -229,6 +231,8 @@
 		DAE95C5027B6493700B19445 /* ChatsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsViewCell.swift; sourceTree = "<group>"; };
 		DAEE3D5C27BC0A6F00334E06 /* LocationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerViewController.swift; sourceTree = "<group>"; };
 		DAEE3D5E27BC0AC900334E06 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
+		DAF82FCA28523FBA0097A454 /* GroupMemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberViewController.swift; sourceTree = "<group>"; };
+		DAF82FCC2852412E0097A454 /* GroupMemberViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberViewCell.swift; sourceTree = "<group>"; };
 		DAFFEC6F282B532900A99629 /* ViewAnimationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAnimationExtension.swift; sourceTree = "<group>"; };
 		DAFFEC72282B5C9B00A99629 /* GroupConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupConversationViewController.swift; sourceTree = "<group>"; };
 		DAFFEC74282B5CBE00A99629 /* GroupChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatViewController.swift; sourceTree = "<group>"; };
@@ -629,6 +633,7 @@
 				DA37722E280A9E59003E8B88 /* UtilitiesMessageChatViewCell.swift */,
 				DAD25F0C281936970078021F /* TextInConversationViewCell.swift */,
 				DAFFEC78282B766600A99629 /* GroupChatsViewCell.swift */,
+				DAF82FCC2852412E0097A454 /* GroupMemberViewCell.swift */,
 			);
 			path = TableCell;
 			sourceTree = "<group>";
@@ -638,6 +643,7 @@
 			children = (
 				DAE3CD3C28320CBC004B4364 /* CreateGroupViewController.swift */,
 				DAD08EAE28520479005F4434 /* SearchMessageInGroupConversationViewController.swift */,
+				DAF82FCA28523FBA0097A454 /* GroupMemberViewController.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -920,6 +926,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAF82FCB28523FBA0097A454 /* GroupMemberViewController.swift in Sources */,
 				222411E327B2129100C5E416 /* GithubConstants.swift in Sources */,
 				22639884282F874E0052B354 /* IncomingCallViewController.swift in Sources */,
 				DAFFEC7B282B78A200A99629 /* GroupModel.swift in Sources */,
@@ -975,6 +982,7 @@
 				22A4570C281406D4009CB4E6 /* ProgressIndicator.swift in Sources */,
 				DA2861862820CFBD003A0FCA /* GeneralSettings.swift in Sources */,
 				DA85AF6F27BA5B430005215B /* MeViewController.swift in Sources */,
+				DAF82FCD2852412E0097A454 /* GroupMemberViewCell.swift in Sources */,
 				22A456E32813FEED009CB4E6 /* extensionUIView.swift in Sources */,
 				DAE3CD3D28320CBC004B4364 /* CreateGroupViewController.swift in Sources */,
 				DAFFEC73282B5C9B00A99629 /* GroupConversationViewController.swift in Sources */,
