@@ -14,7 +14,7 @@ final class GroupChatsViewCell: UITableViewCell {
     private let groupImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 40
+        imageView.layer.cornerRadius = 30
         imageView.layer.masksToBounds = true
         return imageView
     }()
@@ -27,7 +27,7 @@ final class GroupChatsViewCell: UITableViewCell {
     
     private let groupMessageLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 19, weight: .regular)
+        label.font = .systemFont(ofSize: 18, weight: .regular)
         label.numberOfLines = 0
         return label
     }()
@@ -47,19 +47,19 @@ final class GroupChatsViewCell: UITableViewCell {
         super.layoutSubviews()
         
         groupImageView.frame = CGRect(x: 20,
-                                     y: 10,
-                                     width: 80,
-                                     height: 80)
+                                      y: (contentView.height)/2 - 30,
+                                      width: 60,
+                                      height: 60)
         
         groupNameLabel.frame = CGRect(x: groupImageView.right + 20,
-                                     y: 10,
-                                     width: contentView.width - 60 - groupImageView.width,
-                                     height: (contentView.height - 20)/2)
+                                      y: 20,
+                                      width: contentView.width - 20 - 20 - groupImageView.width,
+                                      height: (contentView.height - 40)/2)
         
         groupMessageLabel.frame = CGRect(x: groupImageView.right + 20,
-                                        y: groupNameLabel.bottom,
-                                        width: contentView.width - 60 - groupImageView.width,
-                                        height: (contentView.height - 20)/2)
+                                         y: groupNameLabel.bottom + 5,
+                                         width: contentView.width - 20 - 20 - groupImageView.width,
+                                         height: (contentView.height - 40)/2)
     }
     
     // MARK: - Configure Conversations

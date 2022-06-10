@@ -117,7 +117,33 @@ extension DatabaseManager {
         
     }
     
-    public func getAllGroupMembers(with id: String, completion: @escaping ((Bool) -> Void)) {
+    public func getAllGroupMembers(with id: String, completion: @escaping ((Result<[UserNode],Error>)) -> Void) {
+        
+        database.child("Groups/\(id)/members").observeSingleEvent(of: .value, with: { snapshot in
+            guard let value = snapshot.value as? [[String: Any]] else {
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            
+            let member: [UserNode] = value.compactMap({ dictionary in
+                guard let id = dictionary["id"] as? String,
+                        let firstName = dictionary["first_name"] as? String,
+                        let lastName = dictionary["last_name"] as? String,
+                        let province = dictionary["province"] as? String,
+                        let district = dictionary["district"] as? String,
+                        let bio = dictionary["bio"] as? String,
+                        let email = dictionary["email"] as? String,
+                        let dob = dictionary["dob"] as? String,
+                      let isMale = dictionary["is_male"] as? Bool else {
+                    print("Invalid value")
+                    return nil
+                }
+            
+                return UserNode(id: id, firstName: firstName, lastName: lastName, province: province, district: district, bio: bio, email: email, dob: dob, isMale: isMale)
+            })
+            
+            completion(.success(member))
+        })
         
     }
     

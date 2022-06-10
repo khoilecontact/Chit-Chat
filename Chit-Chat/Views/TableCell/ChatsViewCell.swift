@@ -14,7 +14,7 @@ final class ChatsViewCell: UITableViewCell {
     private let userImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 40
+        imageView.layer.cornerRadius = 30
         imageView.layer.masksToBounds = true
         return imageView
     }()
@@ -27,7 +27,7 @@ final class ChatsViewCell: UITableViewCell {
     
     private let userMessageLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 19, weight: .regular)
+        label.font = .systemFont(ofSize: 18, weight: .regular)
         label.numberOfLines = 0
         return label
     }()
@@ -46,20 +46,20 @@ final class ChatsViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        userImageView.frame = CGRect(x: 10,
-                                     y: 10,
-                                     width: 80,
-                                     height: 80)
+        userImageView.frame = CGRect(x: 20,
+                                     y: (contentView.height)/2 - 30,
+                                     width: 60,
+                                     height: 60)
         
         userNameLabel.frame = CGRect(x: userImageView.right + 20,
-                                     y: 10,
-                                     width: contentView.width - 20 - userImageView.width,
-                                     height: (contentView.height - 20)/2)
+                                     y: 20,
+                                     width: contentView.width - 20 - 20 - userImageView.width,
+                                     height: (contentView.height - 40)/2)
         
         userMessageLabel.frame = CGRect(x: userImageView.right + 20,
-                                        y: userNameLabel.bottom + 10,
-                                        width: contentView.width - 20 - userImageView.width,
-                                        height: (contentView.height - 20)/2)
+                                        y: userNameLabel.bottom + 5,
+                                        width: contentView.width - 20 - 20 - userImageView.width,
+                                        height: (contentView.height - 40)/2)
     }
     
     // MARK: - Configure Conversations
