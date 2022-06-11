@@ -55,10 +55,24 @@ final class GroupUtilitiesMessageChatViewCell: UITableViewCell {
     private func typeofViewModel(with model: UtilitiesMessageChatViewModel) {
         switch model.viewModelType {
         case .info:
+            let attachment = NSTextAttachment.init()
+            attachment.image = UIImage(systemName: "scribble")?.withTintColor(.link, renderingMode: .alwaysOriginal)
+            let attachmentString = NSAttributedString(attachment: attachment)
+            
+            let attachment2 = NSTextAttachment.init()
+            attachment2.image = UIImage(systemName: "pencil")?.withTintColor(.link, renderingMode: .alwaysOriginal)
+            let attachmentString2 = NSAttributedString(attachment: attachment2)
+            
+            let completeString = NSMutableAttributedString(string: model.title + "  ")
+            // completeString.append(attachmentString)
+            completeString.append(attachmentString2)
+            
             self.textLabel?.textAlignment = .center
             self.textLabel?.textColor = GeneralSettings.secondaryColor
             self.selectionStyle = .none
             self.textLabel?.font = .systemFont(ofSize: 22, weight: .bold)
+            self.textLabel?.attributedText = completeString
+            
         case .pending:
             self.textLabel?.textAlignment = .left
             self.textLabel?.textColor = .gray
