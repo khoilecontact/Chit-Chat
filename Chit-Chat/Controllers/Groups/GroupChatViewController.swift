@@ -598,8 +598,12 @@ extension GroupChatViewController: InputBarAccessoryViewDelegate {
                               sentDate: Date(),
                               kind: .text(text))
         
+        guard let currentName = UserDefaults.standard.value(forKey: "name") as? String else {
+            return
+        }
+        
         if isNewConversation {
-            DatabaseManager.shared.createNewGroupConversation(with: groupId, name: groupName, firstMessage: message, completion: { [weak self] success in
+            DatabaseManager.shared.createNewGroupConversation(with: groupId, name: currentName, firstMessage: message, completion: { [weak self] success in
 
                 guard let strongSelf = self else {return}
 
@@ -621,7 +625,7 @@ extension GroupChatViewController: InputBarAccessoryViewDelegate {
                   let name = title else {
                       return
                   }
-            DatabaseManager.shared.sendMessageGroup(to: conversationId, id: groupId, name: groupName, newMessage: message, completion: { [weak self] success in
+            DatabaseManager.shared.sendMessageGroup(to: conversationId, id: groupId, name: currentName, newMessage: message, completion: { [weak self] success in
 
                 guard let strongSelf = self else {return}
 

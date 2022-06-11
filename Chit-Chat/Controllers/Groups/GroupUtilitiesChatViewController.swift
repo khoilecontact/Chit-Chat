@@ -111,6 +111,10 @@ class GroupUtilitiesChatViewController: UIViewController {
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .info,
                                                    title: "\(groupName)",
                                                    handler: { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            
             let alert = UIAlertController(title: "Insert your group name", message: nil, preferredStyle: .alert)
             
             alert.addTextField { textField in
@@ -121,7 +125,22 @@ class GroupUtilitiesChatViewController: UIViewController {
                 
                 let textField = alert.textFields![0]
                 
+                guard let newName = textField.text, !newName.isEmpty else {
+                    strongSelf.view.makeToast("Group name must not be empty")
+                    return
+                }
+                
                 // update group name func
+                DatabaseManager.shared.updateGroupName(with: newName, groupId: strongSelf.groupId) { result in
+                    switch result {
+                    case .success(let newReturnedName):
+                        strongSelf.navigationController?.popToRootViewController(animated: true)
+                        break
+                    case .failure(let error):
+                        print("Failed to update group name with error: \(error)")
+                        break
+                    }
+                }
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
             

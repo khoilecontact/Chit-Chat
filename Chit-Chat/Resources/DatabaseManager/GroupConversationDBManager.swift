@@ -551,6 +551,78 @@ extension DatabaseManager {
         
     }
     
+    public func updateGroupName(with newName: String, groupId: String, completion: @escaping (Result<String, Error>) -> Void) {
+        guard newName != "" else {
+            return
+        }
+        
+        /**
+         * Update name in Groups/:id table
+         * Loop over the member in group and change the name of group_conversations/:id
+         */
+        database.child("Groups/\(groupId)").observeSingleEvent(of: .value) { [weak self] snapshot in
+            guard let strongSelf = self else {return}
+            
+            guard let value = snapshot.value as? [String: Any] else {
+                print("Invalid snapshot value")
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            
+            guard let members = value["members"] as? [[String: Any]] else {
+                print("Invalid members array")
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+
+            strongSelf.database.child("Groups/\(groupId)").updateChildValues([
+                "name": newName
+            ]) { error, _ in
+                guard error == nil else {
+                    completion(.failure(DatabaseError.failedToSave))
+                    return
+                }
+
+                for member in members {
+                    guard let unsafeEmail = member["email"] as? String else {
+                        completion(.failure(DatabaseError.failedToSave))
+                        print("Member email is invalid")
+                        return
+                    }
+                    
+                    let memberSafeEmail = DatabaseManager.safeEmail(emailAddress: unsafeEmail)
+                    
+                    strongSelf.database.child("Users/\(memberSafeEmail)/group_conversations").observeSingleEvent(of: .value) { conversationSnapshot in
+                        guard let conversationsValue = conversationSnapshot.value as? [[String: Any]] else {
+                            completion(.failure(DatabaseError.failedToFetch))
+                            print("Failed to fetch group conversations from users")
+                            return
+                        }
+                        
+                        if let node = conversationsValue.firstIndex(where: { $0["groupId"] as! String == groupId }) {
+                            
+                            strongSelf.database.child("Users/\(memberSafeEmail)/group_conversations/\(node)/name").setValue(newName, withCompletionBlock: { error, _ in
+                                guard error == nil else {
+                                    completion(.failure(DatabaseError.failedToSave))
+                                    print("Failed to write group conversation")
+                                    return
+                                }
+                                
+                                completion(.success(newName))
+                            })
+                        } else {
+                            print("Cant find the node need to update")
+                            return
+                        }
+                        
+                        
+                    }
+                }
+            }
+            
+        }
+    }
+    
     public func leaveGroup(with unSafeEmail: String, groupId: String, completion: @escaping (Bool) -> Void ) {
         
         // remove user from Group
