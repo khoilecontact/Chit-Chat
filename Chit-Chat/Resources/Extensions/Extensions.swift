@@ -124,3 +124,10 @@ class func getPresentedViewController() -> UIViewController? {
     return presentViewController
   }
 }
+
+extension UIDevice {
+    static func vibrate() {
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+    }
+}

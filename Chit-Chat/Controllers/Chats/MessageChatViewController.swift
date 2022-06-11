@@ -337,9 +337,9 @@ class MessageChatViewController: MessagesViewController {
             guard let strongSelf = self else {return}
             strongSelf.presentVideoInputActionSheet()
         }))
-        actionSheet.addAction(UIAlertAction(title: "Audio", style: .default, handler: { _ in
-            //
-        }))
+//        actionSheet.addAction(UIAlertAction(title: "Audio", style: .default, handler: { _ in
+//            //
+//        }))
         actionSheet.addAction(UIAlertAction(title: "Location", style: .default, handler: { [weak self] _ in
             guard let strongSelf = self else {return}
             // present location picker
@@ -683,7 +683,16 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
             guard let imageUrl = media.url else {
                 return
             }
+            
             imageView.sd_setImage(with: imageUrl, completed: nil)
+        case .video(let media):
+            guard let _ = media.url else {
+                return
+            }
+            
+            imageView.image = UIImage(named: "VideoPlaceholder")
+            break
+            
         default:
             break
         }

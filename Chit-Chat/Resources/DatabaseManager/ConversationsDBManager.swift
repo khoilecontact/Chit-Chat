@@ -306,7 +306,7 @@ extension DatabaseManager {
                     
                     // photo
                     guard let videoUrl = URL(string: content),
-                          let placeholder = UIImage(named: "video_placeholder") else {
+                          let placeholder = UIImage(named: "VideoPlaceholder") else {
                               return nil
                           }
                     
