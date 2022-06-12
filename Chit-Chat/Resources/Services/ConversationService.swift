@@ -160,8 +160,7 @@ extension ServiceManager {
                                 let indexf = subst.firstIndex(of: "\"")
                                 let result = subst.substring(to: indexf!)
 
-                                self?.text = result
-                                messagesResult[messageIndex].kind = .text(self?.text ?? "")
+                                messagesResult[messageIndex].kind = .text(result + "(Translated)" ?? "")
                                 print("Finished request")
                                 myGroup.leave()
                             }
@@ -175,8 +174,6 @@ extension ServiceManager {
         
         myGroup.notify(queue: DispatchQueue.main, execute: {
             print("all requests")
-            print(self.text)
-            //result[result.count - 1].kind = .text(self.text)
             completion(.success(messagesResult))
         })
         
