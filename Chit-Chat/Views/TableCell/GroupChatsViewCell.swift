@@ -53,12 +53,12 @@ final class GroupChatsViewCell: UITableViewCell {
         
         groupNameLabel.frame = CGRect(x: groupImageView.right + 20,
                                       y: 20,
-                                      width: contentView.width - 20 - 20 - groupImageView.width,
+                                      width: contentView.width - 40 - 20 - groupImageView.width,
                                       height: (contentView.height - 40)/2)
         
         groupMessageLabel.frame = CGRect(x: groupImageView.right + 20,
                                          y: groupNameLabel.bottom + 5,
-                                         width: contentView.width - 20 - 20 - groupImageView.width,
+                                         width: contentView.width - 40 - 20 - groupImageView.width,
                                          height: (contentView.height - 40)/2)
     }
     

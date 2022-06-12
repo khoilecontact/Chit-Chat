@@ -148,4 +148,72 @@ extension DatabaseManager {
         
     }
     
+    public func checkIsAdminOfGroup(with groupId: String, unsafeEmail: String, completion: @escaping (Bool) -> Void) {
+        
+        database.child("Groups/\(groupId)/admin").observeSingleEvent(of: .value) { snapshot in
+            guard let value = snapshot.value as? [String] else {
+                print("Failed to fetch admin of group")
+                completion(false)
+                return
+            }
+            
+            if value.contains(unsafeEmail) {
+                completion(true)
+            } else {
+                completion(false)
+            }
+        }
+    }
+    
+    public func deleteMemberFromGroup(with unSafeEmail: String, groupId: String, isAdmin: Bool, completion: @escaping (Bool) -> Void) {
+        guard isAdmin == true else {
+            print("Unauthorized")
+            completion(false)
+            return
+        }
+        
+        // remove user from Group
+        database.child("Groups/\(groupId)/members").observeSingleEvent(of: .value) { [weak self] snapshot in
+            
+            guard let strongSelf = self else {
+                completion(false)
+                return
+            }
+            
+            guard var memberList = snapshot.value as? [[String: Any]], memberList.count >= 1 else {
+                completion(false)
+                return
+            }
+            
+            memberList.removeAll(where: { $0["email"] as! String == unSafeEmail })
+            
+            strongSelf.database.child("Groups/\(groupId)/members").setValue(memberList, withCompletionBlock: { error, _ in
+                guard error == nil else {
+                    completion(false)
+                    return
+                }
+                
+                let safeEmail = DatabaseManager.safeEmail(emailAddress: unSafeEmail)
+                // remove group_conversation from user
+                strongSelf.database.child("Users/\(safeEmail)/group_conversations").observeSingleEvent(of: .value) { usersnapshot in
+                    guard var userGroupConversation = usersnapshot.value as? [[String: Any]] else {
+                        completion(false)
+                        return
+                    }
+                    
+                    userGroupConversation.removeAll(where: { $0["groupId"] as! String == groupId })
+                    
+                    strongSelf.database.child("Users/\(safeEmail)/group_conversations").setValue(userGroupConversation) { error, _ in
+                        guard error == nil else {
+                            completion(false)
+                            return
+                        }
+                        
+                        completion(true)
+                    }
+                }
+            })
+        }
+    }
+    
 }

@@ -12,6 +12,7 @@ class GroupMemberViewController: UIViewController {
 
     private var groupMembers = [UserNode]()
     private var groupId: String
+    private var isAdmin = false
     
     private let tabNumber: Bool = false
     
@@ -55,6 +56,7 @@ class GroupMemberViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         // fakeData()
+        checkAdminRole()
         fetchAllGroupMembers()
     }
     
@@ -92,10 +94,34 @@ class GroupMemberViewController: UIViewController {
             switch result {
             case .success(let memberList):
                 self?.groupMembers = memberList
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
                 break
             case .failure(let error):
                 print("Failed to fetch members: \(error)")
                 break
+            }
+        }
+    }
+    
+    func checkAdminRole() {
+        guard let unsafeEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            print("Invalid email in userdefault")
+            return
+        }
+
+        spinner.show(in: view)
+        DatabaseManager.shared.checkIsAdminOfGroup(with: groupId, unsafeEmail: unsafeEmail) { [weak self] isAdmin in
+            if isAdmin {
+                self?.isAdmin = isAdmin
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                    self?.spinner.dismiss()
+                }
+            }
+            DispatchQueue.main.async {
+                self?.spinner.dismiss()
             }
         }
     }
@@ -153,16 +179,30 @@ extension GroupMemberViewController: UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let openConversationAction = UIContextualAction(style: .destructive, title: "Profile") { action, view, handler in
+        let deleteMemberFromGroup = UIContextualAction(style: .destructive, title: "Delete") { [weak self] action, view, handler in
+            // print(self?.groupMembers[indexPath.row])
+            // remove from group
+            guard let strongSelf = self else {
+                return
+            }
+            
+            DatabaseManager.shared.deleteMemberFromGroup(with: strongSelf.groupMembers[indexPath.row].email, groupId: strongSelf.groupId, isAdmin: strongSelf.isAdmin) { success in
+                if (success) {
+                    strongSelf.fetchAllGroupMembers()
+                }
+            }
+        }
+        
+        let profileAction = UIContextualAction(style: .destructive, title: "Profile") { action, view, handler in
             // code
             // guard let strongSelf = self else { return }
             
             // strongSelf.openConversation(strongSelf.results[indexPath.row])
         }
         // RGB: 6, 214, 159
-        openConversationAction.backgroundColor = UIColor(red: 6/255, green: 214/255, blue: 159/255, alpha: 1)
+        profileAction.backgroundColor = UIColor(red: 6/255, green: 214/255, blue: 159/255, alpha: 1)
         
-        let configuration = UISwipeActionsConfiguration(actions: [openConversationAction])
+        let configuration = UISwipeActionsConfiguration(actions: isAdmin ? [deleteMemberFromGroup, profileAction] : [profileAction])
         configuration.performsFirstActionWithFullSwipe = false
         return configuration
     }
