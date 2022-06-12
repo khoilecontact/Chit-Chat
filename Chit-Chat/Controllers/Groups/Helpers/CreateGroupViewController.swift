@@ -555,7 +555,12 @@ class CreateGroupViewController: UIViewController {
             groupName = String(groupNameLabel.text![range])
         }
         
-        let newGroup = Group(id: UUID().uuidString, name: groupName, members: queueGroupMembers)
+        guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            print("Invalid email in UserDefault")
+            return
+        }
+        
+        let newGroup = Group(id: UUID().uuidString, name: groupName, members: queueGroupMembers, admin: [currentEmail])
         
         DatabaseManager.shared.insertGroup(with: newGroup, users: queueGroupMembers) { [weak self] success in
             if success {

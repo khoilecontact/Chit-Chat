@@ -18,5 +18,6 @@ public struct Group {
     let id: String
     let name: String
     var members: [UserNode]
+    let admin: [String]
     // var conversations: [GroupMessagesCollection]
 }

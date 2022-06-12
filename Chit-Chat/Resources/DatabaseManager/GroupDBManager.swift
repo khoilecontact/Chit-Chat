@@ -99,7 +99,8 @@ extension DatabaseManager {
             groupRef.child(group.id).setValue([
                 "id": group.id,
                 "name": group.name,
-                "members": convertedMembers
+                "members": convertedMembers,
+                "admin": group.admin
             ], withCompletionBlock: { error, databaseReference in
                 guard error == nil else {
                     print("Failed to write to database: \(error)")
