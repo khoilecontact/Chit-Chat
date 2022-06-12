@@ -115,7 +115,7 @@ final class SearchMessageInGroupConversationViewController: UIViewController {
             
             do {
                 
-                let textInConversation: IMessInConversationResponse? = try await ServiceManager.shared.findTextInConversation(conversationID: conversationId, query: query)
+                let textInConversation: IMessInConversationResponse? = try await ServiceManager.shared.findTextInGroupConversation(conversationID: conversationId, query: query)
                 
                 if textInConversation?.total != 0 {
                     self.spinner.dismiss()
