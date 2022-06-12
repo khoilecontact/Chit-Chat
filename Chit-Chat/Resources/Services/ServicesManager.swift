@@ -27,6 +27,8 @@ final public class ServiceManager {
         return URL(string: "\(ServiceManager.shared.serviceURLString)/\(endPoint)")
     }
     
+    internal var text = ""
+    
 }
 
 /**

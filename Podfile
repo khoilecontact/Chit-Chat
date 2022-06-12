@@ -28,6 +28,9 @@ pod 'Toast-Swift', '~> 5.0.1'
 pod 'AgoraUIKit_iOS'
 pod ‘AgoraRtm_iOS’
 
+#Alamofire
+pod 'Alamofire'
+
 # Spinner
 pod 'NVActivityIndicatorView'
     

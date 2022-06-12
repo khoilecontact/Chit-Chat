@@ -9,6 +9,7 @@ PODS:
   - AgoraUIKit_iOS/UIKitFull (1.8.1):
     - AgoraRtcEngine_iOS/RtcBasic (~> 3.7.0)
     - AgoraRtmControl_iOS (= 1.8.1)
+  - Alamofire (5.6.1)
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
     - AppAuth/ExternalUserAgent (= 1.4.0)
@@ -166,6 +167,7 @@ PODS:
 DEPENDENCIES:
   - AgoraRtm_iOS
   - AgoraUIKit_iOS
+  - Alamofire
   - ChatMessageKit
   - FBSDKLoginKit
   - Firebase/Analytics
@@ -186,6 +188,7 @@ SPEC REPOS:
     - AgoraRtm_iOS
     - AgoraRtmControl_iOS
     - AgoraUIKit_iOS
+    - Alamofire
     - AppAuth
     - ChatMessageKit
     - FBAEMKit
@@ -221,6 +224,7 @@ SPEC CHECKSUMS:
   AgoraRtm_iOS: 95e7070466f42a6494435a7f39fd2b13fc143cbf
   AgoraRtmControl_iOS: 54d2e363da74427707529f3aab28bacd01971180
   AgoraUIKit_iOS: fd262c381eef0a2f8b94553e000ed4226a3d4d8b
+  Alamofire: 87bd8c952f9a4454320fce00d9cc3de57bcadaf5
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   ChatMessageKit: 0fbbfca050d541d33bd5257cd2faec4d3875cebd
   FBAEMKit: 98e4afc9f867c6db3d1c0e7e3727d94a630b5f59
@@ -251,6 +255,6 @@ SPEC CHECKSUMS:
   SDWebImage: 53179a2dba77246efa8a9b85f5c5b21f8f43e38f
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: a6958ab81f52589e46c7bd2d7d1bf7d72a7d78c6
+PODFILE CHECKSUM: a77f6a71c10bc2458bc39c6ec6a5bef13c72ecbf
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.10.2

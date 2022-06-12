@@ -75,24 +75,34 @@ class MessageChatViewController: MessagesViewController {
                     return
                 }
                 
-                strongSelf.messages = messages
+                //strongSelf.messages = messages
                 
-                DispatchQueue.main.async {
-                    self?.isNewConversation = false
-                    
-                    self?.spinner.dismiss()
-                    
-                    strongSelf.messagesCollectionView.reloadDataAndKeepOffset()
-                    
-                    // open conversastion
-                    if self?.messagePosition != nil, let position = self?.messagePosition {
-                        strongSelf.messagesCollectionView.scrollToItem(at: IndexPath(item: 0, section: position) , at: .centeredVertically, animated: true)
+                ServiceManager.shared.translateAllTextMesages(messages: messages, from: "en", to: "vi", completion: { [weak self] result in
+                    switch result {
+                    case .success(let translatedMessages):
+                        self?.messages = translatedMessages
+                        
+                        DispatchQueue.main.async {
+                            self?.isNewConversation = false
+                            
+                            self?.spinner.dismiss()
+                            
+                            strongSelf.messagesCollectionView.reloadDataAndKeepOffset()
+                            
+                            // open conversastion
+                            if self?.messagePosition != nil, let position = self?.messagePosition {
+                                strongSelf.messagesCollectionView.scrollToItem(at: IndexPath(item: 0, section: position) , at: .centeredVertically, animated: true)
+                            }
+                            else if shouldScrollToBottom {
+                                strongSelf.messagesCollectionView.scrollToLastItem()
+                            }
+                            
+                        }
+                        
+                    case .failure(_):
+                        print("Fail to translate message")
                     }
-                    else if shouldScrollToBottom {
-                        strongSelf.messagesCollectionView.scrollToLastItem()
-                    }
-                    
-                }
+                })
             case .failure(let error):
                 DispatchQueue.main.async {
                     self?.spinner.dismiss()
