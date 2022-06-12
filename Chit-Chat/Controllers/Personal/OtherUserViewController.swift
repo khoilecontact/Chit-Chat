@@ -51,14 +51,14 @@ class OtherUserViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Request Sent", for: .normal)
         button.backgroundColor = UIColor.systemGray2
-        button.setTitleColor(Appearance.tint, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.layer.cornerRadius = 20
         
         button.layer.borderWidth = 0
         button.titleLabel?.textAlignment = .center
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
         button.setImage(UIImage(systemName: "airplane"), for: .normal)
-        button.imageView?.tintColor = Appearance.tint
+        button.imageView?.tintColor = UIColor.white
         
         // Add shadow
         button.layer.shadowColor = UIColor.gray.cgColor
@@ -75,14 +75,14 @@ class OtherUserViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Add Friend", for: .normal)
         button.backgroundColor = .init(red: CGFloat(108) / 255.0, green: CGFloat(164) / 255.0, blue: CGFloat(212) / 255.0, alpha: 1.0)
-        button.setTitleColor(Appearance.tint, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.layer.cornerRadius = 20
         
         button.layer.borderWidth = 0
         button.titleLabel?.textAlignment = .center
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
         button.setImage(UIImage(systemName: "person.fill.badge.plus"), for: .normal)
-        button.imageView?.tintColor = Appearance.tint
+        button.imageView?.tintColor = UIColor.white
         
         // Add shadow
         button.layer.shadowColor = UIColor.gray.cgColor
@@ -99,14 +99,14 @@ class OtherUserViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Confirm", for: .normal)
         button.backgroundColor = .init(red: CGFloat(108) / 255.0, green: CGFloat(164) / 255.0, blue: CGFloat(212) / 255.0, alpha: 1.0)
-        button.setTitleColor(Appearance.tint, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.layer.cornerRadius = 20
         
         button.layer.borderWidth = 0
         button.titleLabel?.textAlignment = .center
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
         button.setImage(UIImage(systemName: "checkmark"), for: .normal)
-        button.imageView?.tintColor = Appearance.tint
+        button.imageView?.tintColor = UIColor.white
         
         // Add shadow
         button.layer.shadowColor = UIColor.gray.cgColor
@@ -122,14 +122,14 @@ class OtherUserViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
         button.backgroundColor = .systemRed
-        button.setTitleColor(Appearance.tint, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.layer.cornerRadius = 20
         
         button.layer.borderWidth = 0
         button.titleLabel?.textAlignment = .center
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
         button.setImage(UIImage(systemName: "xmark.square"), for: .normal)
-        button.imageView?.tintColor = Appearance.tint
+        button.imageView?.tintColor = UIColor.white
         
         // Add shadow
         button.layer.shadowColor = UIColor.gray.cgColor

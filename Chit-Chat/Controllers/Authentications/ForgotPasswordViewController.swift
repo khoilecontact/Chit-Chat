@@ -43,7 +43,7 @@ class ForgotPasswordViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Reset Password", for: .normal)
         button.backgroundColor = .systemGreen
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
