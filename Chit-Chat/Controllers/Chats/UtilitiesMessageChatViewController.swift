@@ -109,9 +109,9 @@ class UtilitiesMessageChatViewController: UIViewController  {
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .info,
                                                    title: "Email: \(DatabaseManager.revertEmail(safeEmailAddress: otherEmail))",
                                                    handler: nil))
-        utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,
-                                                   title: "Nicknames -- In Beta, coming soon!",
-                                                   handler: nil))
+//        utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,
+//                                                   title: "Nicknames -- In Beta, coming soon!",
+//                                                   handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
                                                    title: "Create chat group",
                                                    handler: { [weak self] in
@@ -130,6 +130,12 @@ class UtilitiesMessageChatViewController: UIViewController  {
             let nav = UINavigationController(rootViewController: vc)
             strongSelf.present(nav, animated: true)
             
+        }))
+        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util, title: "Translate conversation", handler: { [weak self] in
+            let vc = TranslatedMessageChatViewController(with: self!.otherEmail, name: self!.otherName, id: self!.conversationId)
+            vc.title = self?.otherName
+            
+            self?.navigationController?.pushViewController(vc, animated: true)
         }))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .dangerous,
                                                    title: "Block",

@@ -45,6 +45,7 @@ class LanguageTranslationView: UIView {
     let image: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "arrow.right")
+        imageView.tintColor = Appearance.appColor
         
         return imageView
     }()

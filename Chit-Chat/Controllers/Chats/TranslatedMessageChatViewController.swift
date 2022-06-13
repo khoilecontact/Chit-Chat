@@ -176,7 +176,7 @@ class TranslatedMessageChatViewController: MessagesViewController {
         super.viewDidLayoutSubviews()
         
         languageTranslationView.initView()
-        languageTranslationView.frame = CGRect(x: 0, y: (navigationController?.navigationBar.frame.height)! + 40, width: view.width, height: 70)
+        languageTranslationView.frame = CGRect(x: 0, y: (navigationController?.navigationBar.frame.height ?? 50) + 40, width: view.width, height: 70)
     }
     
     func navBar() {
