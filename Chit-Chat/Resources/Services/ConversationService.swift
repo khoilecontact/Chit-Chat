@@ -151,7 +151,7 @@ extension ServiceManager {
                     let lastPart = from + "&tl=" + to + "&dt=t&dt=t&q=" + escapedStr!
                     let urlStr: String = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + lastPart
                     
-                    AF.download(urlStr).response(completionHandler: { [weak self] response in
+                    AF.download(urlStr).response(completionHandler: { response in
                         if let localURL = response.fileURL {
                             if let string = try? String(contentsOf: localURL) {
                                 let index = string.firstIndex(of: "\"")
@@ -160,8 +160,7 @@ extension ServiceManager {
                                 let indexf = subst.firstIndex(of: "\"")
                                 let result = subst.substring(to: indexf!)
 
-                                messagesResult[messageIndex].kind = .text(result + "(Translated)" ?? "")
-                                print("Finished request")
+                                messagesResult[messageIndex].kind = .text(result)
                                 myGroup.leave()
                             }
                         }
@@ -173,7 +172,6 @@ extension ServiceManager {
         }
         
         myGroup.notify(queue: DispatchQueue.main, execute: {
-            print("all requests")
             completion(.success(messagesResult))
         })
         

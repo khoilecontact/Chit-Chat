@@ -64,7 +64,7 @@ class NewFriendsViewCell: UITableViewCell {
         contentView.layer.masksToBounds = false
         
         userImageView.frame = CGRect(x: 10,
-                                     y: 5,
+                                     y: 15,
                                      width: 60,
                                      height: 60)
         

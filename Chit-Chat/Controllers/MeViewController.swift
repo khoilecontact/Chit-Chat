@@ -205,7 +205,7 @@ class MeViewController: UIViewController {
         logOutButton.layer.cornerRadius = 12
         logOutButton.layer.borderWidth = 0
         logOutButton.layer.masksToBounds = false
-        logOutButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+        logOutButton.layer.shadowOffset = CGSize(width: 0, height: 3)
         logOutButton.layer.shadowOpacity = 0.3
         logOutButton.layer.shadowRadius = 1
     }

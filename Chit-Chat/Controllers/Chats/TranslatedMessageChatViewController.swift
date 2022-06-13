@@ -1,10 +1,9 @@
 //
-//  MessagesViewController.swift
+//  TranslatedMessageChatViewController.swift
 //  Chit-Chat
 //
-//  Created by Phát Nguyễn on 14/02/2022.
+//  Created by KhoiLe on 13/06/2022.
 //
-
 import UIKit
 import ChatMessageKit
 import SDWebImage
@@ -14,7 +13,7 @@ import AVKit
 import InputBarAccessoryView
 import JGProgressHUD
 
-class MessageChatViewController: MessagesViewController {
+class TranslatedMessageChatViewController: MessagesViewController {
     
     private let spinner = JGProgressHUD(style: .dark)
     
@@ -33,6 +32,11 @@ class MessageChatViewController: MessagesViewController {
     public let otherUserName: String
     public var conversationId: String?
     public var isNewConversation = false
+    
+    let languageTranslationView = LanguageTranslationView()
+    
+    var fromLanguage = "English"
+    var toLanguage = "English"
     
     var messagePosition: Int?
     private var messages = [Message]()
@@ -75,25 +79,43 @@ class MessageChatViewController: MessagesViewController {
                     return
                 }
                 
-                strongSelf.messages = messages
+                var fromLanguageCode = ""
+                var toLanguageCode = ""
                 
-                DispatchQueue.main.async {
-                    self?.isNewConversation = false
-                    
-                    self?.spinner.dismiss()
-                    
-                    strongSelf.messagesCollectionView.reloadDataAndKeepOffset()
-                    
-                    // open conversastion
-                    if self?.messagePosition != nil, let position = self?.messagePosition {
-                        strongSelf.messagesCollectionView.scrollToItem(at: IndexPath(item: 0, section: position) , at: .centeredVertically, animated: true)
-                    }
-                    else if shouldScrollToBottom {
-                        strongSelf.messagesCollectionView.scrollToLastItem()
-                    }
-                    
+                if self?.fromLanguage == "None" || self?.toLanguage == "None" {
+                    fromLanguageCode = "en"
+                    toLanguageCode = "en"
+                } else {
+                    fromLanguageCode = languagesDictionary.value(forKey: self!.fromLanguage) as! String
+                    toLanguageCode = languagesDictionary.value(forKey: self!.toLanguage) as! String
                 }
                 
+                ServiceManager.shared.translateAllTextMesages(messages: messages, from: fromLanguageCode, to: toLanguageCode, completion: { [weak self] result in
+                    switch result {
+                    case .success(let translatedMessages):
+                        self?.messages = translatedMessages
+                        
+                        DispatchQueue.main.async {
+                            self?.isNewConversation = false
+                            
+                            self?.spinner.dismiss()
+                            
+                            strongSelf.messagesCollectionView.reloadDataAndKeepOffset()
+                            
+                            // open conversastion
+                            if self?.messagePosition != nil, let position = self?.messagePosition {
+                                strongSelf.messagesCollectionView.scrollToItem(at: IndexPath(item: 0, section: position) , at: .centeredVertically, animated: true)
+                            }
+                            else if shouldScrollToBottom {
+                                strongSelf.messagesCollectionView.scrollToLastItem()
+                            }
+                            
+                        }
+                        
+                    case .failure(_):
+                        print("Fail to translate message")
+                    }
+                })
             case .failure(let error):
                 DispatchQueue.main.async {
                     self?.spinner.dismiss()
@@ -122,6 +144,8 @@ class MessageChatViewController: MessagesViewController {
         view.backgroundColor = .systemBackground
         navBar()
         
+        view.addSubview(languageTranslationView)
+        
         // MARK: - Setup Messages
         // fakeData()
         
@@ -134,6 +158,12 @@ class MessageChatViewController: MessagesViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        languageTranslationView.languageFromPickerView.delegate = self
+        languageTranslationView.languageToPickerView.delegate = self
+        languageTranslationView.languageFromPickerView.dataSource = self
+        languageTranslationView.languageToPickerView.dataSource = self
+        
         if let conversationId = conversationId {
             listenForMessagees(id: conversationId, shouldScrollToBottom: true)
         } else {
@@ -144,16 +174,17 @@ class MessageChatViewController: MessagesViewController {
     override func viewDidLayoutSubviews() {
         configurateAvatarUserOnNavBar()
         super.viewDidLayoutSubviews()
+        
+        languageTranslationView.initView()
+        languageTranslationView.frame = CGRect(x: 0, y: (navigationController?.navigationBar.frame.height)! + 40, width: view.width, height: 70)
     }
     
     func navBar() {
-        
         addLeftBarButtonItems()
         addRightBarButtonItems()
     }
     
     func addLeftBarButtonItems() {
-        
         let backItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")?.withTintColor(GeneralSettings.primaryColor, renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(backBtnTapped))
         
         // let otherBtn = UIBarButtonItem(image: otherUserAvatar.image, style: .plain, target: nil, action: nil)
@@ -482,7 +513,7 @@ class MessageChatViewController: MessagesViewController {
     
 }
 
-extension MessageChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension TranslatedMessageChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
@@ -593,7 +624,7 @@ extension MessageChatViewController: UIImagePickerControllerDelegate, UINavigati
     }
 }
 
-extension MessageChatViewController: InputBarAccessoryViewDelegate {
+extension TranslatedMessageChatViewController: InputBarAccessoryViewDelegate {
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         guard !text.replacingOccurrences(of: " ", with: "").isEmpty,
               let selfSender = selfSender,
@@ -657,7 +688,7 @@ extension MessageChatViewController: InputBarAccessoryViewDelegate {
     }
 }
 
-extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource, MessagesDisplayDelegate {
+extension TranslatedMessageChatViewController: MessagesLayoutDelegate, MessagesDataSource, MessagesDisplayDelegate {
     func currentSender() -> SenderType {
         if let sender = selfSender {
             return sender
@@ -784,7 +815,7 @@ extension MessageChatViewController: MessagesLayoutDelegate, MessagesDataSource,
     }
 }
 
-extension MessageChatViewController: MessageCellDelegate {
+extension TranslatedMessageChatViewController: MessageCellDelegate {
     func didTapMessage(in cell: MessageCollectionViewCell) {
         guard let indexPath = messagesCollectionView.indexPath(for: cell) else {
             return
@@ -908,7 +939,42 @@ extension MessageChatViewController: MessageCellDelegate {
     }
 }
 
-//extension MessageChatViewController: UIViewControllerTransitioningDelegate {
+extension TranslatedMessageChatViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return languages.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return languages[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView == languageTranslationView.languageFromPickerView {
+            self.fromLanguage = languages[row]
+            
+            if let conversationId = conversationId {
+                listenForMessagees(id: conversationId, shouldScrollToBottom: true)
+            } else {
+                self.isNewConversation = true
+            }
+        } else if pickerView == languageTranslationView.languageToPickerView {
+            self.toLanguage = languages[row]
+            
+            if let conversationId = conversationId {
+                listenForMessagees(id: conversationId, shouldScrollToBottom: true)
+            } else {
+                self.isNewConversation = true
+            }
+        }
+    }
+    
+}
+
+//extension TranslatedMessageChatViewController: UIViewControllerTransitioningDelegate {
 //
 //    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 //        return PresentTransition()

@@ -446,6 +446,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         
         if !isValid {
             alertUserLoginError()
+            self.spinner.dismiss(animated: true)
         }
         
         guard let email = emailField.text, let password = passwordField.text, let firstName = firstNameField.text, let lastName = lastNameField.text else {
