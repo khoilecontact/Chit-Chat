@@ -1,8 +1,8 @@
 //
-//  CreateGroupViewController.swift
+//  AddNewMembersViewController.swift
 //  Chit-Chat
 //
-//  Created by Phát Nguyễn on 16/05/2022.
+//  Created by Phát Nguyễn on 13/06/2022.
 //
 
 import UIKit
@@ -10,7 +10,7 @@ import JGProgressHUD
 import SDWebImage
 import Toast_Swift
 
-class CreateGroupViewController: UIViewController {
+class AddNewMembersViewController: UIViewController {
     
     private let spinner = JGProgressHUD(style: .light)
     
@@ -20,6 +20,7 @@ class CreateGroupViewController: UIViewController {
     
     public var completion: ((UserNode) -> Void)?
     
+    private var groupId: String
     public var groupName: String = "" {
         didSet {
             groupNameLabel.text = "Name: \(groupName)"
@@ -36,7 +37,6 @@ class CreateGroupViewController: UIViewController {
     private let groupNameLabel: UILabel = {
         let label = UILabel()
         let name = UUID().uuidString
-        label.text = "Name: " + name[...name.firstIndex(of: "-")!]
         return label
     }()
     
@@ -159,6 +159,17 @@ class CreateGroupViewController: UIViewController {
         return label
     }()
     
+    init(with members: [UserNode], groupName: String, groupId: String) {
+        self.queueGroupMembers = members
+        self.groupName = groupName
+        self.groupId = groupId
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -170,6 +181,9 @@ class CreateGroupViewController: UIViewController {
         subViews()
         configCollection()
         configSearchBar()
+        loadQueuedAvatar()
+        
+        initGroupName()
         
         // fetch friends of user and update UI
         fetchAllFriendInList()
@@ -191,7 +205,7 @@ class CreateGroupViewController: UIViewController {
         
         // circleview
         groupNameLabel.frame = CGRect(x: 20, y: 10, width: (circleView.width - 40 - 50), height: 30)
-        adjustGroupNameBtn.frame = CGRect(x: circleView.right-20-20-30, y: 10, width: 30, height: 30)
+        // adjustGroupNameBtn.frame = CGRect(x: circleView.right-20-20-30, y: 10, width: 30, height: 30)
         queuedAvatar.frame = CGRect(x: 20, y: groupNameLabel.bottom + 5, width: (circleView.width - 40), height: (100 - groupNameLabel.height - 20 - 20))
         
         prefixQueuedAvatar.frame = CGRect(x: 0, y: 0, width: 45, height: 40)
@@ -203,12 +217,12 @@ class CreateGroupViewController: UIViewController {
     }
     
     func navBar() {
-        title = "Create New Group"
+        title = "Add Members"
         rightButtonBar()
     }
     
     func rightButtonBar() {
-        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(createGroupTapped))
+        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(addMembersToGroupTapped))
         
         navigationItem.rightBarButtonItem = doneBtn
     }
@@ -221,6 +235,10 @@ class CreateGroupViewController: UIViewController {
     func configSearchBar() {
         searchBar.delegate = self
         updateSearchBarBorderColorWhenThemeChanged()
+    }
+    
+    func initGroupName() {
+        groupNameLabel.text = "Name: \(groupName)"
     }
     
     func updateSearchBarBorderColorWhenThemeChanged() {
@@ -239,7 +257,7 @@ class CreateGroupViewController: UIViewController {
     
     func circleSubViews() {
         circleView.addSubview(groupNameLabel)
-        circleView.addSubview(adjustGroupNameBtn)
+        // circleView.addSubview(adjustGroupNameBtn)
         circleView.addSubview(queuedAvatar)
         queuedAvatar.addSubview(prefixQueuedAvatar)
         queuedAvatar.addSubview(usersSlot1st)
@@ -386,6 +404,7 @@ class CreateGroupViewController: UIViewController {
             switch result {
             case .success(let url):
                 DispatchQueue.main.async {
+                    // strongSelf.renewAvatarQueue()   // testing more 3 people
                     switch position {
                     case 0:
                         strongSelf.usersSlot1st.isHidden = false
@@ -418,6 +437,38 @@ class CreateGroupViewController: UIViewController {
         usersSlot2nd.isHidden = true
         usersSlot3rd.isHidden = true
         usersSlot4th.isHidden = true
+    }
+    
+    func loadQueuedAvatar() {
+        if queueGroupMembers.isEmpty {
+            renewAvatarQueue()
+        }
+        
+        renewAvatarQueue()
+        
+        // readd image queue
+        for (index, people) in queueGroupMembers.enumerated() {
+            switch index {
+            case 0:
+                reloadSignleAvatarToQueue(with: people, position: 0)
+                break
+            case 1:
+                reloadSignleAvatarToQueue(with: people, position: 1)
+                break
+            case 2:
+                reloadSignleAvatarToQueue(with: people, position: 2)
+                break
+            case 3:
+                reloadSignleAvatarToQueue(with: people, position: 3)
+                break
+            case let people where people > 3:
+                moreMemberInQueue = queueGroupMembers.count - 4
+                suffixQueuedAvatar.isHidden = false
+                return
+            default:
+                print("Out of range")
+            }
+        }
     }
     
     func createGroupNewConversation(result: Group) {
@@ -540,56 +591,30 @@ class CreateGroupViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @objc func createGroupTapped() {
+    @objc func addMembersToGroupTapped() {
         // create group api
         
-        guard queueGroupMembers.count > 1 else {
+        guard queueGroupMembers.count > 2 else {
             view.makeToast("Members in group must more than 2 people")
             return
         }
         
-        if groupName.isEmpty {
-            let start = groupNameLabel.text!.index(groupNameLabel.text!.startIndex, offsetBy: 6)
-            let end = groupNameLabel.text!.index(groupNameLabel.text!.endIndex, offsetBy: 0)
-            let range = start..<end
-            
-            groupName = String(groupNameLabel.text![range])
-        }
-        
-        guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String else {
-            print("Invalid email in UserDefault")
-            return
-        }
-        
-        let newGroup = Group(id: UUID().uuidString, name: groupName, members: queueGroupMembers, admin: [currentEmail])
-        
-        DatabaseManager.shared.insertGroup(with: newGroup, users: queueGroupMembers) { [weak self] success in
+        DatabaseManager.shared.addMemberToGroup(with: queueGroupMembers, groupId: groupId) { [weak self] success in
             if success {
-                // upload image
-                guard let image = UIImage(systemName: "person.2.circle.fill"), let data = image.pngData() else {return}
-                
-                let fileName = "\(newGroup.id)_group_picture.png"
-                StorageManager.shared.uploadGroupPicture(with: data, fileName: fileName, completion: { [weak self] result in
-                    switch result {
-                    case .success(let downloadUrl):
-                        self?.view.makeToast("Upload successfully")
-                    case .failure(let error):
-                        self?.view.makeToast("Failed to upload group picture")
-                        print("Failed to upload with error: \(error)")
-                    }
-                })
-                
-                self?.createGroupNewConversation(result: newGroup)
-                
-                // done
-                // self?.openConversationChat()
+                self?.navigationController?.popToRootViewController(animated: true)
+            }
+            else {
+                self?.view.makeToast("Sorry. Failed to add members to group. Please try again.")
+                return
             }
         }
+        
+        
     }
 }
 
 // helpers
-extension CreateGroupViewController {
+extension AddNewMembersViewController {
     func screenState(with notEmpty: Bool) {
         if notEmpty {
             peopleCollection.isHidden = false
@@ -632,7 +657,7 @@ extension CreateGroupViewController {
     }
 }
 
-extension CreateGroupViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension AddNewMembersViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return results.count
@@ -647,9 +672,9 @@ extension CreateGroupViewController: UICollectionViewDelegate, UICollectionViewD
         
         // Setup Add Button
         cell.addToGroupBtn.tag = indexPath.item
-        cell.addedToGroupBtn.tag = indexPath.item
+        // cell.addedToGroupBtn.tag = indexPath.item
         cell.addToGroupBtn.addTarget(self, action: #selector(addMemberToGroup), for: .touchUpInside)
-        cell.addedToGroupBtn.addTarget(self, action: #selector(removeMemberFromGroup), for: .touchUpInside)
+        // cell.addedToGroupBtn.addTarget(self, action: #selector(removeMemberFromGroup), for: .touchUpInside)
         return cell
     }
     
@@ -660,7 +685,7 @@ extension CreateGroupViewController: UICollectionViewDelegate, UICollectionViewD
 }
 
 // MARK: - Config SeachBar
-extension CreateGroupViewController: UISearchBarDelegate {
+extension AddNewMembersViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let text = searchBar.text, !text.replacingOccurrences(of: " ", with: "").isEmpty else {
             resetFriendList()
