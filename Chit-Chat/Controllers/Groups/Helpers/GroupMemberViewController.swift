@@ -12,6 +12,7 @@ class GroupMemberViewController: UIViewController {
 
     private var groupMembers = [UserNode]()
     private var groupId: String
+    private var groupName: String
     private var isAdmin = false
     
     private let tabNumber: Bool = false
@@ -41,8 +42,9 @@ class GroupMemberViewController: UIViewController {
         return label
     }()
     
-    init(with groupId: String) {
+    init(with groupId: String, groupName: String) {
         self.groupId = groupId
+        self.groupName = groupName
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -81,7 +83,12 @@ class GroupMemberViewController: UIViewController {
     
     func navigationBar() {
         // navigationController?.navigationBar.topItem?.titleView = searchBar
-        
+        rightBarButton()
+    }
+    
+    func rightBarButton() {
+        let groupConversations = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewMembersTapped))
+        navigationItem.rightBarButtonItem = groupConversations
     }
     
     func subLayouts() {
@@ -145,6 +152,12 @@ class GroupMemberViewController: UIViewController {
     func openProfilePage(_ model: UserNode) {
 
     }
+    
+    @objc func addNewMembersTapped() {
+        let vc = AddNewMembersViewController(with: groupMembers, groupName: groupName, groupId: groupId)
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
+    }
 
 }
 
@@ -202,7 +215,7 @@ extension GroupMemberViewController: UITableViewDataSource, UITableViewDelegate 
         // RGB: 6, 214, 159
         profileAction.backgroundColor = UIColor(red: 6/255, green: 214/255, blue: 159/255, alpha: 1)
         
-        let configuration = UISwipeActionsConfiguration(actions: isAdmin ? [deleteMemberFromGroup, profileAction] : [profileAction])
+        let configuration = UISwipeActionsConfiguration(actions: isAdmin ? [deleteMemberFromGroup] : [])
         configuration.performsFirstActionWithFullSwipe = false
         return configuration
     }

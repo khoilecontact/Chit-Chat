@@ -151,7 +151,7 @@ class GroupUtilitiesChatViewController: UIViewController {
                                                    handler: { [weak self] in
             guard let strongSelf = self else { return }
             
-            let vc = GroupMemberViewController(with: strongSelf.groupId)
+            let vc = GroupMemberViewController(with: strongSelf.groupId, groupName: strongSelf.groupName)
             strongSelf.navigationController?.pushViewController(vc, animated: true)
         }))
         //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,

@@ -216,4 +216,38 @@ extension DatabaseManager {
         }
     }
     
+    public func addMemberToGroup(with newMembers: [UserNode], groupId: String, completion: @escaping (Bool) -> Void ) {
+        guard !newMembers.isEmpty else {
+            completion(false)
+            print("The members of group must not be empty")
+            return
+        }
+        
+        var convertedMembers: [[String: Any]] = []
+        
+        for person in newMembers {
+            convertedMembers.append([
+                "id": person.id,
+                "email": person.email,
+                "dob": person.dob,
+                "last_name": person.lastName,
+                "first_name": person.firstName,
+                "bio": person.bio,
+                "district": person.district,
+                "province": person.province,
+                "is_male": person.isMale,
+            ])
+        }
+        
+        database.child("Groups/\(groupId)/members").setValue(convertedMembers, withCompletionBlock: { error, _ in
+            guard error == nil else {
+                completion(false)
+                print("Failed to write new members to database")
+                return
+            }
+            
+            completion(true)
+        })
+    }
+    
 }

@@ -90,6 +90,7 @@
 		DA85AF6F27BA5B430005215B /* MeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA85AF6E27BA5B430005215B /* MeViewController.swift */; };
 		DA8C20F627B258A400C1F35F /* FriendsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD85A27AC187200221E16 /* FriendsModel.swift */; };
 		DA8C20F827B258EE00C1F35F /* NewFriendsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */; };
+		DAA19ED82857261100505BB8 /* AddNewMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA19ED72857261100505BB8 /* AddNewMembersViewController.swift */; };
 		DAD08EAF28520479005F4434 /* SearchMessageInGroupConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD08EAE28520479005F4434 /* SearchMessageInGroupConversationViewController.swift */; };
 		DAD0BD7A280A7AA7003974BF /* UtilitiesMessageChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD0BD79280A7AA6003974BF /* UtilitiesMessageChatViewController.swift */; };
 		DAD25F0D281936970078021F /* TextInConversationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD25F0C281936970078021F /* TextInConversationViewCell.swift */; };
@@ -222,6 +223,7 @@
 		DA8C20F727B258EE00C1F35F /* NewFriendsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFriendsViewCell.swift; sourceTree = "<group>"; };
 		DA9AD85A27AC187200221E16 /* FriendsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsModel.swift; sourceTree = "<group>"; };
 		DA9AD85D27ACD96F00221E16 /* FriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
+		DAA19ED72857261100505BB8 /* AddNewMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMembersViewController.swift; sourceTree = "<group>"; };
 		DAD08EAE28520479005F4434 /* SearchMessageInGroupConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMessageInGroupConversationViewController.swift; sourceTree = "<group>"; };
 		DAD0BD79280A7AA6003974BF /* UtilitiesMessageChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilitiesMessageChatViewController.swift; sourceTree = "<group>"; };
 		DAD25F0C281936970078021F /* TextInConversationViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInConversationViewCell.swift; sourceTree = "<group>"; };
@@ -644,6 +646,7 @@
 				DAE3CD3C28320CBC004B4364 /* CreateGroupViewController.swift */,
 				DAD08EAE28520479005F4434 /* SearchMessageInGroupConversationViewController.swift */,
 				DAF82FCA28523FBA0097A454 /* GroupMemberViewController.swift */,
+				DAA19ED72857261100505BB8 /* AddNewMembersViewController.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -986,6 +989,7 @@
 				22A456E32813FEED009CB4E6 /* extensionUIView.swift in Sources */,
 				DAE3CD3D28320CBC004B4364 /* CreateGroupViewController.swift in Sources */,
 				DAFFEC73282B5C9B00A99629 /* GroupConversationViewController.swift in Sources */,
+				DAA19ED82857261100505BB8 /* AddNewMembersViewController.swift in Sources */,
 				22A905C42823756200E3DD19 /* CallCenter.swift in Sources */,
 				22ACD98527FEE102004DD7AC /* BlackListViewController.swift in Sources */,
 				22714E67277D5D4F0004F942 /* SceneDelegate.swift in Sources */,
