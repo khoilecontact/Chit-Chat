@@ -170,7 +170,7 @@ class GroupChatViewController: MessagesViewController {
         btnMenu.setImage(menuIcon, for: .normal)
         btnMenu.addTarget(self, action: #selector(menuBtnTapped), for: .touchUpInside)
         
-        let stackview = UIStackView.init(arrangedSubviews: [btnContact, btnMenu])
+        let stackview = UIStackView.init(arrangedSubviews: [btnMenu])
         stackview.distribution = .equalSpacing
         stackview.axis = .horizontal
         stackview.alignment = .center
