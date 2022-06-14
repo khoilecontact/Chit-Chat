@@ -250,4 +250,62 @@ extension DatabaseManager {
         })
     }
     
+    public func deleteGroup(with groupId: String, isAdmin: Bool, completion: @escaping (Result<Bool, DatabaseError>) -> Void ) {
+        guard isAdmin == true else {
+            print("Unauthorized")
+            completion(.failure(DatabaseError.unauthorized))
+            return
+        }
+        
+        database.child("Groups/\(groupId)/members").observeSingleEvent(of: .value) { [weak self] snapshot in
+            guard let memberValues = snapshot.value as? [[String: Any]] else {
+                completion(.failure(DatabaseError.failedToFetch))
+                print("Failed to fetch members list")
+                return
+            }
+            
+            for memberValue in memberValues {
+                let safeEmail = DatabaseManager.safeEmail(emailAddress: memberValue["email"] as! String)
+                
+                self?.database.child("Users/\(safeEmail)/group_conversations").observeSingleEvent(of: .value, with: { groupConversationSnapshot in
+                    guard var conversationValue = groupConversationSnapshot.value as? [[String: Any]] else {
+                        print("Failed to fetch group conversations of user")
+                        completion(.failure(DatabaseError.failedToFetch))
+                        return
+                    }
+                    
+                    conversationValue.removeAll(where: { $0["groupId"] as! String == groupId })
+                    
+                    self?.database.child("Users/\(safeEmail)/group_conversations").setValue(conversationValue, withCompletionBlock: { error, _ in
+                        guard error == nil else {
+                            print("Failed to write group conversations of user")
+                            completion(.failure(DatabaseError.failedToSave))
+                            return
+                        }
+                    })
+                })
+            }
+            
+            self?.database.child("Groups").observeSingleEvent(of: .value, with: { groupSnapshot in
+                guard var groupValue = groupSnapshot.value as? [String: Any] else {
+                    completion(.failure(DatabaseError.failedToFetch))
+                    print("Failed to fetch groups")
+                    return
+                }
+                
+                // groupValue.removeAll(where: { $0["id"] as! String == groupId })
+                groupValue.removeValue(forKey: groupId as! String)
+                
+                self?.database.child("Groups").setValue(groupValue, withCompletionBlock: { error, _ in
+                    guard error == nil else {
+                        completion(.failure(DatabaseError.failedToSave))
+                        print("Failed to write to database")
+                        return
+                    }
+                    
+                    completion(.success(true))
+                })
+            })
+        }
+    }
 }

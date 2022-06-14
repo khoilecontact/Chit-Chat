@@ -51,6 +51,7 @@ public enum DatabaseError: Error {
     case failedToFetch
     case failedToFind
     case failedToSave
+    case unauthorized
 }
 
 // MARK: -Sending messages / conversations

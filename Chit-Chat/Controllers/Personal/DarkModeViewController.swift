@@ -23,6 +23,7 @@ class DarkModeViewController: UIViewController, UITableViewDataSource, UITableVi
         tableView.backgroundColor = .systemBackground
         tableView.layer.borderWidth = 1
         tableView.layer.cornerRadius = 15
+        tableView.separatorColor = .systemBackground
         tableView.layer.borderColor = UIColor.systemGray3.cgColor
         
         return tableView
