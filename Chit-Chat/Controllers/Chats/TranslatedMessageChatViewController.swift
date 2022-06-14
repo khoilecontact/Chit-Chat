@@ -218,13 +218,13 @@ class TranslatedMessageChatViewController: MessagesViewController {
     }
     
     func configurateAvatarUserOnNavBar() {
-        otherUserAvatar.frame = CGRect(origin: .zero, size: CGSize(width: 30, height: 30))
+        otherUserAvatar.frame = CGRect(origin: .zero, size: CGSize(width: 32, height: 32))
         
         // bright purple: 191, 64, 191
-        let gradient = UIImage.gradientImage(bounds: otherUserAvatar.bounds, colors: [.systemPink, .systemYellow, .systemYellow, UIColor(red: 191/255, green: 64/255, blue: 191/255, alpha: 1), .systemPurple, .purple])
-        let gradientColor = UIColor(patternImage: gradient)
-        otherUserAvatar.layer.borderWidth = 2.5
-        otherUserAvatar.layer.borderColor = gradientColor.cgColor
+        //        let gradient = UIImage.gradientImage(bounds: otherUserAvatar.bounds, colors: [.systemPink, .systemYellow, .systemYellow, UIColor(red: 191/255, green: 64/255, blue: 191/255, alpha: 1), .systemPurple, .purple])
+        //        let gradientColor = UIColor(patternImage: gradient)
+        //        otherUserAvatar.layer.borderWidth = 2.5
+        //        otherUserAvatar.layer.borderColor = gradientColor.cgColor
     }
     
     func messageDelegate() {
