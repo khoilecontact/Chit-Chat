@@ -10,6 +10,7 @@ import UIKit
 class GroupMemberViewCell: UITableViewCell {
 
     static let identifier = "GroupMemberViewCell"
+    public var isAdmin = false
     
     private let userImageView: UIImageView = {
         let imgView = UIImageView()
@@ -78,7 +79,7 @@ class GroupMemberViewCell: UITableViewCell {
     
     // MARK: - Closure call data
     public func configure(with model: UserNode) {
-        userNameLabel.text = "\(model.firstName) \(model.lastName)"
+        userNameLabel.text = "\(model.firstName) \(model.lastName)\(isAdmin ? "  (admin)" : "")"
         userEmailLabel.text = model.email
         
         //        let url = URL(string: "https://github.com/khoilecontact.png?size=400")
