@@ -74,7 +74,7 @@ class LanguageTranslationView: UIView {
         
         languageFromButton.frame = CGRect(x: 15, y: 20, width: self.width - 250, height: 35)
         
-        image.frame = CGRect(x: self.width / 2 - 15, y: 25, width: 30, height: 30)
+        image.frame = CGRect(x: self.width / 2 - 10, y: 30, width: 20, height: 20)
         
         languageToButton.frame = CGRect(x: self.width - 125 - 25, y: 20, width: self.width - 250, height: 35)
     }

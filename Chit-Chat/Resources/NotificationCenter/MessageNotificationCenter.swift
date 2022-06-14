@@ -60,6 +60,15 @@ extension MessageNotificationCenter {
                         return
                     }
                 }
+                
+                // Not notify user when in that chat
+                if let tabBar = UIApplication.shared.delegate?.window??.rootViewController as? UITabBarController,
+                   let nav = tabBar.selectedViewController as? UINavigationController,
+                let messageChatVC = nav.visibleViewController as? TranslatedMessageChatViewController {
+                    if messageChatVC.conversationId == conversationId {
+                        return
+                    }
+                }
 
                 if senderEmail != safeEmail && senderEmail != currentEmail {
                     DispatchQueue.main.async {
