@@ -13,7 +13,7 @@ class GroupMemberViewController: UIViewController {
     private var groupMembers = [UserNode]()
     private var groupId: String
     private var groupName: String
-    private var isAdmin = false
+    private var isAdmin: Bool
     
     private let tabNumber: Bool = false
     
@@ -42,9 +42,10 @@ class GroupMemberViewController: UIViewController {
         return label
     }()
     
-    init(with groupId: String, groupName: String) {
+    init(with groupId: String, groupName: String, isAdmin: Bool) {
         self.groupId = groupId
         self.groupName = groupName
+        self.isAdmin = isAdmin
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -58,7 +59,7 @@ class GroupMemberViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         // fakeData()
-        checkAdminRole()
+        // checkAdminRole()
         fetchAllGroupMembers()
     }
     

@@ -16,11 +16,12 @@ class GroupUtilitiesChatViewController: UIViewController {
     var utils = [UtilitiesMessageChatViewModel]()
     var groupName: String
     var groupId: String
+    var isAdmin = false
     var conversationId: String
     
     private let tableView: UITableView = {
         let table = UITableView()
-        table.separatorColor = .systemBackground
+        // table.separatorColor = .systemBackground
         table.register(GroupUtilitiesMessageChatViewCell.self, forCellReuseIdentifier: GroupUtilitiesMessageChatViewCell.identifier)
         return table
     }()
@@ -41,6 +42,7 @@ class GroupUtilitiesChatViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         navBar()
+        checkAdminRole()
         subViews()
         
         createUtilOptions()
@@ -67,6 +69,30 @@ class GroupUtilitiesChatViewController: UIViewController {
     
     func subViews() {
         view.addSubview(tableView)
+    }
+    
+    func checkAdminRole() {
+        guard let unsafeEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            print("Invalid email in userdefault")
+            return
+        }
+
+        spinner.show(in: view)
+        DatabaseManager.shared.checkIsAdminOfGroup(with: groupId, unsafeEmail: unsafeEmail) { [weak self] isAdmin in
+            if isAdmin {
+                self?.isAdmin = isAdmin
+                DispatchQueue.main.async {
+                    // self?.tableView.reloadData()
+                    self?.spinner.dismiss()
+                }
+            }
+            else {
+                self?.isAdmin = false
+                DispatchQueue.main.async {
+                    self?.spinner.dismiss()
+                }
+            }
+        }
     }
     
     func createTableHeader() -> UIView? {
@@ -110,6 +136,7 @@ class GroupUtilitiesChatViewController: UIViewController {
     func createUtilOptions() {
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .info,
                                                    title: "\(groupName)",
+                                                   icon: "pencil",
                                                    handler: { [weak self] in
             guard let strongSelf = self else {
                 return
@@ -146,12 +173,28 @@ class GroupUtilitiesChatViewController: UIViewController {
             
             self?.present(alert, animated: true, completion: nil)
         }))
+        utils.append(UtilitiesMessageChatViewModel(viewModelType: .empty,
+                                                   title: "",
+                                                   icon: "",
+                                                   handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
-                                                   title: "Members",
+                                                   title: "Search message in conversation",
+                                                   icon: "magnifyingglass",
                                                    handler: { [weak self] in
             guard let strongSelf = self else { return }
             
-            let vc = GroupMemberViewController(with: strongSelf.groupId, groupName: strongSelf.groupName)
+            let vc = SearchMessageInGroupConversationViewController(groupId: strongSelf.groupId, name: strongSelf.groupName, conversationId: strongSelf.conversationId)
+            let nav = UINavigationController(rootViewController: vc)
+            self?.present(nav, animated: true)
+            
+        }))
+        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
+                                                   title: "Members",
+                                                   icon: "person.2",
+                                                   handler: { [weak self] in
+            guard let strongSelf = self else { return }
+            
+            let vc = GroupMemberViewController(with: strongSelf.groupId, groupName: strongSelf.groupName, isAdmin: strongSelf.isAdmin)
             strongSelf.navigationController?.pushViewController(vc, animated: true)
         }))
         //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,
@@ -169,27 +212,50 @@ class GroupUtilitiesChatViewController: UIViewController {
         //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
         //                                                   title: "Add member",
         //                                                   handler: nil))
-        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
-                                                   title: "Search message in conversation",
-                                                   handler: { [weak self] in
-            guard let strongSelf = self else { return }
-            
-            let vc = SearchMessageInGroupConversationViewController(groupId: strongSelf.groupId, name: strongSelf.groupName, conversationId: strongSelf.conversationId)
-            let nav = UINavigationController(rootViewController: vc)
-            self?.present(nav, animated: true)
-            
-        }))
         //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
         //                                                   title: "Notification",
         //                                                   handler: nil))
-        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
-                                                   title: "Report",
-                                                   handler: nil))
+        //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
+        //                                                   title: "Report",
+        //                                                   handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .dangerous,
                                                    title: "Delete group",
-                                                   handler: nil))
+                                                   icon: "trash",
+                                                   handler: { [weak self] in
+            
+            guard let strongSelf = self else {
+                return
+            }
+            
+            let alert = UIAlertController(title: "Just admin can delete group, you wanna continue?", message: nil, preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "OK", style: .destructive, handler: { action in
+                DatabaseManager.shared.deleteGroup(with: strongSelf.groupId, isAdmin: strongSelf.isAdmin) { result in
+                    switch result {
+                    case .success(_):
+                        self?.navigationController?.popToRootViewController(animated: true)
+                        break
+                    case .failure(let error):
+                        if error == DatabaseError.unauthorized {
+                            self?.view.makeToast("You're not admin")
+                            break
+                        }
+                        else {
+                            self?.view.makeToast("Sorry! An error is occured. Please try again.")
+                            break
+                        }
+                    }
+                }
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+            strongSelf.present(alert, animated: true)
+        }))
+        
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .dangerous,
                                                    title: "Leave group",
+                                                   icon: "rectangle.portrait.and.arrow.right",
                                                    handler: { [weak self] in
             guard let strongSelf = self, let unSafeEmail = UserDefaults.standard.value(forKey: "email") as? String else {
                 print("Email or self is empty")
@@ -251,6 +317,15 @@ class GroupUtilitiesChatViewController: UIViewController {
 extension GroupUtilitiesChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return utils.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 1 {
+            // empty row
+            return 20
+        }
+        
+        return 50
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

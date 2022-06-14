@@ -104,16 +104,19 @@ class UtilitiesMessageChatViewController: UIViewController  {
     
     func createUtilOptions() {
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .info,
-                                                   title: "Name: \(otherName)",
+                                                   title: "\(otherName)",
+                                                   icon: nil,
                                                    handler: nil))
-        utils.append(UtilitiesMessageChatViewModel(viewModelType: .info,
-                                                   title: "Email: \(DatabaseManager.revertEmail(safeEmailAddress: otherEmail))",
+        utils.append(UtilitiesMessageChatViewModel(viewModelType: .subinfo,
+                                                   title: "\(DatabaseManager.revertEmail(safeEmailAddress: otherEmail))",
+                                                   icon: nil,
                                                    handler: nil))
 //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .pending,
 //                                                   title: "Nicknames -- In Beta, coming soon!",
 //                                                   handler: nil))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
                                                    title: "Create chat group",
+                                                   icon: "person.2.circle",
                                                    handler: { [weak self] in
             guard let strongSelf = self else { return }
             
@@ -123,6 +126,7 @@ class UtilitiesMessageChatViewController: UIViewController  {
         }))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .util,
                                                    title: "Search message in conversation",
+                                                   icon: "magnifyingglass",
                                                    handler: { [weak self] in
             guard let strongSelf = self else { return }
             
@@ -131,7 +135,7 @@ class UtilitiesMessageChatViewController: UIViewController  {
             strongSelf.present(nav, animated: true)
             
         }))
-        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util, title: "Translate conversation", handler: { [weak self] in
+        utils.append(UtilitiesMessageChatViewModel(viewModelType: .util, title: "Translate conversation", icon: "book", handler: { [weak self] in
             let vc = TranslatedMessageChatViewController(with: self!.otherEmail, name: self!.otherName, id: self!.conversationId)
             vc.title = self?.otherName
             
@@ -139,6 +143,7 @@ class UtilitiesMessageChatViewController: UIViewController  {
         }))
         utils.append(UtilitiesMessageChatViewModel(viewModelType: .dangerous,
                                                    title: "Block",
+                                                   icon: "exclamationmark.octagon",
                                                    handler: nil))
         //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .back,
         //                                                   title: "Go Back",

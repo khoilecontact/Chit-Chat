@@ -362,7 +362,7 @@ class LoginViewController: UIViewController {
         
         passwordField.frame = CGRect(x: 30, y: emailField.bottom + 30 , width: scrollView.width - 60, height: 52)
         
-        loginButton.frame = CGRect(x: scrollView.width / 3.5, y: passwordField.bottom + 30 , width: scrollView.width - 220, height: 52)
+        loginButton.frame = CGRect(x: scrollView.width/2 - 90, y: passwordField.bottom + 30 , width: 180, height: 52)
         
         forgotPasswordLabel.frame = CGRect(x: 50, y: loginButton.bottom + 15 , width: 140, height: 20)
         
@@ -374,7 +374,7 @@ class LoginViewController: UIViewController {
         
         githubSignInButton.frame = CGRect(x: googleSignInButton.right + 30, y: forgotPasswordLabel.bottom + 20 , width: 45, height: 45)
         
-        registerButton.frame = CGRect(x: scrollView.width / 4, y: githubSignInButton.bottom + 30, width: scrollView.width - 175, height: 52)
+        registerButton.frame = CGRect(x: scrollView.width/2 - 110, y: githubSignInButton.bottom + 30, width: 220, height: 52)
         
         // Add underline to textfields
         let bottomLine1 = CALayer()
