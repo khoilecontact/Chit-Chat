@@ -14,6 +14,7 @@ class GroupMemberViewController: UIViewController {
     private var groupId: String
     private var groupName: String
     private var isAdmin: Bool
+    private var arrayAdmin: [String] = []
     
     private let tabNumber: Bool = false
     
@@ -47,6 +48,7 @@ class GroupMemberViewController: UIViewController {
         self.groupName = groupName
         self.isAdmin = isAdmin
         super.init(nibName: nil, bundle: nil)
+        self.fetchAdminOfGroup()
     }
     
     required init?(coder: NSCoder) {
@@ -108,6 +110,26 @@ class GroupMemberViewController: UIViewController {
                 break
             case .failure(let error):
                 print("Failed to fetch members: \(error)")
+                break
+            }
+        }
+    }
+    
+    func fetchAdminOfGroup() {
+        spinner.show(in: view)
+        DatabaseManager.shared.fetchAdminOfGroup(with: groupId) { [weak self] result in
+            switch result {
+            case .success(let arrayAdmin):
+                self?.arrayAdmin = arrayAdmin
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                    self?.spinner.dismiss()
+                }
+                break
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.spinner.dismiss()
+                }
                 break
             }
         }
@@ -175,6 +197,11 @@ extension GroupMemberViewController: UITableViewDataSource, UITableViewDelegate 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = groupMembers[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: GroupMemberViewCell.identifier, for: indexPath) as! GroupMemberViewCell
+        
+        if arrayAdmin.contains(model.email) {
+            cell.isAdmin = true
+        }
+        
         cell.configure(with: model)
         
         // Hide divider in talbe

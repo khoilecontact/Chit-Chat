@@ -165,6 +165,19 @@ extension DatabaseManager {
         }
     }
     
+    public func fetchAdminOfGroup(with groupId: String, completion: @escaping (Result<[String], Error>) -> Void) {
+        
+        database.child("Groups/\(groupId)/admin").observeSingleEvent(of: .value) { snapshot in
+            guard let value = snapshot.value as? [String] else {
+                print("Failed to fetch admin of group")
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            
+            completion(.success(value))
+        }
+    }
+    
     public func deleteMemberFromGroup(with unSafeEmail: String, groupId: String, isAdmin: Bool, completion: @escaping (Bool) -> Void) {
         guard isAdmin == true else {
             print("Unauthorized")
