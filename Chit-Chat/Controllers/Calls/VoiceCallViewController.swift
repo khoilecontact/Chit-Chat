@@ -128,7 +128,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
                     DispatchQueue.main.async {
                         self?.otherAvatar.sd_setImage(with: url, completed: nil)
                     }
-                    
+                    break
                 }
             })
             
@@ -175,6 +175,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
                 DispatchQueue.main.async {
                     joinChannel.connect()
                 }
+                break
             }
         })
        

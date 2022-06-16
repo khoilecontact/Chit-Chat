@@ -584,8 +584,7 @@ extension DatabaseManager {
                             currentUserConversations.insert(newConversationData, at: 0)
                             databaseEntryConversations = currentUserConversations
                         }
-                    }
-                    else {
+                    } else {
                         let newConversationData: [String: Any] = [
                             "id": conversation,
                             "other_user_email": DatabaseManager.safeEmail(emailAddress: otherUserEmail),
@@ -596,9 +595,6 @@ extension DatabaseManager {
                             newConversationData
                         ]
                     }
-                    
-                    
-                    
                     
                     strongSelf.database.child("Users/\(currentEmail)/conversations").setValue(databaseEntryConversations, withCompletionBlock: { error, _ in
                         guard error == nil else {

@@ -141,10 +141,12 @@ class UtilitiesMessageChatViewController: UIViewController  {
             
             self?.navigationController?.pushViewController(vc, animated: true)
         }))
-        utils.append(UtilitiesMessageChatViewModel(viewModelType: .dangerous,
-                                                   title: "Block",
-                                                   icon: "exclamationmark.octagon",
-                                                   handler: nil))
+//        utils.append(UtilitiesMessageChatViewModel(viewModelType: .dangerous,
+//                                                   title: "Block",
+//                                                   icon: "exclamationmark.octagon",
+//                                                   handler: { [weak self] in
+//
+//        }))
         //        utils.append(UtilitiesMessageChatViewModel(viewModelType: .back,
         //                                                   title: "Go Back",
         //                                                   handler: { [weak self] in self?.dismiss(animated: true) }))

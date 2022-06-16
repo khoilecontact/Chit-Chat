@@ -52,7 +52,7 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         field.layer.borderColor = UIColor.systemGray2.cgColor
         field.placeholder = "First Name..."
         
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 0))
         field.leftViewMode = .always
         
         field.backgroundColor = .systemBackground
@@ -71,7 +71,7 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         field.layer.borderColor = UIColor.systemGray2.cgColor
         field.placeholder = "Last Name..."
         
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 0))
         field.leftViewMode = .always
         
         field.backgroundColor = .systemBackground
@@ -91,7 +91,7 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         field.layer.borderColor = UIColor.systemGray2.cgColor
         field.placeholder = "Enter your bio"
         
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 0))
         field.leftViewMode = .always
         
         field.backgroundColor = .systemBackground
@@ -265,20 +265,20 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         let size = scrollView.width / 3
         imageView.frame = CGRect(x: size, y: 20, width: size, height: size)
         imageView.layer.cornerRadius = imageView.width / 2.0
-        
+
         firstNameField.frame = CGRect(x: 20, y: imageView.bottom + 25, width: scrollView.width - 235, height: 52)
-        
+
         lastNameField.frame = CGRect(x: firstNameField.right + 15, y: imageView.bottom + 25, width: scrollView.width - 230, height: 52)
-        
+
         bioField.frame = CGRect(x: 20, y: firstNameField.bottom + 20, width: scrollView.width - 60, height: 100)
         
         dobLabel.frame = CGRect(x: 25, y: bioField.bottom + 20 , width: 150, height: 52)
-        
+
         dobField.frame = CGRect(x: dobLabel.right + 20, y: bioField.bottom + 20 , width: scrollView.width - 230, height: 52)
-        
+
         genderLabel.frame = CGRect(x: 25, y: dobLabel.bottom + 25 , width: 150, height: 52)
         
-        genderPicker.frame = CGRect(x: genderLabel.right + 20, y: dobLabel.bottom + 10 , width: scrollView.width - 220, height: 100)
+        genderPicker.frame = CGRect(x: genderLabel.right + 20, y: dobLabel.bottom, width: scrollView.width - 220, height: 100)
         
         provinceLabel.frame = CGRect(x: 25, y: genderLabel.bottom + 25 , width: 250, height: 52)
         
@@ -290,7 +290,7 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
         
         changePasswordButton.frame = CGRect(x: 20, y: districtLabel.bottom + 40, width: scrollView.width - 120, height: 40)
         
-        saveButton.frame = CGRect(x: 30, y: changePasswordButton.bottom + 30, width: scrollView.width - 60, height: 52)
+        saveButton.frame = CGRect(x: 20, y: changePasswordButton.bottom + 30, width: scrollView.width - 40, height: 52)
     }
     
     init() {

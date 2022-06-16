@@ -13,7 +13,7 @@ final class AgoraChannel {
     static var appID: String = "cf8f308e1fb3430e8dd8a4bbf0dcbf6e"
     static var channelId: String = "chitchat"
     
-    static var token = "006cf8f308e1fb3430e8dd8a4bbf0dcbf6eIAD53ZOottgaUI0gF/iMeqOexdqbVXDhb9YmTWoUVP84tZhPb+QAAAAAEACa6fgNLEujYgEAAQArS6Ni"
+    static var token = "006cf8f308e1fb3430e8dd8a4bbf0dcbf6eIABkTYhWsyulePXNlBSOLLrz55Fa88+2MzhmAUi4rV2Bn5hPb+QAAAAAEADzS24feo2sYgEAAQB6jaxi"
     private let url = URL(string: "https://chit-chat-token-server.herokuapp.com/access_token?channel=chitchat&uid=1234")
 }
 
@@ -46,24 +46,22 @@ extension AgoraChannel {
     
     func createChannel(completion: @escaping (Result<Bool, Error>) -> Void) {
         // Start an async task
-        Task {
-            
-            do {
-                
-                let res: String? = try await ServiceManager.shared.getAgoraToken()
-                
-                if let token = res {
-                    AgoraChannel.token = token
-                    completion(.success(true))
-                } else {
-                    throw(APIError.failedToReceive)
-                }
-                
-            } catch {
-                print("Request failed with error: \(error)")
-                completion(.failure(APIError.failedToReceive))
-            }
-            
-        }
+//        Task {
+//            do {
+//                let res: String? = try await ServiceManager.shared.getAgoraToken()
+//
+//                if let token = res {
+//                    AgoraChannel.token = token
+//                    completion(.success(true))
+//                } else {
+//                    throw(APIError.failedToReceive)
+//                }
+//
+//            } catch {
+//                print("Request failed with error: \(error)")
+//                completion(.failure(APIError.failedToReceive))
+//            }
+//        }
+        completion(.success(true))
     }
 }

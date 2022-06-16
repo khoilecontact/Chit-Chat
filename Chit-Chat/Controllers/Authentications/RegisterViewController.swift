@@ -312,7 +312,7 @@ class RegisterViewController: UIViewController, UINavigationControllerDelegate {
         
         genderLabel.frame = CGRect(x: 25, y: dobLabel.bottom + 25 , width: 150, height: 52)
         
-        genderPicker.frame = CGRect(x: genderLabel.right + 20, y: dobLabel.bottom + 10 , width: scrollView.width - 220, height: 100)
+        genderPicker.frame = CGRect(x: genderLabel.right + 20, y: dobLabel.bottom + 5 , width: scrollView.width - 220, height: 100)
         
         provinceLabel.frame = CGRect(x: 25, y: genderLabel.bottom + 25 , width: 250, height: 52)
         

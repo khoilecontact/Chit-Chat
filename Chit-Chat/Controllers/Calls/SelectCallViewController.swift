@@ -122,8 +122,7 @@ class SelectCallViewController: UIViewController {
                 vc.otherUserName = self?.otherUserName
                 
                 self?.present(vc, animated: true)
-                
-                break
+
                 
             case .failure(let error):
                 if error as! CallNotificationCenter.CallError == CallNotificationCenter.CallError.userIsInAnotherCall {

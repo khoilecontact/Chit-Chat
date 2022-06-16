@@ -71,7 +71,7 @@ extension CallNotificationCenter {
             switch result {
             // Existed conversation
             case .success(_):
-                DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: calleeName, name: calleeName, newMessage: calleeMessage, completion: { success in
+                DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: calleeSafeEmail, name: calleeName, newMessage: calleeMessage, completion: { success in
                     if success {
                         completion(.success(true))
                     }
