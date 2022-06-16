@@ -175,7 +175,7 @@ class VoiceCallViewController: UIViewController, AgoraRtmDelegate {
                 DispatchQueue.main.async {
                     joinChannel.connect()
                 }
-                break
+                
             }
         })
        

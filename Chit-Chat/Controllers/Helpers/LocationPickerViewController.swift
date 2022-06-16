@@ -19,6 +19,7 @@ class LocationPickerViewController: UIViewController {
         let map = MKMapView()
         return map
     }()
+    let locationManager = CLLocationManager()
     
     init(coordinates: CLLocationCoordinate2D?) {
         super.init(nibName: nil, bundle: nil)
@@ -37,6 +38,16 @@ class LocationPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        
+        locationManager.requestWhenInUseAuthorization()
+        
+        // Current location
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
+        
         if isPickable {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send",
                                                                 style: .done,
@@ -47,7 +58,7 @@ class LocationPickerViewController: UIViewController {
             map.isUserInteractionEnabled = true
             let gesture = UITapGestureRecognizer(target: self,
                                                  action: #selector(didTapMap(_:)))
-            
+
             gesture.numberOfTapsRequired = 1
             gesture.numberOfTouchesRequired = 1
             map.addGestureRecognizer(gesture)
@@ -95,5 +106,21 @@ class LocationPickerViewController: UIViewController {
         super.viewDidLayoutSubviews()
         map.frame = view.bounds
     }
-    
+}
+
+extension LocationPickerViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = manager.location?.coordinate as? CLLocationCoordinate2D else { return }
+        
+        let center = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        
+        self.map.setRegion(region, animated: true)
+        
+        // drop pin on that location
+        let pin = MKPointAnnotation()
+        pin.coordinate = location
+        self.coordinates = pin.coordinate
+        self.map.addAnnotation(pin)
+    }
 }
