@@ -609,7 +609,7 @@ extension MessageChatViewController: InputBarAccessoryViewDelegate {
         if isNewConversation {
             DatabaseManager.shared.createNewConversation(with: otherUserEmail, name: title ?? "User", firstMessage: message, completion: { [weak self] success in
                 
-                guard let strongSelf = self else {return}
+                guard let strongSelf = self else { return }
                 
                 if success {
                     print("Message sent")

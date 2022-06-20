@@ -623,6 +623,24 @@ class OtherUserViewController: UIViewController {
                     switch result {
                     case .success(_):
                         self?.dismiss(animated: true)
+                        self?.friendStatus = "Blocked"
+                        
+                        self?.imageView.removeFromSuperview()
+                        self?.nameLabel.removeFromSuperview()
+                        self?.functionsButton.removeFromSuperview()
+                        self?.addFriendButton.removeFromSuperview()
+                        self?.requestSentButton.removeFromSuperview()
+                        self?.confirmButton.removeFromSuperview()
+                        self?.cancelButton.removeFromSuperview()
+                        self?.friendStatusButton.removeFromSuperview()
+                        self?.messageButton.removeFromSuperview()
+                        self?.functionsButton.removeFromSuperview()
+                        self?.bioLabel.removeFromSuperview()
+                        self?.dobIcon.removeFromSuperview()
+                        self?.dobLabel.removeFromSuperview()
+                        self?.genderIcon.removeFromSuperview()
+                        self?.genderLabel.removeFromSuperview()
+                        
                         self?.initLayout()
                         break
 
