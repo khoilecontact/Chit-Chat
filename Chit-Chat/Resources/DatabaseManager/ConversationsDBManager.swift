@@ -100,7 +100,7 @@ extension DatabaseManager {
                     // append
                     conversations.insert(recipient_newConversationData, at: 0)
                     
-                    self?.database.child("Users/\(otherUserEmail)/conversations").setValue(conversationId)
+                    self?.database.child("Users/\(otherUserEmail)/conversations").setValue(conversations)
                 }
                 else {
                     // create new conversation
