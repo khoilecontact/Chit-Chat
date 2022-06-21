@@ -560,6 +560,29 @@ extension DatabaseManager {
                         return
                     }
                 })
+                
+                // Delete conversation of other user
+                self?.database.child("Users/\(otherSafeEmail)").observeSingleEvent(of: .value, with: { otherSnapshot in
+                    
+                    if let otherValue = otherSnapshot.value as? [String: Any] {
+                        var otherConversations: [[String: Any]] = otherValue["conversations"] as? [[String: Any]] ?? []
+                        
+                        // Delete conversation of current user
+                        for otherConversationIndex in 0 ..< otherConversations.count {
+                            if otherConversations[otherConversationIndex]["other_user_email"] as? String == safeEmail {
+                                otherConversations.remove(at: otherConversationIndex)
+                                break
+                            }
+                        }
+                        
+                        self?.database.child("Users/\(otherSafeEmail)/conversations").setValue(otherConversations, withCompletionBlock: { error, _ in
+                            guard error == nil else {
+                                completion(.failure(DatabaseError.failedToSave))
+                                return
+                            }
+                        })
+                    }
+                })
 
                 // Add other user to black list
                 if var blackList: [[String: Any]] = value["black_list"] as? [[String: Any]] {

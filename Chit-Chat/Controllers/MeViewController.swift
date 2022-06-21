@@ -174,37 +174,37 @@ class MeViewController: UIViewController {
         bioLabel.layer.borderColor = Appearance.tint.cgColor
         bioLabel.layer.backgroundColor = UIColor.systemBackground.cgColor
         
+        personalInfoButton.layer.masksToBounds = true
         personalInfoButton.layer.cornerRadius = 12
         personalInfoButton.layer.borderWidth = 0
-        personalInfoButton.layer.masksToBounds = false
         personalInfoButton.layer.shadowOffset = CGSize(width: 0, height: 3)
         personalInfoButton.layer.shadowOpacity = 0.3
         personalInfoButton.layer.shadowRadius = 1
         
+        friendListButton.layer.masksToBounds = true
         friendListButton.layer.cornerRadius = 12
         friendListButton.layer.borderWidth = 0
-        friendListButton.layer.masksToBounds = false
         friendListButton.layer.shadowOffset = CGSize(width: 0, height: 3)
         friendListButton.layer.shadowOpacity = 0.3
         friendListButton.layer.shadowRadius = 1
         
+        darkModeButton.layer.masksToBounds = true
         darkModeButton.layer.cornerRadius = 12
         darkModeButton.layer.borderWidth = 0
-        darkModeButton.layer.masksToBounds = false
         darkModeButton.layer.shadowOffset = CGSize(width: 0, height: 3)
         darkModeButton.layer.shadowOpacity = 0.3
         darkModeButton.layer.shadowRadius = 1
         
+        blackListButton.layer.masksToBounds = true
         blackListButton.layer.cornerRadius = 12
         blackListButton.layer.borderWidth = 0
-        blackListButton.layer.masksToBounds = false
         blackListButton.layer.shadowOffset = CGSize(width: 0, height: 3)
         blackListButton.layer.shadowOpacity = 0.3
         blackListButton.layer.shadowRadius = 1
         
+        logOutButton.layer.masksToBounds = true
         logOutButton.layer.cornerRadius = 12
         logOutButton.layer.borderWidth = 0
-        logOutButton.layer.masksToBounds = false
         logOutButton.layer.shadowOffset = CGSize(width: 0, height: 3)
         logOutButton.layer.shadowOpacity = 0.3
         logOutButton.layer.shadowRadius = 1
