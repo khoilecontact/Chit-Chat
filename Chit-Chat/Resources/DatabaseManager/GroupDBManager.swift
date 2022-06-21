@@ -263,7 +263,7 @@ extension DatabaseManager {
         })
     }
     
-    public func deleteGroup(with groupId: String, isAdmin: Bool, completion: @escaping (Result<Bool, DatabaseError>) -> Void ) {
+    public func deleteGroup(with groupId: String, conversationId: String, isAdmin: Bool, completion: @escaping (Result<Bool, DatabaseError>) -> Void ) {
         guard isAdmin == true else {
             print("Unauthorized")
             completion(.failure(DatabaseError.unauthorized))
@@ -316,7 +316,25 @@ extension DatabaseManager {
                         return
                     }
                     
-                    completion(.success(true))
+                    self?.database.child("Group_Conversations").observeSingleEvent(of: .value, with: { groupConversationTableSnapshot in
+                        guard var groupConversationTableValue = groupConversationTableSnapshot.value as? [String: Any] else {
+                            completion(.failure(DatabaseError.failedToFetch))
+                            print("Failed to fetch group conversations table")
+                            return
+                        }
+                        
+                        groupConversationTableValue.removeValue(forKey: conversationId)
+                        
+                        self?.database.child("Group_Conversations").setValue(groupConversationTableValue, withCompletionBlock: { error, _ in
+                            guard error == nil else {
+                                completion(.failure(DatabaseError.failedToSave))
+                                print("Failed to write to database")
+                                return
+                            }
+                            
+                            completion(.success(true))
+                        })
+                    })
                 })
             })
         }

@@ -227,10 +227,10 @@ class GroupUtilitiesChatViewController: UIViewController {
                 return
             }
             
-            let alert = UIAlertController(title: "Just admin can delete group, you wanna continue?", message: nil, preferredStyle: .alert)
+            let alert = UIAlertController(title: "Only admin can delete group, you wanna continue?", message: nil, preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: "OK", style: .destructive, handler: { action in
-                DatabaseManager.shared.deleteGroup(with: strongSelf.groupId, isAdmin: strongSelf.isAdmin) { result in
+                DatabaseManager.shared.deleteGroup(with: strongSelf.groupId, conversationId: strongSelf.conversationId, isAdmin: strongSelf.isAdmin) { result in
                     switch result {
                     case .success(_):
                         self?.navigationController?.popToRootViewController(animated: true)
