@@ -65,10 +65,7 @@ class ChatViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         validateAuth()
-        
-        let a = UserDefaults.standard.value(forKey: "email")
-        let b = UserDefaults.standard.value(forKey: "name")
-        
+
         // start
         startListeningForConversations()
         createLoginObserver()
