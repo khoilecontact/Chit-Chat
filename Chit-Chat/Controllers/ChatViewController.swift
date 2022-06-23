@@ -132,7 +132,9 @@ class ChatViewController: UIViewController {
         
         self.spinner.show(in: view)
         
-        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String,
+        let name = UserDefaults.standard.value(forKey: "name") as? String
+        else {
             
             UserDefaults.standard.setValue(nil, forKey: "email")
             UserDefaults.standard.setValue(nil, forKey: "name")
@@ -197,16 +199,6 @@ class ChatViewController: UIViewController {
         view.addSubview(tableView)
         view.addSubview(noConversationLabel)
     }
-    
-    // MARK: - FAKE DATA
-    func fakeData() {
-        let latestMessage = LatestMessage(date: "20/12/2009", text: "Hello World", isRead: false)
-        
-        conversations.append(MessagesCollection(id: "fir5tM3ss4g35", name: "Doctor", otherUserEmail: "yds@gm.yds.edu.vn", latestMessage: latestMessage))
-        conversations.append(MessagesCollection(id: "s3c0ndM3ss4g35", name: "IT", otherUserEmail: "uit@gm.uit.edu.vn", latestMessage: latestMessage))
-        
-    }
-    // --- ---
     
     func navBar() {
         navigationController?.navigationBar.topItem?.titleView = searchBar

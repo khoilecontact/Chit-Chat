@@ -33,8 +33,8 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vi Nguyen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XB3-dI-T36">
                                                 <rect key="frame" x="85" y="240" width="244" height="40"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="cEO-I5-xXC"/>
-                                                    <constraint firstAttribute="width" constant="244" id="pL9-uU-0PN"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="cEO-I5-xXC"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="244" id="pL9-uU-0PN"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="28"/>
                                                 <nil key="textColor"/>

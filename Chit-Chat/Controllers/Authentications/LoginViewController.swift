@@ -482,15 +482,16 @@ class LoginViewController: UIViewController {
                     }
                     
                     UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
+                    
+                    UserDefaults.standard.set(email, forKey: "email")
+                    
+                    NotificationCenter.default.post(name: .didLogInNotification, object: nil)
+                    self?.navigationController?.dismiss(animated: true, completion: nil)
+                    
                 case .failure(let error):
                     print("Error in getting user's info: \(error)")
                 }
             })
-            
-            UserDefaults.standard.set(email, forKey: "email")
-            
-            NotificationCenter.default.post(name: .didLogInNotification, object: nil)
-            self?.navigationController?.dismiss(animated: true, completion: nil)
         })
         
     }

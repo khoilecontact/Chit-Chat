@@ -332,7 +332,10 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
                           return
                       }
                 
+                let userGender = isMale ? 0 : 1
+                
                 self?.selectedGender = isMale ? "Male" : "Female"
+                self?.genderPicker.selectRow(userGender, inComponent: 0, animated: true)
                 self?.selectedProvince = province
                 self?.selectedProvinceIndex = city.firstIndex(of: province) ?? 0
                 self?.selectedDistrict = district
@@ -404,6 +407,10 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
             self.selectedProvinceIndex = self.provincePickerView.selectedRow(inComponent: 0)
             self.selectedProvince = city[self.selectedProvinceIndex]
             self.provinceButton.setTitle(self.selectedProvince, for: .normal)
+            
+            // Reset district
+            self.selectedDistrict = ""
+            self.districtButton.setTitle("None", for: .normal)
             
             DispatchQueue.main.async {
                 self.districtPicker.reloadAllComponents()
@@ -534,17 +541,17 @@ class PersonalInformationViewController: UIViewController, UINavigationControlle
             return false
         }
         
-//        if selectedProvince == "" {
-//            showingAlert = true
-//            alertMessage = "Please select your province/city"
-//            return false
-//        }
-//
-//        if selectedDistrict == "" {
-//            showingAlert = true
-//            alertMessage = "Please select your district"
-//            return false
-//        }
+        if selectedProvince == "" {
+            showingAlert = true
+            alertMessage = "Please select your province/city"
+            return false
+        }
+
+        if selectedDistrict == "" {
+            showingAlert = true
+            alertMessage = "Please select your district"
+            return false
+        }
         
         return true
     }
