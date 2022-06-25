@@ -19,7 +19,7 @@ git clone https://github.com/khoilecontact/Chit-Chat.git
 cd ./Chit-Chat
 pod install
 ```
-Sau đó vào XCode chọn Chit-Chat.xcworkspace\
+Sau đó vào XCode mở tệp Chit-Chat.xcworkspace\
 Run ứng dụng
 
 # [Tính năng](#features)
