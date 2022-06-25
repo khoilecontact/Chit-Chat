@@ -8,7 +8,7 @@
 Ứng dụng nhắn tin và gọi điện trên nền tảng iOS, được thiết kế dành riêng cho iOS bằng ngôn ngữ Swift, sử dụng nền tảng UIKit và quản lý thư viện bằng CocaPods
 
 # Để cài đặt ứng dụng này thì có các yêu cầu sau đây
-| Nền tảng | Phiên bản Swift thấp nhất | Cài đặt | IDE |
+| Nền tảng | Phiên bản Swift thấp nhất | Cài đặt trình quản lý thư viện | IDE |
 | --- | --- | --- | --- |
 | iOS 13+ | 5.3 | [CocoaPods](#cocoapods) | XCode |
 
